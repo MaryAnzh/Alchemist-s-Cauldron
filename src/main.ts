@@ -1,5 +1,5 @@
 import { App } from './app';
-import './styles.css';
+import './styles.scss';
 
 const root = document.body;
 

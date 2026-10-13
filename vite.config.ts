@@ -9,6 +9,7 @@ export default defineConfig({
       '@constants': path.resolve(import.meta.dirname, './src/constants'),
       '@types': path.resolve(import.meta.dirname, './src/types'),
       '@assets': path.resolve(import.meta.dirname, './src/assets'),
+      '@ui': path.resolve(import.meta.dirname, './src/ui'),
     },
   },
   optimizeDeps: {

@@ -22,6 +22,7 @@
     "husky": "^9.1.7",
     "lint-staged": "^17.5.1",
     "prettier": "^3.9.6",
+    "sass": "^1.104.1",
     "ts-node": "^10.9.2",
     "typescript": "~6.0.2",
     "vite": "^8.3.0",
