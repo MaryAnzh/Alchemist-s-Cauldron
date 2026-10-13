@@ -1,3 +1,5 @@
+import type { ICON_PICKER } from '@constants';
+
 export type AttrValue = string | number | null;
 export type AttrMap = Record<string, AttrValue>;
 export type ParentNodeType = { parentNode: HTMLElement | null };
@@ -8,3 +10,5 @@ export type ComponentProps = ParentNodeType & {
   content?: string | HTMLElement | (string | HTMLElement)[];
   attrs?: AttrMap;
 };
+
+export type IconPickerType = keyof typeof ICON_PICKER;

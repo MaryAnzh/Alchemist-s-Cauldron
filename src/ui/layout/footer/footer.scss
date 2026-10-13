@@ -1,0 +1,10 @@
+@use '../../../styles/mixin/common.scss' as *;
+
+.app-footer {
+  @include section-paddings;
+
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

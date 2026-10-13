@@ -8,8 +8,11 @@ export class Component {
 
     // Classes
     if (Array.isArray(className)) {
-      this.node.classList.add(...className);
-    } else if (typeof className === 'string') {
+      const filtered = className.filter(Boolean); // убираем '' и undefined
+      if (filtered.length) {
+        this.node.classList.add(...filtered);
+      }
+    } else if (typeof className === 'string' && className.trim() !== '') {
       this.node.className = className;
     }
 

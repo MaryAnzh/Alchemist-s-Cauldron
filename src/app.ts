@@ -1,5 +1,4 @@
-import { Component } from '@ui';
-import { Header } from './ui/layout/header/Header';
+import { Component, Header, Footer } from '@ui';
 
 export class App extends Component {
   root: HTMLElement;
@@ -17,5 +16,12 @@ export class App extends Component {
   init = () => {
     this.root.append(this.node);
     new Header({ parentNode: this.node });
+    new Component({
+      parentNode: this.node,
+      tagName: 'main',
+      className: 'app-main',
+      content: 'Main',
+    });
+    new Footer({ parentNode: this.node });
   };
 }

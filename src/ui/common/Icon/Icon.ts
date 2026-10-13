@@ -1,0 +1,15 @@
+import { ICON_PICKER } from '@constants';
+import type { ComponentProps, IconPickerType } from '@types';
+import { Component } from '@ui';
+
+export type IconProps = Pick<ComponentProps, 'parentNode' | 'className'> & {
+  icon: IconPickerType;
+};
+
+export class Icon extends Component {
+  constructor({ parentNode, icon, className }: IconProps) {
+    super({ parentNode, className });
+
+    this.node.insertAdjacentHTML('beforeend', ICON_PICKER[icon]);
+  }
+}
