@@ -1,0 +1,21 @@
+@use './components//score/score.scss' as *;
+@use './components/timer/timer.scss' as *;
+@use './components/lives/lives.scss' as *;
+
+.app-header {
+  width: 100%;
+  display: flex;
+  gap: var(--size-2);
+  padding: var(--size-2);
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-title);
+  font-size: var(--font-size-xl);
+  text-transform: uppercase;
+}
+
+@media (min-width: 1024px) {
+  .app-header {
+    padding: var(--size-4);
+  }
+}

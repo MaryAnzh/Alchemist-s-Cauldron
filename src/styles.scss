@@ -1,5 +1,6 @@
 @use './styles/index.scss' as *;
 @use './app.scss' as *;
+@use './ui/style.scss' as *;
 
 * {
   box-sizing: border-box;

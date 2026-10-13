@@ -1,12 +1,4 @@
-import type { AttrMap } from '@types';
-
-export interface ComponentProps {
-  parentNode?: HTMLElement | null;
-  tagName?: keyof HTMLElementTagNameMap;
-  className?: string | string[];
-  content?: string | HTMLElement | (string | HTMLElement)[];
-  attrs?: AttrMap;
-}
+import type { AttrMap, ComponentProps } from '@types';
 
 export class Component {
   public node: HTMLElement;
