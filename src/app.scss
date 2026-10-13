@@ -4,7 +4,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url('bg_tablet.webp');
+  background-image: url('/bg_tablet.webp');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -17,13 +17,13 @@
 }
 @media (min-width: 768px) {
   .app {
-    background-image: url('bg_laptop.webp');
+    background-image: url('/bg_laptop.webp');
     overflow: hidden;
   }
 }
 
 @media (min-width: 1024px) {
   .app {
-    background-image: url('bg_desktop.webp');
+    background-image: url('/bg_desktop.webp');
   }
 }

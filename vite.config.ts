@@ -2,7 +2,7 @@ import path from 'node:path';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  base: '/',
+  base: '/Alchemist-s-Cauldron/',
   resolve: {
     tsconfigPaths: true,
     alias: {

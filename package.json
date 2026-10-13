@@ -10,7 +10,8 @@
     "tsc": "tsc --noEmit",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "prepare": "husky"
+    "prepare": "husky",
+    "deploy": "vite build && gh-pages -d dist"
   },
   "devDependencies": {
     "@types/node": "^26.6.4",
