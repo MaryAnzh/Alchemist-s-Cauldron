@@ -1,4 +1,5 @@
 import { Component, Header, Footer } from '@ui';
+import { Game } from './pages/game/Game';
 
 export class App extends Component {
   root: HTMLElement;
@@ -16,12 +17,12 @@ export class App extends Component {
   init = () => {
     this.root.append(this.node);
     new Header({ parentNode: this.node });
-    new Component({
+    const main = new Component({
       parentNode: this.node,
       tagName: 'main',
       className: 'app-main',
-      content: 'Main',
     });
+    new Game({ parentNode: main.node });
     new Footer({ parentNode: this.node });
   };
 }

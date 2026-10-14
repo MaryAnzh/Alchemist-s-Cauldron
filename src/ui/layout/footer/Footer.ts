@@ -13,10 +13,22 @@ export class Footer extends Component {
   render() {
     new Button({
       parentNode: this.node,
+      color: 'magic-icon',
+      text: 'N',
+    });
+
+    new Button({
+      parentNode: this.node,
       color: 'magic',
       text: 'Brew',
       leftIcon: 'symbol',
       rightIcon: 'symbol',
+    });
+
+    new Button({
+      parentNode: this.node,
+      color: 'magic-icon',
+      text: 'S',
     });
   }
 }

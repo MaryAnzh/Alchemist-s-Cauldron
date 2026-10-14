@@ -2,6 +2,7 @@
   --font-title: 'Cinzel', serif;
   --font-main: 'Inter', sans-serif;
 
+  --size-025: 2px;
   --size-05: 4px;
   --size-1: 8px;
   --size-2: 16px;
@@ -11,11 +12,28 @@
   --size-6: 48px;
   --size-7: 56px;
   --size-8: 64px;
+  --size-9: 72px;
+  --size-10: 80px;
+
+  --ui-cauldron-width: 400px;
+
+  --border-sm: 0.5px;
+  --border-md: 1px;
+  --border-lg: 2px;
+  --border-sm-neg: -0.5px;
+  --border-md-neg: -1px;
+  --border-lg-neg: -2px;
 
   --radius-sm: 4px;
   --radius-md: 8px;
   --radius-lg: 16px;
   --radius-round: 50%;
+
+  --weight-regular: 300;
+  --weight-bold: 600;
+
+  --white: #fff;
+  --black: #111;
 
   /* main bg */
   --color-bg-night: #0a0d14;
@@ -51,7 +69,12 @@
 
   /* gradients */
   --gradient-accent: linear-gradient(135deg, #7b2cbf 0%, #9d4edd 100%);
-  --gradient-gold: linear-gradient(135deg, #f4ebd0 0%, #e3d3ab 100%);
+  --gradient-gold-1:
+    linear-gradient(var(--black), var(--black)),
+    linear-gradient(183deg, #997938, #50401f, #856728, #fbf5b7, #aa771c);
+  --gradient-gold-2:
+    linear-gradient(var(--black), var(--black)),
+    linear-gradient(214deg, #997938, #c4b515, #50401f, #856728, #aaa143, #776443);
   --gradient-dark: linear-gradient(135deg, #0a0d14 0%, #1e222b 100%);
 
   /* DARK button*/

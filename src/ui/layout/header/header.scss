@@ -2,6 +2,7 @@
 @use './components/timer/timer.scss' as *;
 @use './components/lives/lives.scss' as *;
 @use '../../../styles/mixin/common.scss' as *;
+@use '../../../styles/mixin/media.scss' as *;
 
 .app-header {
   @include section-paddings;
@@ -11,6 +12,13 @@
   align-items: center;
   justify-content: space-between;
   font-family: var(--font-title);
-  font-size: var(--font-size-lg);
+  font-size: var(--font-size-md);
   text-transform: uppercase;
+  z-index: 5;
+}
+
+@media (min-width: $tablet) {
+  .app-header {
+    font-size: var(--font-size-lg);
+  }
 }

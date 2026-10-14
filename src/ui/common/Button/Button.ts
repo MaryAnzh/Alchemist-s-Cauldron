@@ -2,7 +2,7 @@ import type { IconPickerType, ParentNodeType } from '@types';
 import { Component } from '@ui';
 import { ICON_PICKER } from '@constants';
 
-type ColorType = 'magic';
+type ColorType = 'magic' | 'magic-icon';
 
 export type ButtonProps = ParentNodeType & {
   className?: string;
@@ -18,13 +18,8 @@ export type ButtonProps = ParentNodeType & {
   ariaLabel?: string;
 };
 
-const classConverter = (arr: (string | undefined | null)[]): string[] => {
-  const a = arr.map((v) => (v ? `app_button_${v}` : undefined));
-  console.log(a);
-  const f = a.filter((v) => v !== undefined);
-  console.log(f);
-  return f;
-};
+const classConverter = (arr: (string | undefined | null)[]): string[] =>
+  arr.map((v) => (v ? `app_button_${v}` : undefined)).filter((v) => v !== undefined);
 
 export class Button extends Component {
   private textNode: Component | null = null;

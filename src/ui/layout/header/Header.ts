@@ -11,7 +11,7 @@ export class Header extends Component {
   }
 
   render() {
-    new Score({ parentNode: this.node });
+    new Score({ parentNode: this.node, score: 0 });
     new Timer({ parentNode: this.node });
     new Lives({ parentNode: this.node });
   }

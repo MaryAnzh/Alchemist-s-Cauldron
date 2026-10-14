@@ -1,15 +1,15 @@
 @use './media.scss' as *;
 
 @mixin section-paddings {
-  padding: var(--size-2);
+  padding: var(--size-1);
   gap: var(--size-2);
 
   @media (min-width: $tablet) {
-    padding: var(--size-3) var(--size-4);
+    padding: var(--size-1) var(--size-4);
     gap: var(--size-3);
   }
 
   @media (min-width: $desktop-sm) {
-    padding: var(--size-3) var(--size-8);
+    padding: var(--size-1) var(--size-8);
   }
 }

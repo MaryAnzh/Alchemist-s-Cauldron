@@ -1,6 +1,7 @@
 @use './styles/index.scss' as *;
 @use './app.scss' as *;
 @use './ui/style.scss' as *;
+@use './pages/style.scss' as *;
 
 * {
   box-sizing: border-box;
@@ -11,5 +12,7 @@
 body {
   width: 100%;
   height: 100vh;
+  display: flex;
+  justify-content: center;
   background-color: var(--color-bg-night);
 }

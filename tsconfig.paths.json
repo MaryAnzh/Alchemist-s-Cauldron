@@ -6,7 +6,8 @@
       "@constants": ["src/constants"],
       "@types": ["src/types"],
       "@assets": ["src/assets"],
-      "@ui": ["src/ui"]
+      "@ui": ["src/ui"],
+      "@pages": ["src/pagers"]
     }
   }
 }
