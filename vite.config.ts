@@ -11,6 +11,7 @@ export default defineConfig({
       '@assets': path.resolve(import.meta.dirname, './src/assets'),
       '@ui': path.resolve(import.meta.dirname, './src/ui'),
       '@pages': path.resolve(import.meta.dirname, './src/pages'),
+      '@store': path.resolve(import.meta.dirname, './src/store'),
     },
   },
   optimizeDeps: {
