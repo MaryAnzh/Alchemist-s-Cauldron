@@ -51,7 +51,6 @@ export class Button extends Component {
       ],
       attrs: { ariaLabel: ariaLabel ?? 'Button' },
     });
-    console.log('Button');
 
     this.text = text ?? null;
     this.leftIcon = leftIcon ?? null;

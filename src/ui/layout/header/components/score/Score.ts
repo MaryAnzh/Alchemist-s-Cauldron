@@ -11,6 +11,11 @@ export class Score extends Component {
     super({ parentNode, tagName: 'div', className: 'app-score' });
     this.score = score ?? 0;
 
+    //ToDo
+    // store.subscribe('score:changed', (value: string) => {
+    //   this.countNode.node.textContent = value;
+    // });
+
     this.render();
   }
 
