@@ -9,6 +9,7 @@ import type {
 } from '@types';
 
 type GameState = {
+  playerName: string;
   status: GameStateType;
   level: 1 | 2 | 3;
   difficulty: DifficultyType;
@@ -25,6 +26,7 @@ type GameState = {
   // Cauldron
   cauldronIngredients: IngredientType[];
   cauldronValues: cauldronValuesType;
+  maxIngredients: number;
 
   // Shelf
   shelfIngredients: IngredientType[];
@@ -44,6 +46,7 @@ type GameState = {
 class Store {
   private events = new EventEmitter();
   private state: GameState = {
+    playerName: 'Alchemist',
     status: 'menu',
     level: 1,
     difficulty: 'medium',
@@ -58,6 +61,7 @@ class Store {
     // Cauldron
     cauldronIngredients: [],
     cauldronValues: { density: 0, magicPower: 0, temperature: 0 },
+    maxIngredients: 4,
 
     // Shelf
     shelfIngredients: [],

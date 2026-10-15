@@ -1,18 +1,34 @@
-import type { ParentNodeType } from '@types';
+import type { IngredientType, ParentNodeType, RecipeType } from '@types';
 import { Component } from '@ui';
-import { Ingredients, Cauldron, Recipe } from './components';
+import { IngredientsList, Cauldron, Recipe } from './components';
 
-type GameProps = ParentNodeType;
+type GameProps = ParentNodeType & {
+  ingredients: IngredientType[];
+  currentRecipe: RecipeType;
+  currentIngredientsCount: number;
+  maxIngredients: number;
+};
 
 export class Game extends Component {
-  constructor({ parentNode }: GameProps) {
+  constructor({
+    parentNode,
+    ingredients,
+    currentRecipe,
+    currentIngredientsCount,
+    maxIngredients,
+  }: GameProps) {
     super({ parentNode, tagName: 'div', className: 'app-game' });
-    this.render();
+    this.render(ingredients, currentRecipe, currentIngredientsCount, maxIngredients);
   }
 
-  render() {
-    new Ingredients({ parentNode: this.node });
+  render(
+    ingredients: IngredientType[],
+    currentRecipe: RecipeType,
+    currentIngredientsCount: number,
+    maxIngredients: number,
+  ) {
+    new IngredientsList({ parentNode: this.node, ingredients });
     new Cauldron({ parentNode: this.node });
-    new Recipe({ parentNode: this.node });
+    new Recipe({ parentNode: this.node, currentRecipe, currentIngredientsCount, maxIngredients });
   }
 }

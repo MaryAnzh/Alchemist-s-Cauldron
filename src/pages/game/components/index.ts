@@ -1,3 +1,3 @@
-export { Cauldron } from './cauldron/Cauldron';
-export { Ingredients } from './ingredients/Ingredients';
-export { Recipe } from './recipe/Recipe';
+export { Cauldron } from './Cauldron/Cauldron';
+export { IngredientsList } from './IIngredientsList/Ingredients';
+export { Recipe } from './Recipe/Recipe';

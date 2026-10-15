@@ -1,6 +1,6 @@
 @use './components/cauldron/cauldron.scss' as *;
-@use './components/ingredients/ingredients.scss' as *;
-@use './components/recipe/recipe.scss' as *;
+@use './components/IIngredientsList/iIngredientsList.scss' as *;
+@use './components/Recipe/recipe.scss' as *;
 
 @use '../../styles/mixin/common.scss' as *;
 @use '../../styles/mixin/media.scss' as *;

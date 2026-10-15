@@ -34,6 +34,11 @@ export class App extends Component {
     this.startGameNode = null;
     this.node.innerHTML = '';
 
+    const { shelfIngredients, currentRecipe, cauldronIngredients, maxIngredients } =
+      this.store.getState();
+    if (!currentRecipe) {
+      return;
+    }
     this.header = new Header({ parentNode: this.node });
 
     this.main = new Component({
@@ -41,7 +46,14 @@ export class App extends Component {
       tagName: 'main',
       className: 'app-main',
     });
-    new Game({ parentNode: this.main.node });
+
+    new Game({
+      parentNode: this.main.node,
+      ingredients: shelfIngredients,
+      currentRecipe,
+      currentIngredientsCount: cauldronIngredients.length,
+      maxIngredients,
+    });
 
     this.footer = new Footer({ parentNode: this.node, callback: () => {} });
   }
