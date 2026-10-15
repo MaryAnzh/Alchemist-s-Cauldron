@@ -1,6 +1,7 @@
 @use './components/cauldron/cauldron.scss' as *;
 @use './components/IIngredientsList/iIngredientsList.scss' as *;
 @use './components/Recipe/recipe.scss' as *;
+@use './components//Ranges/ranges.scss' as *;
 
 @use '../../styles/mixin/common.scss' as *;
 @use '../../styles/mixin/media.scss' as *;
@@ -16,5 +17,6 @@
   @media (min-width: $laptop) {
     display: grid;
     grid-template-columns: 1fr 2fr 1fr;
+    grid-template-rows: auto min-content;
   }
 }

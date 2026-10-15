@@ -1,6 +1,6 @@
 import type { IngredientType, ParentNodeType, RecipeType } from '@types';
 import { Component } from '@ui';
-import { IngredientsList, Cauldron, Recipe } from './components';
+import { IngredientsList, Cauldron, Recipe, Ranges } from './components';
 
 type GameProps = ParentNodeType & {
   ingredients: IngredientType[];
@@ -30,5 +30,9 @@ export class Game extends Component {
     new IngredientsList({ parentNode: this.node, ingredients });
     new Cauldron({ parentNode: this.node });
     new Recipe({ parentNode: this.node, currentRecipe, currentIngredientsCount, maxIngredients });
+    new Ranges({
+      parentNode: this.node,
+      ranges: currentRecipe,
+    });
   }
 }
