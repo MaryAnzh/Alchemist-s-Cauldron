@@ -79,6 +79,15 @@
     linear-gradient(var(--black), var(--black)),
     linear-gradient(214deg, #997938, #c4b515, #50401f, #856728, #aaa143, #776443);
   --gradient-dark: linear-gradient(135deg, #0a0d14 0%, #1e222b 100%);
+  --gradient-magic: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(180, 200, 255, 0.45) 12%,
+    rgba(120, 140, 200, 0.25) 28%,
+    rgba(60, 70, 120, 0.35) 45%,
+    rgba(180, 200, 255, 0.45) 65%,
+    rgba(0, 0, 0, 0.8) 100%
+  );
 
   /* DARK button*/
   --btn-dark-bg: #1e222b;
@@ -116,5 +125,5 @@
 
   --heading-sm: 24px;
   --heading-mg: 32px;
-  --haeding-lg: 48px;
+  --heading-lg: 48px;
 }

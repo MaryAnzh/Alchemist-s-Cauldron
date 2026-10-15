@@ -42,11 +42,11 @@ export class IngredientsList extends Component {
         parentNode: li.node,
         className: 'app-ingredients_list_item_text',
         tagName: 'span',
-        content: `temperature: ${temperature}, density: ${density}, magicPower: ${magicPower}`,
+        content: `t: ${temperature}, d: ${density}, m: ${magicPower}`,
       });
       new Component({
         parentNode: li.node,
-        className: 'app-ingredients_list_item_in-stock',
+        className: 'app-ingredients_list_item_count',
         tagName: 'span',
         content: count ? count.toString() : '0',
       });
