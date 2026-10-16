@@ -1,4 +1,6 @@
-import type { ParentNodeType, RecipeType } from '@types';
+import { GAME_EVENTS } from '@constants';
+import { store } from '@store';
+import type { cauldronValuesType, ParentNodeType, RecipeType } from '@types';
 import { Component, RangeSlider } from '@ui';
 
 type RangesProps = ParentNodeType & {
@@ -7,35 +9,47 @@ type RangesProps = ParentNodeType & {
 
 export class Ranges extends Component {
   ingredientsCountNode!: Component;
+  temperature!: RangeSlider;
+  density!: RangeSlider;
+  magicPower!: RangeSlider;
 
   constructor({ parentNode, ranges }: RangesProps) {
     super({ parentNode, tagName: 'div', className: 'app-ranges' });
+
+    store.subscribe(
+      GAME_EVENTS.CAULDRON_STATE_CHANGED,
+      ({ temperature, density, magicPower }: cauldronValuesType) => {
+        this.temperature.updateRange(temperature);
+        this.density.updateRange(density);
+        this.magicPower.updateRange(magicPower);
+      },
+    );
 
     this.render(ranges);
   }
 
   render(ranges: RecipeType) {
-    new RangeSlider({
+    this.temperature = new RangeSlider({
       parentNode: this.node,
       label: 'Temperature',
       range: { min: ranges.temperature.at(0) as number, max: ranges.temperature.at(1) as number },
-      value: 10,
+      value: 0,
       icon: 'symbol',
     });
 
-    new RangeSlider({
+    this.density = new RangeSlider({
       parentNode: this.node,
       label: 'Density',
       range: { min: ranges.density.at(0) as number, max: ranges.density.at(1) as number },
-      value: 2,
-      icon: 'symbol',
+      value: 0,
+      icon: 'drop',
     });
 
-    new RangeSlider({
+    this.magicPower = new RangeSlider({
       parentNode: this.node,
       label: 'Magic Power',
       range: { min: ranges.magicPower.at(0) as number, max: ranges.magicPower.at(1) as number },
-      value: 10,
+      value: 0,
       icon: 'symbol',
     });
   }

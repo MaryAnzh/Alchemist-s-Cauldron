@@ -1,58 +1,21 @@
 import { EventEmitter } from './events';
-import { GAME_EVENTS, INGREDIENTS, RECIPES } from '@constants';
-import type {
-  cauldronValuesType,
-  DifficultyType,
-  GameStateType,
-  IngredientType,
-  RecipeType,
-} from '@types';
-
-type GameState = {
-  playerName: string;
-  status: GameStateType;
-  level: 1 | 2 | 3;
-  difficulty: DifficultyType;
-
-  // HUD
-  score: number;
-  timeLeft: number;
-  lives: number;
-
-  // Recipe
-  currentRecipe: RecipeType | null;
-  recipes: RecipeType[];
-
-  // Cauldron
-  cauldronIngredients: IngredientType[];
-  cauldronValues: cauldronValuesType;
-  maxIngredients: number;
-
-  // Shelf
-  shelfIngredients: IngredientType[];
-
-  // Reactions (Level 3)
-  activeReactions: string[];
-  lastReactionId: string | null;
-
-  // Save system (Level 2)
-  saveTimestamp: number | null;
-
-  // Game end conditions
-  isGameOver: boolean;
-  outOfIngredients: boolean;
-};
+import * as C from '@constants';
+import type { GameState, RecipeType } from '@types';
+import { GameTimer } from './logic/timer';
 
 class Store {
   private events = new EventEmitter();
+  private timer = new GameTimer();
+
   private state: GameState = {
     playerName: 'Alchemist',
-    status: 'menu',
+    status: C.MENU,
     level: 1,
-    difficulty: 'medium',
+    difficulty: C.MEDIUM,
 
     score: 0,
-    lives: 3,
+    lives: C.LIVES.medium,
+    maxLives: C.LIVES.medium,
     timeLeft: 0,
 
     currentRecipe: null,
@@ -61,7 +24,7 @@ class Store {
     // Cauldron
     cauldronIngredients: [],
     cauldronValues: { density: 0, magicPower: 0, temperature: 0 },
-    maxIngredients: 4,
+    maxIngredients: C.MAX_INGREDIENTS.medium,
 
     // Shelf
     shelfIngredients: [],
@@ -93,7 +56,6 @@ class Store {
 
   private update(partial: Partial<GameState>) {
     this.state = { ...this.state, ...partial };
-    this.emit(GAME_EVENTS.STATE_UPDATE, this.state);
   }
 
   /** main game actions */
@@ -102,16 +64,34 @@ class Store {
 
     this.initShelf();
     this.pickRandomRecipe();
-    this.state.status = 'playing';
+    this.state.status = C.PLAYING;
+    this.setTimer();
 
     return this.getState();
   };
+
+  pauseGame() {
+    this.timer.stop();
+    this.update({ status: C.PAUSED });
+  }
+
+  resumeGame() {
+    this.update({ status: 'playing' });
+    this.timer.resume(
+      (time) => {
+        this.update({ timeLeft: time });
+        this.emit(C.GAME_EVENTS.TIMER_TICK, time);
+      },
+      () => this.gameOver(),
+      this.state.timeLeft,
+    );
+  }
 
   resetGameState() {
     this.state = {
       ...this.state,
       score: 0,
-      lives: 3,
+      lives: C.LIVES[this.state.difficulty],
       timeLeft: 0,
       currentRecipe: null,
       cauldronIngredients: [],
@@ -125,14 +105,16 @@ class Store {
   }
 
   gameOver() {
-    //ToDo add logic
+    this.update({ status: C.GAME_OVER });
+    this.resetGameState();
+    this.emit(C.GAME_EVENTS.GAME_OVER);
   }
 
   /** Inits data */
   initShelf() {
-    const count = this.state.difficulty === 'easy' ? 4 : this.state.difficulty === 'medium' ? 6 : 8;
+    const count = C.SHELF_SIZE[this.state.difficulty];
 
-    const shuffled = [...INGREDIENTS].sort(() => Math.random() - 0.5);
+    const shuffled = [...C.INGREDIENTS];
     const shelfIngredients = shuffled.slice(0, count);
 
     shelfIngredients.forEach((ing) => {
@@ -140,12 +122,12 @@ class Store {
     });
 
     this.update({ shelfIngredients });
-    this.emit(GAME_EVENTS.INGREDIENTS_CHANGED, { shelfIngredients });
+    this.emit(C.GAME_EVENTS.SHELF_UPDATE, shelfIngredients);
   }
 
   pickRandomRecipe() {
     if (this.state.recipes.length === 0) {
-      this.state.recipes = RECIPES.filter((r) => r.difficulty === this.state.difficulty).sort(
+      this.state.recipes = C.RECIPES.filter((r) => r.difficulty === this.state.difficulty).sort(
         () => Math.random() - 0.5,
       ) as RecipeType[];
     }
@@ -155,12 +137,30 @@ class Store {
     this.update({
       currentRecipe,
     });
-
-    this.emit(GAME_EVENTS.RECIPE_CHANGED, currentRecipe);
+    this.emit(C.GAME_EVENTS.RECIPE_CHANGED, {
+      currentRecipe,
+      currentIngredientsCount: this.state.maxIngredients,
+      maxIngredients: this.state.maxIngredients,
+    });
   }
 
   setTimer() {
-    //Todo
+    const difficulty = this.state.difficulty;
+
+    const initialTime = C.TIMER[difficulty].gameTime;
+
+    this.update({ timeLeft: initialTime });
+
+    this.timer.start(
+      initialTime,
+      (time) => {
+        this.update({ timeLeft: time });
+        this.emit(C.GAME_EVENTS.TIMER_TICK, time);
+      },
+      () => {
+        this.gameOver();
+      },
+    );
   }
 
   /** Games Actions */
@@ -169,27 +169,36 @@ class Store {
     if (!stock || !stock.count) return;
 
     stock.count = stock.count - 1;
+    if (stock.count === 0) {
+      this.emit(C.GAME_EVENTS.OUT_STOCK, stock);
+    }
 
     const values = {
       temperature: stock.temperature + this.state.cauldronValues.temperature,
       density: stock.density + this.state.cauldronValues.density,
       magicPower: stock.magicPower + this.state.cauldronValues.magicPower,
     };
+    const ingredients = [...this.state.cauldronIngredients, stock];
 
     this.update({
-      cauldronIngredients: [...this.state.cauldronIngredients, stock],
+      cauldronIngredients: ingredients,
       cauldronValues: values,
     });
 
-    this.emit(GAME_EVENTS.CAULDRON_STATE_CHANGED, values);
+    this.emit(C.GAME_EVENTS.CAULDRON_STATE_CHANGED, values);
+    if (ingredients.length === this.state.maxIngredients) {
+      this.emit(C.GAME_EVENTS.INGREDIENTS_LIMIT, true);
+      return;
+    }
+
+    this.emit(C.GAME_EVENTS.INGREDIENTS_IN_STOCK, this.state.cauldronIngredients.length);
   }
 
   brewCheck() {
     const recipe = this.state.currentRecipe;
     if (!recipe) return;
-
-    const tolerance =
-      this.state.difficulty === 'easy' ? 12 : this.state.difficulty === 'medium' ? 8 : 5;
+    const difficulty = this.state.difficulty;
+    const tolerance = C.TOLERANCE[difficulty];
 
     const { temperature, density, magicPower } = this.state.cauldronValues;
 
@@ -211,12 +220,12 @@ class Store {
       });
 
     if (success) {
-      this.addScore(
-        this.state.difficulty === 'easy' ? 100 : this.state.difficulty === 'medium' ? 200 : 300,
-      );
-      //ToDo add timer reset
+      const bonus = C.TIMER[difficulty].bonus;
+
+      this.update({ timeLeft: this.state.timeLeft + bonus });
 
       this.clearCauldron();
+      this.initShelf();
       this.pickRandomRecipe();
       return;
     }
@@ -245,7 +254,7 @@ class Store {
       cauldronValues: { temperature: 0, density: 0, magicPower: 0 },
     });
 
-    this.emit(GAME_EVENTS.CAULDRON_STATE_CHANGED, this.state.cauldronValues);
+    this.emit(C.GAME_EVENTS.CAULDRON_STATE_CHANGED, this.state.cauldronValues);
   }
 }
 

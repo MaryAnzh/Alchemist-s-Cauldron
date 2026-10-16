@@ -1,0 +1,9 @@
+.app-lives {
+  display: flex;
+  gap: var(--size-1);
+  align-items: center;
+
+  svg {
+    height: var(--size-4);
+  }
+}

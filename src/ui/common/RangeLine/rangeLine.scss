@@ -39,6 +39,9 @@
     background-origin: border-box;
     background-clip: padding-box, border-box;
     border-radius: inherit;
+    mask:
+      linear-gradient(#fff 0 0) padding-box,
+      linear-gradient(#fff 0 0);
     -webkit-mask:
       linear-gradient(#fff 0 0) padding-box,
       linear-gradient(#fff 0 0);

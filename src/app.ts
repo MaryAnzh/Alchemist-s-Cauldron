@@ -1,3 +1,4 @@
+import { GAME_EVENTS } from '@constants';
 import { Game } from '@pages';
 import { store } from '@store';
 import { Component, Header, Footer, StartGame } from '@ui';
@@ -18,6 +19,18 @@ export class App extends Component {
       className: 'app',
       attrs: { id: 'app' },
     });
+
+    store.subscribe(GAME_EVENTS.GAME_OVER, () => {
+      this.startGameNode?.destroy();
+      this.startGameNode = null;
+      this.node.innerHTML = '';
+
+      this.startGameNode = new StartGame({
+        parentNode: this.node,
+        callback: this.handleStartGame,
+      });
+    });
+
     this.root = root;
   }
 
@@ -34,12 +47,22 @@ export class App extends Component {
     this.startGameNode = null;
     this.node.innerHTML = '';
 
-    const { shelfIngredients, currentRecipe, cauldronIngredients, maxIngredients } =
-      this.store.getState();
+    const {
+      shelfIngredients,
+      currentRecipe,
+      cauldronIngredients,
+      maxIngredients,
+      lives,
+      maxLives,
+    } = this.store.getState();
     if (!currentRecipe) {
       return;
     }
-    this.header = new Header({ parentNode: this.node });
+    this.header = new Header({
+      parentNode: this.node,
+      maxLives,
+      currentLivesCount: lives,
+    });
 
     this.main = new Component({
       parentNode: this.node,

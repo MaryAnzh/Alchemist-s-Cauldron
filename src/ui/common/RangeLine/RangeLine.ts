@@ -19,38 +19,40 @@ export class RangeLine extends Component {
   leftStopper!: Icon;
   rightStopper!: Icon;
   arrow!: Icon;
+  min!: number;
+  max!: number;
 
-  constructor({ parentNode, rangeMax, rangeMin }: RangeLineProps) {
+  constructor({ parentNode, rangeMax, rangeMin, value }: RangeLineProps) {
     super({ parentNode, tagName: 'span', className: 'app-range-line' });
 
-    this.render(rangeMax, rangeMin);
+    this.render(rangeMax, rangeMin, value);
   }
 
-  render(rangeMax: number, rangeMin: number) {
+  render(rangeMax: number, rangeMin: number, value: number) {
     const scale = this.generateScale(rangeMin, rangeMax);
-    const min = scale.at(0) ?? 0;
-    const max = scale.at(-1) ?? this.rangeNem * this.step;
+    this.min = scale.at(0) ?? 0;
+    this.max = scale.at(-1) ?? this.rangeNem * this.step;
 
     this.leftStopper = new Icon({
       parentNode: this.node,
       className: this.setClass('left-stop'),
       icon: 'stop',
     });
-    this.leftStopper.node.style.left = this.getStopperPosition(min, max, rangeMin);
+    this.leftStopper.node.style.left = this.getStopperPosition(rangeMin);
 
     this.arrow = new Icon({
       parentNode: this.node,
       className: this.setClass('arrow'),
       icon: 'arrow',
     });
-    this.arrow.node.style.left = this.getStopperPosition(min, max, 0);
+    this.arrow.node.style.left = this.getStopperPosition(value);
 
     this.rightStopper = new Icon({
       parentNode: this.node,
       className: this.setClass('right-stop'),
       icon: 'stop',
     });
-    this.rightStopper.node.style.left = this.getStopperPosition(min, max, rangeMax);
+    this.rightStopper.node.style.left = this.getStopperPosition(rangeMax);
 
     const stopNumLeft = new Component({
       parentNode: this.node,
@@ -58,7 +60,7 @@ export class RangeLine extends Component {
       className: this.setClass('stop-num-left'),
       content: rangeMin.toString(),
     });
-    stopNumLeft.node.style.left = this.getStopperPosition(min, max, rangeMin);
+    stopNumLeft.node.style.left = this.getStopperPosition(rangeMin);
 
     const stopNumRight = new Component({
       parentNode: this.node,
@@ -66,7 +68,7 @@ export class RangeLine extends Component {
       className: this.setClass('stop-num-right'),
       content: rangeMax.toString(),
     });
-    stopNumRight.node.style.left = this.getStopperPosition(min, max, rangeMax);
+    stopNumRight.node.style.left = this.getStopperPosition(rangeMax);
 
     const line = new Component({ parentNode: this.node, className: this.setClass('count') });
     scale.forEach((el, i) => {
@@ -76,7 +78,7 @@ export class RangeLine extends Component {
         content: el.toString(),
       });
       if (i > 0 && i < scale.length - 1) {
-        nem.node.style.left = this.getStopperPosition(min, max, el);
+        nem.node.style.left = this.getStopperPosition(el);
       }
     });
   }
@@ -85,10 +87,10 @@ export class RangeLine extends Component {
     return `app-range-line_${name}`;
   }
 
-  getStopperPosition(min: number, max: number, value: number): string {
-    const range = max - min;
+  getStopperPosition(value: number): string {
+    const range = this.max - this.min;
 
-    const percent = (value - min) / range;
+    const percent = (value - this.min) / range;
     return `${percent * 100}%`;
   }
 
@@ -112,4 +114,8 @@ export class RangeLine extends Component {
 
     return arr;
   }
+
+  public updateRange = (value: number) => {
+    this.arrow.node.style.left = this.getStopperPosition(value);
+  };
 }

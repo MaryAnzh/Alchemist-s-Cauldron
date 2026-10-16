@@ -1,9 +1,10 @@
-export type DifficultyType = 'easy' | 'medium' | 'hard';
+import type { GameDifficultType } from './state';
+
 export type DiapasonTye = [number, number];
 
 export type RecipeType = {
   id: number;
-  difficulty: DifficultyType;
+  difficulty: GameDifficultType;
   name: string;
   temperature: DiapasonTye;
   density: DiapasonTye;
