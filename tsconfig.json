@@ -19,7 +19,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "tests"],
-  "exclude": ["node_modules", "coverage"],
+  "exclude": ["node_modules"],
   "extends": "./tsconfig.paths.json"
 }
