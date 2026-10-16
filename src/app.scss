@@ -1,0 +1,63 @@
+@use './styles/mixin/media.scss' as *;
+
+.app {
+  position: relative;
+  width: 100%;
+  max-width: $desktop-lg;
+  height: fit-content;
+  min-height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  grid-template-columns: 100%;
+  overflow: auto;
+
+  align-items: center;
+  justify-content: space-between;
+  background-image: url('/bg_tablet.webp');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  gap: var(--size-1);
+  font-family: var(--font-main);
+  font-size: var(--font-size-md);
+  color: var(--color-text-light);
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 0;
+  }
+
+  header,
+  main,
+  footer {
+    z-index: 2;
+  }
+  main {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+@media (min-width: $tablet) {
+  .app {
+    background-image: url('/bg_laptop.webp');
+    background-size: cover;
+    overflow: hidden;
+    gap: var(--size-2);
+  }
+}
+
+@media (min-width: $laptop) {
+  .app {
+    width: 100%;
+    height: 100%;
+
+    background-image: url('/bg_desktop.webp');
+    overflow: hidden;
+  }
+}

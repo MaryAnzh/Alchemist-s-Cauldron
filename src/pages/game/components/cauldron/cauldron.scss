@@ -1,0 +1,70 @@
+@use '../../../../styles/mixin/media.scss' as *;
+
+.app-cauldron {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--size-2);
+  align-items: center;
+
+  &_title {
+    text-align: center;
+    font-family: var(--font-title);
+    font-size: var(--font-size-xl);
+    font-weight: var(--weight-regular);
+    letter-spacing: -1.3px;
+    transform: scaleX(0.85);
+    display: inline-block;
+
+    background: linear-gradient(
+      0deg,
+      #b8ffce 0%,
+      #1fb85a 10%,
+      #7aff9f 20%,
+      #3fe875 45%,
+      #1fb85a 70%,
+      #0a5a2c 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  &_cauldron-wrap {
+    position: relative;
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &_cauldron {
+      max-width: 100%;
+      width: var(--ui-cauldron-width);
+      padding-bottom: var(--size-2);
+      z-index: 1;
+    }
+    &_icon {
+      position: absolute;
+      width: 20%;
+      z-index: 2;
+      bottom: 30%;
+    }
+  }
+}
+
+@media (min-width: $laptop) {
+  .app-cauldron {
+    gap: var(--size-6);
+
+    &_title {
+      font-size: var(--font-size-xxl);
+    }
+
+    &_cauldron-wrap {
+      padding-bottom: var(--size-6);
+    }
+  }
+}
