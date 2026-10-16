@@ -9,6 +9,7 @@ export default defineConfig({
       '@constants': path.resolve(import.meta.dirname, './src/constants'),
       '@types': path.resolve(import.meta.dirname, './src/types'),
       '@assets': path.resolve(import.meta.dirname, './src/assets'),
+      '@utils': path.resolve(import.meta.dirname, './src/utils'),
       '@ui': path.resolve(import.meta.dirname, './src/ui'),
       '@pages': path.resolve(import.meta.dirname, './src/pages'),
       '@store': path.resolve(import.meta.dirname, './src/store'),

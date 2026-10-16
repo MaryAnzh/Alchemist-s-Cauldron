@@ -38,8 +38,8 @@ export class RangeSlider extends Component {
     });
     new RangeLine({
       parentNode: this.node,
-      rangeMax: 10,
-      rangeMin: 0,
+      rangeMax: this.range.max,
+      rangeMin: this.range.min,
       value: 4,
     });
   }

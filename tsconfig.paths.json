@@ -6,6 +6,7 @@
       "@constants": ["src/constants"],
       "@types": ["src/types"],
       "@assets": ["src/assets"],
+      "@utils": ["src/utils"],
       "@ui": ["src/ui"],
       "@pages": ["src/pages"],
       "@store": ["src/store"]

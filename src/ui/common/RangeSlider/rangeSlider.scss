@@ -6,7 +6,7 @@
   align-items: center;
   grid-template-columns: var(--size-5) auto;
   grid-template-rows: 1fr var(--size-5);
-  gap: var(--size-05) var(--size-2);
+  gap: var(--size-05) var(--size-3);
 
   &_title {
     grid-row: 1/2;
@@ -15,7 +15,7 @@
     font-family: var(--font-title);
     font-size: var(--heading-x-sm);
     font-weight: var(--weight-regular);
-    color: var(--color-parchment);
+    color: var(--color-text-light);
   }
 
   &_icon {
