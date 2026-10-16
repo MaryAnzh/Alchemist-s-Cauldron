@@ -27,7 +27,6 @@ export class RangeLine extends Component {
   }
 
   render(rangeMax: number, rangeMin: number) {
-    console.log(rangeMax, rangeMin);
     const scale = this.generateScale(rangeMin, rangeMax);
     const min = scale.at(0) ?? 0;
     const max = scale.at(-1) ?? this.rangeNem * this.step;
@@ -70,7 +69,6 @@ export class RangeLine extends Component {
     stopNumRight.node.style.left = this.getStopperPosition(min, max, rangeMax);
 
     const line = new Component({ parentNode: this.node, className: this.setClass('count') });
-    console.log(scale);
     scale.forEach((el, i) => {
       const nem = new Component({
         parentNode: line.node,

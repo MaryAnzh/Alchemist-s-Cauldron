@@ -15,10 +15,10 @@ Story 1 — prepare the repository, tooling, folder structure and quality checks
 - Logic - add store with base game logic
 - US 1.1 — create the ingredient data, shelf cards and cauldron list.
 - US 1.2 — add the 3 bars and a pure function that sums ingredient values.
+- US 1.3 — add the recipe table, random recipe selection, the recipe panel and the Brew check.(15/10 - 16/10)
 
 In progress:
-
-- US 1.3 — add the recipe table, random recipe selection, the recipe panel and the Brew check.(15/10 - 16/10)
+-
 
 ToDo:
 
