@@ -1,6 +1,6 @@
 import { GAME_EVENTS } from '@constants';
 import { store } from '@store';
-import type { cauldronValuesType, ParentNodeType, RecipeType } from '@types';
+import type { ParentNodeType, RecipeType } from '@types';
 import { Component, RangeSlider } from '@ui';
 
 type RangesProps = ParentNodeType & {
@@ -18,7 +18,7 @@ export class Ranges extends Component {
 
     store.subscribe(
       GAME_EVENTS.CAULDRON_STATE_CHANGED,
-      ({ temperature, density, magicPower }: cauldronValuesType) => {
+      ({ values: { temperature, density, magicPower } }) => {
         this.temperature.updateRange(temperature);
         this.density.updateRange(density);
         this.magicPower.updateRange(magicPower);

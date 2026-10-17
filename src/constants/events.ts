@@ -1,25 +1,22 @@
 export const GAME_EVENTS = {
-  // Core
-  STATE_UPDATE: 'state:update',
-
-  // Timer
+  // header
   TIMER_TICK: 'timer:tick',
+  SCORE_CHANGE: 'score:change',
+  LIVES_CHANGE: 'lives:change',
 
   // Game flow
   GAME_OVER: 'game:over',
+  ROUND_OVER: 'round:over',
   PAUSE: 'game:pause',
   RESUME: 'game:resume',
 
   // Shelf
-  INGREDIENTS_CHANGED: 'shelf:ingredients-changed',
+  SHELF_BLOCK: 'shelf:block',
+  INGREDIENT_COUNT: 'ingredient:count',
 
-  // Cauldron
-  CAULDRON_STATE_CHANGED: 'cauldron:state-changed',
-
-  // Recipes
+  //Recipes
   RECIPE_CHANGED: 'recipe:changed',
-  INGREDIENTS_IN_STOCK: 'ingredients:stock',
-  OUT_STOCK: 'out:stock',
-  INGREDIENTS_LIMIT: 'ingredient:limit',
-  SHELF_UPDATE: 'shelf:update',
+  INGREDIENT_IN_CAULDRON: 'ingredient:inCauldron',
+
+  CAULDRON_STATE_CHANGED: 'cauldron:stateChange',
 } as const;

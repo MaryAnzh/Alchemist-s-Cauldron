@@ -1,6 +1,6 @@
 import { GAME_EVENTS } from '@constants';
 import { store } from '@store';
-import type { GameState, ParentNodeType } from '@types';
+import type { ParentNodeType } from '@types';
 import { Component, Icon } from '@ui';
 
 type ScoreProps = ParentNodeType & { score: number };
@@ -13,7 +13,7 @@ export class Score extends Component {
     super({ parentNode, tagName: 'div', className: 'app-score' });
     this.score = score ?? 0;
 
-    store.subscribe(GAME_EVENTS.STATE_UPDATE, ({ score }: GameState) => {
+    store.subscribe(GAME_EVENTS.SCORE_CHANGE, (score) => {
       if (this.score !== score) {
         this.score = score;
         this.countNode.node.textContent = score.toString();

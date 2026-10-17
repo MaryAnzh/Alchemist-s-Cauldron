@@ -1,10 +1,10 @@
 import { EventEmitter } from './events';
 import * as C from '@constants';
-import type { GameState, RecipeType } from '@types';
+import type { GameEventsPayload, GameState, RecipeType } from '@types';
 import { GameTimer } from './logic/timer';
 
 class Store {
-  private events = new EventEmitter();
+  private events = new EventEmitter<GameEventsPayload>();
   private timer = new GameTimer();
 
   private state: GameState = {
@@ -46,11 +46,14 @@ class Store {
     return this.state;
   };
 
-  public subscribe(event: string, listener: Function) {
+  public subscribe<K extends keyof GameEventsPayload>(
+    event: K,
+    listener: (payload: GameEventsPayload[K]) => void,
+  ) {
     this.events.on(event, listener);
   }
 
-  private emit(event: string, payload?: unknown) {
+  private emit<K extends keyof GameEventsPayload>(event: K, payload: GameEventsPayload[K]) {
     this.events.emit(event, payload);
   }
 
@@ -104,10 +107,15 @@ class Store {
     };
   }
 
+  roundOver() {
+    this.emit(C.GAME_EVENTS.SHELF_BLOCK, { isBlock: false });
+    this.clearCauldron();
+  }
+
   gameOver() {
     this.update({ status: C.GAME_OVER });
     this.resetGameState();
-    this.emit(C.GAME_EVENTS.GAME_OVER);
+    this.emit(C.GAME_EVENTS.GAME_OVER, { isOver: true });
   }
 
   /** Inits data */
@@ -122,7 +130,6 @@ class Store {
     });
 
     this.update({ shelfIngredients });
-    this.emit(C.GAME_EVENTS.SHELF_UPDATE, shelfIngredients);
   }
 
   pickRandomRecipe() {
@@ -133,15 +140,14 @@ class Store {
     }
     const currentRecipe = this.state.recipes.at(-1);
     this.state.recipes.pop();
+    if (!currentRecipe) {
+      return;
+    }
 
     this.update({
       currentRecipe,
     });
-    this.emit(C.GAME_EVENTS.RECIPE_CHANGED, {
-      currentRecipe,
-      currentIngredientsCount: this.state.maxIngredients,
-      maxIngredients: this.state.maxIngredients,
-    });
+    this.emit(C.GAME_EVENTS.RECIPE_CHANGED, { recipe: currentRecipe, ingInCauldron: 0 });
   }
 
   setTimer() {
@@ -168,11 +174,6 @@ class Store {
     const stock = this.state.shelfIngredients.find((ing) => ing.id === id);
     if (!stock || !stock.count) return;
 
-    stock.count = stock.count - 1;
-    if (stock.count === 0) {
-      this.emit(C.GAME_EVENTS.OUT_STOCK, stock);
-    }
-
     const values = {
       temperature: stock.temperature + this.state.cauldronValues.temperature,
       density: stock.density + this.state.cauldronValues.density,
@@ -185,18 +186,18 @@ class Store {
       cauldronValues: values,
     });
 
-    this.emit(C.GAME_EVENTS.CAULDRON_STATE_CHANGED, values);
+    this.emit(C.GAME_EVENTS.CAULDRON_STATE_CHANGED, { values });
     if (ingredients.length === this.state.maxIngredients) {
-      this.emit(C.GAME_EVENTS.INGREDIENTS_LIMIT, true);
-      return;
+      this.emit(C.GAME_EVENTS.SHELF_BLOCK, { isBlock: true });
     }
-
-    this.emit(C.GAME_EVENTS.INGREDIENTS_IN_STOCK, this.state.cauldronIngredients.length);
+    this.emit(C.GAME_EVENTS.INGREDIENT_IN_CAULDRON, ingredients.length);
+    this.emit(C.GAME_EVENTS.INGREDIENT_COUNT, { id, count: stock.count });
   }
 
   brewCheck() {
     const recipe = this.state.currentRecipe;
     if (!recipe) return;
+
     const difficulty = this.state.difficulty;
     const tolerance = C.TOLERANCE[difficulty];
 
@@ -220,19 +221,21 @@ class Store {
       });
 
     if (success) {
-      const bonus = C.TIMER[difficulty].bonus;
+      const timeLeft = C.TIMER[difficulty].bonus + this.state.timeLeft;
 
-      this.update({ timeLeft: this.state.timeLeft + bonus });
+      const score = C.SCORE[difficulty] + this.state.score;
 
-      this.clearCauldron();
-      this.initShelf();
-      this.pickRandomRecipe();
+      this.update({ timeLeft, score });
+      this.emit(C.GAME_EVENTS.TIMER_TICK, timeLeft);
+      this.emit(C.GAME_EVENTS.SCORE_CHANGE, score);
+
+      this.roundOver();
       return;
     }
 
     // fail
     this.loseLife();
-    this.clearCauldron();
+    this.roundOver();
   }
 
   loseLife() {
@@ -242,10 +245,7 @@ class Store {
       return;
     }
     this.update({ lives });
-  }
-
-  addScore(score: number) {
-    this.update({ score: this.state.score + score });
+    this.emit(C.GAME_EVENTS.LIVES_CHANGE, { lives });
   }
 
   clearCauldron() {
@@ -254,7 +254,7 @@ class Store {
       cauldronValues: { temperature: 0, density: 0, magicPower: 0 },
     });
 
-    this.emit(C.GAME_EVENTS.CAULDRON_STATE_CHANGED, this.state.cauldronValues);
+    this.emit(C.GAME_EVENTS.CAULDRON_STATE_CHANGED, { values: this.state.cauldronValues });
   }
 }
 

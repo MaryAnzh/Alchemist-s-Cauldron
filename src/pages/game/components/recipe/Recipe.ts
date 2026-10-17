@@ -15,20 +15,16 @@ export class Recipe extends Component {
   constructor({ parentNode, currentIngredientsCount, currentRecipe, maxIngredients }: RecipeProps) {
     super({ parentNode, tagName: 'div', className: 'app-recipe' });
 
-    store.subscribe(GAME_EVENTS.INGREDIENTS_IN_STOCK, (value: number) => {
+    store.subscribe(GAME_EVENTS.INGREDIENT_IN_CAULDRON, (value: number) => {
       this.ingredientsCountNode.node.textContent = value.toString();
     });
 
-    store.subscribe(
-      GAME_EVENTS.RECIPE_CHANGED,
-      (props: {
-        currentRecipe: RecipeType;
-        currentIngredientsCount: number;
-        maxIngredients: number;
-      }) => {
-        this.render(props.currentRecipe, props.currentIngredientsCount, props.maxIngredients);
-      },
-    );
+    store.subscribe(GAME_EVENTS.RECIPE_CHANGED, ({ recipe, ingInCauldron }) => {
+      const { maxIngredients } = store.getState();
+
+      this.render(recipe, ingInCauldron, maxIngredients);
+    });
+
     this.render(currentRecipe, currentIngredientsCount, maxIngredients);
   }
 

@@ -13,3 +13,14 @@
     padding: var(--size-1) var(--size-8);
   }
 }
+
+@mixin clipping-mask {
+  mask:
+    linear-gradient(#fff 0 0) padding-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) padding-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}

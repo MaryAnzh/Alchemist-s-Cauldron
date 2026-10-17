@@ -5,7 +5,7 @@ import { Component } from '@ui';
 export type IconProps = ParentNodeType & {
   className?: string;
   icon: IconPickerType;
-  variant?: 'magic-icon';
+  variant?: 'magic-icon' | 'magic';
 };
 
 export class Icon extends Component {

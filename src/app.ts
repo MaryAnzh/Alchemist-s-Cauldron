@@ -78,7 +78,7 @@ export class App extends Component {
       maxIngredients,
     });
 
-    this.footer = new Footer({ parentNode: this.node, callback: () => {} });
+    this.footer = new Footer({ parentNode: this.node, callback: () => this.store.brewCheck() });
   }
 
   public handleStartGame = () => {

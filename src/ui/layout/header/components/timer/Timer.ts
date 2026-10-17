@@ -26,12 +26,14 @@ export class Timer extends Component {
       variant: 'magic-icon',
       className: 'app-timer_icon',
     });
+
     new Component({
       parentNode: this.node,
       tagName: 'span',
       className: 'app-timer_text',
       content: 'Time: ',
     });
+
     this.timerNode = new Component({
       parentNode: this.node,
       tagName: 'span',
