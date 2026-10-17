@@ -7,50 +7,38 @@ type IngredientsProps = ParentNodeType & { ingredients: IngredientType[] };
 
 export class IngredientsList extends Component {
   ingredients: IngredientType[] = [];
-  ingredientsNode: { id: string; el: Component }[] = [];
-  inStockCount: { id: string; el: Component }[] = [];
+  ingredientsDate: {
+    id: string;
+    card: HTMLElement;
+    countNode: HTMLElement;
+    count: number | null;
+  }[] = [];
 
   constructor({ parentNode, ingredients }: IngredientsProps) {
     super({ parentNode, tagName: 'div', className: 'app-ingredients' });
     this.ingredients = ingredients;
 
-    store.subscribe(
-      GAME_EVENTS.INGREDIENT_COUNT,
-      ({ id, count }: Pick<IngredientType, 'id' | 'count'>) => {
-        const item = this.ingredientsNode.find((el) => id == el.id);
-        const countNode = this.inStockCount.find((el) => id === el.id);
-        if (!item) {
-          return;
-        }
-        if (!countNode) {
-          return;
-        }
-        if (count === 0) {
-          item.el.node.style.opacity = '0.5';
-          item.el.node.style.pointerEvents = 'none';
-        }
-        countNode.el.node.textContent = count ? count.toString() : 'out';
-      },
-    );
+    store.subscribe(GAME_EVENTS.INGREDIENT_COUNT, ({ id, count }) => {
+      const item = this.ingredientsDate.find((el) => el.id === id);
+      if (!item) {
+        return;
+      }
+
+      if (count === 0) {
+        item.card.style.opacity = '0.5';
+        item.card.style.pointerEvents = 'none';
+      }
+      item.countNode.textContent = count ? count.toString() : 'out';
+      item.count = count ?? null;
+    });
 
     store.subscribe(GAME_EVENTS.SHELF_BLOCK, ({ isBlock }) => {
-      if (isBlock) {
-        this.ingredientsNode.forEach(({ el }) => {
-          el.node.style.opacity = '0.5';
-          el.node.style.pointerEvents = 'none';
-        });
-      }
-      if (!isBlock) {
-        this.ingredientsNode.forEach(({ el, id }) => {
-          const count = this.inStockCount.find((el) => el.id === id);
+      this.ingredientsDate.forEach(({ card, count }) => {
+        const isBlocked = isBlock || !count;
 
-          if (count?.el.node.textContent === '0') {
-            return;
-          }
-          el.node.style.opacity = '1';
-          el.node.style.pointerEvents = 'all';
-        });
-      }
+        card.style.opacity = isBlocked ? '0.5' : '1';
+        card.style.pointerEvents = isBlocked ? 'none' : 'all';
+      });
     });
 
     this.render();
@@ -65,29 +53,29 @@ export class IngredientsList extends Component {
     this.ingredients.forEach((ing) => {
       const { name, temperature, density, magicPower, count, id, icon } = ing;
 
-      const li = new Component({
+      const card = new Component({
         parentNode: ul.node,
         tagName: 'li',
         className: 'app-ingredients_list_item',
       });
-      li.node.onclick = () => store.addIngredientToCauldron(id);
+      card.node.onclick = () => store.addIngredientToCauldron(id);
 
       new Icon({
-        parentNode: li.node,
+        parentNode: card.node,
         className: 'app-ingredients_list_item_icon',
         icon: icon as IconPickerType,
         variant: 'magic',
       });
 
       new Component({
-        parentNode: li.node,
+        parentNode: card.node,
         className: 'app-ingredients_list_item_title',
         tagName: 'h2',
         content: name,
       });
 
       const propsWrap = new Component({
-        parentNode: li.node,
+        parentNode: card.node,
         className: 'app-ingredients_list_item_props',
         tagName: 'span',
       });
@@ -106,17 +94,21 @@ export class IngredientsList extends Component {
           className: 'app-ingredients_list_item_props_value',
           content: value.toString(),
         });
-
-        this.ingredientsNode.push({ id, el: li });
       });
 
-      const inStock = new Component({
-        parentNode: li.node,
+      const countNode = new Component({
+        parentNode: card.node,
         className: 'app-ingredients_list_item_count',
         tagName: 'span',
         content: count ? count.toString() : '0',
       });
-      this.inStockCount.push({ id, el: inStock });
+
+      this.ingredientsDate.push({
+        id,
+        card: card.node,
+        countNode: countNode.node,
+        count: count ?? null,
+      });
     });
   }
 }

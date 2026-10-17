@@ -108,6 +108,8 @@ class Store {
   }
 
   roundOver() {
+    this.pickRandomRecipe();
+
     this.emit(C.GAME_EVENTS.SHELF_BLOCK, { isBlock: false });
     this.clearCauldron();
   }
@@ -173,6 +175,7 @@ class Store {
   addIngredientToCauldron(id: string) {
     const stock = this.state.shelfIngredients.find((ing) => ing.id === id);
     if (!stock || !stock.count) return;
+    stock.count = stock.count - 1;
 
     const values = {
       temperature: stock.temperature + this.state.cauldronValues.temperature,

@@ -22,6 +22,7 @@ export class Recipe extends Component {
     store.subscribe(GAME_EVENTS.RECIPE_CHANGED, ({ recipe, ingInCauldron }) => {
       const { maxIngredients } = store.getState();
 
+      this.node.innerHTML = '';
       this.render(recipe, ingInCauldron, maxIngredients);
     });
 

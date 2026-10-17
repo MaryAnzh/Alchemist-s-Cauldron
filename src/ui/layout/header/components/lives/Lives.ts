@@ -1,3 +1,5 @@
+import { GAME_EVENTS } from '@constants';
+import { store } from '@store';
 import type { ParentNodeType } from '@types';
 import { Component, Icon } from '@ui';
 import { arrayFromNumber } from '@utils';
@@ -16,12 +18,18 @@ export class Lives extends Component {
     this.maxLives = maxLives;
     this.currentLivesCount = currentLivesCount;
 
+    store.subscribe(GAME_EVENTS.LIVES_CHANGE, ({ lives }) => {
+      this.currentLivesCount = lives;
+      this.render();
+    });
+
     this.render();
   }
 
   render() {
+    this.node.innerHTML = '';
+
     const lostLive = this.maxLives - this.currentLivesCount;
-    console.log(`Lost lives: ${lostLive}`);
     if (lostLive > 0) {
       arrayFromNumber(lostLive).forEach(() => {
         new Icon({
