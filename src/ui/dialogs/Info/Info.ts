@@ -34,7 +34,8 @@ export class Info extends Component {
       parentNode: this.node,
       tagName: 'h2',
       className: 'app-info_title',
-      content: variant === 'success' ? 'You peeper magic 🧪' : 'Try again',
+      content:
+        variant === 'success' ? 'You have prepared a magical potion!' : 'Not bad. But try again...',
     });
 
     const list = new Component({
