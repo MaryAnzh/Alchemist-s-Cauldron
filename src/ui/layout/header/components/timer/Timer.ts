@@ -22,9 +22,9 @@ export class Timer extends Component {
   render() {
     new Icon({
       parentNode: this.node,
-      icon: 'symbol',
-      variant: 'magic-icon',
+      icon: 'clock',
       className: 'app-timer_icon',
+      variant: 'magic',
     });
 
     new Component({

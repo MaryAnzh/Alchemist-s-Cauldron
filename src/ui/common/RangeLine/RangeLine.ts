@@ -21,6 +21,8 @@ export class RangeLine extends Component {
   arrow!: Icon;
   min!: number;
   max!: number;
+  firstNumber!: HTMLElement;
+  lastNumber!: HTMLElement;
 
   constructor({ parentNode, rangeMax, rangeMin, value }: RangeLineProps) {
     super({ parentNode, tagName: 'span', className: 'app-range-line' });
@@ -72,13 +74,19 @@ export class RangeLine extends Component {
 
     const line = new Component({ parentNode: this.node, className: this.setClass('count') });
     scale.forEach((el, i) => {
-      const nem = new Component({
+      const num = new Component({
         parentNode: line.node,
         tagName: 'span',
         content: el.toString(),
       });
       if (i > 0 && i < scale.length - 1) {
-        nem.node.style.left = this.getStopperPosition(el);
+        num.node.style.left = this.getStopperPosition(el);
+      }
+      if (i === 0) {
+        this.firstNumber = num.node;
+      }
+      if (i === scale.length - 1) {
+        this.lastNumber = num.node;
       }
     });
   }
@@ -116,6 +124,24 @@ export class RangeLine extends Component {
   }
 
   public updateRange = (value: number) => {
+    if (value > this.max) {
+      this.lastNumber.textContent = `...   ${value}`;
+      this.arrow.node.style.left = '100%';
+      return;
+    }
+    if (value < this.min) {
+      this.firstNumber.textContent = `${value}   ...`;
+      this.arrow.node.style.left = '0%';
+      return;
+    }
+    if (value <= this.max) {
+      this.lastNumber.textContent = this.max.toString();
+    }
+
+    if (value >= this.min) {
+      this.firstNumber.textContent = this.min.toString();
+    }
+
     this.arrow.node.style.left = this.getStopperPosition(value);
   };
 }

@@ -76,10 +76,11 @@ class Store {
   pauseGame() {
     this.timer.stop();
     this.update({ status: C.PAUSED });
+    this.emit(C.GAME_EVENTS.PAUSE, true);
   }
 
   resumeGame() {
-    this.update({ status: 'playing' });
+    this.update({ status: C.PLAYING });
     this.timer.resume(
       (time) => {
         this.update({ timeLeft: time });
@@ -107,11 +108,29 @@ class Store {
     };
   }
 
-  roundOver() {
-    this.pickRandomRecipe();
+  roundOver(variant: 'success' | 'fail') {
+    this.timer.stop();
+    this.emit(C.GAME_EVENTS.ROUND_OVER, {
+      score: this.state.score,
+      lives: this.state.lives,
+      time: this.state.timeLeft,
+      variant,
+    });
+  }
 
+  public newRound() {
+    this.timer.resume(
+      (time) => {
+        this.update({ timeLeft: time });
+        this.emit(C.GAME_EVENTS.TIMER_TICK, time);
+      },
+      () => this.gameOver(),
+      this.state.timeLeft,
+    );
     this.emit(C.GAME_EVENTS.SHELF_BLOCK, { isBlock: false });
+    this.pickRandomRecipe();
     this.clearCauldron();
+    this.emit(C.GAME_EVENTS.ROUND_START, { isStart: true });
   }
 
   gameOver() {
@@ -232,21 +251,23 @@ class Store {
       this.emit(C.GAME_EVENTS.TIMER_TICK, timeLeft);
       this.emit(C.GAME_EVENTS.SCORE_CHANGE, score);
 
-      this.roundOver();
+      this.roundOver('success');
       return;
     }
 
     // fail
     this.loseLife();
-    this.roundOver();
+
+    if (this.state.lives > 0) {
+      this.roundOver('fail');
+    }
+    if (this.state.lives === 0) {
+      this.gameOver();
+    }
   }
 
   loseLife() {
     const lives = this.state.lives - 1;
-    if (!lives) {
-      this.gameOver();
-      return;
-    }
     this.update({ lives });
     this.emit(C.GAME_EVENTS.LIVES_CHANGE, { lives });
   }

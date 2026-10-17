@@ -6,6 +6,7 @@ export const GAME_EVENTS = {
 
   // Game flow
   GAME_OVER: 'game:over',
+  ROUND_START: 'round:start',
   ROUND_OVER: 'round:over',
   PAUSE: 'game:pause',
   RESUME: 'game:resume',
