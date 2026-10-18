@@ -18,11 +18,13 @@ Story 1 — prepare the repository, tooling, folder structure and quality checks
 - US 1.3 — add the recipe table, random recipe selection, the recipe panel and the Brew check.(15/10 - 16/10)
 - US 1.4 and US 1.5 — add timer, lives,
 - pause and the game-over flow.
+- save state
+- US 1.6 — add the Top-10 leaderboard.
 
 In progress:
 
-- save state
-- US 1.6 — add the Top-10 leaderboard.
+- fix timer
+- add menu select
 
 ToDo:
 
