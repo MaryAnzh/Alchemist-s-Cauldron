@@ -83,13 +83,22 @@
       @include clipping-mask;
     }
   }
-  &_size-SM {
-    width: var(--SIZE-2);
+  &_size-sm {
+    & svg {
+      width: var(--size-2);
+    }
   }
   &_size-md {
-    width: var(--SIZE-4);
+    & svg {
+      width: var(--size-4);
+    }
   }
-  &_size-ld {
-    width: var(--SIZE-6);
+  &_size-lg {
+    & svg {
+      width: var(--size-6);
+    }
+  }
+  &_shadow-sm {
+    box-shadow: 4px 4px 10px var(--color-burnt-text-alt);
   }
 }

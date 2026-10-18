@@ -60,7 +60,7 @@ $btn-polygon: polygon(20px 0%, 100% 0%, calc(100% - 20px) 50%, 100% 100%, 20px 1
   &_arrow-right {
     position: relative;
     width: fit-content;
-    padding: var(--btn-large-padding);
+    padding: var(--size-2) var(--size-8);
     margin: 0 var(--size-3);
     border: none;
     gap: var(--size-3);
@@ -85,12 +85,6 @@ $btn-polygon: polygon(20px 0%, 100% 0%, calc(100% - 20px) 50%, 100% 100%, 20px 1
     > * {
       position: relative;
       z-index: 2;
-    }
-  }
-  &_arrow-right {
-    transform: rotate(180deg);
-    &:hover {
-      transform: rotate(180deg);
     }
   }
 

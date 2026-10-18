@@ -1,6 +1,7 @@
 import { store } from '@store';
 import type { ParentNodeType, LeaderboardRowType } from '@types';
 import { Button, Component, Icon } from '@ui';
+import { formatDate } from '@utils';
 
 type LeaderboardProps = ParentNodeType & {
   onBack: () => void;
@@ -39,6 +40,7 @@ export class Leaderboard extends Component {
     const thead = new Component({
       parentNode: table.node,
       tagName: 'thead',
+      className: 'app-leaderboard_wrap_table_head',
     });
 
     const headRow = new Component({
@@ -58,6 +60,7 @@ export class Leaderboard extends Component {
     const tbody = new Component({
       parentNode: table.node,
       tagName: 'tbody',
+      className: 'app-leaderboard_wrap_table_body',
     });
 
     leaders.forEach((row, index) => {
@@ -95,7 +98,7 @@ export class Leaderboard extends Component {
       new Component({
         parentNode: tr.node,
         tagName: 'td',
-        content: row.date,
+        content: formatDate(new Date(row.date)),
       });
     });
 
