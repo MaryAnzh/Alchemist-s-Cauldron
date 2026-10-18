@@ -32,6 +32,9 @@ export type GameState = {
   // Reactions (Level 3)
   activeReactions: string[];
   lastReactionId: string | null;
+
+  startTimestamp: number;
+  endTimestamp: number;
 };
 
 export type StorageKeysType = keyof typeof STORAGE_KEYS;

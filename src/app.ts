@@ -52,6 +52,12 @@ export class App extends Component {
       this.portal.onClose = handleClose;
     });
 
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        store.pauseGame();
+      }
+    });
+
     this.root = root;
   }
 

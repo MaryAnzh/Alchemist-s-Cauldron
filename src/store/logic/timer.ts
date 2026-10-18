@@ -1,20 +1,23 @@
 export class GameTimer {
   private intervalId: number | null = null;
+  private endTimestamp = 0;
 
-  start(initialTime: number, onTick: (time: number) => void, onEnd: () => void) {
-    let time = initialTime;
-
+  start(initialSeconds: number, onTick: (time: number) => void, onEnd: () => void) {
     this.stop();
 
-    this.intervalId = window.setInterval(() => {
-      time -= 1;
-      onTick(time);
+    this.endTimestamp = Date.now() + initialSeconds * 1000;
 
-      if (time <= 0) {
+    this.intervalId = window.setInterval(() => {
+      const now = Date.now();
+      const remaining = Math.max(0, Math.floor((this.endTimestamp - now) / 1000));
+
+      onTick(remaining);
+
+      if (remaining <= 0) {
         this.stop();
         onEnd();
       }
-    }, 1000);
+    }, 250); // 4 раза в секунду — плавно и точно
   }
 
   stop() {
@@ -24,7 +27,7 @@ export class GameTimer {
     }
   }
 
-  resume(onTick: (time: number) => void, onEnd: () => void, currentTime: number) {
-    this.start(currentTime, onTick, onEnd);
+  resume(onTick: (time: number) => void, onEnd: () => void, remainingSeconds: number) {
+    this.start(remainingSeconds, onTick, onEnd);
   }
 }

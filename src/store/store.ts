@@ -41,6 +41,9 @@ class Store {
     // Reactions (Level 3)
     activeReactions: [],
     lastReactionId: null,
+
+    startTimestamp: 0,
+    endTimestamp: 0,
   };
 
   /** Utils  */
@@ -80,18 +83,29 @@ class Store {
     this.update({ status: C.PAUSED });
     this.emit(C.GAME_EVENTS.PAUSE, true);
 
+    const remaining = Math.max(0, Math.floor((this.state.endTimestamp - Date.now()) / 1000));
+
+    this.update({ timeLeft: remaining });
+    this.timer.stop();
+    this.update({ status: C.PAUSED });
+
     this.saveToStorage('GAME_STATE', this.state);
   }
 
   resumeGame() {
     this.update({ status: C.PLAYING });
-    this.timer.resume(
-      (time) => {
-        this.update({ timeLeft: time });
-        this.emit(C.GAME_EVENTS.TIMER_TICK, time);
+
+    const newEnd = Date.now() + this.state.timeLeft * 1000;
+
+    this.update({ endTimestamp: newEnd, status: C.PLAYING });
+
+    this.timer.start(
+      this.state.timeLeft,
+      (remaining) => {
+        this.update({ timeLeft: remaining });
+        this.emit(C.GAME_EVENTS.TIMER_TICK, remaining);
       },
       () => this.gameOver(),
-      this.state.timeLeft,
     );
   }
 
@@ -121,14 +135,18 @@ class Store {
   }
 
   public newRound() {
-    this.timer.resume(
-      (time) => {
-        this.update({ timeLeft: time });
-        this.emit(C.GAME_EVENTS.TIMER_TICK, time);
+    const newEnd = Date.now() + this.state.timeLeft * 1000;
+    this.update({ endTimestamp: newEnd });
+
+    this.timer.start(
+      this.state.timeLeft,
+      (remaining) => {
+        this.update({ timeLeft: remaining });
+        this.emit(C.GAME_EVENTS.TIMER_TICK, remaining);
       },
       () => this.gameOver(),
-      this.state.timeLeft,
     );
+
     this.emit(C.GAME_EVENTS.SHELF_BLOCK, { isBlock: false });
     this.pickRandomRecipe();
     this.clearCauldron();
@@ -147,6 +165,11 @@ class Store {
     if (!saved) return;
 
     this.state = saved as GameState;
+
+    const remaining = Math.max(0, Math.floor((saved.endTimestamp - Date.now()) / 1000));
+
+    this.update({ timeLeft: remaining });
+
     this.resumeGame();
   }
 
@@ -187,17 +210,22 @@ class Store {
 
     const initialTime = C.TIMER[difficulty].gameTime;
 
-    this.update({ timeLeft: initialTime });
+    const now = Date.now();
+    const end = now + initialTime * 1000;
+
+    this.update({
+      startTimestamp: now,
+      endTimestamp: end,
+      timeLeft: initialTime,
+    });
 
     this.timer.start(
       initialTime,
-      (time) => {
-        this.update({ timeLeft: time });
-        this.emit(C.GAME_EVENTS.TIMER_TICK, time);
+      (remaining) => {
+        this.update({ timeLeft: remaining });
+        this.emit(C.GAME_EVENTS.TIMER_TICK, remaining);
       },
-      () => {
-        this.gameOver();
-      },
+      () => this.gameOver(),
     );
   }
 
