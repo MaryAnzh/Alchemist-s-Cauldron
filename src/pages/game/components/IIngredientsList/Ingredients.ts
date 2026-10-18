@@ -1,15 +1,46 @@
-import type { IngredientType, ParentNodeType } from '@types';
+import { GAME_EVENTS } from '@constants';
+import { store } from '@store';
+import type { IconPickerType, IngredientType, ParentNodeType } from '@types';
 import { Component, Icon } from '@ui';
 
 type IngredientsProps = ParentNodeType & { ingredients: IngredientType[] };
 
 export class IngredientsList extends Component {
   ingredients: IngredientType[] = [];
-  ingredientsNode: Component[] = [];
+  ingredientsDate: {
+    id: string;
+    card: HTMLElement;
+    countNode: HTMLElement;
+    count: number | null;
+  }[] = [];
 
   constructor({ parentNode, ingredients }: IngredientsProps) {
     super({ parentNode, tagName: 'div', className: 'app-ingredients' });
     this.ingredients = ingredients;
+
+    store.subscribe(GAME_EVENTS.INGREDIENT_COUNT, ({ id, count }) => {
+      const item = this.ingredientsDate.find((el) => el.id === id);
+      if (!item) {
+        return;
+      }
+
+      if (count === 0) {
+        item.card.style.opacity = '0.5';
+        item.card.style.pointerEvents = 'none';
+      }
+      item.countNode.textContent = count ? count.toString() : 'out';
+      item.count = count ?? null;
+    });
+
+    store.subscribe(GAME_EVENTS.SHELF_BLOCK, ({ isBlock }) => {
+      this.ingredientsDate.forEach(({ card, count }) => {
+        const isBlocked = isBlock || !count;
+
+        card.style.opacity = isBlocked ? '0.5' : '1';
+        card.style.pointerEvents = isBlocked ? 'none' : 'all';
+      });
+    });
+
     this.render();
   }
 
@@ -19,36 +50,64 @@ export class IngredientsList extends Component {
       tagName: 'ul',
       className: 'app-ingredients_list',
     });
-    this.ingredients.forEach(({ name, temperature, density, magicPower, count }) => {
-      const li = new Component({
+    this.ingredients.forEach((ing) => {
+      const { name, temperature, density, magicPower, count, id, icon } = ing;
+
+      const card = new Component({
         parentNode: ul.node,
         tagName: 'li',
         className: 'app-ingredients_list_item',
       });
+      card.node.onclick = () => store.addIngredientToCauldron(id);
 
       new Icon({
-        parentNode: li.node,
+        parentNode: card.node,
         className: 'app-ingredients_list_item_icon',
-        icon: 'symbol',
+        icon: icon as IconPickerType,
+        variant: 'magic',
       });
 
       new Component({
-        parentNode: li.node,
+        parentNode: card.node,
         className: 'app-ingredients_list_item_title',
         tagName: 'h2',
         content: name,
       });
-      new Component({
-        parentNode: li.node,
-        className: 'app-ingredients_list_item_text',
+
+      const propsWrap = new Component({
+        parentNode: card.node,
+        className: 'app-ingredients_list_item_props',
         tagName: 'span',
-        content: `t: ${temperature}, d: ${density}, m: ${magicPower}`,
       });
-      new Component({
-        parentNode: li.node,
+      [
+        { value: temperature, icon: 'symbol' },
+        { value: density, icon: 'drop' },
+        { value: magicPower, icon: 'symbol' },
+      ].forEach(({ value, icon }) => {
+        new Icon({
+          parentNode: propsWrap.node,
+          icon: icon as IconPickerType,
+          className: 'app-ingredients_list_item_props_icon',
+        });
+        new Component({
+          parentNode: propsWrap.node,
+          className: 'app-ingredients_list_item_props_value',
+          content: value.toString(),
+        });
+      });
+
+      const countNode = new Component({
+        parentNode: card.node,
         className: 'app-ingredients_list_item_count',
         tagName: 'span',
         content: count ? count.toString() : '0',
+      });
+
+      this.ingredientsDate.push({
+        id,
+        card: card.node,
+        countNode: countNode.node,
+        count: count ?? null,
       });
     });
   }

@@ -1,3 +1,5 @@
+import { GAME_EVENTS } from '@constants';
+import { store } from '@store';
 import type { ParentNodeType, RecipeType } from '@types';
 import { Component, Icon } from '@ui';
 
@@ -10,8 +12,19 @@ type RecipeProps = ParentNodeType & {
 export class Recipe extends Component {
   ingredientsCountNode!: Component;
 
-  constructor({ parentNode, currentRecipe, currentIngredientsCount, maxIngredients }: RecipeProps) {
+  constructor({ parentNode, currentIngredientsCount, currentRecipe, maxIngredients }: RecipeProps) {
     super({ parentNode, tagName: 'div', className: 'app-recipe' });
+
+    store.subscribe(GAME_EVENTS.INGREDIENT_IN_CAULDRON, (value: number) => {
+      this.ingredientsCountNode.node.textContent = value.toString();
+    });
+
+    store.subscribe(GAME_EVENTS.RECIPE_CHANGED, ({ recipe, ingInCauldron }) => {
+      const { maxIngredients } = store.getState();
+
+      this.node.innerHTML = '';
+      this.render(recipe, ingInCauldron, maxIngredients);
+    });
 
     this.render(currentRecipe, currentIngredientsCount, maxIngredients);
   }
@@ -74,16 +87,19 @@ export class Recipe extends Component {
       tagName: 'span',
       content: 'Ingredients: ',
     });
+
     this.ingredientsCountNode = new Component({
       parentNode: ingredientsCountWrap.node,
       tagName: 'span',
       content: currentIngredientsCount.toString(),
     });
+
     new Component({
       parentNode: ingredientsCountWrap.node,
       tagName: 'span',
       content: ' / ',
     });
+
     new Component({
       parentNode: ingredientsCountWrap.node,
       tagName: 'span',

@@ -13,6 +13,7 @@ export class RangeSlider extends Component {
   nodeClassName = 'app-range-slider';
   range: { min: number; max: number };
   value: number = 0;
+  rangeLine!: RangeLine;
 
   constructor({ parentNode, label, range, value, icon }: RangeSliderProps) {
     super({ parentNode, tagName: 'div', className: 'app-range-slider' });
@@ -23,12 +24,15 @@ export class RangeSlider extends Component {
   }
 
   render(label: string, icon: IconPickerType) {
-    new Icon({
+    const iconWrap = new Icon({
       parentNode: this.node,
       icon,
-      variant: 'magic-icon',
       className: this.setClassName('icon'),
     });
+    if (icon === 'drop') {
+      iconWrap.node.style.width = '60%';
+      iconWrap.node.style.justifySelf = 'center';
+    }
 
     new Component({
       parentNode: this.node,
@@ -36,7 +40,8 @@ export class RangeSlider extends Component {
       content: label,
       className: this.setClassName('title'),
     });
-    new RangeLine({
+
+    this.rangeLine = new RangeLine({
       parentNode: this.node,
       rangeMax: this.range.max,
       rangeMin: this.range.min,
@@ -45,4 +50,8 @@ export class RangeSlider extends Component {
   }
 
   setClassName = (name: string) => `${this.nodeClassName}_${name}`;
+
+  public updateRange = (value: number) => {
+    this.rangeLine.updateRange(value);
+  };
 }

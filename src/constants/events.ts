@@ -1,27 +1,23 @@
 export const GAME_EVENTS = {
-  // Core
-  STATE_UPDATE: 'state:update',
-
-  // Score / Lives / Timer
-  SCORE_CHANGED: 'score:changed',
-  LIVES_CHANGED: 'lives:changed',
-  TIMER_CHANGED: 'timer:changed',
+  // header
+  TIMER_TICK: 'timer:tick',
+  SCORE_CHANGE: 'score:change',
+  LIVES_CHANGE: 'lives:change',
 
   // Game flow
   GAME_OVER: 'game:over',
-  GAME_RESTART: 'game:restart',
-  LEVEL_CHANGED: 'level:changed',
+  ROUND_START: 'round:start',
+  ROUND_OVER: 'round:over',
+  PAUSE: 'game:pause',
+  RESUME: 'game:resume',
 
-  // Cauldron
-  INGREDIENT_ADDED: 'cauldron:ingredient-added',
-  INGREDIENTS_CHANGED: 'cauldron:ingredients-changed',
-  CAULDRON_STATE_CHANGED: 'cauldron:state-changed',
-  BREW_RESULT: 'cauldron:brew-result',
-  BREW_EXPLOSION: 'cauldron:explosion',
+  // Shelf
+  SHELF_BLOCK: 'shelf:block',
+  INGREDIENT_COUNT: 'ingredient:count',
 
-  // Recipes
-  RECIPE_DISCOVERED: 'recipe:discovered',
-  RECIPE_FAILED: 'recipe:failed',
-
+  //Recipes
   RECIPE_CHANGED: 'recipe:changed',
+  INGREDIENT_IN_CAULDRON: 'ingredient:inCauldron',
+
+  CAULDRON_STATE_CHANGED: 'cauldron:stateChange',
 } as const;
