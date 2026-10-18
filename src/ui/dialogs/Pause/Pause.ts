@@ -33,21 +33,19 @@ export class Pause extends Component {
       tagName: 'div',
       className: 'app-pause_btn-wrap',
     });
-
-    new Button({
-      parentNode: btnWrap.node,
-      className: 'app-pause_btn-wrap_continue',
-      text: 'Back to menu',
-      color: 'arrow-left',
-      onClick: onBack,
-    });
-
     new Button({
       parentNode: btnWrap.node,
       className: 'app-pause_btn-wrap_continue',
       text: 'Continue',
       color: 'magic',
       onClick: onContinue,
+    });
+    new Button({
+      parentNode: btnWrap.node,
+      className: 'app-pause_btn-wrap_continue',
+      text: 'Back to menu',
+      color: 'arrow-left',
+      onClick: onBack,
     });
   }
 }

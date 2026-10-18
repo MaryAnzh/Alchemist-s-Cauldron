@@ -57,10 +57,11 @@ export class App extends Component {
       this.pause = new Pause({
         parentNode: null,
         onBack: () => {
-          this.store.continueGame();
+          this.store.startNewGame();
+          this.renderStartGame();
         },
         onContinue: () => {
-          this.store.startNewGame();
+          this.store.continueGame();
         },
       });
       const node = this.pause.node;
@@ -111,6 +112,13 @@ export class App extends Component {
     if (storage.hasSave('GAME_STATE')) {
       // To Do action
     }
+    this.renderStartGame();
+  }
+
+  renderStartGame() {
+    this.pause?.destroy();
+    this.portal.unmount();
+    this.node.innerHTML = '';
 
     this.startGameNode = new StartGame({
       parentNode: this.node,
