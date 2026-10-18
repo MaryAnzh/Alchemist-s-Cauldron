@@ -165,12 +165,16 @@ class Store {
     if (!saved) return;
 
     this.state = saved as GameState;
+    this.update({ status: C.PLAYING });
 
-    const remaining = Math.max(0, Math.floor((saved.endTimestamp - Date.now()) / 1000));
+    const remaining = Math.max(
+      0,
+      Math.floor(((saved as GameState).endTimestamp - Date.now()) / 1000),
+    );
 
     this.update({ timeLeft: remaining });
-
     this.resumeGame();
+    this.emit(C.GAME_EVENTS.RESUME, this.state);
   }
 
   /** Inits data */

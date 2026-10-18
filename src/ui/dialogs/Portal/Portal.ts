@@ -58,7 +58,7 @@ export class Portal extends Component {
   };
 
   unmount() {
-    this.node.classList.remove('app_portal_open');
+    this.node.classList.remove('app_portal_open', 'app_portal_bg-blur');
 
     this.timeout = window.setTimeout(() => {
       this.activeComponent?.destroy();
@@ -78,5 +78,9 @@ export class Portal extends Component {
 
   public unlock() {
     this.isLocked = false;
+  }
+
+  setBlur() {
+    this.node.classList.add('app_portal_bg-blur');
   }
 }
