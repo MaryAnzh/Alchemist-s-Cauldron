@@ -46,7 +46,7 @@ export class Info extends Component {
     [
       { name: 'Score', value: score },
       { name: 'lives', value: lives },
-      { name: 'Time left', value: formatTime(timeLeft) },
+      { name: 'Time left', value: timeLeft },
     ].forEach(({ name, value }) => {
       const item = new Component({
         parentNode: list.node,
@@ -60,7 +60,7 @@ export class Info extends Component {
         content: `${name}: `,
       });
       if (name === 'lives') {
-        arrayFromNumber(value as number).forEach((el) => {
+        arrayFromNumber(value).forEach(() => {
           new Icon({
             parentNode: item.node,
             icon: 'stroke_heart',
@@ -73,7 +73,7 @@ export class Info extends Component {
         parentNode: item.node,
         tagName: 'span',
         className: 'app-info_list_item_name',
-        content: value.toString(),
+        content: name === 'Time left' ? formatTime(value) : value.toString(),
       });
     });
     const btn = new Button({
