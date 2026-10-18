@@ -1,11 +1,20 @@
 import { EventEmitter } from './events';
 import * as C from '@constants';
-import type { GameEventsPayload, GameState, RecipeType } from '@types';
+import type {
+  GameEventsPayload,
+  GameState,
+  RecipeType,
+  LeaderboardRowType,
+  StorageKeysType,
+} from '@types';
+
 import { GameTimer } from './logic/timer';
+import { storage } from './storage/Storage';
 
 class Store {
   private events = new EventEmitter<GameEventsPayload>();
   private timer = new GameTimer();
+  private leaderBoard: LeaderboardRowType[] = [];
 
   private state: GameState = {
     playerName: 'Alchemist',
@@ -32,13 +41,6 @@ class Store {
     // Reactions (Level 3)
     activeReactions: [],
     lastReactionId: null,
-
-    // Save system (Level 2)
-    saveTimestamp: null,
-
-    // Game end conditions
-    isGameOver: false,
-    outOfIngredients: false,
   };
 
   /** Utils  */
@@ -77,6 +79,8 @@ class Store {
     this.timer.stop();
     this.update({ status: C.PAUSED });
     this.emit(C.GAME_EVENTS.PAUSE, true);
+
+    this.saveToStorage('GAME_STATE', this.state);
   }
 
   resumeGame() {
@@ -103,8 +107,6 @@ class Store {
       shelfIngredients: [],
       activeReactions: [],
       lastReactionId: null,
-      isGameOver: false,
-      outOfIngredients: false,
     };
   }
 
@@ -133,10 +135,19 @@ class Store {
     this.emit(C.GAME_EVENTS.ROUND_START, { isStart: true });
   }
 
-  gameOver() {
+  public gameOver() {
     this.update({ status: C.GAME_OVER });
     this.resetGameState();
+    this.clearStorage('GAME_STATE');
     this.emit(C.GAME_EVENTS.GAME_OVER, { isOver: true });
+  }
+
+  public continueGame() {
+    const saved = this.loadFromStorage('GAME_STATE');
+    if (!saved) return;
+
+    this.state = saved as GameState;
+    this.resumeGame();
   }
 
   /** Inits data */
@@ -279,6 +290,28 @@ class Store {
     });
 
     this.emit(C.GAME_EVENTS.CAULDRON_STATE_CHANGED, { values: this.state.cauldronValues });
+  }
+
+  saveToStorage(key: StorageKeysType, state: GameState | LeaderboardRowType[]): void {
+    storage.save(key, state);
+  }
+
+  public loadFromStorage(key: StorageKeysType) {
+    const saved = storage.load(key);
+    if (!saved) return null;
+    if (key === 'GAME_STATE') {
+      this.state = saved as GameState;
+      return this.state;
+    }
+    if (key === 'LEADERBOARD') {
+      this.leaderBoard = saved as LeaderboardRowType[];
+      return this.leaderBoard;
+    }
+    return null;
+  }
+
+  private clearStorage(key: StorageKeysType) {
+    storage.clear(key);
   }
 }
 

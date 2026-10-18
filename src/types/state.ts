@@ -1,4 +1,4 @@
-import type { GAME_DIFFICULT, GAME_STATUS } from '@constants';
+import { STORAGE_KEYS, type GAME_DIFFICULT, type GAME_STATUS } from '@constants';
 import type { KeysTemplateType } from './common';
 import type { cauldronValuesType, IngredientType, RecipeType } from './data';
 
@@ -32,11 +32,6 @@ export type GameState = {
   // Reactions (Level 3)
   activeReactions: string[];
   lastReactionId: string | null;
-
-  // Save system (Level 2)
-  saveTimestamp: number | null;
-
-  // Game end conditions
-  isGameOver: boolean;
-  outOfIngredients: boolean;
 };
+
+export type StorageKeysType = keyof typeof STORAGE_KEYS;

@@ -1,0 +1,85 @@
+@use '../../../styles/mixin/media.scss' as *;
+
+.app-leaderboard {
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  padding: var(--size-2);
+  overflow: auto;
+
+  &_wrap {
+    position: relative;
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--size-3);
+    padding: var(--size-3);
+    margin: var(--size-5);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-bg-light);
+    color: var(--color-burnt-text-alt);
+
+    &:before {
+      content: '';
+      position: absolute;
+      inset: calc(var(--size-5) * -1);
+      background: inherit;
+      filter: blur(15px);
+      z-index: -1;
+      border-radius: inherit;
+      opacity: 0.8;
+    }
+
+    &_title {
+      font-family: var(--font-title);
+      font-size: var(--heading-lg);
+    }
+
+    &_table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: var(--size-6) 0;
+
+      th,
+      td {
+        padding: var(--size-3) var(--size-4);
+        font-family: var(--font-main);
+        font-size: var(--font-size-md);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      th {
+        font-family: var(--font-title);
+        font-size: var(--font-size-lg);
+        text-transform: uppercase;
+        color: var(--color-parchment-dark);
+      }
+
+      tr:nth-child(odd) {
+        background: rgba(255, 255, 255, 0.03);
+      }
+    }
+
+    &_actions {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      gap: var(--size-1);
+    }
+  }
+}
+@media (min-width: $tablet) {
+  .app-leaderboard {
+    padding: var(--size-4);
+  }
+}
+
+@media (min-width: $laptop) {
+  .app-leaderboard {
+    padding: var(--size-6);
+  }
+}

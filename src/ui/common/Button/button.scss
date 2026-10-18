@@ -1,4 +1,6 @@
 @use '../../../styles/variable' as *;
+@use '../../../styles/mixin/common.scss' as *;
+
 $btn-polygon: polygon(20px 0%, 100% 0%, calc(100% - 20px) 50%, 100% 100%, 20px 100%, 0% 50%);
 
 .app_button {
@@ -54,7 +56,8 @@ $btn-polygon: polygon(20px 0%, 100% 0%, calc(100% - 20px) 50%, 100% 100%, 20px 1
     padding: 0;
   }
 
-  &_arrow {
+  &_arrow-left,
+  &_arrow-right {
     position: relative;
     width: fit-content;
     padding: var(--btn-large-padding);
@@ -82,6 +85,12 @@ $btn-polygon: polygon(20px 0%, 100% 0%, calc(100% - 20px) 50%, 100% 100%, 20px 1
     > * {
       position: relative;
       z-index: 2;
+    }
+  }
+  &_arrow-right {
+    transform: rotate(180deg);
+    &:hover {
+      transform: rotate(180deg);
     }
   }
 
@@ -169,12 +178,9 @@ $btn-polygon: polygon(20px 0%, 100% 0%, calc(100% - 20px) 50%, 100% 100%, 20px 1
       background-origin: border-box;
       background-clip: padding-box, border-box;
       border-radius: 50%;
-      -webkit-mask:
-        linear-gradient(#fff 0 0) padding-box,
-        linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
       z-index: 1;
+
+      @include clipping-mask;
     }
 
     &::after {
@@ -187,12 +193,9 @@ $btn-polygon: polygon(20px 0%, 100% 0%, calc(100% - 20px) 50%, 100% 100%, 20px 1
       background-origin: border-box;
       background-clip: padding-box, border-box;
       border-radius: 50%;
-      -webkit-mask:
-        linear-gradient(#fff 0 0) padding-box,
-        linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
       z-index: 0;
+
+      @include clipping-mask;
     }
   }
 
