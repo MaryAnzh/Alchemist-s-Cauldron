@@ -21,15 +21,15 @@ Story 1 — prepare the repository, tooling, folder structure and quality checks
 - save state
 - US 1.6 — add the Top-10 leaderboard.
 - fix timer
+- fix ingradient empty view
+- add visual pause button
 
 In progress:
 
-- fix ingradient empty view
 - add user name input
-- add visual pause button
 - update leaderboard icons (2 and 3 place)
 - add menu select
-- chack and fix by rools
+- check and fix by rools
 
 ToDo:
 

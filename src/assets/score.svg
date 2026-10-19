@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="96" height="96">
+  <defs>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f6d67a"/>
+      <stop offset="100%" stop-color="#c28b3b"/>
+    </linearGradient>
+
+    <linearGradient id="glow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#b8eaff"/>
+      <stop offset="100%" stop-color="#2a3b5f"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Outer circle -->
+  <circle cx="48" cy="48" r="44" fill="none" stroke="url(#gold)" stroke-width="2"/>
+
+  <!-- Mystic triangle -->
+  <path d="M48 14 L18 70 L78 70 Z"
+        fill="none"
+        stroke="url(#gold)"
+        stroke-width="2.5"/>
+
+  <!-- Star / score symbol -->
+  <polygon points="48,26 52,38 64,40 54,48 58,60 48,54 38,60 42,48 32,40 44,38"
+           fill="url(#glow)"
+           stroke="#9fdcff"
+           stroke-width="1.5"/>
+
+  <!-- Glow aura -->
+  <ellipse cx="48" cy="44" rx="20" ry="24" fill="#6fb6ff" opacity="0.15"/>
+
+  <!-- Side runes -->
+  <path d="M26 44 L30 40 L34 44 L30 48 Z"
+        fill="none"
+        stroke="#9fdcff"
+        stroke-width="1"/>
+
+  <path d="M62 40 L68 40 L68 48 L62 48 Z
+           M64 42 L66 42
+           M64 46 L66 46"
+        fill="none"
+        stroke="#9fdcff"
+        stroke-width="1"/>
+
+  <!-- Bottom crystal -->
+  <path d="M48 74 L44 82 L48 88 L52 82 Z"
+        fill="url(#glow)"
+        stroke="#9fdcff"
+        stroke-width="1"/>
+</svg>
