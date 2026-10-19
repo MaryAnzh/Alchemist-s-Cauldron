@@ -17,7 +17,7 @@ export class GameTimer {
         this.stop();
         onEnd();
       }
-    }, 250); // 4 раза в секунду — плавно и точно
+    }, 250);
   }
 
   stop() {

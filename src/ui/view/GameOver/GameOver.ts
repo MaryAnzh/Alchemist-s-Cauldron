@@ -22,25 +22,32 @@ export class GameOver extends Component {
   }
 
   private render(score: number, isRecord: boolean) {
-    new Component({
+    const wrap = new Component({
       parentNode: this.node,
+      tagName: 'div',
+      className: 'app-game-over_wrap',
+    });
+
+    new Component({
+      parentNode: wrap.node,
       tagName: 'h1',
-      className: 'app-game-over-title',
+      className: 'app-game-over_wrap_title',
       content: 'GAME OVER',
     });
 
     new Component({
-      parentNode: this.node,
+      parentNode: wrap.node,
       tagName: 'div',
-      className: 'app-game-over-score',
+      className: 'app-game-over_wrap_score',
       content: `Final Score: ${score}`,
     });
 
     if (isRecord) {
       this.inputNode = new Input({
-        parentNode: this.node,
+        parentNode: wrap.node,
         placeholder: 'Enter your name (2–15 chars)',
         maxlength: '15',
+        className: 'app-game-over_wrap_input',
       });
 
       this.inputNode.onInput((value) => {
@@ -49,7 +56,8 @@ export class GameOver extends Component {
     }
 
     new Button({
-      parentNode: this.node,
+      parentNode: wrap.node,
+      className: 'app-game-over_wrap_back',
       text: 'SUBMIT SCORE',
       leftIcon: 'symbol',
       onClick: () => {
@@ -59,15 +67,18 @@ export class GameOver extends Component {
         }
         store.submitScore(this.name);
       },
+      color: 'magic',
     });
 
     new Button({
-      parentNode: this.node,
+      parentNode: wrap.node,
+      className: 'app-game-over_wrap_replay',
       text: 'REPLAY',
       leftIcon: 'symbol',
       onClick: () => {
         store.startNewGame();
       },
+      color: 'magic',
     });
   }
 

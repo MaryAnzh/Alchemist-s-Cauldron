@@ -1,7 +1,7 @@
 import { GAME_EVENTS, PAUSED, PLAYING } from '@constants';
 import { Game } from '@pages';
 import { store } from '@store';
-import { Component, Header, Footer, StartGame, Portal, Info, Pause } from '@ui';
+import { Component, Header, Footer, StartGame, Portal, Info, Pause, GameOver } from '@ui';
 import { storage } from './store/storage/Storage';
 
 export class App extends Component {
@@ -28,17 +28,14 @@ export class App extends Component {
     this.root = root;
 
     // GAME OVER
-    store.subscribe(GAME_EVENTS.GAME_OVER, () => {
+    store.subscribe(GAME_EVENTS.GAME_OVER, ({ score, isRecord }) => {
       if (this.isDocumentHidden) return;
 
       this.startGameNode?.destroy();
       this.startGameNode = null;
       this.node.innerHTML = '';
 
-      this.startGameNode = new StartGame({
-        parentNode: this.node,
-        callback: this.handleStartGame,
-      });
+      this.renderGameOver(score, isRecord);
     });
 
     // ROUND OVER
@@ -116,7 +113,8 @@ export class App extends Component {
     if (storage.hasSave('GAME_STATE')) {
       // To Do action
     }
-    this.renderStartView();
+    this.renderGameOver(400, true);
+    // this.renderStartView();
   }
 
   renderStartView() {
@@ -191,6 +189,9 @@ export class App extends Component {
       this.store.resumeGame();
     };
     this.portal.setBlur();
+  }
+  renderGameOver(score: number, isRecord: boolean) {
+    new GameOver({ parentNode: this.node, score, isRecord });
   }
 
   public handleStartGame = () => {

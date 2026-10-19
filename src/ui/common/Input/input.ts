@@ -4,24 +4,25 @@ import { Component } from '@ui';
 export type InputProps = ParentNodeType & {
   placeholder: string;
   maxlength: string;
+  className: string;
 };
 
 export class Input extends Component {
   private inputNode!: Component;
   private errorNode!: Component;
 
-  constructor({ parentNode, placeholder, maxlength }: InputProps) {
+  constructor({ parentNode, placeholder, maxlength, className }: InputProps) {
     super({
       parentNode,
       tagName: 'div',
-      className: 'app-input',
+      className: ['app-input', className ?? ''],
     });
 
     this.inputNode = new Component({
       parentNode: this.node,
       tagName: 'input',
       className: 'app-input_field',
-      attrs: { autocomplete: 'off', placeholder, maxlength },
+      attrs: { placeholder, maxlength },
     });
 
     this.errorNode = new Component({
