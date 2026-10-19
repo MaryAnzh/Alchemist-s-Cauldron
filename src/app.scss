@@ -61,3 +61,27 @@
     overflow: hidden;
   }
 }
+
+::-webkit-scrollbar {
+  width: 14px;
+}
+
+::-webkit-scrollbar-track {
+  background: linear-gradient(180deg, #c2a882 0%, #b89c74 100%);
+  border-radius: 12px;
+  border: 2px solid #5a4632;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #7a5a3a 0%, #5a4632 100%);
+  border-radius: 12px;
+  border: 2px solid #3a2a1a;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #8b6a48 0%, #6a523c 100%);
+}
+
+::-webkit-scrollbar-corner {
+  background: #b89c74;
+}

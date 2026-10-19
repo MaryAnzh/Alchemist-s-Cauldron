@@ -1,0 +1,114 @@
+@use '../../../styles/mixin/media.scss' as *;
+
+.app-leaderboard {
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  padding: var(--size-2);
+  overflow: auto;
+
+  &_wrap {
+    position: relative;
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--size-3);
+    padding: var(--size-3);
+    margin: var(--size-5);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-bg-light);
+    color: var(--color-burnt-text-alt);
+
+    &:before {
+      content: '';
+      position: absolute;
+      inset: calc(var(--size-5) * -1);
+      background: inherit;
+      filter: blur(15px);
+      z-index: -1;
+      border-radius: inherit;
+      opacity: 0.8;
+    }
+
+    &_title {
+      font-family: var(--font-title);
+      font-size: var(--heading-lg);
+    }
+
+    &_table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: var(--size-6) 0;
+
+      th {
+        padding: var(--size-3) var(--size-1);
+      }
+      td {
+        border-bottom: 1.5px solid var(--color-table-line);
+        padding: var(--size-2) var(--size-1);
+      }
+
+      tr {
+        td {
+          border-right: 1px solid var(--color-table-line);
+        }
+
+        td:last-child {
+          border-right: none;
+        }
+      }
+
+      border-top-left-radius: var(--radius-lg);
+      border-top-right-radius: var(--radius-lg);
+      overflow: hidden;
+
+      &_head {
+        width: 100%;
+        background: var(--color-table-head);
+
+        tr {
+          th {
+            color: var(--color-table-head-text);
+            text-align: center;
+          }
+        }
+      }
+
+      &_body {
+        font-size: var(--font-size-md);
+        color: var(--color-table-text);
+        text-align: center;
+
+        tr {
+          td:nth-of-type(2) {
+            text-align: left;
+            padding-left: var(--size-2);
+            font-weight: var(--weight-regular);
+          }
+        }
+      }
+    }
+
+    &_actions {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      gap: var(--size-1);
+    }
+  }
+}
+@media (min-width: $tablet) {
+  .app-leaderboard {
+    padding: var(--size-4);
+  }
+}
+
+@media (min-width: $laptop) {
+  .app-leaderboard {
+    padding: var(--size-6);
+  }
+}

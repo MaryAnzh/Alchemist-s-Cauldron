@@ -2,7 +2,7 @@ import type { IconPickerType, ParentNodeType } from '@types';
 import { Component } from '@ui';
 import { ICON_PICKER } from '@constants';
 
-type ColorType = 'magic' | 'magic-icon';
+type ColorType = 'magic' | 'magic-icon' | 'arrow-right' | 'arrow-left';
 
 export type ButtonProps = ParentNodeType & {
   className?: string;
@@ -16,6 +16,7 @@ export type ButtonProps = ParentNodeType & {
   fullWidth?: 'fullWidth';
   disabled?: 'disabled';
   ariaLabel?: string;
+  onClick?: () => void;
 };
 
 const classConverter = (arr: (string | undefined | null)[]): string[] =>
@@ -40,6 +41,7 @@ export class Button extends Component {
     fullWidth,
     disabled,
     ariaLabel,
+    onClick,
   }: ButtonProps) {
     super({
       parentNode,
@@ -55,6 +57,10 @@ export class Button extends Component {
     this.text = text ?? null;
     this.leftIcon = leftIcon ?? null;
     this.rightIcon = rightIcon ?? null;
+
+    if (onClick) {
+      this.node.onclick = () => onClick();
+    }
 
     this.render();
   }

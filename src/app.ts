@@ -1,7 +1,8 @@
-import { GAME_EVENTS } from '@constants';
+import { GAME_EVENTS, PAUSED, PLAYING } from '@constants';
 import { Game } from '@pages';
 import { store } from '@store';
-import { Component, Header, Footer, StartGame, Portal, Info } from '@ui';
+import { Component, Header, Footer, StartGame, Portal, Info, Pause } from '@ui';
+import { storage } from './store/storage/Storage';
 
 export class App extends Component {
   root: HTMLElement;
@@ -11,6 +12,7 @@ export class App extends Component {
   header: Header | null = null;
   main: Component | null = null;
   footer: Footer | null = null;
+  pause: Pause | null = null;
 
   startGameNode: StartGame | null = null;
 
@@ -34,10 +36,6 @@ export class App extends Component {
     });
 
     store.subscribe(GAME_EVENTS.ROUND_OVER, ({ score, lives, time, variant }) => {
-      if (lives === 0) {
-        return;
-      }
-
       const handleClose = () => {
         this.store.newRound();
         this.portal.unmount();
@@ -55,12 +53,72 @@ export class App extends Component {
       this.portal.onClose = handleClose;
     });
 
+    store.subscribe(GAME_EVENTS.PAUSE, () => {
+      this.pause = new Pause({
+        parentNode: null,
+        onBack: () => {
+          this.store.startNewGame();
+          this.renderStartGame();
+        },
+        onContinue: () => {
+          this.store.continueGame();
+        },
+      });
+      const node = this.pause.node;
+      if (!node) {
+        return;
+      }
+      this.portal.mount(node, this.pause);
+
+      this.portal.onClose = () => {
+        this.store.continueGame();
+      };
+      this.portal.setBlur();
+    });
+
+    store.subscribe(GAME_EVENTS.RESUME, () => {
+      this.pause?.destroy();
+      this.portal.unmount();
+    });
+
+    // Pause when visibilitychange
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        store.pauseGame();
+      }
+    });
+
+    //Pause from Space
+    document.addEventListener('keydown', (e) => {
+      if (e.code === 'Space') {
+        e.preventDefault();
+        const { status } = this.store.getState();
+
+        if (status === PLAYING) {
+          store.pauseGame();
+        } else if (status === PAUSED) {
+          store.continueGame();
+        }
+      }
+    });
+
     this.root = root;
   }
 
   init() {
     this.root.append(this.node);
     this.portal = new Portal();
+
+    if (storage.hasSave('GAME_STATE')) {
+      // To Do action
+    }
+    this.renderStartGame();
+  }
+
+  renderStartGame() {
+    this.pause?.destroy();
+    this.portal.unmount();
+    this.node.innerHTML = '';
 
     this.startGameNode = new StartGame({
       parentNode: this.node,

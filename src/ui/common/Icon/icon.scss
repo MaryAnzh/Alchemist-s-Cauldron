@@ -83,4 +83,22 @@
       @include clipping-mask;
     }
   }
+  &_size-sm {
+    & svg {
+      width: var(--size-2);
+    }
+  }
+  &_size-md {
+    & svg {
+      width: var(--size-4);
+    }
+  }
+  &_size-lg {
+    & svg {
+      width: var(--size-6);
+    }
+  }
+  &_shadow-sm {
+    box-shadow: 4px 4px 10px var(--color-burnt-text-alt);
+  }
 }
