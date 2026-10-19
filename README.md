@@ -23,10 +23,10 @@ Story 1 — prepare the repository, tooling, folder structure and quality checks
 - fix timer
 - fix ingradient empty view
 - add visual pause button
+- add user name input
 
 In progress:
 
-- add user name input
 - update leaderboard icons (2 and 3 place)
 - add menu select
 - check and fix by rools

@@ -20,4 +20,5 @@ export const GAME_EVENTS = {
   INGREDIENT_IN_CAULDRON: 'ingredient:inCauldron',
 
   CAULDRON_STATE_CHANGED: 'cauldron:stateChange',
+  LEADERBOARD_UPDATED: 'leaderboard:update',
 } as const;

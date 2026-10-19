@@ -365,15 +365,35 @@ class Store {
   }
 
   checkLeaderboard() {
-    const minTopScore = this.leaderBoard.at(-1)?.score;
-    if (minTopScore && minTopScore > this.state.score) {
-      return false;
-    }
-    return true;
+    if (this.leaderBoard.length < 10) return true;
+
+    const minTopScore = this.leaderBoard.at(-1)?.score ?? 0;
+    return this.state.score >= minTopScore;
   }
 
   public submitScore(name: string) {
-    this.leaderBoard.push({ name, score: this.state.score, date: new Date() });
+    const score = this.state.score;
+    const date = new Date();
+
+    this.setToLeaderboard({ name, score, date });
+  }
+
+  public setToLeaderboard({ name, score, date }: LeaderboardRowType) {
+    this.leaderBoard.push({ name, score, date });
+
+    this.leaderBoard.sort((a, b) => b.score - a.score);
+
+    this.leaderBoard = this.leaderBoard.slice(0, 10);
+
+    this.saveToStorage('LEADERBOARD', this.leaderBoard);
+
+    this.emit(C.GAME_EVENTS.LEADERBOARD_UPDATED, this.leaderBoard);
+  }
+
+  public clearLeaderboard() {
+    this.leaderBoard = [];
+    this.saveToStorage('LEADERBOARD', this.leaderBoard);
+    this.emit(C.GAME_EVENTS.LEADERBOARD_UPDATED, this.leaderBoard);
   }
 }
 

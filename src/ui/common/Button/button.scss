@@ -17,9 +17,7 @@ $btn-polygon: polygon(20px 0%, 100% 0%, calc(100% - 20px) 50%, 100% 100%, 20px 1
   white-space: nowrap;
   outline-offset: var(--border-lg-neg);
   border: none;
-  background: transparent;
-
-  &_fullWidth {
+  background: transparent &_fullWidth {
     width: 100%;
   }
 
@@ -194,6 +192,6 @@ $btn-polygon: polygon(20px 0%, 100% 0%, calc(100% - 20px) 50%, 100% 100%, 20px 1
 
   &:disabled {
     pointer-events: none;
-    opacity: 0.6;
+    opacity: 0.3;
   }
 }

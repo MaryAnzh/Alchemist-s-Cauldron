@@ -2,6 +2,7 @@
 
 .app-footer {
   @include section-paddings;
+  z-index: 8;
 
   width: 100%;
   display: flex;

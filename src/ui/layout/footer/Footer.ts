@@ -22,11 +22,16 @@ export class Footer extends Component {
 
     if (!isStartState) {
       store.subscribe(GAME_EVENTS.INGREDIENT_IN_CAULDRON, (value: number) => {
-        this.mainBtn.setDisabled(value === 0);
+        if (value === 0) {
+          this.mainBtn.node.setAttribute('disabled', 'true');
+        } else {
+          console.log('работаем');
+          this.mainBtn.node.removeAttribute('disabled');
+        }
       });
 
       store.subscribe(GAME_EVENTS.ROUND_START, () => {
-        this.mainBtn.setDisabled(true);
+        this.mainBtn.node.removeAttribute('disabled');
       });
     }
 
@@ -46,11 +51,11 @@ export class Footer extends Component {
       text: this.isStartState ? 'Start Game' : 'Brew',
       leftIcon: 'symbol',
       rightIcon: 'symbol',
+      onClick: this.callback,
     });
     if (!this.isStartState) {
       this.mainBtn.setDisabled(true);
     }
-    this.mainBtn.node.onclick = () => this.callback();
 
     new Button({
       parentNode: this.node,
