@@ -77,7 +77,6 @@ export class App extends Component {
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) {
         this.isDocumentHidden = true;
-
         const state = store.getState();
 
         if (state.status === PLAYING) {
@@ -87,7 +86,10 @@ export class App extends Component {
         }
       } else {
         this.isDocumentHidden = false;
-        this.renderPauseDialog();
+        const state = store.getState();
+        if (state.status === PAUSED) {
+          this.renderPauseDialog();
+        }
       }
     });
 

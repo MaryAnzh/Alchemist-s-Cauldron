@@ -9,7 +9,7 @@ export class Timer extends Component {
   timerNode!: Component;
   timer: number = 0;
 
-  constructor({ parentNode, onPause }: TimerProps) {
+  constructor({ parentNode }: TimerProps) {
     super({ parentNode, tagName: 'div', className: 'app-timer' });
 
     store.subscribe(GAME_EVENTS.TIMER_TICK, (time: number) => {

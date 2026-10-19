@@ -1,3 +1,5 @@
+import { GAME_EVENTS } from '@constants';
+import { store } from '@store';
 import type { ParentNodeType } from '@types';
 import { Component } from '@ui';
 import { Button } from '@ui';
@@ -18,6 +20,16 @@ export class Footer extends Component {
     this.isStartState = isStartState ?? false;
     this.callback = callback;
 
+    if (!isStartState) {
+      store.subscribe(GAME_EVENTS.INGREDIENT_IN_CAULDRON, (value: number) => {
+        this.mainBtn.setDisabled(value === 0);
+      });
+
+      store.subscribe(GAME_EVENTS.ROUND_START, () => {
+        this.mainBtn.setDisabled(true);
+      });
+    }
+
     this.render();
   }
 
@@ -35,6 +47,9 @@ export class Footer extends Component {
       leftIcon: 'symbol',
       rightIcon: 'symbol',
     });
+    if (!this.isStartState) {
+      this.mainBtn.setDisabled(true);
+    }
     this.mainBtn.node.onclick = () => this.callback();
 
     new Button({
@@ -43,6 +58,7 @@ export class Footer extends Component {
       text: 'S',
     });
   }
+
   destroy(): void {
     this.mainBtn.node.onclick = null;
 

@@ -49,9 +49,9 @@ export class Button extends Component {
       className: [
         'app_button',
         ...(className ? [className] : []),
-        ...classConverter([color, variant, size, corner, fullWidth, disabled]),
+        ...classConverter([color, variant, size, corner, fullWidth]),
       ],
-      attrs: { ariaLabel: ariaLabel ?? 'Button' },
+      attrs: { ariaLabel: ariaLabel ?? 'Button', disabled: disabled ? 'true' : null },
     });
 
     this.text = text ?? null;
@@ -92,6 +92,14 @@ export class Button extends Component {
   public setText(text: string) {
     if (this.textNode) this.textNode.setContent(text);
   }
+
+  public setDisabled = (isDisabled: boolean) => {
+    if (isDisabled) {
+      this.node.setAttribute('disabled', 'true');
+    } else {
+      this.node.removeAttribute('disabled');
+    }
+  };
 
   destroy() {
     this.node.onclick = null;
