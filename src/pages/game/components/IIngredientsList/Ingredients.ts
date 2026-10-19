@@ -11,6 +11,7 @@ export class IngredientsList extends Component {
     id: string;
     card: HTMLElement;
     countNode: HTMLElement;
+    iconNode: HTMLElement;
     count: number | null;
   }[] = [];
 
@@ -27,8 +28,10 @@ export class IngredientsList extends Component {
       if (count === 0) {
         item.card.style.opacity = '0.5';
         item.card.style.pointerEvents = 'none';
+        item.card.setAttribute('disabled', 'true');
+        item.iconNode.innerHTML = '';
       }
-      item.countNode.textContent = count ? count.toString() : 'out';
+      item.countNode.textContent = count.toString();
       item.count = count ?? null;
     });
 
@@ -38,6 +41,11 @@ export class IngredientsList extends Component {
 
         card.style.opacity = isBlocked ? '0.5' : '1';
         card.style.pointerEvents = isBlocked ? 'none' : 'all';
+        if (isBlock) {
+          card.setAttribute('disabled', 'true');
+        } else {
+          card.removeAttribute('disabled');
+        }
       });
     });
 
@@ -45,22 +53,22 @@ export class IngredientsList extends Component {
   }
 
   render() {
-    const ul = new Component({
+    const wrap = new Component({
       parentNode: this.node,
-      tagName: 'ul',
+      tagName: 'div',
       className: 'app-ingredients_list',
     });
     this.ingredients.forEach((ing) => {
       const { name, temperature, density, magicPower, count, id, icon } = ing;
 
       const card = new Component({
-        parentNode: ul.node,
-        tagName: 'li',
+        parentNode: wrap.node,
+        tagName: 'button',
         className: 'app-ingredients_list_item',
       });
       card.node.onclick = () => store.addIngredientToCauldron(id);
 
-      new Icon({
+      const ingIcon = new Icon({
         parentNode: card.node,
         className: 'app-ingredients_list_item_icon',
         icon: icon as IconPickerType,
@@ -70,7 +78,7 @@ export class IngredientsList extends Component {
       new Component({
         parentNode: card.node,
         className: 'app-ingredients_list_item_title',
-        tagName: 'h2',
+        tagName: 'span',
         content: name,
       });
 
@@ -107,6 +115,7 @@ export class IngredientsList extends Component {
         id,
         card: card.node,
         countNode: countNode.node,
+        iconNode: ingIcon.node,
         count: count ?? null,
       });
     });

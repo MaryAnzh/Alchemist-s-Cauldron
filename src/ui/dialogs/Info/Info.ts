@@ -35,7 +35,9 @@ export class Info extends Component {
       tagName: 'h2',
       className: 'app-info_title',
       content:
-        variant === 'success' ? 'You have prepared a magical potion!' : 'Not bad. But try again...',
+        variant === 'success'
+          ? 'You have prepared a magical potion!'
+          : 'Wrong mixture, try again...',
     });
 
     const list = new Component({
