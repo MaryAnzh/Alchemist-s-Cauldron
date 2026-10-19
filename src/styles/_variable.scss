@@ -94,6 +94,7 @@
     rgba(180, 200, 255, 0.45) 65%,
     rgba(0, 0, 0, 0.8) 100%
   );
+  --game-over-text: linear-gradient(180deg, #9fffa8 0%, #4cff5a 60%, #1a3f1d 100%);
 
   --portal-bg: rgba(0, 0, 0, 0.4);
 
@@ -119,6 +120,11 @@
   --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.6);
   --shadow-dialog: 0 12px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(123, 44, 191, 0.15);
   --shadow-btn: 0 4px 12px rgba(0, 0, 0, 0.4);
+
+  --input-bg: #090909;
+  --input-bg-focus: #252222;
+  --input-placeholder: #b6a479;
+  --input-text-color: #dbd1b9;
 
   /* 14px */
   --font-size-sm: 0.875rem;

@@ -159,7 +159,11 @@ class Store {
     this.update({ status: C.GAME_OVER });
     this.resetGameState();
     this.clearStorage('GAME_STATE');
-    this.emit(C.GAME_EVENTS.GAME_OVER, { isOver: true });
+
+    this.emit(C.GAME_EVENTS.GAME_OVER, {
+      isRecord: this.checkLeaderboard(),
+      score: this.state.score,
+    });
   }
 
   public continueGame() {
@@ -358,6 +362,18 @@ class Store {
     this.saveToStorage('GAME_STATE', this.state);
 
     this.emit(C.GAME_EVENTS.PAUSE, { auto: true });
+  }
+
+  checkLeaderboard() {
+    const minTopScore = this.leaderBoard.at(-1)?.score;
+    if (minTopScore && minTopScore > this.state.score) {
+      return false;
+    }
+    return true;
+  }
+
+  public submitScore(name: string) {
+    this.leaderBoard.push({ name, score: this.state.score, date: new Date() });
   }
 }
 
