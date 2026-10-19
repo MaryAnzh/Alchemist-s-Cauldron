@@ -13,6 +13,7 @@ export class App extends Component {
   main: Component | null = null;
   footer: Footer | null = null;
   pause: Pause | null = null;
+  isDocumentHidden: boolean = false;
 
   startGameNode: StartGame | null = null;
 
@@ -24,7 +25,12 @@ export class App extends Component {
       attrs: { id: 'app' },
     });
 
+    this.root = root;
+
+    // GAME OVER
     store.subscribe(GAME_EVENTS.GAME_OVER, () => {
+      if (this.isDocumentHidden) return;
+
       this.startGameNode?.destroy();
       this.startGameNode = null;
       this.node.innerHTML = '';
@@ -35,6 +41,7 @@ export class App extends Component {
       });
     });
 
+    // ROUND OVER
     store.subscribe(GAME_EVENTS.ROUND_OVER, ({ score, lives, time, variant }) => {
       const handleClose = () => {
         this.store.newRound();
@@ -49,60 +56,55 @@ export class App extends Component {
         variant,
         onClose: handleClose,
       });
+
       this.portal.mount(info.node, info);
       this.portal.onClose = handleClose;
     });
 
-    store.subscribe(GAME_EVENTS.PAUSE, () => {
-      this.pause = new Pause({
-        parentNode: null,
-        onBack: () => {
-          this.store.startNewGame();
-          this.renderStartGame();
-        },
-        onContinue: () => {
-          this.store.continueGame();
-        },
-      });
-      const node = this.pause.node;
-      if (!node) {
-        return;
-      }
-      this.portal.mount(node, this.pause);
-
-      this.portal.onClose = () => {
-        this.store.continueGame();
-      };
-      this.portal.setBlur();
+    // PAUSE → local dialog
+    store.subscribe(GAME_EVENTS.PAUSE, ({ auto }) => {
+      if (auto) return;
+      this.renderPauseDialog();
     });
 
+    // RESUME
     store.subscribe(GAME_EVENTS.RESUME, () => {
       this.pause?.destroy();
       this.portal.unmount();
     });
 
-    // Pause when visibilitychange
+    // visibilitychange - auto pause
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) {
-        store.pauseGame();
+        this.isDocumentHidden = true;
+
+        const state = store.getState();
+
+        if (state.status === PLAYING) {
+          const remaining = Math.max(0, Math.floor((state.endTimestamp - Date.now()) / 1000));
+
+          this.store.pageHidden(remaining);
+        }
+      } else {
+        this.isDocumentHidden = false;
+        this.renderPauseDialog();
       }
     });
 
-    //Pause from Space
+    // Space pause
     document.addEventListener('keydown', (e) => {
       if (e.code === 'Space') {
         e.preventDefault();
+
         const { status } = this.store.getState();
 
         if (status === PLAYING) {
-          store.pauseGame();
+          this.store.pauseGame();
         } else if (status === PAUSED) {
-          store.continueGame();
+          this.store.resumeGame();
         }
       }
     });
-
-    this.root = root;
   }
 
   init() {
@@ -112,10 +114,10 @@ export class App extends Component {
     if (storage.hasSave('GAME_STATE')) {
       // To Do action
     }
-    this.renderStartGame();
+    this.renderStartView();
   }
 
-  renderStartGame() {
+  renderStartView() {
     this.pause?.destroy();
     this.portal.unmount();
     this.node.innerHTML = '';
@@ -163,6 +165,30 @@ export class App extends Component {
     });
 
     this.footer = new Footer({ parentNode: this.node, callback: () => this.store.brewCheck() });
+  }
+
+  renderPauseDialog() {
+    this.pause = new Pause({
+      parentNode: null,
+
+      onBack: () => {
+        this.store.startNewGame();
+        this.renderStartView();
+      },
+
+      onContinue: () => {
+        this.store.resumeGame();
+      },
+    });
+
+    const node = this.pause.node;
+    if (!node) return;
+
+    this.portal.mount(node, this.pause);
+    this.portal.onClose = () => {
+      this.store.resumeGame();
+    };
+    this.portal.setBlur();
   }
 
   public handleStartGame = () => {

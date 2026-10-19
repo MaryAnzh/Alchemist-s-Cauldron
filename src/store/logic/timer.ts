@@ -21,6 +21,9 @@ export class GameTimer {
   }
 
   stop() {
+    console.log('Отработал Stop timer class');
+    const date = new Date();
+    console.log(date.getMinutes(), date.getSeconds());
     if (this.intervalId !== null) {
       clearInterval(this.intervalId);
       this.intervalId = null;

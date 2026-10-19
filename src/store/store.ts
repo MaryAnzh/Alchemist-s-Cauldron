@@ -80,16 +80,17 @@ class Store {
 
   pauseGame() {
     this.timer.stop();
-    this.update({ status: C.PAUSED });
-    this.emit(C.GAME_EVENTS.PAUSE, true);
 
     const remaining = Math.max(0, Math.floor((this.state.endTimestamp - Date.now()) / 1000));
 
-    this.update({ timeLeft: remaining });
-    this.timer.stop();
-    this.update({ status: C.PAUSED });
+    this.update({
+      status: C.PAUSED,
+      timeLeft: remaining,
+    });
 
     this.saveToStorage('GAME_STATE', this.state);
+
+    this.emit(C.GAME_EVENTS.PAUSE, { auto: false });
   }
 
   resumeGame() {
@@ -97,7 +98,7 @@ class Store {
 
     const newEnd = Date.now() + this.state.timeLeft * 1000;
 
-    this.update({ endTimestamp: newEnd, status: C.PLAYING });
+    this.update({ endTimestamp: newEnd });
 
     this.timer.start(
       this.state.timeLeft,
@@ -107,6 +108,7 @@ class Store {
       },
       () => this.gameOver(),
     );
+    this.emit(C.GAME_EVENTS.RESUME, this.state);
   }
 
   resetGameState() {
@@ -165,15 +167,14 @@ class Store {
     if (!saved) return;
 
     this.state = saved as GameState;
-    this.update({ status: C.PLAYING });
 
-    const remaining = Math.max(
-      0,
-      Math.floor(((saved as GameState).endTimestamp - Date.now()) / 1000),
-    );
+    const remaining = Math.max(0, Math.floor(this.state.endTimestamp - Date.now()) / 1000);
 
-    this.update({ timeLeft: remaining });
-    this.resumeGame();
+    this.update({
+      timeLeft: remaining,
+      status: C.PAUSED,
+    });
+
     this.emit(C.GAME_EVENTS.RESUME, this.state);
   }
 
@@ -344,6 +345,19 @@ class Store {
 
   private clearStorage(key: StorageKeysType) {
     storage.clear(key);
+  }
+
+  public pageHidden(remaining: number) {
+    this.timer.stop();
+
+    this.update({
+      status: C.PAUSED,
+      timeLeft: remaining,
+    });
+
+    this.saveToStorage('GAME_STATE', this.state);
+
+    this.emit(C.GAME_EVENTS.PAUSE, { auto: true });
   }
 }
 

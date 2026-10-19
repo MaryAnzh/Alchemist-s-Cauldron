@@ -10,7 +10,7 @@ export type GameEventsPayload = {
   [GE.GAME_OVER]: { isOver: boolean };
   [GE.ROUND_OVER]: { score: number; lives: number; time: number; variant: 'success' | 'fail' };
   [GE.ROUND_START]: { isStart: boolean };
-  [GE.PAUSE]: boolean;
+  [GE.PAUSE]: { auto: boolean };
   [GE.RESUME]: GameState;
 
   [GE.SHELF_BLOCK]: { isBlock: boolean };
