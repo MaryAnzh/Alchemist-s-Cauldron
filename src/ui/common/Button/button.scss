@@ -1,5 +1,6 @@
 @use '../../../styles/variable' as *;
 @use '../../../styles/mixin/common.scss' as *;
+@use '../../../styles/mixin/media.scss' as *;
 
 $btn-polygon: polygon(20px 0%, 100% 0%, calc(100% - 20px) 50%, 100% 100%, 20px 100%, 0% 50%);
 
@@ -133,6 +134,13 @@ $btn-polygon: polygon(20px 0%, 100% 0%, calc(100% - 20px) 50%, 100% 100%, 20px 1
     > * {
       position: relative;
       z-index: 2;
+    }
+
+    @media (max-width: $tablet) {
+      font-size: var(--font-size-md);
+      svg {
+        width: var(--size-3);
+      }
     }
   }
 

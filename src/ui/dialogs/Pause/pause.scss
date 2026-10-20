@@ -1,15 +1,14 @@
 .app-pause {
   position: relative;
-  width: 500px;
-  max-width: 100%;
-  padding: var(--size-4);
+  width: 100%;
+  padding: var(--size-2);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--size-4);
+  gap: var(--size-2);
   z-index: 11;
 
-  margin: var(--size-5);
+  margin: var(--size-2);
   border-radius: var(--radius-lg);
   background-color: var(--color-bg-light);
 

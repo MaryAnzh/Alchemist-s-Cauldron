@@ -1,29 +1,95 @@
+@use '../../../styles/mixin/media.scss' as *;
+
 .app-rules {
+  z-index: 10;
   width: 100%;
   height: 100%;
-  z-index: 20;
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  gap: var(--size-4);
-  padding: var(--size-4);
+  padding: var(--size-2);
+  overflow: auto;
 
-  &_title {
-    font-size: var(--size-7);
-    font-family: var(--font-title);
-    background: var(--gradient-gold-2);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+  &_wrap {
+    position: relative;
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--size-2);
+    padding: var(--size-2);
+    margin: var(--size-3);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-bg-light);
+    color: var(--color-burnt-text-alt);
+
+    &:before {
+      content: '';
+      position: absolute;
+      inset: calc(var(--size-3) * -1);
+      background: inherit;
+      filter: blur(10px);
+      z-index: -1;
+      border-radius: inherit;
+      opacity: 0.7;
+    }
+
+    &_title {
+      font-size: var(--heading-md);
+      font-family: var(--font-title);
+
+      font-weight: var(--weight-bold);
+      background-image: linear-gradient(90deg, #4b4625, #665635, #1d1a0a);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+    }
+
+    &_list {
+      padding-left: var(--size-2);
+      display: flex;
+      flex-direction: column;
+      gap: var(--size-1);
+
+      li {
+        font-size: var(--font-size-md);
+        list-style: disc;
+      }
+    }
   }
+}
 
-  &_text {
-    max-width: 420px;
-    font-size: var(--size-4);
-    line-height: 1.4;
-    text-align: left;
-    background: var(--color-bg-light);
-    padding: var(--size-4);
-    border-radius: var(--radius-md);
+@media (min-width: $tablet) {
+  .app-rules {
+    &_wrap {
+      padding: var(--size-3);
+
+      &_title {
+        font-size: var(--heading-lg);
+      }
+      &_list {
+        gap: var(--size-3);
+        li {
+          font-size: var(--size-3);
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: $laptop) {
+  .app-rules {
+    max-width: var(--dialog-width-xlg);
+
+    &_wrap {
+      &_list {
+        gap: var(--size-3);
+
+        li {
+          font-size: var(--size-3);
+        }
+      }
+    }
   }
 }

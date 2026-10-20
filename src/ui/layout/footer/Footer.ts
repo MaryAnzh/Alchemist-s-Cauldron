@@ -10,6 +10,7 @@ export class Footer extends Component {
   isStartState: boolean = false;
   callback: () => void;
   mainBtn!: Button;
+  currentClassName = ';';
 
   constructor({ parentNode, isStartState, callback }: FooterProps) {
     super({
@@ -19,6 +20,7 @@ export class Footer extends Component {
     });
     this.isStartState = isStartState ?? false;
     this.callback = callback;
+    this.currentClassName = isStartState ? 'app-start-menu' : 'app-footer';
 
     if (!isStartState) {
       store.subscribe(GAME_EVENTS.INGREDIENT_IN_CAULDRON, (value: number) => {
@@ -40,6 +42,7 @@ export class Footer extends Component {
   render() {
     new Button({
       parentNode: this.node,
+      className: `${this.currentClassName}_rules-btn`,
       color: 'magic-icon',
       text: 'Rules',
       onClick: () => {
@@ -49,6 +52,7 @@ export class Footer extends Component {
 
     this.mainBtn = new Button({
       parentNode: this.node,
+      className: `${this.currentClassName}_main-btn`,
       color: 'magic',
       text: this.isStartState ? 'Start Game' : 'Brew',
       leftIcon: 'symbol',
@@ -61,6 +65,7 @@ export class Footer extends Component {
 
     new Menu({
       parentNode: this.node,
+      className: `${this.currentClassName}_menu`,
       position: this.isStartState ? 'bottom' : 'top',
     });
   }
