@@ -29,8 +29,6 @@ export class Game extends Component {
   ) {
     new IngredientsList({ parentNode: this.node, ingredients });
     new Cauldron({ parentNode: this.node });
-    console.log('currentRecipe');
-    console.log(currentRecipe);
 
     new Recipe({ parentNode: this.node, currentRecipe, currentIngredientsCount, maxIngredients });
     new Ranges({

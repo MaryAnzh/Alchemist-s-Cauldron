@@ -1,7 +1,7 @@
 import { GAME_EVENTS } from '@constants';
 import { store } from '@store';
 import type { ParentNodeType } from '@types';
-import { Component } from '@ui';
+import { Component, Menu } from '@ui';
 import { Button } from '@ui';
 
 type FooterProps = ParentNodeType & { isStartState?: boolean; callback: () => void };
@@ -15,7 +15,7 @@ export class Footer extends Component {
     super({
       parentNode,
       tagName: isStartState ? 'div' : 'footer',
-      className: isStartState ? 'app-start-state' : 'app-footer',
+      className: isStartState ? 'app-start-menu' : 'app-footer',
     });
     this.isStartState = isStartState ?? false;
     this.callback = callback;
@@ -25,7 +25,6 @@ export class Footer extends Component {
         if (value === 0) {
           this.mainBtn.node.setAttribute('disabled', 'true');
         } else {
-          console.log('работаем');
           this.mainBtn.node.removeAttribute('disabled');
         }
       });
@@ -42,7 +41,10 @@ export class Footer extends Component {
     new Button({
       parentNode: this.node,
       color: 'magic-icon',
-      text: 'N',
+      text: 'Rules',
+      onClick: () => {
+        store.showRules();
+      },
     });
 
     this.mainBtn = new Button({
@@ -51,16 +53,15 @@ export class Footer extends Component {
       text: this.isStartState ? 'Start Game' : 'Brew',
       leftIcon: 'symbol',
       rightIcon: 'symbol',
-      onClick: this.callback,
+      onClick: () => this.callback(),
     });
     if (!this.isStartState) {
       this.mainBtn.setDisabled(true);
     }
 
-    new Button({
+    new Menu({
       parentNode: this.node,
-      color: 'magic-icon',
-      text: 'S',
+      position: this.isStartState ? 'bottom' : 'top',
     });
   }
 

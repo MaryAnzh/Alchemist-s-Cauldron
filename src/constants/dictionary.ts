@@ -1,4 +1,16 @@
-export const { EASY, HARD, MEDIUM, GAME_OVER, MENU, PAUSED, PLAYING } = {
+export const {
+  EASY,
+  HARD,
+  MEDIUM,
+  GAME_OVER,
+  MENU,
+  PAUSED,
+  PLAYING,
+  RULES,
+  SETTINGS,
+  BOTTOM,
+  TOP,
+} = {
   EASY: 'easy',
   HARD: 'hard',
   MEDIUM: 'medium',
@@ -6,4 +18,8 @@ export const { EASY, HARD, MEDIUM, GAME_OVER, MENU, PAUSED, PLAYING } = {
   PLAYING: 'playing',
   PAUSED: 'paused',
   GAME_OVER: 'game-over',
+  SETTINGS: 'settings',
+  RULES: 'rules',
+  TOP: 'top',
+  BOTTOM: 'bottom',
 } as const;

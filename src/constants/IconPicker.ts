@@ -11,6 +11,7 @@ import pause from '../assets/pause.svg?raw';
 import place_1 from '../assets/place_1.svg?raw';
 import rangeStop from '../assets/range-stop.svg?raw';
 import score from '../assets/score.svg?raw';
+import settings from '../assets/settings.svg?raw';
 import stop from '../assets/range-stop.svg?raw';
 import stroke_heart from '../assets/stroke_heart.svg?raw';
 import symbol from '../assets/symbol.svg?raw';
@@ -28,8 +29,9 @@ export const ICON_PICKER = {
   pause,
   place_1,
   rangeStop,
-  stop,
   score,
+  settings,
+  stop,
   stroke_heart,
   symbol,
 };

@@ -25,8 +25,6 @@ export class Recipe extends Component {
       this.node.innerHTML = '';
       this.render(recipe, ingInCauldron, maxIngredients);
     });
-    console.log('currentRecipe');
-    console.log(currentRecipe);
 
     this.render(currentRecipe, currentIngredientsCount, maxIngredients);
   }

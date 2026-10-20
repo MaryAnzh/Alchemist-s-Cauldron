@@ -8,6 +8,7 @@ export type GameEventsPayload = {
   [GE.LIVES_CHANGE]: { lives: number };
   [GE.SCORE_CHANGE]: number;
 
+  [GE.GAME_START]: GameState;
   [GE.GAME_OVER]: { isRecord: boolean; score: number };
   [GE.ROUND_OVER]: { score: number; lives: number; time: number; variant: 'success' | 'fail' };
   [GE.ROUND_START]: { isStart: boolean };
@@ -22,4 +23,6 @@ export type GameEventsPayload = {
 
   [GE.CAULDRON_STATE_CHANGED]: { values: cauldronValuesType };
   [GE.LEADERBOARD_UPDATED]: LeaderboardRowType[];
+  [GE.PAGE_HIDDEN]: boolean;
+  [GE.SHOW_RULES]: boolean;
 };

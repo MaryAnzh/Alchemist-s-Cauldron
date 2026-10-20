@@ -14,6 +14,7 @@ import {
 } from '@ui';
 import { storage } from './store/storage/Storage';
 import type { RecipeType } from '@types';
+import { Rules } from './ui/dialogs/Rules/Rules';
 
 export class App extends Component {
   root: HTMLElement;
@@ -39,10 +40,14 @@ export class App extends Component {
 
     this.root = root;
 
+    store.subscribe(GAME_EVENTS.GAME_START, () => {
+      this.renderGameView();
+    });
+
     // GAME OVER
     store.subscribe(GAME_EVENTS.GAME_OVER, ({ score, isRecord }) => {
       if (this.isDocumentHidden) return;
-      this.renderGameOver(score, isRecord);
+      this.renderGameOverView(score, isRecord);
     });
 
     // ROUND OVER
@@ -73,12 +78,15 @@ export class App extends Component {
 
     // RESUME
     store.subscribe(GAME_EVENTS.RESUME, () => {
-      this.pause?.destroy();
       this.portal.unmount();
     });
 
     store.subscribe(GAME_EVENTS.LEADERBOARD_UPDATED, () => {
-      this.renderLeaderboard();
+      this.renderLeaderboardDialog();
+    });
+
+    store.subscribe(GAME_EVENTS.SHOW_RULES, () => {
+      this.renderRulesDialog();
     });
 
     // visibilitychange - auto pause
@@ -86,18 +94,14 @@ export class App extends Component {
       if (document.hidden) {
         this.isDocumentHidden = true;
         const state = store.getState();
-
         if (state.status === PLAYING) {
           const remaining = Math.max(0, Math.floor((state.endTimestamp - Date.now()) / 1000));
 
           this.store.pageHidden(remaining);
+          this.renderPauseDialog();
         }
       } else {
         this.isDocumentHidden = false;
-        const state = store.getState();
-        if (state.status === PAUSED) {
-          this.renderPauseDialog();
-        }
       }
     });
 
@@ -117,19 +121,20 @@ export class App extends Component {
     });
   }
 
+  private setView(view: Component) {
+    if (this.currentView) {
+      this.currentView.destroy();
+    }
+    this.currentView = view;
+  }
+
   init() {
     this.root.append(this.node);
     this.portal = new Portal();
-
     if (storage.hasSave('GAME_STATE')) {
       // To Do action
     }
     this.renderStartView();
-  }
-
-  private setView(view: Component) {
-    this.currentView?.destroy();
-    this.currentView = view;
   }
 
   renderStartView() {
@@ -137,13 +142,13 @@ export class App extends Component {
 
     const view = new StartGame({
       parentNode: this.node,
-      callback: this.handleStartGame,
+      callback: () => this.handleStartGame(),
     });
 
     this.setView(view);
   }
 
-  renderGame() {
+  renderGameView() {
     this.portal.unmount();
 
     const {
@@ -174,8 +179,6 @@ export class App extends Component {
       tagName: 'main',
       className: 'app-main',
     });
-    console.log('currentRecipe');
-    console.log(currentRecipe);
 
     new Game({
       parentNode: main.node,
@@ -194,7 +197,7 @@ export class App extends Component {
     this.setView(view);
   }
 
-  renderGameOver(score: number, isRecord: boolean) {
+  renderGameOverView(score: number, isRecord: boolean) {
     this.portal.unmount();
 
     const view = new GameOver({
@@ -206,16 +209,21 @@ export class App extends Component {
     this.setView(view);
   }
 
-  renderLeaderboard() {
-    this.portal.unmount();
+  renderLeaderboardDialog() {
+    const state = this.store.getState();
+
+    if (state.status === PLAYING) {
+      this.store.pauseGame();
+    }
 
     const view = new Leaderboard({
-      parentNode: this.node,
-      onBack: () => this.renderStartView(),
+      parentNode: null,
+      onBack: () => this.closeLeaderboardDialog(),
       onClean: () => this.store.clearLeaderboard(),
     });
 
-    this.setView(view);
+    this.portal.mount(view.node, view);
+    this.portal.setBlur();
   }
 
   renderPauseDialog() {
@@ -235,8 +243,38 @@ export class App extends Component {
     this.portal.setBlur();
   }
 
+  renderRulesDialog() {
+    const state = this.store.getState();
+
+    if (state.status === PLAYING) {
+      this.store.pauseGame();
+    }
+
+    const rules = new Rules({
+      parentNode: null,
+      onClose: () => {
+        if (this.store.getState().status === PAUSED) {
+          this.store.resumeGame();
+        }
+        this.portal.unmount();
+      },
+    });
+
+    this.portal.mount(rules.node, rules);
+    this.portal.setBlur();
+  }
+
+  closeLeaderboardDialog() {
+    const state = this.store.getState();
+
+    if (state.status === PAUSED) {
+      this.store.resumeGame();
+    }
+
+    this.portal.unmount();
+  }
+
   public handleStartGame = () => {
     this.store.startNewGame();
-    this.renderGame();
   };
 }

@@ -2,11 +2,17 @@
 
 .app-footer {
   @include section-paddings;
-  z-index: 8;
 
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: var(--size-2) var(--size-3);
+  outline: 1px solid white;
+  flex-wrap: nowrap;
+}
+
+.app-start-menu {
+  display: flex;
+  gap: var(--size-3);
 }

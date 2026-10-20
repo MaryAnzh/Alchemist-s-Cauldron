@@ -75,7 +75,7 @@ class Store {
     this.state.status = C.PLAYING;
     this.setTimer();
 
-    return this.getState();
+    this.emit(C.GAME_EVENTS.GAME_START, this.state);
   };
 
   pauseGame() {
@@ -114,6 +114,7 @@ class Store {
   resetGameState() {
     this.state = {
       ...this.state,
+      status: C.MENU,
       score: 0,
       lives: C.LIVES[this.state.difficulty],
       timeLeft: 0,
@@ -394,6 +395,17 @@ class Store {
     this.leaderBoard = [];
     this.saveToStorage('LEADERBOARD', this.leaderBoard);
     this.emit(C.GAME_EVENTS.LEADERBOARD_UPDATED, this.leaderBoard);
+  }
+
+  public showLeaderboard() {
+    const leaderboard = this.loadFromStorage('LEADERBOARD');
+    if (!leaderboard) return;
+    this.leaderBoard = leaderboard as LeaderboardRowType[];
+    this.emit(C.GAME_EVENTS.LEADERBOARD_UPDATED, this.leaderBoard);
+  }
+
+  public showRules() {
+    this.emit(C.GAME_EVENTS.SHOW_RULES, true);
   }
 }
 
