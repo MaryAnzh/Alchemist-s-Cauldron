@@ -1,4 +1,5 @@
 @use '../../../styles/mixin/common.scss' as *;
+@use '../../../styles/mixin/media.scss' as *;
 
 .app-icon {
   &_magic-icon {
@@ -100,5 +101,31 @@
   }
   &_shadow-sm {
     box-shadow: 4px 4px 10px var(--color-burnt-text-alt);
+  }
+}
+
+@media (max-width: $tablet) {
+  .app-icon {
+    &_magic-icon,
+    &_magic {
+      width: var(--size-3);
+      height: var(--size-3);
+    }
+
+    &_size-md {
+      & svg {
+        width: var(--size-3);
+      }
+    }
+  }
+}
+
+@media (max-width: $laptop) {
+  .app-icon {
+    &_magic-icon,
+    &_magic {
+      width: var(--size-4);
+      height: var(--size-4);
+    }
   }
 }

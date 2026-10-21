@@ -26,8 +26,8 @@ export class Score extends Component {
   render() {
     new Icon({
       parentNode: this.node,
-      icon: 'symbol',
-      variant: 'magic-icon',
+      icon: 'score',
+      variant: 'magic',
       className: 'app-score_icon',
     });
     new Component({

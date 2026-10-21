@@ -2,7 +2,7 @@ import type { IconPickerType, ParentNodeType } from '@types';
 import { Component } from '@ui';
 import { ICON_PICKER } from '@constants';
 
-type ColorType = 'magic' | 'magic-icon' | 'arrow-right' | 'arrow-left';
+type ColorType = 'magic' | 'magic-icon' | 'arrow-right' | 'arrow-left' | 'magic-icon-2';
 
 export type ButtonProps = ParentNodeType & {
   className?: string;
@@ -49,9 +49,9 @@ export class Button extends Component {
       className: [
         'app_button',
         ...(className ? [className] : []),
-        ...classConverter([color, variant, size, corner, fullWidth, disabled]),
+        ...classConverter([color, variant, size, corner, fullWidth]),
       ],
-      attrs: { ariaLabel: ariaLabel ?? 'Button' },
+      attrs: { ariaLabel: ariaLabel ?? 'Button', disabled: disabled ? 'true' : null },
     });
 
     this.text = text ?? null;
@@ -89,9 +89,24 @@ export class Button extends Component {
     });
   }
 
+  public setLeftIcon(icon: IconPickerType) {
+    if (!this.text) {
+      this.node.innerHTML = '';
+      this.node.insertAdjacentHTML('beforeend', ICON_PICKER[icon]);
+    }
+  }
+
   public setText(text: string) {
     if (this.textNode) this.textNode.setContent(text);
   }
+
+  public setDisabled = (isDisabled: boolean) => {
+    if (isDisabled) {
+      this.node.setAttribute('disabled', 'true');
+    } else {
+      this.node.removeAttribute('disabled');
+    }
+  };
 
   destroy() {
     this.node.onclick = null;

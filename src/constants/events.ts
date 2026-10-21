@@ -5,6 +5,7 @@ export const GAME_EVENTS = {
   LIVES_CHANGE: 'lives:change',
 
   // Game flow
+  GAME_START: 'game:start',
   GAME_OVER: 'game:over',
   ROUND_START: 'round:start',
   ROUND_OVER: 'round:over',
@@ -20,4 +21,7 @@ export const GAME_EVENTS = {
   INGREDIENT_IN_CAULDRON: 'ingredient:inCauldron',
 
   CAULDRON_STATE_CHANGED: 'cauldron:stateChange',
+  LEADERBOARD_UPDATED: 'leaderboard:update',
+  PAGE_HIDDEN: 'page:hidden',
+  SHOW_RULES: 'show:rules',
 } as const;

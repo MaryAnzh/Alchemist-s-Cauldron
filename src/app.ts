@@ -1,18 +1,32 @@
 import { GAME_EVENTS, PAUSED, PLAYING } from '@constants';
 import { Game } from '@pages';
 import { store } from '@store';
-import { Component, Header, Footer, StartGame, Portal, Info, Pause } from '@ui';
+import {
+  Component,
+  Header,
+  Footer,
+  StartGame,
+  Portal,
+  Info,
+  Pause,
+  GameOver,
+  Leaderboard,
+} from '@ui';
 import { storage } from './store/storage/Storage';
+import type { RecipeType } from '@types';
+import { Rules } from './ui/dialogs/Rules/Rules';
 
 export class App extends Component {
   root: HTMLElement;
   store = store;
+  currentView: Component | null = null;
   portal!: Portal;
 
   header: Header | null = null;
   main: Component | null = null;
   footer: Footer | null = null;
   pause: Pause | null = null;
+  isDocumentHidden: boolean = false;
 
   startGameNode: StartGame | null = null;
 
@@ -24,17 +38,19 @@ export class App extends Component {
       attrs: { id: 'app' },
     });
 
-    store.subscribe(GAME_EVENTS.GAME_OVER, () => {
-      this.startGameNode?.destroy();
-      this.startGameNode = null;
-      this.node.innerHTML = '';
+    this.root = root;
 
-      this.startGameNode = new StartGame({
-        parentNode: this.node,
-        callback: this.handleStartGame,
-      });
+    store.subscribe(GAME_EVENTS.GAME_START, () => {
+      this.renderGameView();
     });
 
+    // GAME OVER
+    store.subscribe(GAME_EVENTS.GAME_OVER, ({ score, isRecord }) => {
+      if (this.isDocumentHidden) return;
+      this.renderGameOverView(score, isRecord);
+    });
+
+    // ROUND OVER
     store.subscribe(GAME_EVENTS.ROUND_OVER, ({ score, lives, time, variant }) => {
       const handleClose = () => {
         this.store.newRound();
@@ -49,87 +65,91 @@ export class App extends Component {
         variant,
         onClose: handleClose,
       });
+
       this.portal.mount(info.node, info);
       this.portal.onClose = handleClose;
     });
 
-    store.subscribe(GAME_EVENTS.PAUSE, () => {
-      this.pause = new Pause({
-        parentNode: null,
-        onBack: () => {
-          this.store.startNewGame();
-          this.renderStartGame();
-        },
-        onContinue: () => {
-          this.store.continueGame();
-        },
-      });
-      const node = this.pause.node;
-      if (!node) {
-        return;
-      }
-      this.portal.mount(node, this.pause);
-
-      this.portal.onClose = () => {
-        this.store.continueGame();
-      };
-      this.portal.setBlur();
+    // PAUSE → local dialog
+    store.subscribe(GAME_EVENTS.PAUSE, ({ auto }) => {
+      if (auto) return;
+      this.renderPauseDialog();
     });
 
+    // RESUME
     store.subscribe(GAME_EVENTS.RESUME, () => {
-      this.pause?.destroy();
       this.portal.unmount();
     });
 
-    // Pause when visibilitychange
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden) {
-        store.pauseGame();
-      }
+    store.subscribe(GAME_EVENTS.LEADERBOARD_UPDATED, () => {
+      this.renderLeaderboardDialog();
     });
 
-    //Pause from Space
+    store.subscribe(GAME_EVENTS.SHOW_RULES, () => {
+      this.renderRulesDialog();
+    });
+
+    // visibilitychange - auto pause
+    // document.addEventListener('visibilitychange', () => {
+    //   if (document.hidden) {
+    //     this.isDocumentHidden = true;
+    //     const state = store.getState();
+    //     if (state.status === PLAYING) {
+    //       const remaining = Math.max(0, Math.floor((state.endTimestamp - Date.now()) / 1000));
+
+    //       this.store.pageHidden(remaining);
+    //       this.renderPauseDialog();
+    //     }
+    //   } else {
+    //     this.isDocumentHidden = false;
+    //   }
+    // });
+
+    // Space pause
     document.addEventListener('keydown', (e) => {
       if (e.code === 'Space') {
         e.preventDefault();
+
         const { status } = this.store.getState();
 
         if (status === PLAYING) {
-          store.pauseGame();
+          this.store.pauseGame();
         } else if (status === PAUSED) {
-          store.continueGame();
+          this.store.resumeGame();
         }
       }
     });
+  }
 
-    this.root = root;
+  private setView(view: Component) {
+    if (this.currentView) {
+      this.currentView.destroy();
+    }
+    this.currentView = view;
   }
 
   init() {
     this.root.append(this.node);
     this.portal = new Portal();
-
     if (storage.hasSave('GAME_STATE')) {
       // To Do action
     }
-    this.renderStartGame();
+    this.renderStartView();
   }
 
-  renderStartGame() {
-    this.pause?.destroy();
+  renderStartView() {
     this.portal.unmount();
-    this.node.innerHTML = '';
 
-    this.startGameNode = new StartGame({
+    const view = new StartGame({
       parentNode: this.node,
-      callback: this.handleStartGame,
+      callback: () => this.handleStartGame(),
     });
+
+    this.setView(view);
   }
 
-  renderGame() {
-    this.startGameNode?.destroy();
-    this.startGameNode = null;
-    this.node.innerHTML = '';
+  renderGameView() {
+    this.portal.unmount();
 
     const {
       shelfIngredients,
@@ -139,34 +159,122 @@ export class App extends Component {
       lives,
       maxLives,
     } = this.store.getState();
-    if (!currentRecipe) {
-      return;
-    }
-    this.header = new Header({
+
+    const view = new Component({
       parentNode: this.node,
+      tagName: 'div',
+      className: 'app-game-view',
+    });
+
+    // header
+    new Header({
+      parentNode: view.node,
       maxLives,
       currentLivesCount: lives,
     });
 
-    this.main = new Component({
-      parentNode: this.node,
+    // main
+    const main = new Component({
+      parentNode: view.node,
       tagName: 'main',
       className: 'app-main',
     });
 
     new Game({
-      parentNode: this.main.node,
+      parentNode: main.node,
       ingredients: shelfIngredients,
-      currentRecipe,
+      currentRecipe: currentRecipe as RecipeType,
       currentIngredientsCount: cauldronIngredients.length,
       maxIngredients,
     });
 
-    this.footer = new Footer({ parentNode: this.node, callback: () => this.store.brewCheck() });
+    // footer
+    new Footer({
+      parentNode: view.node,
+      callback: () => this.store.brewCheck(),
+    });
+
+    this.setView(view);
+  }
+
+  renderGameOverView(score: number, isRecord: boolean) {
+    this.portal.unmount();
+
+    const view = new GameOver({
+      parentNode: this.node,
+      score,
+      isRecord,
+    });
+
+    this.setView(view);
+  }
+
+  renderLeaderboardDialog() {
+    const state = this.store.getState();
+
+    if (state.status === PLAYING) {
+      this.store.pauseGame();
+    }
+
+    const view = new Leaderboard({
+      parentNode: null,
+      onBack: () => this.closeLeaderboardDialog(),
+      onClean: () => this.store.clearLeaderboard(),
+    });
+
+    this.portal.mount(view.node, view);
+    this.portal.setBlur();
+  }
+
+  renderPauseDialog() {
+    const pause = new Pause({
+      parentNode: null,
+      onBack: () => {
+        this.store.startNewGame();
+        this.renderStartView();
+      },
+      onContinue: () => {
+        this.store.resumeGame();
+      },
+    });
+
+    this.portal.mount(pause.node, pause);
+    this.portal.onClose = () => this.store.resumeGame();
+    this.portal.setBlur();
+  }
+
+  renderRulesDialog() {
+    const state = this.store.getState();
+
+    if (state.status === PLAYING) {
+      this.store.pauseGame();
+    }
+
+    const rules = new Rules({
+      parentNode: null,
+      onClose: () => {
+        if (this.store.getState().status === PAUSED) {
+          this.store.resumeGame();
+        }
+        this.portal.unmount();
+      },
+    });
+
+    this.portal.mount(rules.node, rules);
+    this.portal.setBlur();
+  }
+
+  closeLeaderboardDialog() {
+    const state = this.store.getState();
+
+    if (state.status === PAUSED) {
+      this.store.resumeGame();
+    }
+
+    this.portal.unmount();
   }
 
   public handleStartGame = () => {
     this.store.startNewGame();
-    this.renderGame();
   };
 }

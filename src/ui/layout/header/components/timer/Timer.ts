@@ -1,7 +1,7 @@
 import { GAME_EVENTS } from '@constants';
 import { store } from '@store';
 import type { ParentNodeType } from '@types';
-import { Component, Icon } from '@ui';
+import { Button, Component, Icon } from '@ui';
 
 type TimerProps = ParentNodeType;
 
@@ -20,11 +20,22 @@ export class Timer extends Component {
   }
 
   render() {
-    new Icon({
+    const btnWrap = new Component({
       parentNode: this.node,
-      icon: 'clock',
-      className: 'app-timer_icon',
-      variant: 'magic',
+      tagName: 'div',
+      className: 'app-timer_btn-wrap',
+    });
+    new Button({
+      parentNode: btnWrap.node,
+      leftIcon: 'clock',
+      className: 'app-timer_btn-wrap_btn',
+      color: 'magic-icon-2',
+      onClick: () => store.pauseGame(),
+    });
+    new Icon({
+      parentNode: btnWrap.node,
+      icon: 'pause',
+      className: 'app-timer_btn-wrap_pause',
     });
 
     new Component({

@@ -75,21 +75,22 @@ class Store {
     this.state.status = C.PLAYING;
     this.setTimer();
 
-    return this.getState();
+    this.emit(C.GAME_EVENTS.GAME_START, this.state);
   };
 
   pauseGame() {
     this.timer.stop();
-    this.update({ status: C.PAUSED });
-    this.emit(C.GAME_EVENTS.PAUSE, true);
 
     const remaining = Math.max(0, Math.floor((this.state.endTimestamp - Date.now()) / 1000));
 
-    this.update({ timeLeft: remaining });
-    this.timer.stop();
-    this.update({ status: C.PAUSED });
+    this.update({
+      status: C.PAUSED,
+      timeLeft: remaining,
+    });
 
     this.saveToStorage('GAME_STATE', this.state);
+
+    this.emit(C.GAME_EVENTS.PAUSE, { auto: false });
   }
 
   resumeGame() {
@@ -97,7 +98,7 @@ class Store {
 
     const newEnd = Date.now() + this.state.timeLeft * 1000;
 
-    this.update({ endTimestamp: newEnd, status: C.PLAYING });
+    this.update({ endTimestamp: newEnd });
 
     this.timer.start(
       this.state.timeLeft,
@@ -107,11 +108,13 @@ class Store {
       },
       () => this.gameOver(),
     );
+    this.emit(C.GAME_EVENTS.RESUME, this.state);
   }
 
   resetGameState() {
     this.state = {
       ...this.state,
+      status: C.MENU,
       score: 0,
       lives: C.LIVES[this.state.difficulty],
       timeLeft: 0,
@@ -157,7 +160,11 @@ class Store {
     this.update({ status: C.GAME_OVER });
     this.resetGameState();
     this.clearStorage('GAME_STATE');
-    this.emit(C.GAME_EVENTS.GAME_OVER, { isOver: true });
+
+    this.emit(C.GAME_EVENTS.GAME_OVER, {
+      isRecord: this.checkLeaderboard(),
+      score: this.state.score,
+    });
   }
 
   public continueGame() {
@@ -165,15 +172,14 @@ class Store {
     if (!saved) return;
 
     this.state = saved as GameState;
-    this.update({ status: C.PLAYING });
 
-    const remaining = Math.max(
-      0,
-      Math.floor(((saved as GameState).endTimestamp - Date.now()) / 1000),
-    );
+    const remaining = Math.max(0, Math.floor(this.state.endTimestamp - Date.now()) / 1000);
 
-    this.update({ timeLeft: remaining });
-    this.resumeGame();
+    this.update({
+      timeLeft: remaining,
+      status: C.PAUSED,
+    });
+
     this.emit(C.GAME_EVENTS.RESUME, this.state);
   }
 
@@ -344,6 +350,62 @@ class Store {
 
   private clearStorage(key: StorageKeysType) {
     storage.clear(key);
+  }
+
+  public pageHidden(remaining: number) {
+    this.timer.stop();
+
+    this.update({
+      status: C.PAUSED,
+      timeLeft: remaining,
+    });
+
+    this.saveToStorage('GAME_STATE', this.state);
+
+    this.emit(C.GAME_EVENTS.PAUSE, { auto: true });
+  }
+
+  checkLeaderboard() {
+    if (this.leaderBoard.length < 10) return true;
+
+    const minTopScore = this.leaderBoard.at(-1)?.score ?? 0;
+    return this.state.score >= minTopScore;
+  }
+
+  public submitScore(name: string) {
+    const score = this.state.score;
+    const date = new Date();
+
+    this.setToLeaderboard({ name, score, date });
+  }
+
+  public setToLeaderboard({ name, score, date }: LeaderboardRowType) {
+    this.leaderBoard.push({ name, score, date });
+
+    this.leaderBoard.sort((a, b) => b.score - a.score);
+
+    this.leaderBoard = this.leaderBoard.slice(0, 10);
+
+    this.saveToStorage('LEADERBOARD', this.leaderBoard);
+
+    this.emit(C.GAME_EVENTS.LEADERBOARD_UPDATED, this.leaderBoard);
+  }
+
+  public clearLeaderboard() {
+    this.leaderBoard = [];
+    this.saveToStorage('LEADERBOARD', this.leaderBoard);
+    this.emit(C.GAME_EVENTS.LEADERBOARD_UPDATED, this.leaderBoard);
+  }
+
+  public showLeaderboard() {
+    const leaderboard = this.loadFromStorage('LEADERBOARD');
+    if (!leaderboard) return;
+    this.leaderBoard = leaderboard as LeaderboardRowType[];
+    this.emit(C.GAME_EVENTS.LEADERBOARD_UPDATED, this.leaderBoard);
+  }
+
+  public showRules() {
+    this.emit(C.GAME_EVENTS.SHOW_RULES, true);
   }
 }
 

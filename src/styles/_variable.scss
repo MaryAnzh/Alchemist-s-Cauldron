@@ -54,7 +54,7 @@
 
   /* state */
   --color-warning: #ffb703;
-  --color-error: #e63946;
+  --color-error: #dda4a9;
   --color-info: #219ebc;
 
   /* liquids  */
@@ -94,6 +94,7 @@
     rgba(180, 200, 255, 0.45) 65%,
     rgba(0, 0, 0, 0.8) 100%
   );
+  --game-over-text: linear-gradient(180deg, #9fffa8 0%, #4cff5a 60%, #1a3f1d 100%);
 
   --portal-bg: rgba(0, 0, 0, 0.4);
 
@@ -120,6 +121,11 @@
   --shadow-dialog: 0 12px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(123, 44, 191, 0.15);
   --shadow-btn: 0 4px 12px rgba(0, 0, 0, 0.4);
 
+  --input-bg: #090909;
+  --input-bg-focus: #252222;
+  --input-placeholder: #b6a479;
+  --input-text-color: #dbd1b9;
+
   /* 14px */
   --font-size-sm: 0.875rem;
   /* 16px */
@@ -135,4 +141,13 @@
   --heading-sm: 24px;
   --heading-md: 32px;
   --heading-lg: 48px;
+
+  --dialog-width-md: 500px;
+  --dialog-width-lg: 760px;
+  --dialog-width-xlg: 1024px;
+
+  --scrollbar-border-color: #5a4632;
+  --scrollbar-bg: #b89c74;
+
+  --scrollbar-border-color-2: #3a2a1a --dropdown-width: 260px;
 }
