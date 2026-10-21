@@ -102,13 +102,78 @@
   }
 }
 
-@media (min-width: $tablet) {
+@media (max-width: $tablet) {
   .app-leaderboard {
-    padding: var(--size-4);
+    padding: var(--size-1);
+
+    &_wrap {
+      gap: var(--size-2);
+      padding: var(--size-1);
+      margin: var(--size-2);
+
+      &:before {
+        inset: calc(var(--size-2) * -1);
+      }
+
+      &_title {
+        font-size: var(--heading-sm);
+        text-align: center;
+      }
+
+      &_table {
+        margin: var(--size-2) 0;
+
+        th {
+          padding: var(--size-1) var(--size-05);
+        }
+        td {
+          border-bottom: 1.5px solid var(--color-table-line);
+          padding: var(--size-1) var(--size-05);
+        }
+
+        tr {
+          td {
+            border-right: var(--border-md) solid var(--color-table-line);
+          }
+
+          td:last-child {
+            border-right: none;
+          }
+        }
+
+        border-top-left-radius: var(--radius-md);
+        border-top-right-radius: var(--radius-md);
+
+        &_body {
+          font-size: var(--font-size-sm);
+          tr {
+            td:nth-of-type(2) {
+              width: 60%;
+            }
+          }
+        }
+      }
+
+      &_actions {
+        flex-direction: column;
+        gap: var(--size-1);
+        button {
+          align-self: center;
+          &:nth-of-type(2) {
+            padding-left: var(--size-3);
+            padding-right: var(--size-3);
+
+            svg {
+              display: none;
+            }
+          }
+        }
+      }
+    }
   }
 }
 
-@media (min-width: $laptop) {
+@media (max-width: $laptop) {
   .app-leaderboard {
     padding: var(--size-6);
   }

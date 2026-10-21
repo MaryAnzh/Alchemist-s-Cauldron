@@ -53,7 +53,7 @@ export class Footer extends Component {
       parentNode: this.node,
       className: `${this.currentClassName}_rules-btn`,
       color: 'magic-icon',
-      text: 'Rules',
+      leftIcon: 'book',
       onClick: () => {
         store.showRules();
       },

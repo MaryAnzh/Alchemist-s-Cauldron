@@ -2,7 +2,7 @@ export const INGREDIENTS = [
   {
     id: 'dragon_tears',
     name: 'Dragon Tears',
-    icon: 'symbol',
+    icon: 'dragon',
     temperature: 25,
     density: 8,
     magicPower: 10,

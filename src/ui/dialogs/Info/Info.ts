@@ -24,12 +24,6 @@ export class Info extends Component {
     timeLeft: number,
     onClose: () => void,
   ) {
-    new Icon({
-      parentNode: this.node,
-      icon: 'parchment_horizontal',
-      className: 'app-info_bg',
-    });
-
     new Component({
       parentNode: this.node,
       tagName: 'h2',

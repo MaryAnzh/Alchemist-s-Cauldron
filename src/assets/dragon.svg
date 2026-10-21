@@ -1,0 +1,147 @@
+<svg width="128" height="160" viewBox="0 0 128 160" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Gold -->
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FFF1B5"/>
+      <stop offset="35%" stop-color="#EDCB72"/>
+      <stop offset="70%" stop-color="#C8933D"/>
+      <stop offset="100%" stop-color="#85571C"/>
+    </linearGradient>
+
+    <!-- Glass outline -->
+    <linearGradient id="glassOuter" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#EEF6FF"/>
+      <stop offset="100%" stop-color="#88A7D7"/>
+    </linearGradient>
+
+    <!-- Inner glass -->
+    <linearGradient id="glassInner" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#B6D7FF"/>
+    </linearGradient>
+
+    <!-- Lid -->
+    <linearGradient id="lid" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFE9A7"/>
+      <stop offset="50%" stop-color="#D8AD56"/>
+      <stop offset="100%" stop-color="#A16C27"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Lid -->
+  <rect
+    x="36"
+    y="12"
+    width="56"
+    height="18"
+    rx="5"
+    fill="url(#lid)"
+    stroke="url(#gold)"
+    stroke-width="2"
+  />
+
+  <!-- Lid highlight -->
+  <rect
+    x="42"
+    y="15"
+    width="44"
+    height="4"
+    rx="2"
+    fill="#FFF5D0"
+    opacity="0.7"
+  />
+
+  <!-- Bottle Outer -->
+  <path
+    d="
+      M46 30
+      L46 42
+      C46 49 34 55 34 72
+      L34 128
+      C34 145 46 152 64 152
+      C82 152 94 145 94 128
+      L94 72
+      C94 55 82 49 82 42
+      L82 30
+    "
+    fill="none"
+    stroke="url(#glassOuter)"
+    stroke-width="4"
+    stroke-linejoin="round"
+  />
+
+  <!-- Bottle Inner -->
+  <path
+    d="
+      M50 34
+      L50 44
+      C50 50 40 57 40 72
+      L40 124
+      C40 137 49 144 64 144
+      C79 144 88 137 88 124
+      L88 72
+      C88 57 78 50 78 44
+      L78 34
+    "
+    fill="none"
+    stroke="url(#glassInner)"
+    stroke-width="2"
+  />
+
+  <!-- Glass highlight -->
+  <path
+    d="
+      M46 52
+      C42 60 42 72 42 90
+      C42 105 45 116 52 126
+    "
+    fill="none"
+    stroke="#FFFFFF"
+    stroke-width="3"
+    stroke-linecap="round"
+    opacity="0.85"
+  />
+
+  <!-- Dragon teeth -->
+  <g fill="#F7E6C0" stroke="url(#gold)" stroke-width="1.5">
+
+    <path d="M52 122 L58 78 L64 122 Z"/>
+    <path d="M64 124 L70 68 L76 124 Z"/>
+
+    <path d="M43 125 L47 88 L52 125 Z"/>
+    <path d="M77 125 L82 86 L87 125 Z"/>
+
+    <path d="M56 132 L61 100 L66 132 Z"/>
+    <path d="M68 132 L73 96 L78 132 Z"/>
+
+  </g>
+
+  <!-- Internal magic dust -->
+  <g fill="#FFEBA8">
+
+    <circle cx="50" cy="70" r="1.5"/>
+    <circle cx="58" cy="60" r="1"/>
+    <circle cx="74" cy="72" r="1.8"/>
+
+    <circle cx="80" cy="54" r="1.2"/>
+    <circle cx="65" cy="48" r="1"/>
+
+    <circle cx="52" cy="96" r="1"/>
+    <circle cx="83" cy="112" r="1.4"/>
+
+  </g>
+
+  <!-- Sparkles -->
+  <g stroke="#FFF5CC" stroke-width="1.5">
+
+    <path d="M52 56 L52 62"/>
+    <path d="M49 59 L55 59"/>
+
+    <path d="M79 88 L79 94"/>
+    <path d="M76 91 L82 91"/>
+
+    <path d="M62 78 L62 82"/>
+    <path d="M60 80 L64 80"/>
+
+  </g>
+</svg>

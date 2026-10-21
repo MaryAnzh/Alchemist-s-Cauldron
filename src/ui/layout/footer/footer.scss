@@ -9,12 +9,19 @@
   justify-content: space-between;
   align-items: center;
   padding: var(--size-2) var(--size-3);
+  &_rules-btn {
+  }
 }
 
 .app-start-menu {
   display: flex;
   gap: var(--size-3);
   align-items: center;
+
+  &_rules-btn {
+    width: var(--size-6);
+    height: var(--size-6);
+  }
 }
 
 @media (max-width: $tablet) {

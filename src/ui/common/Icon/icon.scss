@@ -111,6 +111,12 @@
       width: var(--size-3);
       height: var(--size-3);
     }
+
+    &_size-md {
+      & svg {
+        width: var(--size-3);
+      }
+    }
   }
 }
 

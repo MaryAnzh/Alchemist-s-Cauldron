@@ -22,7 +22,7 @@ export class Input extends Component {
       parentNode: this.node,
       tagName: 'input',
       className: 'app-input_field',
-      attrs: { placeholder, maxlength },
+      attrs: { placeholder, maxlength, autofill: 'off' },
     });
 
     this.errorNode = new Component({
