@@ -1,7 +1,7 @@
 import { GAME_EVENTS } from '@constants';
 import { store } from '@store';
 import type { IconPickerType, IngredientType, ParentNodeType } from '@types';
-import { Component, Icon } from '@ui';
+import { Button, Component, Icon } from '@ui';
 
 type IngredientsProps = ParentNodeType & { ingredients: IngredientType[] };
 
@@ -118,6 +118,18 @@ export class IngredientsList extends Component {
         iconNode: ingIcon.node,
         count: count ?? null,
       });
+    });
+
+    const mobile = new Component({
+      parentNode: this.node,
+      className: 'app-ingredients_mobile',
+      tagName: 'div',
+    });
+
+    new Button({
+      parentNode: mobile.node,
+      leftIcon: 'battle',
+      color: 'magic-icon-2',
     });
   }
 }

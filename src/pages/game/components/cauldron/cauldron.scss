@@ -6,13 +6,13 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: var(--size-2);
+  gap: var(--size-6);
   align-items: center;
 
   &_title {
     text-align: center;
     font-family: var(--font-title);
-    font-size: var(--font-size-xl);
+    font-size: var(--font-size-xxl);
     font-weight: var(--weight-regular);
     letter-spacing: -1.3px;
     transform: scaleX(0.85);
@@ -39,10 +39,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    padding-bottom: var(--size-6);
 
     &_cauldron {
-      max-width: 100%;
-      width: var(--ui-cauldron-width);
+      width: 100%;
+      max-width: var(--ui-cauldron-width);
       padding-bottom: var(--size-2);
       z-index: 1;
     }
@@ -55,16 +56,31 @@
   }
 }
 
-@media (min-width: $laptop) {
+@media (max-width: $laptop) {
   .app-cauldron {
-    gap: var(--size-6);
+    gap: var(--size-2);
 
     &_title {
-      font-size: var(--font-size-xxl);
+      font-size: var(--heading-lg);
     }
 
     &_cauldron-wrap {
-      padding-bottom: var(--size-6);
+      margin-top: var(--size-6);
+    }
+  }
+}
+
+@media (max-width: $tablet) {
+  .app-cauldron {
+    gap: var(--size-2);
+
+    &_title {
+      font-size: var(--heading-sm);
+      display: none;
+    }
+
+    &_cauldron-wrap {
+      padding-bottom: var(--size-1);
     }
   }
 }

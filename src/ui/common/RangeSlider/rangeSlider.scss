@@ -6,7 +6,7 @@
   align-items: center;
   grid-template-columns: var(--size-5) auto;
   grid-template-rows: 1fr var(--size-5);
-  gap: var(--size-05) var(--size-1);
+  gap: var(--size-05) var(--size-2);
 
   &_title {
     grid-row: 1/2;

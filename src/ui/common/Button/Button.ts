@@ -2,7 +2,7 @@ import type { IconPickerType, ParentNodeType } from '@types';
 import { Component } from '@ui';
 import { ICON_PICKER } from '@constants';
 
-type ColorType = 'magic' | 'magic-icon' | 'arrow-right' | 'arrow-left';
+type ColorType = 'magic' | 'magic-icon' | 'arrow-right' | 'arrow-left' | 'magic-icon-2';
 
 export type ButtonProps = ParentNodeType & {
   className?: string;
@@ -87,6 +87,13 @@ export class Button extends Component {
       tagName: 'span',
       content: text,
     });
+  }
+
+  public setLeftIcon(icon: IconPickerType) {
+    if (!this.text) {
+      this.node.innerHTML = '';
+      this.node.insertAdjacentHTML('beforeend', ICON_PICKER[icon]);
+    }
   }
 
   public setText(text: string) {

@@ -84,6 +84,13 @@
   background: var(--scrollbar-bg);
 }
 
+@media (max-width: $tablet) {
+  ::-webkit-scrollbar {
+    width: 0;
+    display: none;
+  }
+}
+
 ul,
 li {
   list-style: none;

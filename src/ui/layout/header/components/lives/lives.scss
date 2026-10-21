@@ -1,3 +1,5 @@
+@use '../../../../../styles/mixin/media.scss' as *;
+
 .app-lives {
   display: flex;
   gap: var(--size-1);
@@ -5,5 +7,12 @@
 
   svg {
     height: var(--size-4);
+  }
+}
+@media (max-width: $tablet) {
+  .app-lives {
+    svg {
+      height: var(--size-3);
+    }
   }
 }

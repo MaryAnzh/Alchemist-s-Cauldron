@@ -29,7 +29,7 @@ export class Timer extends Component {
       parentNode: btnWrap.node,
       leftIcon: 'clock',
       className: 'app-timer_btn-wrap_btn',
-      color: 'magic-icon',
+      color: 'magic-icon-2',
       onClick: () => store.pauseGame(),
     });
     new Icon({

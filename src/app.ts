@@ -90,20 +90,20 @@ export class App extends Component {
     });
 
     // visibilitychange - auto pause
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden) {
-        this.isDocumentHidden = true;
-        const state = store.getState();
-        if (state.status === PLAYING) {
-          const remaining = Math.max(0, Math.floor((state.endTimestamp - Date.now()) / 1000));
+    // document.addEventListener('visibilitychange', () => {
+    //   if (document.hidden) {
+    //     this.isDocumentHidden = true;
+    //     const state = store.getState();
+    //     if (state.status === PLAYING) {
+    //       const remaining = Math.max(0, Math.floor((state.endTimestamp - Date.now()) / 1000));
 
-          this.store.pageHidden(remaining);
-          this.renderPauseDialog();
-        }
-      } else {
-        this.isDocumentHidden = false;
-      }
-    });
+    //       this.store.pageHidden(remaining);
+    //       this.renderPauseDialog();
+    //     }
+    //   } else {
+    //     this.isDocumentHidden = false;
+    //   }
+    // });
 
     // Space pause
     document.addEventListener('keydown', (e) => {

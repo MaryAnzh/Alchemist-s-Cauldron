@@ -1,4 +1,4 @@
-import { GAME_EVENTS } from '@constants';
+import { BOTTOM, GAME_EVENTS, TOP } from '@constants';
 import { store } from '@store';
 import type { ParentNodeType } from '@types';
 import { Component, Menu } from '@ui';
@@ -11,6 +11,15 @@ export class Footer extends Component {
   callback: () => void;
   mainBtn!: Button;
   currentClassName = ';';
+
+  menuSettings = [
+    { name: 'Difficulty', callback: () => {}, isDisabled: true },
+    { name: 'Continue last game', callback: () => {}, isDisabled: true },
+    { name: 'Start new game', callback: () => store.startNewGame(), isDisabled: false },
+    { name: 'Leaderboard', callback: () => store.showLeaderboard(), isDisabled: false },
+  ];
+  menu: Menu | null = null;
+  rulesBtn: Button | null = null;
 
   constructor({ parentNode, isStartState, callback }: FooterProps) {
     super({
@@ -40,7 +49,7 @@ export class Footer extends Component {
   }
 
   render() {
-    new Button({
+    this.rulesBtn = new Button({
       parentNode: this.node,
       className: `${this.currentClassName}_rules-btn`,
       color: 'magic-icon',
@@ -63,15 +72,19 @@ export class Footer extends Component {
       this.mainBtn.setDisabled(true);
     }
 
-    new Menu({
+    this.menu = new Menu({
       parentNode: this.node,
       className: `${this.currentClassName}_menu`,
-      position: this.isStartState ? 'bottom' : 'top',
+      position: this.isStartState ? BOTTOM : TOP,
+      triggerIcon: 'settings',
+      items: this.menuSettings,
     });
   }
 
   destroy(): void {
-    this.mainBtn.node.onclick = null;
+    this.rulesBtn?.destroy();
+    this.mainBtn.destroy();
+    this.menu?.destroy();
 
     super.destroy();
   }

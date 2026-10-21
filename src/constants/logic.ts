@@ -19,7 +19,7 @@ export const TIMER = {
     bonus: 15,
   },
   [MEDIUM]: {
-    gameTime: 160,
+    gameTime: 3600, //160,
     bonus: 10,
   },
   [HARD]: {

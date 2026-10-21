@@ -8,7 +8,6 @@
   gap: var(--size-2);
   z-index: 11;
 
-  margin: var(--size-2);
   border-radius: var(--radius-lg);
   background-color: var(--color-bg-light);
 
@@ -22,6 +21,7 @@
     border-radius: inherit;
     opacity: 0.8;
   }
+
   &_title {
     font-family: var(--font-title);
     font-size: var(--heading-lg);
