@@ -151,6 +151,9 @@
 
         border-top-left-radius: var(--radius-md);
         border-top-right-radius: var(--radius-md);
+        &_head {
+          font-size: var(--font-size-sm);
+        }
 
         &_body {
           font-size: var(--font-size-sm);

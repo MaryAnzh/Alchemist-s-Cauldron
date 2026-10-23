@@ -1,12 +1,15 @@
-import type { ParentNodeType, LeaderboardRowType } from '@types';
+import { EASY, HARD, MEDIUM } from '@constants';
+import type { ParentNodeType, LeaderboardStorageType, GameDifficultType } from '@types';
 import { Button, Component, Icon } from '@ui';
 import { formatDate } from '@utils';
 
 type LeaderboardProps = ParentNodeType & {
   onBack: () => void;
   onClean: () => void;
-  data: LeaderboardRowType[];
+  data: LeaderboardStorageType;
 };
+
+const DIFFICULTIES: GameDifficultType[] = [EASY, MEDIUM, HARD];
 
 export class Leaderboard extends Component {
   constructor({ parentNode, onBack, onClean, data }: LeaderboardProps) {
@@ -15,7 +18,7 @@ export class Leaderboard extends Component {
     this.render(data, onBack, onClean);
   }
 
-  render(leaders: LeaderboardRowType[], onBack: () => void, onClean: () => void) {
+  render(leaders: LeaderboardStorageType, onBack: () => void, onClean: () => void) {
     const wrap = new Component({
       parentNode: this.node,
       tagName: 'div',
@@ -42,12 +45,16 @@ export class Leaderboard extends Component {
       className: 'app-leaderboard_wrap_table_head',
     });
 
+    const rows = DIFFICULTIES.flatMap((difficulty) =>
+      leaders[difficulty].map((row, index) => ({ ...row, difficulty, rank: index })),
+    );
+
     const headRow = new Component({
       parentNode: thead.node,
       tagName: 'tr',
     });
 
-    ['Rank', 'Name', 'Score', 'Date'].forEach((title) => {
+    ['Rank', 'Name', 'Score', 'Difficulty', 'Date'].forEach((title) => {
       new Component({
         parentNode: headRow.node,
         tagName: 'th',
@@ -62,19 +69,18 @@ export class Leaderboard extends Component {
       className: 'app-leaderboard_wrap_table_body',
     });
 
-    leaders.forEach((row, index) => {
+    rows.forEach((row) => {
       const tr = new Component({
         parentNode: tbody.node,
         tagName: 'tr',
       });
 
-      // Rank + icon
       const iconWrap = new Component({
         parentNode: tr.node,
         tagName: 'td',
-        content: index >= 3 ? (index + 1).toString() : undefined,
+        content: row.rank >= 3 ? (row.rank + 1).toString() : undefined,
       });
-      if (index <= 2) {
+      if (row.rank <= 2) {
         new Icon({
           parentNode: iconWrap.node,
           icon: 'place_1',
@@ -82,18 +88,13 @@ export class Leaderboard extends Component {
         });
       }
 
+      new Component({ parentNode: tr.node, tagName: 'td', content: row.name });
+      new Component({ parentNode: tr.node, tagName: 'td', content: String(row.score) });
       new Component({
         parentNode: tr.node,
         tagName: 'td',
-        content: row.name,
+        content: row.difficulty[0].toUpperCase() + row.difficulty.slice(1),
       });
-
-      new Component({
-        parentNode: tr.node,
-        tagName: 'td',
-        content: String(row.score),
-      });
-
       new Component({
         parentNode: tr.node,
         tagName: 'td',

@@ -12,7 +12,7 @@ import {
   GameOver,
   Leaderboard,
 } from '@ui';
-import type { LeaderboardRowType, RecipeType } from '@types';
+import type { LeaderboardStorageType, RecipeType } from '@types';
 import { Rules } from './ui/dialogs/Rules/Rules';
 
 export class App extends Component {
@@ -196,7 +196,7 @@ export class App extends Component {
     this.setView(view);
   }
 
-  renderLeaderboardDialog(leaderboard: LeaderboardRowType[]) {
+  renderLeaderboardDialog(leaderboard: LeaderboardStorageType) {
     const state = this.store.getState();
 
     if (state.status === PLAYING) {

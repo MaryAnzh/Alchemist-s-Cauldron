@@ -437,22 +437,23 @@ class Store {
     }
 
     this.saveToStorage('LEADERBOARD', this.leaderBoard);
-    this.emit(C.GAME_EVENTS.SHOW_LEADERBOARD, this.leaderBoard[this.state.difficulty]);
+    this.emit(C.GAME_EVENTS.SHOW_LEADERBOARD, this.leaderBoard);
   }
 
   public clearLeaderboard() {
-    this.leaderBoard[this.state.difficulty] = [];
+    this.leaderBoard = { easy: [], medium: [], hard: [] };
 
     this.saveToStorage('LEADERBOARD', this.leaderBoard);
-    this.emit(C.GAME_EVENTS.SHOW_LEADERBOARD, this.leaderBoard[this.state.difficulty]);
+    this.emit(C.GAME_EVENTS.SHOW_LEADERBOARD, this.leaderBoard);
   }
 
   public showLeaderboard() {
     const leaderboard = this.loadFromStorage('LEADERBOARD');
-    if (!leaderboard) return;
+    if (leaderboard) {
+      this.leaderBoard = leaderboard as LeaderboardStorageType;
+    }
 
-    this.leaderBoard = leaderboard as LeaderboardStorageType;
-    this.emit(C.GAME_EVENTS.SHOW_LEADERBOARD, this.leaderBoard[this.state.difficulty]);
+    this.emit(C.GAME_EVENTS.SHOW_LEADERBOARD, this.leaderBoard);
   }
 
   public showRules() {
