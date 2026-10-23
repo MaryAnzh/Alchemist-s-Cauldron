@@ -1,27 +1,34 @@
 import { Component, Button, Input } from '@ui';
 import { store } from '@store';
-import type { ParentNodeType } from '@types';
+import type { GameOverReasonType, ParentNodeType } from '@types';
+
+const REASON_TEXT: Record<GameOverReasonType, string> = {
+  time: 'Time is up',
+  lives: 'No lives left',
+  ingredients: 'Out of ingredients',
+} as const;
 
 type GameOverProps = ParentNodeType & {
   isRecord: boolean;
   score: number;
+  reason: GameOverReasonType;
 };
 
 export class GameOver extends Component {
   private name = '';
   private inputNode: Input | null = null;
 
-  constructor({ parentNode, score, isRecord }: GameOverProps) {
+  constructor({ parentNode, score, isRecord, reason }: GameOverProps) {
     super({
       parentNode,
       tagName: 'div',
       className: 'app-game-over',
     });
 
-    this.render(score, isRecord);
+    this.render(score, isRecord, reason);
   }
 
-  private render(score: number, isRecord: boolean) {
+  private render(score: number, isRecord: boolean, reason: GameOverReasonType) {
     const wrap = new Component({
       parentNode: this.node,
       tagName: 'div',
@@ -33,6 +40,13 @@ export class GameOver extends Component {
       tagName: 'h1',
       className: 'app-game-over_wrap_title',
       content: 'GAME OVER',
+    });
+
+    new Component({
+      parentNode: wrap.node,
+      tagName: 'div',
+      className: 'app-game-over_wrap_reason',
+      content: REASON_TEXT[reason],
     });
 
     new Component({

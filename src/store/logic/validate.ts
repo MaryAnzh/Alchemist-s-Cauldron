@@ -25,7 +25,7 @@ const checkIngredient = (item: unknown): boolean => {
     Number.isFinite(i.density) &&
     Number.isFinite(i.temperature) &&
     Number.isFinite(i.magicPower) &&
-    (i.count === undefined || (Number.isFinite(i.count) && i.count >= 0))
+    (i.count === undefined || (Number.isInteger(i.count) && i.count >= 0 && i.count <= 15))
   );
 };
 
@@ -92,12 +92,12 @@ export const ValidateState = (state: unknown): boolean => {
   const s = state as Partial<GameState>;
 
   const isEasyLive =
-    s.difficulty === 'easy' && typeof s.lives === 'number' && s.lives <= 5 && s.lives >= 0;
+    s.difficulty === 'easy' && typeof s.lives === 'number' && s.lives <= 5 && s.lives >= 1;
   const isHardMediumLive =
     (s.difficulty === 'hard' || s.difficulty === 'medium') &&
     typeof s.lives === 'number' &&
     s.lives <= 3 &&
-    s.lives >= 0;
+    s.lives >= 1;
   const isValidLives = isEasyLive || isHardMediumLive;
 
   const isValidDifficulty =
@@ -113,7 +113,7 @@ export const ValidateState = (state: unknown): boolean => {
     s.score >= 0 &&
     typeof s.timeLeft === 'number' &&
     Number.isFinite(s.timeLeft) &&
-    s.timeLeft >= 0 &&
+    s.timeLeft > 0 &&
     s.maxIngredients === (s.difficulty === 'hard' ? 5 : 4) &&
     checkShelfArr(s.shelfIngredients, s.difficulty as GameDifficultType) &&
     checkRecipe(s.currentRecipe, s.difficulty as GameDifficultType) &&

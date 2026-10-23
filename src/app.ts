@@ -12,7 +12,7 @@ import {
   GameOver,
   Leaderboard,
 } from '@ui';
-import type { LeaderboardStorageType, RecipeType } from '@types';
+import type { GameOverReasonType, LeaderboardStorageType, RecipeType } from '@types';
 import { Rules } from './ui/dialogs/Rules/Rules';
 
 export class App extends Component {
@@ -40,11 +40,6 @@ export class App extends Component {
 
     store.subscribe(GAME_EVENTS.GAME_START, () => {
       this.renderGameView();
-    });
-
-    // GAME OVER
-    store.subscribe(GAME_EVENTS.GAME_OVER, ({ score, isRecord }) => {
-      this.renderGameOverView(score, isRecord);
     });
 
     // ROUND OVER
@@ -84,6 +79,11 @@ export class App extends Component {
 
     store.subscribe(GAME_EVENTS.SHOW_RULES, () => {
       this.renderRulesDialog();
+    });
+
+    // GAME OVER
+    store.subscribe(GAME_EVENTS.GAME_OVER, ({ score, isRecord, reason }) => {
+      this.renderGameOverView(score, isRecord, reason);
     });
 
     document.addEventListener('visibilitychange', () => {
@@ -184,13 +184,14 @@ export class App extends Component {
     this.setView(view);
   }
 
-  renderGameOverView(score: number, isRecord: boolean) {
+  renderGameOverView(score: number, isRecord: boolean, reason: GameOverReasonType) {
     this.portal.unmount();
 
     const view = new GameOver({
       parentNode: this.node,
       score,
       isRecord,
+      reason,
     });
 
     this.setView(view);

@@ -1,6 +1,6 @@
 import { GAME_EVENTS as GE } from '@constants';
 import type { GameState } from './state';
-import type { cauldronValuesType, RecipeType } from './data';
+import type { cauldronValuesType, GameOverReasonType, RecipeType } from './data';
 import type { LeaderboardStorageType } from './leaderboard';
 
 export type GameEventsPayload = {
@@ -9,7 +9,7 @@ export type GameEventsPayload = {
   [GE.SCORE_CHANGE]: number;
 
   [GE.GAME_START]: GameState;
-  [GE.GAME_OVER]: { isRecord: boolean; score: number };
+  [GE.GAME_OVER]: { isRecord: boolean; score: number; reason: GameOverReasonType };
   [GE.ROUND_OVER]: { score: number; lives: number; time: number; variant: 'success' | 'fail' };
   [GE.ROUND_START]: { isStart: boolean };
   [GE.PAUSE]: { auto: boolean };

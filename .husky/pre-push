@@ -13,9 +13,8 @@ echo "🔍 Running ESLint..."
 npm run lint
 eslint_status=$?
 
-echo
-echo "🎨 Running Prettier..."
-npm run format
+echo "🎨 Running Prettier check..."
+npx prettier --check .
 prettier_status=$?
 
 echo
@@ -23,9 +22,9 @@ echo "🎨 Running Build..."
 npm run build
 build_status=$?
 
-if [ $eslint_status -ne 0 ] || [ $prettier_status -ne 0 ]; then
+if [ $tsc_status -ne 0 ] || [ $eslint_status -ne 0 ] || [ $prettier_status -ne 0 ] || [ $build_status -ne 0 ]; then
   echo
-  echo "❌ Push aborted due to lint or format errors."
+  echo "❌ Push aborted: TSC, lint, format or build failed."
   exit 1
 fi
 

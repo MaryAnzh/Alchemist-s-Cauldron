@@ -26,3 +26,5 @@ export type IngredientType = {
 export type cauldronValuesType = Pick<IngredientType, 'temperature' | 'density' | 'magicPower'>;
 
 export type ReactionId = KeysTemplateType<typeof REACTION_IDS>;
+
+export type GameOverReasonType = 'time' | 'lives' | 'ingredients';

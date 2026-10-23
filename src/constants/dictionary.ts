@@ -14,6 +14,9 @@ export const {
   DIFFICULTY,
   SHOW_LEADERBOARD,
   START_NEW_GAME,
+  TIME,
+  LIVES_TITLE,
+  INGREDIENTS_TITLE,
 } = {
   EASY: 'easy',
   HARD: 'hard',
@@ -30,4 +33,7 @@ export const {
   DIFFICULTY: 'Difficulty',
   SHOW_LEADERBOARD: 'Leaderboard',
   START_NEW_GAME: 'Start New Game',
+  TIME: 'time',
+  LIVES_TITLE: 'lives',
+  INGREDIENTS_TITLE: 'ingredients',
 } as const;

@@ -8,6 +8,7 @@ import type {
   StorageKeysType,
   GameDifficultType,
   LeaderboardStorageType,
+  GameOverReasonType,
 } from '@types';
 
 import { GameTimer } from './logic/timer';
@@ -183,24 +184,24 @@ class Store {
     this.emit(C.GAME_EVENTS.SHELF_BLOCK, { isBlock: false });
     this.pickRandomRecipe();
     this.clearCauldron();
+    if (this.state.shelfIngredients.every((ing) => !ing.count)) {
+      this.gameOver('ingredients');
+      return;
+    }
+
     this.emit(C.GAME_EVENTS.ROUND_START, { isStart: true });
     this.saveGame();
   }
 
-  public gameOver() {
+  public gameOver(reason: GameOverReasonType = 'time') {
     const score = this.state.score;
     const isRecord = this.checkLeaderboard();
 
     this.timer.stop();
 
-    this.update({
-      status: C.GAME_OVER,
-    });
+    this.update({ status: C.GAME_OVER });
 
-    this.emit(C.GAME_EVENTS.GAME_OVER, {
-      score,
-      isRecord,
-    });
+    this.emit(C.GAME_EVENTS.GAME_OVER, { score, isRecord, reason });
 
     this.resetGameState();
     this.clearStorage('GAME_STATE');
@@ -341,7 +342,7 @@ class Store {
       this.roundOver('fail');
     }
     if (this.state.lives === 0) {
-      this.gameOver();
+      this.gameOver('lives');
     }
   }
 
