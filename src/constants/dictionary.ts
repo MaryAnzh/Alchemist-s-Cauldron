@@ -10,6 +10,10 @@ export const {
   SETTINGS,
   BOTTOM,
   TOP,
+  CONTINUE_GAME,
+  DIFFICULTY,
+  SHOW_LEADERBOARD,
+  START_NEW_GAME,
 } = {
   EASY: 'easy',
   HARD: 'hard',
@@ -22,4 +26,8 @@ export const {
   RULES: 'rules',
   TOP: 'top',
   BOTTOM: 'bottom',
+  CONTINUE_GAME: 'Continue Game',
+  DIFFICULTY: 'Difficulty',
+  SHOW_LEADERBOARD: 'Leaderboard',
+  START_NEW_GAME: 'Start New Game',
 } as const;

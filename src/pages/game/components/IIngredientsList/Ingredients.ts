@@ -58,6 +58,16 @@ export class IngredientsList extends Component {
       tagName: 'div',
       className: 'app-ingredients_list',
     });
+
+    if (this.ingredients.length === 0) {
+      new Component({
+        parentNode: wrap.node,
+        tagName: 'p',
+        className: 'app-ingredients_empty',
+        content: 'Shelf is empty',
+      });
+    }
+
     this.ingredients.forEach((ing) => {
       const { name, temperature, density, magicPower, count, id, icon } = ing;
 

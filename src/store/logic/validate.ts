@@ -2,6 +2,7 @@ import type {
   cauldronValuesType,
   GameDifficultType,
   GameState,
+  IngredientType,
   LeaderboardStorageType,
   RecipeType,
 } from '@types';
@@ -9,53 +10,48 @@ import type {
 const checkCauldronProps = (props: [number, number]): boolean =>
   Array.isArray(props) &&
   props.length === 2 &&
-  typeof props[0] === 'number' &&
-  typeof props[1] === 'number';
+  Number.isFinite(props[0]) &&
+  Number.isFinite(props[1]) &&
+  props[0] <= props[1];
 
-const checkIngredientsArr = (ing: unknown, d: GameDifficultType): boolean => {
-  if (!Array.isArray(ing)) return false;
-  const isCorrectLength =
-    (d === 'hard' && ing.length === 8) || ((d === 'easy' || d === 'medium') && ing.length === 6);
-
-  if (!isCorrectLength) return false;
-
-  let isCheck = true;
-  ing.forEach((item) => {
-    if (!item || typeof item !== 'object') {
-      isCheck = false;
-      return;
-    }
-    const { id, icon, density, magicPower, temperature, name } = item;
-    const elCheck =
-      typeof id === 'string' &&
-      typeof icon === 'string' &&
-      typeof name === 'string' &&
-      checkCauldronProps(density) &&
-      checkCauldronProps(temperature) &&
-      checkCauldronProps(magicPower);
-    if (!elCheck) {
-      isCheck = false;
-    }
-  });
-  return isCheck;
+const checkIngredient = (item: unknown): boolean => {
+  if (!item || typeof item !== 'object') return false;
+  const i = item as Partial<IngredientType>;
+  return (
+    typeof i.id === 'string' &&
+    typeof i.icon === 'string' &&
+    typeof i.name === 'string' &&
+    Number.isFinite(i.density) &&
+    Number.isFinite(i.temperature) &&
+    Number.isFinite(i.magicPower) &&
+    (i.count === undefined || (Number.isFinite(i.count) && i.count >= 0))
+  );
 };
 
-const checkRecipe = (recipe: unknown): boolean => {
+const checkShelfArr = (arr: unknown, d: GameDifficultType): boolean => {
+  const size = d === 'hard' ? 8 : d === 'medium' ? 6 : 4;
+  return Array.isArray(arr) && arr.length === size && arr.every(checkIngredient);
+};
+
+const checkCauldronArr = (arr: unknown, maxIngredients: number): boolean =>
+  Array.isArray(arr) && arr.length <= maxIngredients && arr.every(checkIngredient);
+
+const checkRecipe = (recipe: unknown, difficulty: GameDifficultType): boolean => {
   if (!recipe || typeof recipe !== 'object') return false;
   const r = recipe as RecipeType;
   return (
-    typeof r.id === 'string' &&
+    Number.isFinite(r.id) &&
     typeof r.name === 'string' &&
-    (r.difficulty === 'easy' || r.difficulty === 'hard' || r.difficulty === 'medium') &&
+    r.difficulty === difficulty &&
     checkCauldronProps(r.temperature) &&
     checkCauldronProps(r.density) &&
     checkCauldronProps(r.magicPower)
   );
 };
 
-const checkRecipeArr = (recipes: unknown): boolean => {
+const checkRecipeArr = (recipes: unknown, difficulty: GameDifficultType): boolean => {
   if (!Array.isArray(recipes)) return false;
-  const invalidRecipes = recipes.filter((el) => !checkRecipe(el));
+  const invalidRecipes = recipes.filter((el) => !checkRecipe(el, difficulty));
   return invalidRecipes.length === 0;
 };
 
@@ -63,9 +59,7 @@ const checkCauldronValues = (values: unknown): boolean => {
   if (!values || typeof values !== 'object') return false;
   const v = values as cauldronValuesType;
   return (
-    typeof v.density === 'number' &&
-    typeof v.temperature === 'number' &&
-    typeof v.magicPower === 'number'
+    Number.isFinite(v.density) && Number.isFinite(v.temperature) && Number.isFinite(v.magicPower)
   );
 };
 
@@ -87,40 +81,35 @@ export const ValidateState = (state: unknown): boolean => {
     s.difficulty === 'easy' || s.difficulty === 'medium' || s.difficulty === 'hard';
 
   if (!isValidDifficulty || !isValidLives) return false;
-  // тут чекке пишет что returnvj;tn ,snm undefined  должно возвращать булиан как поправить не ломая логикув
   return (
     typeof s.playerName === 'string' &&
-    (s.status === 'menu' ||
-      s.status === 'playing' ||
-      s.status === 'game-over' ||
-      s.status === 'paused') &&
+    (s.status === 'playing' || s.status === 'paused') &&
     (s.level === 1 || s.level === 2 || s.level === 3) &&
     typeof s.score === 'number' &&
+    Number.isFinite(s.score) &&
     s.score >= 0 &&
     typeof s.timeLeft === 'number' &&
+    Number.isFinite(s.timeLeft) &&
     s.timeLeft >= 0 &&
-    typeof s.maxIngredients === 'number' &&
-    s.maxIngredients > 0 &&
-    Array.isArray(s.shelfIngredients) &&
-    checkIngredientsArr(s.shelfIngredients, s.difficulty as GameDifficultType) &&
-    (s.currentRecipe === null || checkRecipe(s.currentRecipe)) &&
-    Array.isArray(s.cauldronIngredients) &&
-    checkIngredientsArr(s.cauldronIngredients, s.difficulty as GameDifficultType) &&
+    s.maxIngredients === (s.difficulty === 'hard' ? 5 : 4) &&
+    checkShelfArr(s.shelfIngredients, s.difficulty as GameDifficultType) &&
+    checkRecipe(s.currentRecipe, s.difficulty as GameDifficultType) &&
+    checkCauldronArr(s.cauldronIngredients, s.maxIngredients) &&
     checkCauldronValues(s.cauldronValues) &&
     Array.isArray(s.recipes) &&
-    checkRecipeArr(s.recipes) &&
-    Boolean(s.activeReactions) &&
+    checkRecipeArr(s.recipes, s.difficulty as GameDifficultType) &&
     Array.isArray(s.activeReactions) &&
-    typeof s.startTimestamp === 'number' &&
-    ((s.endTimestamp !== undefined && typeof s.endTimestamp === 'number') ||
-      s.endTimestamp === undefined)
+    s.activeReactions.every((reaction) => typeof reaction === 'string') &&
+    (s.lastReactionId === null || typeof s.lastReactionId === 'string') &&
+    Number.isFinite(s.startTimestamp) &&
+    Number.isFinite(s.endTimestamp)
   );
 };
 
 export const ValidateLeaderboard = (
   data: LeaderboardStorageType,
 ): data is LeaderboardStorageType => {
-  if (typeof data !== 'object') return false;
+  if (!data || typeof data !== 'object') return false;
   if (!Array.isArray(data.easy)) return false;
   if (!Array.isArray(data.medium)) return false;
   if (!Array.isArray(data.hard)) return false;

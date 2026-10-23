@@ -17,6 +17,7 @@ import { ValidateLeaderboard, ValidateState } from './logic/validate';
 class Store {
   private events = new EventEmitter<GameEventsPayload>();
   private timer = new GameTimer();
+  private timerRunning = false;
   private leaderBoard: LeaderboardStorageType = { easy: [], medium: [], hard: [] };
   private storage: typeof storage;
 
@@ -86,21 +87,24 @@ class Store {
     this.pickRandomRecipe();
     this.state.status = C.PLAYING;
     this.setTimer();
+    this.saveGame();
 
     this.emit(C.GAME_EVENTS.GAME_START, this.state);
   };
 
   pauseGame() {
+    const remaining = this.timerRunning
+      ? Math.max(0, Math.floor((this.state.endTimestamp - Date.now()) / 1000))
+      : this.state.timeLeft;
     this.timer.stop();
-
-    const remaining = Math.max(0, Math.floor((this.state.endTimestamp - Date.now()) / 1000));
+    this.timerRunning = false;
 
     this.update({
       status: C.PAUSED,
       timeLeft: remaining,
     });
 
-    this.saveToStorage('GAME_STATE', this.state);
+    this.saveGame();
 
     this.emit(C.GAME_EVENTS.PAUSE, { auto: false });
   }
@@ -115,15 +119,21 @@ class Store {
     this.timer.start(
       this.state.timeLeft,
       (remaining) => {
+        const timeChanged = remaining !== this.state.timeLeft;
         this.update({ timeLeft: remaining });
         this.emit(C.GAME_EVENTS.TIMER_TICK, remaining);
+        if (timeChanged) this.saveGame();
       },
       () => this.gameOver(),
     );
+    this.timerRunning = true;
+    this.saveGame();
     this.emit(C.GAME_EVENTS.RESUME, this.state);
   }
 
   resetGameState() {
+    this.timer.stop();
+    this.timerRunning = false;
     this.state = {
       ...this.state,
       status: C.MENU,
@@ -131,6 +141,7 @@ class Store {
       lives: C.LIVES[this.state.difficulty],
       timeLeft: 0,
       currentRecipe: null,
+      recipes: [],
       cauldronIngredients: [],
       cauldronValues: { density: 0, magicPower: 0, temperature: 0 },
       shelfIngredients: [],
@@ -141,6 +152,8 @@ class Store {
 
   roundOver(variant: 'success' | 'fail') {
     this.timer.stop();
+    this.timerRunning = false;
+    this.saveGame();
     this.emit(C.GAME_EVENTS.ROUND_OVER, {
       score: this.state.score,
       lives: this.state.lives,
@@ -156,16 +169,20 @@ class Store {
     this.timer.start(
       this.state.timeLeft,
       (remaining) => {
+        const timeChanged = remaining !== this.state.timeLeft;
         this.update({ timeLeft: remaining });
         this.emit(C.GAME_EVENTS.TIMER_TICK, remaining);
+        if (timeChanged) this.saveGame();
       },
       () => this.gameOver(),
     );
+    this.timerRunning = true;
 
     this.emit(C.GAME_EVENTS.SHELF_BLOCK, { isBlock: false });
     this.pickRandomRecipe();
     this.clearCauldron();
     this.emit(C.GAME_EVENTS.ROUND_START, { isStart: true });
+    this.saveGame();
   }
 
   public gameOver() {
@@ -236,11 +253,14 @@ class Store {
     this.timer.start(
       initialTime,
       (remaining) => {
+        const timeChanged = remaining !== this.state.timeLeft;
         this.update({ timeLeft: remaining });
         this.emit(C.GAME_EVENTS.TIMER_TICK, remaining);
+        if (timeChanged) this.saveGame();
       },
       () => this.gameOver(),
     );
+    this.timerRunning = true;
   }
 
   /** Games Actions */
@@ -260,6 +280,7 @@ class Store {
       cauldronIngredients: ingredients,
       cauldronValues: values,
     });
+    this.saveGame();
 
     this.emit(C.GAME_EVENTS.CAULDRON_STATE_CHANGED, { values });
     if (ingredients.length === this.state.maxIngredients) {
@@ -341,9 +362,26 @@ class Store {
     storage.save(key, state);
   }
 
+  public saveGame() {
+    const { status, endTimestamp, timeLeft } = this.state;
+    if (status !== C.PLAYING && status !== C.PAUSED) return;
+
+    const remaining =
+      status === C.PLAYING && this.timerRunning
+        ? Math.max(0, Math.floor((endTimestamp - Date.now()) / 1000))
+        : timeLeft;
+
+    this.saveToStorage('GAME_STATE', { ...this.state, timeLeft: remaining });
+  }
+
   public loadFromStorage(key: StorageKeysType) {
     const saved = storage.load(key);
-    if (!saved) return null;
+    if (!saved) {
+      if (this.storage.hasSave(key)) {
+        this.clearStorage(key);
+      }
+      return null;
+    }
 
     if (key === 'GAME_STATE') {
       const Validate = ValidateState(saved);
@@ -351,9 +389,7 @@ class Store {
         this.storage.clear('GAME_STATE');
         return null;
       }
-
-      this.state = saved as GameState;
-      return this.state;
+      return saved as GameState;
     }
     if (key === 'LEADERBOARD') {
       const Validate = ValidateLeaderboard(saved as LeaderboardStorageType);
@@ -362,27 +398,13 @@ class Store {
         return null;
       }
 
-      this.leaderBoard = saved as LeaderboardStorageType;
-      return this.leaderBoard;
+      return saved as LeaderboardStorageType;
     }
     return null;
   }
 
   private clearStorage(key: StorageKeysType) {
     storage.clear(key);
-  }
-
-  public pageHidden(remaining: number) {
-    this.timer.stop();
-
-    this.update({
-      status: C.PAUSED,
-      timeLeft: remaining,
-    });
-
-    this.saveToStorage('GAME_STATE', this.state);
-
-    this.emit(C.GAME_EVENTS.PAUSE, { auto: true });
   }
 
   checkLeaderboard(): boolean {
@@ -450,12 +472,20 @@ class Store {
     const savedState = this.loadFromStorage('GAME_STATE') as GameState;
     if (!savedState) return;
 
+    this.timer.stop();
+    this.timerRunning = false;
     this.update({
       ...(savedState as GameState),
       endTimestamp: Date.now() + savedState.timeLeft * 1000,
     });
     this.emit(C.GAME_EVENTS.GAME_START, this.state);
     this.pauseGame();
+  }
+
+  public exitToMenu() {
+    this.timer.stop();
+    this.resetGameState();
+    this.clearStorage('GAME_STATE');
   }
 }
 

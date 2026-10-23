@@ -25,7 +25,6 @@ export class App extends Component {
   main: Component | null = null;
   footer: Footer | null = null;
   pause: Pause | null = null;
-  isDocumentHidden: boolean = false;
 
   startGameNode: StartGame | null = null;
 
@@ -45,7 +44,6 @@ export class App extends Component {
 
     // GAME OVER
     store.subscribe(GAME_EVENTS.GAME_OVER, ({ score, isRecord }) => {
-      if (this.isDocumentHidden) return;
       this.renderGameOverView(score, isRecord);
     });
 
@@ -88,21 +86,13 @@ export class App extends Component {
       this.renderRulesDialog();
     });
 
-    // visibilitychange - auto pause
-    // document.addEventListener('visibilitychange', () => {
-    //   if (document.hidden) {
-    //     this.isDocumentHidden = true;
-    //     const state = store.getState();
-    //     if (state.status === PLAYING) {
-    //       const remaining = Math.max(0, Math.floor((state.endTimestamp - Date.now()) / 1000));
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden && this.store.getState().status === PLAYING) {
+        this.store.pauseGame();
+      }
+    });
 
-    //       this.store.pageHidden(remaining);
-    //       this.renderPauseDialog();
-    //     }
-    //   } else {
-    //     this.isDocumentHidden = false;
-    //   }
-    // });
+    window.addEventListener('pagehide', () => this.store.saveGame());
 
     // Space pause
     document.addEventListener('keydown', (e) => {
@@ -228,7 +218,7 @@ export class App extends Component {
     const pause = new Pause({
       parentNode: null,
       onBack: () => {
-        this.store.startNewGame();
+        this.store.exitToMenu();
         this.renderStartView();
       },
       onContinue: () => {

@@ -17,12 +17,12 @@ export class Menu extends Component {
   private triggerIcon: IconPickerType;
   menuSettings = [
     {
-      name: 'Difficulty',
+      name: C.DIFFICULTY,
       callback: (difficulty: GameDifficultType) => store.changeDifficulty(difficulty),
     },
-    { name: 'Continue last game', callback: () => store.continueLastGame() },
-    { name: 'Start new game', callback: () => store.startNewGame() },
-    { name: 'Leaderboard', callback: () => store.showLeaderboard() },
+    { name: C.CONTINUE_GAME, callback: () => store.continueLastGame() },
+    { name: C.START_NEW_GAME, callback: () => store.startNewGame() },
+    { name: C.SHOW_LEADERBOARD, callback: () => store.showLeaderboard() },
   ];
   private difficultyRadios: { name: GameDifficultType; radio: HTMLElement }[] = [];
 
@@ -71,14 +71,14 @@ export class Menu extends Component {
     this.menuSettings.forEach(({ name, callback }) => {
       const { difficulty, status } = store.getState();
 
-      if (name === 'Difficulty') {
+      if (name === C.DIFFICULTY) {
         const li = new Component({
           parentNode: this.dropdownList.node,
           tagName: 'li',
           className: [
             'app-menu_dropdown_item_radios',
             'app-menu_dropdown_item',
-            status === 'playing' ? 'app-menu_dropdown_item_disabled' : '',
+            status !== C.MENU ? 'app-menu_dropdown_item_disabled' : '',
           ],
         });
         new Component({
@@ -125,14 +125,14 @@ export class Menu extends Component {
         content: name,
       });
       if (
-        name === 'Continue last game' &&
-        (status === 'playing' || !store.loadFromStorage('GAME_STATE'))
+        name === C.CONTINUE_GAME &&
+        (status === C.PLAYING || !store.loadFromStorage('GAME_STATE'))
       ) {
         li.node.classList.add('app-menu_dropdown_item_disabled');
         return;
       }
 
-      if (name === 'Start new game' && status === 'playing') {
+      if (name === C.START_NEW_GAME && status === 'playing') {
         li.node.classList.add('app-menu_dropdown_item_disabled');
         return;
       }
