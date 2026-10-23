@@ -94,3 +94,18 @@
     }
   }
 }
+
+@media (max-width: $laptop-md) {
+  .app-recipe {
+    &_wrap {
+      gap: var(--size-2);
+
+      &_title {
+        font-size: var(--heading-sm);
+      }
+      &_value-wrap {
+        font-size: var(--font-size-xsm);
+      }
+    }
+  }
+}

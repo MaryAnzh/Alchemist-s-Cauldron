@@ -1,33 +1,35 @@
 import * as C from '@constants';
-import type { ParentNodeType, IconPickerType } from '@types';
+import { store } from '@store';
+import type { ParentNodeType, IconPickerType, GameDifficultType } from '@types';
 import { Button, Component } from '@ui';
 
 type PositionType = typeof C.TOP | typeof C.BOTTOM;
-
-export type MenuItem = {
-  name: string;
-  callback: () => void;
-  isDisabled?: boolean;
-};
 
 type MenuProps = ParentNodeType & {
   className?: string;
   position?: PositionType;
   triggerIcon: IconPickerType;
-  items?: MenuItem[];
   nodes?: Component[];
 };
 
 export class Menu extends Component {
   // private position: PositionType;
   private triggerIcon: IconPickerType;
-  private items: MenuItem[] = [];
-  // private nodes: Component[] = [];
+  menuSettings = [
+    {
+      name: 'Difficulty',
+      callback: (difficulty: GameDifficultType) => store.changeDifficulty(difficulty),
+    },
+    { name: 'Continue last game', callback: () => store.continueLastGame() },
+    { name: 'Start new game', callback: () => store.startNewGame() },
+    { name: 'Leaderboard', callback: () => store.showLeaderboard() },
+  ];
+  private difficultyRadios: { name: GameDifficultType; radio: HTMLElement }[] = [];
 
   private dropdownList!: Component;
   private isDropdownOpen = false;
 
-  constructor({ parentNode, className, triggerIcon, items }: MenuProps) {
+  constructor({ parentNode, className, triggerIcon }: MenuProps) {
     super({
       parentNode,
       tagName: 'div',
@@ -35,7 +37,6 @@ export class Menu extends Component {
     });
 
     this.triggerIcon = triggerIcon;
-    this.items = items ?? [];
 
     document.addEventListener('resize', () => {
       this.onClose();
@@ -63,56 +64,118 @@ export class Menu extends Component {
 
     this.dropdownList = new Component({
       parentNode: this.node,
-      className: 'app-menu_dropdown',
+      className: ['app-menu_dropdown', 'app-menu_dropdown_top'],
       tagName: 'ul',
     });
-    if (this.items.length > 0) {
-      this.items.forEach(({ name, callback, isDisabled }) => {
+
+    this.menuSettings.forEach(({ name, callback }) => {
+      const { difficulty, status } = store.getState();
+
+      if (name === 'Difficulty') {
         const li = new Component({
           parentNode: this.dropdownList.node,
           tagName: 'li',
           className: [
+            'app-menu_dropdown_item_radios',
             'app-menu_dropdown_item',
-            isDisabled ? 'app-menu_dropdown_item_disabled' : '',
+            status === 'playing' ? 'app-menu_dropdown_item_disabled' : '',
           ],
-          content: name,
         });
+        new Component({
+          parentNode: li.node,
+          tagName: 'span',
+          content: `${name}: `,
+        });
+        [C.EASY, C.MEDIUM, C.HARD].forEach((el) => {
+          const isSelected = difficulty === el;
 
-        li.node.onclick = () => {
-          if (isDisabled) return;
+          const radioBtn = new Component({
+            parentNode: li.node,
+            tagName: 'button',
+            className: `app-menu_dropdown_item_radios_radio`,
+          });
+          radioBtn.node.onclick = () => {
+            this.difficultyRadios.forEach(({ radio, name }) => {
+              if (name === el) {
+                radio.classList.add('app-menu_dropdown_item_radios_radio_selected');
+              } else {
+                radio.classList.remove('app-menu_dropdown_item_radios_radio_selected');
+              }
+            });
+            this.onChangeDifficulty(el);
+          };
+          const check = new Component({
+            parentNode: radioBtn.node,
+            tagName: 'span',
+            className: isSelected ? `app-menu_dropdown_item_radios_radio_selected` : undefined,
+          });
 
-          this.onClose();
-          callback();
-        };
+          this.difficultyRadios.push({
+            name: el,
+            radio: check.node,
+          });
+        });
+        return;
+      }
+
+      const li = new Component({
+        parentNode: this.dropdownList.node,
+        tagName: 'li',
+        className: ['app-menu_dropdown_item'],
+        content: name,
       });
-    }
+      if (
+        name === 'Continue last game' &&
+        (status === 'playing' || !store.loadFromStorage('GAME_STATE'))
+      ) {
+        li.node.classList.add('app-menu_dropdown_item_disabled');
+        return;
+      }
+
+      if (name === 'Start new game' && status === 'playing') {
+        li.node.classList.add('app-menu_dropdown_item_disabled');
+        return;
+      }
+
+      li.node.onclick = () => {
+        this.onClose();
+        const f = callback as () => void;
+        f();
+      };
+    });
   }
 
   private updatePosition() {
     const padding = 24;
     const dropdown = this.dropdownList.node;
-    const dropdownRect = dropdown.getBoundingClientRect();
     const wrapRect = document.querySelector('#app')?.getBoundingClientRect();
-
-    dropdown.classList.remove('app-menu_dropdown_top', 'app-menu_dropdown_bottom');
-
-    dropdown.classList.add('app-menu_dropdown_top');
 
     if (!wrapRect) {
       return;
     }
-    const rightPos = wrapRect.width - padding - dropdownRect.right;
 
-    if (rightPos < 0) {
-      dropdown.style.left = dropdownRect.left + rightPos - dropdownRect.width / 2 + 'px';
+    // Сбрасываем инлайновый стиль перед замером, чтобы он не искажал повторное открытие
+    dropdown.style.left = '';
+
+    const dropdownRect = dropdown.getBoundingClientRect();
+
+    // Проверяем, вылазит ли дропдаун за правый край контейнера/экрана с учетом отступа
+    const overflowRight = dropdownRect.right - (wrapRect.right - padding);
+
+    if (overflowRight > 0) {
+      // Сдвигаем влево на величину переполнения + запас padding
+      const currentLeft = parseInt(window.getComputedStyle(dropdown).left) || dropdown.offsetLeft;
+      dropdown.style.left = `${currentLeft - overflowRight - padding}px`;
     }
   }
 
   onOpen() {
     this.isDropdownOpen = true;
 
+    // Сначала открываем, чтобы элемент отрисовался в DOM и получил размеры
     this.dropdownList.node.classList.add('app-menu_dropdown_open');
 
+    // Вычисляем позицию сразу после того, как браузер применил отображение
     this.updatePosition();
   }
 
@@ -131,6 +194,10 @@ export class Menu extends Component {
     }
 
     this.onOpen();
+  }
+
+  onChangeDifficulty(d: GameDifficultType) {
+    store.changeDifficulty(d);
   }
 
   destroy(): void {

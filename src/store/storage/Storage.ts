@@ -1,17 +1,17 @@
-import type { GameState, LeaderboardRowType, StorageKeysType } from '@types';
+import type { GameState, LeaderboardStorageType, StorageKeysType } from '@types';
 
 export class StorageHelper {
-  save(key: StorageKeysType, state: GameState | LeaderboardRowType[]) {
+  save(key: StorageKeysType, state: GameState | LeaderboardStorageType) {
     const data = JSON.stringify(state);
     localStorage.setItem(key, data);
   }
 
-  load(key: StorageKeysType): GameState | LeaderboardRowType[] | null {
+  load(key: StorageKeysType): GameState | LeaderboardStorageType | null {
     const raw = localStorage.getItem(key);
     if (!raw) return null;
 
     try {
-      return JSON.parse(raw) as GameState | LeaderboardRowType[];
+      return JSON.parse(raw) as GameState | LeaderboardStorageType;
     } catch {
       return null;
     }

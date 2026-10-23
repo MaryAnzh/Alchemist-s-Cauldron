@@ -246,7 +246,6 @@ $btn-polygon: polygon(20px 0%, 100% 0%, calc(100% - 20px) 50%, 100% 100%, 20px 1
   @media (max-width: $tablet) {
     &_arrow-left,
     &_arrow-right {
-      background: red;
       padding: var(--size-1) var(--size-4);
       margin: 0 var(--size-2);
       gap: var(--size-1);

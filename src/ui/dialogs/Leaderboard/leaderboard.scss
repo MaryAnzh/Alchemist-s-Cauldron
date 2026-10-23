@@ -37,6 +37,7 @@
     &_title {
       font-family: var(--font-title);
       font-size: var(--heading-lg);
+      text-align: center;
     }
 
     &_table {
@@ -98,6 +99,13 @@
       display: flex;
       justify-content: space-between;
       gap: var(--size-1);
+
+      button {
+        &:nth-of-type(2) {
+          padding-left: var(--size-2);
+          padding-right: var(--size-2);
+        }
+      }
     }
   }
 }

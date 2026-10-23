@@ -19,11 +19,11 @@ export const TIMER = {
     bonus: 15,
   },
   [MEDIUM]: {
-    gameTime: 3600, //160,
+    gameTime: 150,
     bonus: 10,
   },
   [HARD]: {
-    gameTime: 160,
+    gameTime: 150,
     bonus: 5,
   },
 } as const;

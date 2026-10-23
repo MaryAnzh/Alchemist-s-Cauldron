@@ -1,4 +1,3 @@
-import { store } from '@store';
 import type { ParentNodeType, LeaderboardRowType } from '@types';
 import { Button, Component, Icon } from '@ui';
 import { formatDate } from '@utils';
@@ -6,14 +5,14 @@ import { formatDate } from '@utils';
 type LeaderboardProps = ParentNodeType & {
   onBack: () => void;
   onClean: () => void;
+  data: LeaderboardRowType[];
 };
 
 export class Leaderboard extends Component {
-  constructor({ parentNode, onBack, onClean }: LeaderboardProps) {
+  constructor({ parentNode, onBack, onClean, data }: LeaderboardProps) {
     super({ parentNode, tagName: 'div', className: 'app-leaderboard' });
 
-    const leaders = store.loadFromStorage('LEADERBOARD') as LeaderboardRowType[];
-    this.render(leaders, onBack, onClean);
+    this.render(data, onBack, onClean);
   }
 
   render(leaders: LeaderboardRowType[], onBack: () => void, onClean: () => void) {

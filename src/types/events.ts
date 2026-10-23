@@ -22,7 +22,7 @@ export type GameEventsPayload = {
   [GE.INGREDIENT_IN_CAULDRON]: number;
 
   [GE.CAULDRON_STATE_CHANGED]: { values: cauldronValuesType };
-  [GE.LEADERBOARD_UPDATED]: LeaderboardRowType[];
+  [GE.SHOW_LEADERBOARD]: LeaderboardRowType[];
   [GE.PAGE_HIDDEN]: boolean;
   [GE.SHOW_RULES]: boolean;
 };

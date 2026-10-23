@@ -6,15 +6,19 @@ import type {
   RecipeType,
   LeaderboardRowType,
   StorageKeysType,
+  GameDifficultType,
+  LeaderboardStorageType,
 } from '@types';
 
 import { GameTimer } from './logic/timer';
 import { storage } from './storage/Storage';
+import { ValidateLeaderboard, ValidateState } from './logic/validate';
 
 class Store {
   private events = new EventEmitter<GameEventsPayload>();
   private timer = new GameTimer();
-  private leaderBoard: LeaderboardRowType[] = [];
+  private leaderBoard: LeaderboardStorageType = { easy: [], medium: [], hard: [] };
+  private storage: typeof storage;
 
   private state: GameState = {
     playerName: 'Alchemist',
@@ -45,6 +49,14 @@ class Store {
     startTimestamp: 0,
     endTimestamp: 0,
   };
+
+  constructor() {
+    this.storage = storage;
+    const leaderBoard = this.storage.load('LEADERBOARD') as LeaderboardStorageType | null;
+    if (leaderBoard) {
+      this.leaderBoard = leaderBoard;
+    }
+  }
 
   /** Utils  */
   public getState = () => {
@@ -157,30 +169,22 @@ class Store {
   }
 
   public gameOver() {
-    this.update({ status: C.GAME_OVER });
-    this.resetGameState();
-    this.clearStorage('GAME_STATE');
+    const score = this.state.score;
+    const isRecord = this.checkLeaderboard();
 
-    this.emit(C.GAME_EVENTS.GAME_OVER, {
-      isRecord: this.checkLeaderboard(),
-      score: this.state.score,
-    });
-  }
-
-  public continueGame() {
-    const saved = this.loadFromStorage('GAME_STATE');
-    if (!saved) return;
-
-    this.state = saved as GameState;
-
-    const remaining = Math.max(0, Math.floor(this.state.endTimestamp - Date.now()) / 1000);
+    this.timer.stop();
 
     this.update({
-      timeLeft: remaining,
-      status: C.PAUSED,
+      status: C.GAME_OVER,
     });
 
-    this.emit(C.GAME_EVENTS.RESUME, this.state);
+    this.emit(C.GAME_EVENTS.GAME_OVER, {
+      score,
+      isRecord,
+    });
+
+    this.resetGameState();
+    this.clearStorage('GAME_STATE');
   }
 
   /** Inits data */
@@ -292,7 +296,10 @@ class Store {
       });
 
     if (success) {
-      const timeLeft = C.TIMER[difficulty].bonus + this.state.timeLeft;
+      const timeLeft = Math.min(
+        C.TIMER[difficulty].gameTime,
+        C.TIMER[difficulty].bonus + this.state.timeLeft,
+      );
 
       const score = C.SCORE[difficulty] + this.state.score;
 
@@ -330,19 +337,32 @@ class Store {
     this.emit(C.GAME_EVENTS.CAULDRON_STATE_CHANGED, { values: this.state.cauldronValues });
   }
 
-  saveToStorage(key: StorageKeysType, state: GameState | LeaderboardRowType[]): void {
+  saveToStorage(key: StorageKeysType, state: GameState | LeaderboardStorageType): void {
     storage.save(key, state);
   }
 
   public loadFromStorage(key: StorageKeysType) {
     const saved = storage.load(key);
     if (!saved) return null;
+
     if (key === 'GAME_STATE') {
+      const Validate = ValidateState(saved);
+      if (!Validate) {
+        this.storage.clear('GAME_STATE');
+        return null;
+      }
+
       this.state = saved as GameState;
       return this.state;
     }
     if (key === 'LEADERBOARD') {
-      this.leaderBoard = saved as LeaderboardRowType[];
+      const Validate = ValidateLeaderboard(saved as LeaderboardStorageType);
+      if (!Validate) {
+        this.storage.clear('LEADERBOARD');
+        return null;
+      }
+
+      this.leaderBoard = saved as LeaderboardStorageType;
       return this.leaderBoard;
     }
     return null;
@@ -365,11 +385,12 @@ class Store {
     this.emit(C.GAME_EVENTS.PAUSE, { auto: true });
   }
 
-  checkLeaderboard() {
-    if (this.leaderBoard.length < 10) return true;
+  checkLeaderboard(): boolean {
+    const current = this.leaderBoard[this.state.difficulty];
+    if (current.length < 10) return true;
 
-    const minTopScore = this.leaderBoard.at(-1)?.score ?? 0;
-    return this.state.score >= minTopScore;
+    const minTopScore = current.at(-1)?.score ?? 0;
+    return this.state.score !== 0 && this.state.score >= minTopScore;
   }
 
   public submitScore(name: string) {
@@ -380,32 +401,61 @@ class Store {
   }
 
   public setToLeaderboard({ name, score, date }: LeaderboardRowType) {
-    this.leaderBoard.push({ name, score, date });
+    this.leaderBoard[this.state.difficulty].push({ name, score, date });
 
-    this.leaderBoard.sort((a, b) => b.score - a.score);
+    this.leaderBoard[this.state.difficulty].sort((a, b) => b.score - a.score);
 
-    this.leaderBoard = this.leaderBoard.slice(0, 10);
+    if (this.leaderBoard[this.state.difficulty].length > 10) {
+      this.leaderBoard[this.state.difficulty] = this.leaderBoard[this.state.difficulty].slice(
+        0,
+        10,
+      );
+    }
 
     this.saveToStorage('LEADERBOARD', this.leaderBoard);
-
-    this.emit(C.GAME_EVENTS.LEADERBOARD_UPDATED, this.leaderBoard);
+    this.emit(C.GAME_EVENTS.SHOW_LEADERBOARD, this.leaderBoard[this.state.difficulty]);
   }
 
   public clearLeaderboard() {
-    this.leaderBoard = [];
+    this.leaderBoard[this.state.difficulty] = [];
+
     this.saveToStorage('LEADERBOARD', this.leaderBoard);
-    this.emit(C.GAME_EVENTS.LEADERBOARD_UPDATED, this.leaderBoard);
+    this.emit(C.GAME_EVENTS.SHOW_LEADERBOARD, this.leaderBoard[this.state.difficulty]);
   }
 
   public showLeaderboard() {
     const leaderboard = this.loadFromStorage('LEADERBOARD');
     if (!leaderboard) return;
-    this.leaderBoard = leaderboard as LeaderboardRowType[];
-    this.emit(C.GAME_EVENTS.LEADERBOARD_UPDATED, this.leaderBoard);
+
+    this.leaderBoard = leaderboard as LeaderboardStorageType;
+    this.emit(C.GAME_EVENTS.SHOW_LEADERBOARD, this.leaderBoard[this.state.difficulty]);
   }
 
   public showRules() {
     this.emit(C.GAME_EVENTS.SHOW_RULES, true);
+  }
+
+  public changeDifficulty = (difficulty: GameDifficultType) => {
+    if (this.state.status === C.MENU) {
+      this.update({
+        difficulty,
+        lives: C.LIVES[difficulty],
+        maxLives: C.LIVES[difficulty],
+        maxIngredients: C.MAX_INGREDIENTS[difficulty],
+      });
+    }
+  };
+
+  public continueLastGame() {
+    const savedState = this.loadFromStorage('GAME_STATE') as GameState;
+    if (!savedState) return;
+
+    this.update({
+      ...(savedState as GameState),
+      endTimestamp: Date.now() + savedState.timeLeft * 1000,
+    });
+    this.emit(C.GAME_EVENTS.GAME_START, this.state);
+    this.pauseGame();
   }
 }
 

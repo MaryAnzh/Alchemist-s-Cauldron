@@ -12,8 +12,7 @@ import {
   GameOver,
   Leaderboard,
 } from '@ui';
-import { storage } from './store/storage/Storage';
-import type { RecipeType } from '@types';
+import type { LeaderboardRowType, RecipeType } from '@types';
 import { Rules } from './ui/dialogs/Rules/Rules';
 
 export class App extends Component {
@@ -81,8 +80,8 @@ export class App extends Component {
       this.portal.unmount();
     });
 
-    store.subscribe(GAME_EVENTS.LEADERBOARD_UPDATED, () => {
-      this.renderLeaderboardDialog();
+    store.subscribe(GAME_EVENTS.SHOW_LEADERBOARD, (leaderboard) => {
+      this.renderLeaderboardDialog(leaderboard);
     });
 
     store.subscribe(GAME_EVENTS.SHOW_RULES, () => {
@@ -131,9 +130,7 @@ export class App extends Component {
   init() {
     this.root.append(this.node);
     this.portal = new Portal();
-    if (storage.hasSave('GAME_STATE')) {
-      // To Do action
-    }
+
     this.renderStartView();
   }
 
@@ -209,7 +206,7 @@ export class App extends Component {
     this.setView(view);
   }
 
-  renderLeaderboardDialog() {
+  renderLeaderboardDialog(leaderboard: LeaderboardRowType[]) {
     const state = this.store.getState();
 
     if (state.status === PLAYING) {
@@ -220,6 +217,7 @@ export class App extends Component {
       parentNode: null,
       onBack: () => this.closeLeaderboardDialog(),
       onClean: () => this.store.clearLeaderboard(),
+      data: leaderboard,
     });
 
     this.portal.mount(view.node, view);

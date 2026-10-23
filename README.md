@@ -67,23 +67,22 @@ https://maryanzh.github.io/Alchemist-s-Cauldron/
 - Refactored view rendering
 - Leaderboard item removal
 - Menu settings
+- Update leaderboard icons (2nd and 3rd place)
+- Responsive layout
 
 ---
 
 ## 🚧 In Progress
 
-- Update leaderboard icons (2nd and 3rd place)
 - Add red/green color for incorrect ranges
-- Responsive layout
+- US 2.1 — US 2.2
+  -- Difficulty selection
+  -- Save & continue game
+- validate storage data
 
 ---
 
 ## 📌 To Do
-
-### US 2.1 — US 2.2
-
-- Difficulty selection
-- Save & continue game
 
 ### US 3.1 — US 3.6
 
