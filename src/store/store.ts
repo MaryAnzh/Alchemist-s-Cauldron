@@ -211,7 +211,7 @@ class Store {
   initShelf() {
     const count = C.SHELF_SIZE[this.state.difficulty];
 
-    const shuffled = [...C.INGREDIENTS];
+    const shuffled = C.INGREDIENTS.map((ing) => ({ ...ing }));
     const shelfIngredients = shuffled.slice(0, count);
 
     shelfIngredients.forEach((ing) => {

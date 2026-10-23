@@ -58,6 +58,23 @@ https://maryanzh.github.io/Alchemist-s-Cauldron/
 
 - Top‑10 leaderboard
 
+### US 2.1 — Difficulty selection
+
+- Easy / Medium / Hard with separate settings (time, lives, tolerance, score, shelf size, cauldron size, reactions)
+- Difficulty switch in the menu
+- Start screen with empty shelf and cauldron
+
+### US 2.2 — Save & continue
+
+- Auto-save on every important change and on pause
+- **Continue Game** in the menu only for a valid unfinished save
+- Saved game opens paused, ingredient stock is restored
+- New game overwrites the save, **Exit to Menu** clears it
+- Storage data validation, safe localStorage access
+- Auto-pause when the tab is hidden
+- Leaderboard per difficulty with a Difficulty column
+- Game over reason (time / lives / out of ingredients)
+
 ### Fixes & Improvements
 
 - Timer fix
@@ -75,10 +92,8 @@ https://maryanzh.github.io/Alchemist-s-Cauldron/
 ## 🚧 In Progress
 
 - Add red/green color for incorrect ranges
-- US 2.1 — US 2.2
-  -- Difficulty selection
-  -- Save & continue game
-- validate storage data
+- Confirmation dialog for Clear Leaderboard
+- Manual layout check at 375 px and 1920 px
 
 ---
 
@@ -101,6 +116,20 @@ https://maryanzh.github.io/Alchemist-s-Cauldron/
 - Hover: change timer button to pause button
 - Open menu animation
 
+## 🚀 Run locally
+
+Requirements: Node.js 20+ and npm.
+
+```bash
+npm install
+npm run dev       # dev server (Vite)
+npm run build     # type check + production build
+npm run preview   # preview the build
+npm run lint      # ESLint
+npm run tsc       # type check
+npm run format:check  # Prettier check
+```
+
 ## Game Rules
 
 - Each recipe defines required ranges for **temperature**, **density**, and **magic power**.
@@ -108,7 +137,7 @@ https://maryanzh.github.io/Alchemist-s-Cauldron/
 - Your goal is to match all recipe ranges within the allowed tolerance.
 - A successful brew gives **score** and **bonus time**.
 - A failed brew costs **one life**.
-- When lives reach zero, the game ends.
+- When lives reach zero, time runs out, or no ingredients are left, the game ends.
 - The timer runs continuously unless the game is paused.
 - The **Top‑10 leaderboard** stores the best results.
 - You can continue an unfinished game if a valid save exists.
