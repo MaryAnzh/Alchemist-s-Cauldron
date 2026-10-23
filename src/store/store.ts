@@ -44,6 +44,7 @@ class Store {
     shelfIngredients: [],
 
     // Reactions (Level 3)
+    enabledReactionIds: [...C.REACTION_IDS_BY_DIFFICULTY.medium],
     activeReactions: [],
     lastReactionId: null,
 
@@ -145,6 +146,7 @@ class Store {
       cauldronIngredients: [],
       cauldronValues: { density: 0, magicPower: 0, temperature: 0 },
       shelfIngredients: [],
+      enabledReactionIds: [...C.REACTION_IDS_BY_DIFFICULTY[this.state.difficulty]],
       activeReactions: [],
       lastReactionId: null,
     };

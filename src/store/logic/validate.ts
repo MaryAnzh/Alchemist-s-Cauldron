@@ -1,12 +1,13 @@
+import * as C from '@constants';
 import type {
   cauldronValuesType,
   GameDifficultType,
   GameState,
   IngredientType,
   LeaderboardStorageType,
+  ReactionId,
   RecipeType,
 } from '@types';
-
 const checkCauldronProps = (props: [number, number]): boolean =>
   Array.isArray(props) &&
   props.length === 2 &&
@@ -63,6 +64,28 @@ const checkCauldronValues = (values: unknown): boolean => {
   );
 };
 
+const isReactionId = (value: unknown): value is ReactionId =>
+  C.REACTIONS.some(({ id }) => id === value);
+
+const checkEnabledReactions = (value: unknown, difficulty: GameDifficultType): boolean => {
+  const expected = C.REACTION_IDS_BY_DIFFICULTY[difficulty];
+
+  return (
+    Array.isArray(value) &&
+    value.length === expected.length &&
+    value.every((id: ReactionId, index: number) => isReactionId(id) && id === expected[index])
+  );
+};
+
+const checkActiveReactions = (value: unknown, difficulty: GameDifficultType): boolean => {
+  const enabled: readonly ReactionId[] = C.REACTION_IDS_BY_DIFFICULTY[difficulty];
+
+  return (
+    Array.isArray(value) &&
+    value.every((id: ReactionId) => isReactionId(id) && enabled.includes(id))
+  );
+};
+
 export const ValidateState = (state: unknown): boolean => {
   if (!state || typeof state !== 'object') return false;
 
@@ -99,8 +122,9 @@ export const ValidateState = (state: unknown): boolean => {
     Array.isArray(s.recipes) &&
     checkRecipeArr(s.recipes, s.difficulty as GameDifficultType) &&
     Array.isArray(s.activeReactions) &&
-    s.activeReactions.every((reaction) => typeof reaction === 'string') &&
-    (s.lastReactionId === null || typeof s.lastReactionId === 'string') &&
+    checkEnabledReactions(s.enabledReactionIds, s.difficulty as GameDifficultType) &&
+    checkActiveReactions(s.activeReactions, s.difficulty as GameDifficultType) &&
+    (s.lastReactionId === null || isReactionId(s.lastReactionId)) &&
     Number.isFinite(s.startTimestamp) &&
     Number.isFinite(s.endTimestamp)
   );

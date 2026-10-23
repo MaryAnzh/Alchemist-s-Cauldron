@@ -1,3 +1,5 @@
+import type { REACTION_IDS } from '@constants';
+import type { KeysTemplateType } from './common';
 import type { GameDifficultType } from './state';
 
 export type DiapasonTye = [number, number];
@@ -22,3 +24,5 @@ export type IngredientType = {
 };
 
 export type cauldronValuesType = Pick<IngredientType, 'temperature' | 'density' | 'magicPower'>;
+
+export type ReactionId = KeysTemplateType<typeof REACTION_IDS>;
