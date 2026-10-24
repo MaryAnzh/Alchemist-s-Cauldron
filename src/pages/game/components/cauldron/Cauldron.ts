@@ -1,12 +1,22 @@
+import { GAME_EVENTS } from '@constants';
+import { store } from '@store';
 import type { ParentNodeType } from '@types';
 import { Component, Icon } from '@ui';
 
 type CauldronProps = ParentNodeType;
 
+const CLASS = 'app-cauldron_cauldron-wrap';
+
 export class Cauldron extends Component {
+  potion!: Component;
+
   constructor({ parentNode }: CauldronProps) {
     super({ parentNode, tagName: 'div', className: 'app-cauldron' });
+
+    store.subscribe(GAME_EVENTS.CAULDRON_STATE_CHANGED, () => this.updatePotion());
+
     this.render();
+    this.updatePotion();
   }
 
   render() {
@@ -19,17 +29,32 @@ export class Cauldron extends Component {
     const wrap = new Component({
       parentNode: this.node,
       tagName: 'div',
-      className: 'app-cauldron_cauldron-wrap',
+      className: CLASS,
     });
-    new Icon({
+
+    // Layers, bottom to top: back wall -> potion -> front wall
+    const pot = new Component({
       parentNode: wrap.node,
-      icon: 'cauldron',
-      className: 'app-cauldron_cauldron-wrap_cauldron',
+      tagName: 'div',
+      className: `${CLASS}_pot`,
     });
+    new Icon({ parentNode: pot.node, icon: 'cauldron_back', className: `${CLASS}_back` });
+    this.potion = new Component({
+      parentNode: pot.node,
+      tagName: 'div',
+      className: `${CLASS}_potion`,
+    });
+    new Icon({ parentNode: pot.node, icon: 'cauldron_front', className: `${CLASS}_front` });
+
     new Icon({
       parentNode: wrap.node,
       icon: 'symbol',
-      className: 'app-cauldron_cauldron-wrap_icon',
+      className: `${CLASS}_icon`,
     });
+  }
+
+  private updatePotion() {
+    const hasIngredients = store.getState().cauldronIngredients.length > 0;
+    this.potion.node.classList.toggle(`${CLASS}_potion--filled`, hasIngredients);
   }
 }

@@ -96,21 +96,23 @@ https://maryanzh.github.io/Alchemist-s-Cauldron/
 
 ## 🚧 In Progress
 
-- Add red/green color for incorrect ranges
-- Add red color for timer
+- Level 1 visual gaps found while checking the task (US 1.2, US 1.4):
+  - Timer: red and pulsing when less than 15 seconds remain
+  - Timer: shrinking time bar next to `MM:SS`
+  - Parameter bars: green glow when the current value is inside the recipe range
+- Cauldron SVG split into layers (back wall / potion / front) for animations
 
 ---
 
-## 📌 To Do
+## 📌 To Do — Level 3 (115 points)
 
-### US 3.1 — US 3.6
-
-- Drag & drop
-- Tooltip
-- Reactions
-- Pour Out
-- Keyboard shortcuts
-- Animations
+- [ ] **US 3.1 Drag & Drop (20)** — HTML5 drag events (`dragstart`, `dragover`, `dragleave`, `drop`), drop-zone highlight, ignore drop when paused / cauldron full / stock `0`, click still works
+- [ ] **US 3.2 Ingredient Tooltip (15)** — cards show icon and name only; tooltip with Temperature / Density / Magic Power (`+` / `−`), opens left / up near screen edges, hidden on pause
+- [ ] **US 3.3 Chemical Reactions (35)** — typed `IReaction[]` (15 reactions), Easy 0 / Medium 2 / Hard 3, fire only on `inactive → active`, recalculate values from the ingredient list every time
+- [ ] **US 3.4 Pour Out (10)** — button clears the cauldron, costs 10 s, no life lost, disabled when empty, ingredients are not returned
+- [ ] **US 3.5 Visual Feedback (20)** — success animation, explosion + short screen shake on fail, floating ingredient icons in the cauldron, smooth bars, CSS-only animations (no `setInterval` / `setTimeout`)
+- [ ] **US 3.6 Keyboard Shortcuts (15)** — one handler gated by `playing` state, pause / resume, ignored in text fields and on menu / pause / game-over screens
+- [ ] Level 3 settings: 150 s and 3 lives
 
 ---
 

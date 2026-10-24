@@ -2,6 +2,8 @@ import arrow from '../assets/arrow.svg?raw';
 import book from '../assets/book.svg?raw';
 import battle from '../assets/battle.svg?raw';
 import cauldron from '../assets/cauldron.svg?raw';
+import cauldron_back from '../assets/cauldron-back.svg?raw';
+import cauldron_front from '../assets/cauldron-front.svg?raw';
 import clock from '../assets/clock.svg?raw';
 import close from '../assets/close.svg?raw';
 import dragon from '../assets/dragon.svg?raw';
@@ -26,6 +28,8 @@ export const ICON_PICKER = {
   book,
   battle,
   cauldron,
+  cauldron_back,
+  cauldron_front,
   clock,
   close,
   dragon,
