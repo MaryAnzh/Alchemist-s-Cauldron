@@ -1,6 +1,7 @@
 @use '../../../../styles/mixin/media.scss' as *;
 
 .app-cauldron {
+  position: relative;
   width: 100%;
   height: 100%;
   display: flex;
@@ -101,11 +102,23 @@
       bottom: 30%;
     }
   }
+
+  &_pour {
+    justify-self: center;
+    position: absolute;
+    width: auto;
+    min-width: 0;
+    bottom: var(--size-5);
+    padding: var(--size-2) var(--size-3);
+    font-size: var(--font-size-md);
+    z-index: 4;
+  }
 }
 
 @media (max-width: $laptop) {
   .app-cauldron {
     gap: var(--size-2);
+    margin-bottom: var(--size-4);
 
     &_title {
       font-size: var(--heading-lg);
@@ -128,6 +141,10 @@
 
     &_cauldron-wrap {
       padding-bottom: var(--size-1);
+    }
+
+    &_pour {
+      padding: var(--size-1-5) var(--size-2);
     }
   }
 }

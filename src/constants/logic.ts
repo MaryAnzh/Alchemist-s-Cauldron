@@ -57,3 +57,5 @@ export const SCORE = {
   [MEDIUM]: 200,
   [HARD]: 300,
 } as const;
+
+export const POUR_OUT_PENALTY = 10;

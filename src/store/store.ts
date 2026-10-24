@@ -361,6 +361,39 @@ class Store {
     this.emit(C.GAME_EVENTS.CAULDRON_STATE_CHANGED, { values: this.state.cauldronValues });
   }
 
+  pourOut() {
+    if (this.state.status !== C.PLAYING || !this.state.cauldronIngredients.length) return;
+
+    const remaining = Math.max(0, Math.floor((this.state.endTimestamp - Date.now()) / 1000));
+    const timeLeft = remaining - C.POUR_OUT_PENALTY;
+
+    this.clearCauldron();
+    this.emit(C.GAME_EVENTS.SHELF_BLOCK, { isBlock: false });
+    this.emit(C.GAME_EVENTS.INGREDIENT_IN_CAULDRON, 0);
+
+    if (timeLeft <= 0) {
+      this.update({ timeLeft: 0 });
+      this.emit(C.GAME_EVENTS.TIMER_TICK, 0);
+      this.gameOver('time');
+      return;
+    }
+
+    this.timer.stop();
+    this.update({ timeLeft, endTimestamp: Date.now() + timeLeft * 1000 });
+    this.emit(C.GAME_EVENTS.TIMER_TICK, timeLeft);
+    this.timer.start(
+      timeLeft,
+      (left) => {
+        const timeChanged = left !== this.state.timeLeft;
+        this.update({ timeLeft: left });
+        this.emit(C.GAME_EVENTS.TIMER_TICK, left);
+        if (timeChanged) this.saveGame();
+      },
+      () => this.gameOver(),
+    );
+    this.saveGame();
+  }
+
   saveToStorage(key: StorageKeysType, state: GameState | LeaderboardStorageType): void {
     storage.save(key, state);
   }

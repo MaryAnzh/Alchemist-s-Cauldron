@@ -1,7 +1,7 @@
 import { GAME_EVENTS } from '@constants';
 import { store } from '@store';
 import type { ParentNodeType } from '@types';
-import { Component, Icon } from '@ui';
+import { Button, Component, Icon } from '@ui';
 
 type CauldronProps = ParentNodeType;
 
@@ -9,6 +9,7 @@ const CLASS = 'app-cauldron_cauldron-wrap';
 
 export class Cauldron extends Component {
   potion!: Component;
+  pourBtn!: Button;
 
   constructor({ parentNode }: CauldronProps) {
     super({ parentNode, tagName: 'div', className: 'app-cauldron' });
@@ -51,10 +52,20 @@ export class Cauldron extends Component {
       icon: 'symbol',
       className: `${CLASS}_icon`,
     });
+
+    this.pourBtn = new Button({
+      parentNode: this.node,
+      className: `app-cauldron_pour`,
+      color: 'magic',
+      text: 'Pour Out (−10s)',
+      onClick: () => store.pourOut(),
+    });
+    this.pourBtn.setDisabled(true);
   }
 
   private updatePotion() {
     const hasIngredients = store.getState().cauldronIngredients.length > 0;
     this.potion.node.classList.toggle(`${CLASS}_potion--filled`, hasIngredients);
+    this.pourBtn.setDisabled(!hasIngredients);
   }
 }
