@@ -27,6 +27,14 @@
     font-size: var(--heading-lg);
     color: var(--color-burnt-text-alt);
   }
+  &_hint {
+    max-width: 100%;
+    text-align: center;
+    font-size: var(--font-size-sm);
+    color: var(--color-burnt-text-alt);
+    opacity: 0.8;
+    overflow-wrap: anywhere;
+  }
   &_btn-wrap {
     display: flex;
     flex-direction: column;

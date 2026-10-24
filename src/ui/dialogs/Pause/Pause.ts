@@ -28,6 +28,13 @@ export class Pause extends Component {
       className: 'app-pause_icon',
     });
 
+    new Component({
+      parentNode: this.node,
+      tagName: 'p',
+      className: 'app-pause_hint',
+      content: 'Keys: 1–8 ingredient · B brew · X pour out · P / Esc pause',
+    });
+
     const btnWrap = new Component({
       parentNode: this.node,
       tagName: 'div',

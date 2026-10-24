@@ -15,6 +15,7 @@ export class Rules extends Component {
     'Your goal is to keep all three parameters inside the recipe ranges when you press Brew.',
     'If all parameters are within the ranges, the brew is successful and you gain score and bonus time.',
     'If at least one parameter is out of range, the brew fails and you lose one life.',
+    'Keyboard (while playing): 1–8 add the ingredient from the shelf, B brew, X pour out (−10 s), P or Esc pause.',
     'When you lose all lives, run out of time or run out of ingredients, the game ends. A score above 0 that makes the Top-10 can be added to the leaderboard.',
   ];
 

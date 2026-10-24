@@ -94,20 +94,8 @@ export class App extends Component {
 
     window.addEventListener('pagehide', () => this.store.saveGame());
 
-    // Space pause
-    document.addEventListener('keydown', (e) => {
-      if (e.code === 'Space') {
-        e.preventDefault();
-
-        const { status } = this.store.getState();
-
-        if (status === PLAYING) {
-          this.store.pauseGame();
-        } else if (status === PAUSED) {
-          this.store.resumeGame();
-        }
-      }
-    });
+    // Keyboard shortcuts: one handler, active only while playing
+    document.addEventListener('keydown', (e) => this.handleHotkeys(e));
   }
 
   private setView(view: Component) {
@@ -266,4 +254,38 @@ export class App extends Component {
   public handleStartGame = () => {
     this.store.startNewGame();
   };
+
+  private handleHotkeys(e: KeyboardEvent) {
+    if (this.store.getState().status !== PLAYING) return;
+    if (e.repeat || e.ctrlKey || e.metaKey || e.altKey) return;
+
+    const target = e.target as HTMLElement | null;
+    if (target?.closest('input, textarea, select, [contenteditable="true"]')) return;
+    // let focused buttons keep native Enter/Space behavior
+    if (target?.closest('button, a') && (e.code === 'Space' || e.code === 'Enter')) return;
+
+    const digit = /^(?:Digit|Numpad)([1-9])$/.exec(e.code);
+    if (digit) {
+      const ingredient = this.store.getState().shelfIngredients[Number(digit[1]) - 1];
+      if (ingredient) this.store.addIngredientToCauldron(ingredient.id);
+      e.preventDefault();
+      return;
+    }
+
+    switch (e.code) {
+      case 'KeyB':
+        this.store.brewCheck();
+        break;
+      case 'KeyX':
+        this.store.pourOut();
+        break;
+      case 'KeyP':
+      case 'Escape':
+        this.store.pauseGame();
+        break;
+      default:
+        return;
+    }
+    e.preventDefault();
+  }
 }

@@ -270,6 +270,8 @@ class Store {
   addIngredientToCauldron(id: string) {
     const stock = this.state.shelfIngredients.find((ing) => ing.id === id);
     if (!stock || !stock.count) return;
+    if (this.state.cauldronIngredients.length >= this.state.maxIngredients) return;
+
     stock.count = stock.count - 1;
 
     const values = {
@@ -294,6 +296,8 @@ class Store {
   }
 
   brewCheck() {
+    if (this.state.status !== C.PLAYING || !this.state.cauldronIngredients.length) return;
+
     const recipe = this.state.currentRecipe;
     if (!recipe) return;
 
