@@ -1,4 +1,4 @@
-(function(){let e=document.createElement(`link`).relList;if(e&&e.supports&&e.supports(`modulepreload`))return;for(let e of document.querySelectorAll(`link[rel="modulepreload"]`))n(e);new MutationObserver(e=>{for(let t of e)if(t.type===`childList`)for(let e of t.addedNodes)e.tagName===`LINK`&&e.rel===`modulepreload`&&n(e)}).observe(document,{childList:!0,subtree:!0});function t(e){let t={};return e.integrity&&(t.integrity=e.integrity),e.referrerPolicy&&(t.referrerPolicy=e.referrerPolicy),t.credentials=e.crossOrigin===`use-credentials`?`include`:e.crossOrigin===`anonymous`?`omit`:`same-origin`,t}function n(e){if(e.ep)return;e.ep=!0;let n=t(e);fetch(e.href,n)}})();var{EASY:e,HARD:t,MEDIUM:n,GAME_OVER:r,MENU:i,PAUSED:a,PLAYING:o}={EASY:`easy`,HARD:`hard`,MEDIUM:`medium`,MENU:`menu`,PLAYING:`playing`,PAUSED:`paused`,GAME_OVER:`game-over`},s=`<?xml version="1.0" encoding="utf-8"?>\r
+(function(){let e=document.createElement(`link`).relList;if(e&&e.supports&&e.supports(`modulepreload`))return;for(let e of document.querySelectorAll(`link[rel="modulepreload"]`))n(e);new MutationObserver(e=>{for(let t of e)if(t.type===`childList`)for(let e of t.addedNodes)e.tagName===`LINK`&&e.rel===`modulepreload`&&n(e)}).observe(document,{childList:!0,subtree:!0});function t(e){let t={};return e.integrity&&(t.integrity=e.integrity),e.referrerPolicy&&(t.referrerPolicy=e.referrerPolicy),t.credentials=e.crossOrigin===`use-credentials`?`include`:e.crossOrigin===`anonymous`?`omit`:`same-origin`,t}function n(e){if(e.ep)return;e.ep=!0;let n=t(e);fetch(e.href,n)}})();var{EASY:e,HARD:t,MEDIUM:n,GAME_OVER:r,MENU:i,PAUSED:a,PLAYING:o,RULES:s,SETTINGS:c,BOTTOM:l,TOP:u,CONTINUE_GAME:d,DIFFICULTY:f,SHOW_LEADERBOARD:p,START_NEW_GAME:m,TIME:ee,LIVES_TITLE:te,INGREDIENTS_TITLE:ne}={EASY:`easy`,HARD:`hard`,MEDIUM:`medium`,MENU:`menu`,PLAYING:`playing`,PAUSED:`paused`,GAME_OVER:`game-over`,SETTINGS:`settings`,RULES:`rules`,TOP:`top`,BOTTOM:`bottom`,CONTINUE_GAME:`Continue Game`,DIFFICULTY:`Difficulty`,SHOW_LEADERBOARD:`Leaderboard`,START_NEW_GAME:`Start New Game`,TIME:`time`,LIVES_TITLE:`lives`,INGREDIENTS_TITLE:`ingredients`},re=`<?xml version="1.0" encoding="utf-8"?>\r
 <!-- Generator: Adobe Illustrator 23.0.6, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->\r
 <svg version="1.0" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"\r
 	 viewBox="0 0 43.5 102.6" enable-background="new 0 0 43.5 102.6" xml:space="preserve">\r
@@ -13,7 +13,288 @@
 <path opacity="0.5" fill="#343D20" d="M1.3,51.8c1.4,1.4,8.8,8.5,20.5,8.5s19.1-7.1,20.5-8.5c-7.3,16.7-14.7,33.3-22,50\r
 	C13.9,85.1,7.6,68.4,1.3,51.8z"/>\r
 </svg>\r
-`,c=`<?xml version="1.0" encoding="utf-8"?>\r
+`,ie=`<svg width="96" height="96" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">\r
+  <defs>\r
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">\r
+      <stop offset="0%" stop-color="#F8E9A8"/>\r
+      <stop offset="40%" stop-color="#E0C067"/>\r
+      <stop offset="100%" stop-color="#A66B1F"/>\r
+    </linearGradient>\r
+\r
+    <linearGradient id="goldLight" x1="0" y1="0" x2="0" y2="1">\r
+      <stop offset="0%" stop-color="#FFF3C6"/>\r
+      <stop offset="100%" stop-color="#D3A441"/>\r
+    </linearGradient>\r
+\r
+    <linearGradient id="pageGlow" x1="0" y1="0" x2="1" y2="1">\r
+      <stop offset="0%" stop-color="#FFFDF6"/>\r
+      <stop offset="100%" stop-color="#E9DFC0"/>\r
+    </linearGradient>\r
+  </defs>\r
+\r
+  <!-- Outer mystic circle -->\r
+  <circle\r
+    cx="48"\r
+    cy="48"\r
+    r="42"\r
+    fill="none"\r
+    stroke="url(#gold)"\r
+    stroke-width="2"\r
+  />\r
+\r
+  <!-- Rune marks -->\r
+  <path\r
+    d="M25 30 L29 26 L33 30 L29 34 Z"\r
+    fill="none"\r
+    stroke="url(#gold)"\r
+    stroke-width="1"\r
+  />\r
+\r
+  <path\r
+    d="M63 26 H71 V34 H63"\r
+    fill="none"\r
+    stroke="url(#gold)"\r
+    stroke-width="1"\r
+  />\r
+\r
+  <!-- Left page -->\r
+  <path\r
+    d="\r
+      M20 24\r
+      Q34 20 46 30\r
+      V72\r
+      Q34 62 20 66\r
+      Z\r
+    "\r
+    fill="url(#pageGlow)"\r
+    stroke="url(#gold)"\r
+    stroke-width="2.5"\r
+  />\r
+\r
+  <!-- Right page -->\r
+  <path\r
+    d="\r
+      M76 24\r
+      Q62 20 50 30\r
+      V72\r
+      Q62 62 76 66\r
+      Z\r
+    "\r
+    fill="url(#pageGlow)"\r
+    stroke="url(#gold)"\r
+    stroke-width="2.5"\r
+  />\r
+\r
+  <!-- Center spine -->\r
+  <path\r
+    d="M48 28 V74"\r
+    stroke="url(#gold)"\r
+    stroke-width="3"\r
+    stroke-linecap="round"\r
+  />\r
+\r
+  <!-- Decorative lines -->\r
+  <line\r
+    x1="28"\r
+    y1="38"\r
+    x2="40"\r
+    y2="38"\r
+    stroke="url(#goldLight)"\r
+    stroke-width="1.5"\r
+  />\r
+\r
+  <line\r
+    x1="28"\r
+    y1="46"\r
+    x2="40"\r
+    y2="46"\r
+    stroke="url(#goldLight)"\r
+    stroke-width="1.5"\r
+  />\r
+\r
+  <line\r
+    x1="56"\r
+    y1="38"\r
+    x2="68"\r
+    y2="38"\r
+    stroke="url(#goldLight)"\r
+    stroke-width="1.5"\r
+  />\r
+\r
+  <line\r
+    x1="56"\r
+    y1="46"\r
+    x2="68"\r
+    y2="46"\r
+    stroke="url(#goldLight)"\r
+    stroke-width="1.5"\r
+  />\r
+\r
+  <!-- Magic sparkle -->\r
+  <path\r
+    d="M48 14 L50 20 L56 22 L50 24 L48 30 L46 24 L40 22 L46 20 Z"\r
+    fill="url(#gold)"\r
+  />\r
+\r
+  <!-- Bottom crystal -->\r
+  <path\r
+    d="M48 78 L44 86 L48 92 L52 86 Z"\r
+    fill="url(#gold)"\r
+    stroke="#F7E6A0"\r
+    stroke-width="1"\r
+  />\r
+</svg>`,ae=`<svg width="140" height="200" viewBox="0 0 140 200" xmlns="http://www.w3.org/2000/svg">\r
+  <defs>\r
+    <!-- Внешний контур банки -->\r
+    <linearGradient id="jarStroke" x1="0" y1="0" x2="0" y2="1">\r
+      <stop offset="0%" stop-color="#dfe6ff"/>\r
+      <stop offset="50%" stop-color="#9fb4ff"/>\r
+      <stop offset="100%" stop-color="#5a6ccf"/>\r
+    </linearGradient>\r
+\r
+    <!-- Внутренний стеклянный контур -->\r
+    <linearGradient id="glassInner" x1="0" y1="0" x2="1" y2="1">\r
+      <stop offset="0%" stop-color="rgba(255,255,255,0.8)"/>\r
+      <stop offset="40%" stop-color="rgba(200,220,255,0.4)"/>\r
+      <stop offset="100%" stop-color="rgba(120,150,220,0.1)"/>\r
+    </linearGradient>\r
+\r
+    <!-- Блик -->\r
+    <linearGradient id="glassHighlight" x1="0" y1="0" x2="1" y2="0">\r
+      <stop offset="0%" stop-color="rgba(255,255,255,0.9)"/>\r
+      <stop offset="100%" stop-color="rgba(255,255,255,0)"/>\r
+    </linearGradient>\r
+\r
+    <!-- Горлышко: внешняя обводка -->\r
+    <linearGradient id="neckOuter" x1="0" y1="0" x2="0" y2="1">\r
+      <stop offset="0%" stop-color="#eaf0ff"/>\r
+      <stop offset="100%" stop-color="#7c8fd8"/>\r
+    </linearGradient>\r
+\r
+    <!-- Горлышко: внутренняя обводка -->\r
+    <linearGradient id="neckInner" x1="0" y1="0" x2="0" y2="1">\r
+      <stop offset="0%" stop-color="#ffffff"/>\r
+      <stop offset="100%" stop-color="#b0c2ff"/>\r
+    </linearGradient>\r
+\r
+    <!-- Крышка -->\r
+    <linearGradient id="capGradient" x1="0" y1="0" x2="0" y2="1">\r
+      <stop offset="0%" stop-color="#f7d37a"/>\r
+      <stop offset="50%" stop-color="#d9a84f"/>\r
+      <stop offset="100%" stop-color="#b07a2f"/>\r
+    </linearGradient>\r
+\r
+    <!-- Блик на крышке -->\r
+    <linearGradient id="capHighlight" x1="0" y1="0" x2="1" y2="0">\r
+      <stop offset="0%" stop-color="rgba(255,255,255,0.8)"/>\r
+      <stop offset="100%" stop-color="rgba(255,255,255,0)"/>\r
+    </linearGradient>\r
+  </defs>\r
+\r
+  <!-- Крышка -->\r
+  <rect x="40" y="18" width="60" height="20" rx="6" fill="url(#capGradient)" />\r
+  <rect x="42" y="20" width="56" height="6" rx="3" fill="url(#capHighlight)" />\r
+\r
+  <!-- Горлышко: внешняя обводка -->\r
+  <path\r
+    d="M45 40\r
+       Q45 30 55 28\r
+       L85 28\r
+       Q95 30 95 40\r
+       L95 55\r
+       Q95 58 92 60\r
+       L48 60\r
+       Q45 58 45 55\r
+       Z"\r
+    fill="none"\r
+    stroke="url(#neckOuter)"\r
+    stroke-width="4"\r
+    stroke-linejoin="round"\r
+  />\r
+\r
+  <!-- Горлышко: внутренняя обводка -->\r
+  <path\r
+    d="M50 40\r
+       Q50 34 58 32\r
+       L82 32\r
+       Q90 34 90 40\r
+       L90 54\r
+       Q90 55 88 57\r
+       L52 57\r
+       Q50 55 50 54\r
+       Z"\r
+    fill="none"\r
+    stroke="url(#neckInner)"\r
+    stroke-width="2"\r
+    stroke-linejoin="round"\r
+  />\r
+\r
+  <!-- Контур банки -->\r
+  <path\r
+    d="M35 60\r
+       Q30 75 30 95\r
+       L30 150\r
+       Q30 170 45 180\r
+       Q70 190 95 180\r
+       Q110 170 110 150\r
+       L110 95\r
+       Q110 75 105 60\r
+       Z"\r
+    fill="none"\r
+    stroke="url(#jarStroke)"\r
+    stroke-width="4"\r
+    stroke-linejoin="round"\r
+  />\r
+\r
+  <!-- Внутренний стеклянный контур -->\r
+  <path\r
+    d="M40 65\r
+       Q35 80 35 95\r
+       L35 145\r
+       Q35 160 48 168\r
+       Q70 178 92 168\r
+       Q105 160 105 145\r
+       L105 95\r
+       Q105 80 100 65\r
+       Z"\r
+    fill="none"\r
+    stroke="url(#glassInner)"\r
+    stroke-width="3"\r
+    stroke-linejoin="round"\r
+  />\r
+\r
+  <!-- Блик -->\r
+  <path\r
+    d="M45 75\r
+       Q40 90 42 110\r
+       Q45 120 55 130"\r
+    fill="none"\r
+    stroke="url(#glassHighlight)"\r
+    stroke-width="3"\r
+    stroke-linecap="round"\r
+  />\r
+\r
+  <!-- Блёстки внутри -->\r
+  <g fill="white" opacity="0.7">\r
+    <circle cx="55" cy="120" r="2"/>\r
+    <circle cx="75" cy="130" r="1.5"/>\r
+    <circle cx="65" cy="110" r="1"/>\r
+    <circle cx="85" cy="140" r="2.2"/>\r
+    <circle cx="50" cy="150" r="1.3"/>\r
+    <circle cx="90" cy="115" r="1.8"/>\r
+    <circle cx="70" cy="155" r="1"/>\r
+    <circle cx="60" cy="135" r="2.5"/>\r
+  </g>\r
+\r
+  <!-- Тусклые блёстки -->\r
+  <g fill="rgba(255,255,255,0.4)">\r
+    <circle cx="80" cy="125" r="1"/>\r
+    <circle cx="55" cy="140" r="1.2"/>\r
+    <circle cx="95" cy="150" r="1"/>\r
+    <circle cx="45" cy="130" r="0.8"/>\r
+  </g>\r
+</svg>\r
+`,h=`<?xml version="1.0" encoding="utf-8"?>\r
 <!-- Generator: Adobe Illustrator 23.0.6, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->\r
 <svg version="1.1" id="Ñëîé_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"\r
 	 viewBox="0 0 449 330.7" enable-background="new 0 0 449 330.7" xml:space="preserve">\r
@@ -116,9 +397,7 @@
 <ellipse fill="url(#SVGID_1_)" cx="326.1" cy="149.8" rx="25" ry="39.4"/>\r
 <ellipse fill="#FFFFFF" cx="91.7" cy="244.6" rx="9.3" ry="8.9"/>\r
 </svg>\r
-`,l=`<?xml version="1.0" encoding="utf-8"?>\r
-<!-- Generator: Adobe Illustrator 23.0.6, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->\r
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"\r
+`,g=`<svg xmlns="http://www.w3.org/2000/svg"\r
 	 viewBox="0 0 408 408" enable-background="new 0 0 408 408" xml:space="preserve">\r
 <g>\r
 	<g>\r
@@ -305,7 +584,184 @@
 	</g>\r
 </g>\r
 </svg>\r
-`,u=`<?xml version="1.0" encoding="utf-8"?>\r
+`,_=`<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">\r
+  <defs>\r
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">\r
+      <stop offset="0%" stop-color="#F6E39A"/>\r
+      <stop offset="50%" stop-color="#D8B25A"/>\r
+      <stop offset="100%" stop-color="#9B6D28"/>\r
+    </linearGradient>\r
+  </defs>\r
+\r
+  <circle\r
+    cx="32"\r
+    cy="32"\r
+    r="28"\r
+    fill="none"\r
+    stroke="url(#gold)"\r
+    stroke-width="2"\r
+  />\r
+\r
+  <path\r
+    d="M22 22 L42 42"\r
+    stroke="url(#gold)"\r
+    stroke-width="5"\r
+    stroke-linecap="round"\r
+  />\r
+\r
+  <path\r
+    d="M42 22 L22 42"\r
+    stroke="url(#gold)"\r
+    stroke-width="5"\r
+    stroke-linecap="round"\r
+  />\r
+</svg>`,v=`<svg width="128" height="160" viewBox="0 0 128 160" xmlns="http://www.w3.org/2000/svg">\r
+  <defs>\r
+    <!-- Gold -->\r
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">\r
+      <stop offset="0%" stop-color="#FFF1B5"/>\r
+      <stop offset="35%" stop-color="#EDCB72"/>\r
+      <stop offset="70%" stop-color="#C8933D"/>\r
+      <stop offset="100%" stop-color="#85571C"/>\r
+    </linearGradient>\r
+\r
+    <!-- Glass outline -->\r
+    <linearGradient id="glassOuter" x1="0" y1="0" x2="0" y2="1">\r
+      <stop offset="0%" stop-color="#EEF6FF"/>\r
+      <stop offset="100%" stop-color="#88A7D7"/>\r
+    </linearGradient>\r
+\r
+    <!-- Inner glass -->\r
+    <linearGradient id="glassInner" x1="0" y1="0" x2="1" y2="1">\r
+      <stop offset="0%" stop-color="#FFFFFF"/>\r
+      <stop offset="100%" stop-color="#B6D7FF"/>\r
+    </linearGradient>\r
+\r
+    <!-- Lid -->\r
+    <linearGradient id="lid" x1="0" y1="0" x2="0" y2="1">\r
+      <stop offset="0%" stop-color="#FFE9A7"/>\r
+      <stop offset="50%" stop-color="#D8AD56"/>\r
+      <stop offset="100%" stop-color="#A16C27"/>\r
+    </linearGradient>\r
+  </defs>\r
+\r
+  <!-- Lid -->\r
+  <rect\r
+    x="36"\r
+    y="12"\r
+    width="56"\r
+    height="18"\r
+    rx="5"\r
+    fill="url(#lid)"\r
+    stroke="url(#gold)"\r
+    stroke-width="2"\r
+  />\r
+\r
+  <!-- Lid highlight -->\r
+  <rect\r
+    x="42"\r
+    y="15"\r
+    width="44"\r
+    height="4"\r
+    rx="2"\r
+    fill="#FFF5D0"\r
+    opacity="0.7"\r
+  />\r
+\r
+  <!-- Bottle Outer -->\r
+  <path\r
+    d="\r
+      M46 30\r
+      L46 42\r
+      C46 49 34 55 34 72\r
+      L34 128\r
+      C34 145 46 152 64 152\r
+      C82 152 94 145 94 128\r
+      L94 72\r
+      C94 55 82 49 82 42\r
+      L82 30\r
+    "\r
+    fill="none"\r
+    stroke="url(#glassOuter)"\r
+    stroke-width="4"\r
+    stroke-linejoin="round"\r
+  />\r
+\r
+  <!-- Bottle Inner -->\r
+  <path\r
+    d="\r
+      M50 34\r
+      L50 44\r
+      C50 50 40 57 40 72\r
+      L40 124\r
+      C40 137 49 144 64 144\r
+      C79 144 88 137 88 124\r
+      L88 72\r
+      C88 57 78 50 78 44\r
+      L78 34\r
+    "\r
+    fill="none"\r
+    stroke="url(#glassInner)"\r
+    stroke-width="2"\r
+  />\r
+\r
+  <!-- Glass highlight -->\r
+  <path\r
+    d="\r
+      M46 52\r
+      C42 60 42 72 42 90\r
+      C42 105 45 116 52 126\r
+    "\r
+    fill="none"\r
+    stroke="#FFFFFF"\r
+    stroke-width="3"\r
+    stroke-linecap="round"\r
+    opacity="0.85"\r
+  />\r
+\r
+  <!-- Dragon teeth -->\r
+  <g fill="#F7E6C0" stroke="url(#gold)" stroke-width="1.5">\r
+\r
+    <path d="M52 122 L58 78 L64 122 Z"/>\r
+    <path d="M64 124 L70 68 L76 124 Z"/>\r
+\r
+    <path d="M43 125 L47 88 L52 125 Z"/>\r
+    <path d="M77 125 L82 86 L87 125 Z"/>\r
+\r
+    <path d="M56 132 L61 100 L66 132 Z"/>\r
+    <path d="M68 132 L73 96 L78 132 Z"/>\r
+\r
+  </g>\r
+\r
+  <!-- Internal magic dust -->\r
+  <g fill="#FFEBA8">\r
+\r
+    <circle cx="50" cy="70" r="1.5"/>\r
+    <circle cx="58" cy="60" r="1"/>\r
+    <circle cx="74" cy="72" r="1.8"/>\r
+\r
+    <circle cx="80" cy="54" r="1.2"/>\r
+    <circle cx="65" cy="48" r="1"/>\r
+\r
+    <circle cx="52" cy="96" r="1"/>\r
+    <circle cx="83" cy="112" r="1.4"/>\r
+\r
+  </g>\r
+\r
+  <!-- Sparkles -->\r
+  <g stroke="#FFF5CC" stroke-width="1.5">\r
+\r
+    <path d="M52 56 L52 62"/>\r
+    <path d="M49 59 L55 59"/>\r
+\r
+    <path d="M79 88 L79 94"/>\r
+    <path d="M76 91 L82 91"/>\r
+\r
+    <path d="M62 78 L62 82"/>\r
+    <path d="M60 80 L64 80"/>\r
+\r
+  </g>\r
+</svg>`,y=`<?xml version="1.0" encoding="utf-8"?>\r
 <!-- Generator: Adobe Illustrator 23.0.6, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->\r
 <svg version="1.1" id="drop" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"\r
 	 viewBox="0 0 60 120.6" enable-background="new 0 0 60 120.6" xml:space="preserve">\r
@@ -2509,7 +2965,7 @@
 		c2.7-1.5,9-5.5,13.4-13.4c0.3-0.5,0.5-1,0.8-1.5c2-4,4.3-7.8,6-12C59,86.5,59.1,85.5,59.1,84.8z"/>\r
 </g>\r
 </svg>\r
-`,d=`<?xml version="1.0" encoding="utf-8"?>\r
+`,oe=`<?xml version="1.0" encoding="utf-8"?>\r
 <!-- Generator: Adobe Illustrator 23.0.6, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->\r
 <svg version="1.1"\r
 	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 476.2 517.1"\r
@@ -4240,9 +4696,9 @@
 	</g>\r
 </g>\r
 </svg>\r
-`,f=`<?xml version="1.0" encoding="utf-8"?>\r
+`,se=`<?xml version="1.0" encoding="utf-8"?>\r
 <!-- Generator: Adobe Illustrator 23.0.6, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->\r
-<svg version="1.0" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"\r
+<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"\r
 	 viewBox="0 0 204.2 157.3" enable-background="new 0 0 204.2 157.3" xml:space="preserve">\r
 <g>\r
 	<g>\r
@@ -4278,7 +4734,7 @@
 <path fill="#FFFFFF" d="M66.2,69.7c0.5-1.3,1.9-2.3,3.3-2.1c1.8,0.3,3,2.8,2.1,4.5c-0.8,1.6-3.1,2.2-4.5,1.2\r
 	C66,72.4,65.8,70.9,66.2,69.7z"/>\r
 </svg>\r
-`,p=`<?xml version="1.0" encoding="utf-8"?>\r
+`,ce=`<?xml version="1.0" encoding="utf-8"?>\r
 <!-- Generator: Adobe Illustrator 23.0.6, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->\r
 <svg version="1.0" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"\r
 	 viewBox="0 0 204.2 157.3" enable-background="new 0 0 204.2 157.3" xml:space="preserve">\r
@@ -4287,10 +4743,8 @@
 	c10.9,25.8,37,45.1,90.1,66.8l3.3,2.6l3.9-1.4c0.9-0.3,1.7-0.6,2.3-1c53.5-21.8,79.8-41.2,90.7-67C200.6,79.8,207.8,62.8,201.9,43.4\r
 	z"/>\r
 </svg>\r
-`,m=`<?xml version="1.0" encoding="utf-8"?>\r
-<!-- Generator: Adobe Illustrator 23.0.6, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->\r
-<svg version="1.0" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"\r
-	 viewBox="0 0 277 425" enable-background="new 0 0 277 425" xml:space="preserve">\r
+`,le=`<svg xmlns="http://www.w3.org/2000/svg"\r
+	 viewBox="0 0 277 425">\r
 <linearGradient id="SVGParament" gradientUnits="userSpaceOnUse" x1="125.9572" y1="-17.756" x2="150.8461" y2="439.1329">\r
 	<stop  offset="0" style="stop-color:#FFFFFF"/>\r
 	<stop  offset="1" style="stop-color:#939393"/>\r
@@ -4312,10 +4766,8 @@
 	c-2.2-33.4-3.1-69-2-106.7c0.4-14.6,1.1-28.8,2-42.7c-0.5,0.2-1.5,0.3-2.8,0.3c-0.6,0-2-0.3-2.3-1\r
 	C271.6,123.2,271.5,121.8,277,117.5z"/>\r
 </svg>\r
-`,h=`<?xml version="1.0" encoding="utf-8"?>\r
-<!-- Generator: Adobe Illustrator 23.0.6, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->\r
-<svg version="1.1" id="list" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"\r
-	 viewBox="0 0 426.5 278.3" enable-background="new 0 0 426.5 278.3" xml:space="preserve">\r
+`,ue=`<svg xmlns="http://www.w3.org/2000/svg"\r
+	 viewBox="0 0 426.5 278.3">\r
 <linearGradient id="parchment_2_svg" gradientUnits="userSpaceOnUse" x1="43.1746" y1="-0.2991" x2="366.1746" y2="267.7009">\r
 	<stop  offset="0" style="stop-color:#FFFFFF"/>\r
 	<stop  offset="1" style="stop-color:#939393"/>\r
@@ -4355,7 +4807,88 @@
 	c0.6-2.9,1.7-5.7,3-8.2H280.8c0.6,1.5,1,3.1,1.4,4.7s0.3,4-2,3.6c-2.2-0.4-4.2-3-4.7-5c-0.3-1.1-0.6-2.2-0.9-3.3\r
 	c-33.4,2.2-69,3.1-106.7,2c-14.6-0.4-28.8-1.1-42.7-2c0.2,0.5,0.3,1.5,0.3,2.8c0,0.6-0.3,2-1,2.3C124.1,6.1,122.7,6.2,118.4,0.7z"/>\r
 </svg>\r
-`,g=`<svg xmlns="http://www.w3.org/2000/svg"\r
+`,de=`<svg xmlns="http://www.w3.org/2000/svg"\r
+	 viewBox="0 0 426.5 278.3">\r
+<linearGradient id="parchment_2_svg" gradientUnits="userSpaceOnUse" x1="43.1746" y1="-0.2991" x2="366.1746" y2="267.7009">\r
+	<stop  offset="0" style="stop-color:#FFFFFF"/>\r
+	<stop  offset="1" style="stop-color:#939393"/>\r
+</linearGradient>\r
+<path fill="url(#parchment_2_svg)" stroke="#351E13" d="M118.4,0.7c-9.9,1.4-20.4,2.4-31.5,3c-26.2,1.4-49.8-0.2-70-3\r
+	c-1.2,0-2.8,0.1-4.5,0.6C9,2.3,6,4.4,4,7.2c2,4.6,3.6,9.4,5.2,14.2c0.6,1.7,0.2,3.9-2,3.6c-2.3-0.3-4.1-3.1-4.7-5\r
+	c-0.5-1.5-1-3.1-1.6-4.6c0,0.4,0,0.8,0,1.3c2.3,8.1,4.6,19.8,4,34c-0.4,9.7-2.2,18-4,24.4c0.9,0.2,2.1,0.8,3.5,1.6\r
+	c2,1,3.9,3.5,4.1,5.8c0.1,2-1.2,3.2-3.1,2.2c-0.7-0.4-1.3-0.7-2-1c1.3,3.5,3.4,6.5,5.7,9.5c1,1.3,2.7,6.8-0.9,5.9\r
+	c-2.5-0.6-5-1.3-7.4-2.1c4.5,14.3,8.7,32.9,10,54.8c2.1,34.2-4.2,62.3-9.9,80.9c0.6-0.6,2.3-1.2,4.1-2.1c3.5-1.7,8.9,6.6,5.7,8.2\r
+	s-6.8,3.2-9.8,5.4v17.5c0,0.2,0,0.3,0,0.5c0.6-0.9,1.3-1.8,2.1-2.6c0.6-0.6,1.8-0.2,2.4,0.1c1.1,0.5,2,1.5,2.7,2.4\r
+	c1.1,1.6,2.2,4.1,0.7,5.7c-1.5,1.5-2.4,3.2-3.4,5.1c3,2.9,7,4.8,11.5,4.8h57.4c0.1-2.3,0.3-4.4,1.2-6.5c0.3-0.5,0.6-0.7,1.2-0.8\r
+	c6.3,0.1,11.9,2.1,17.8,4c1.6,0.6,3.1,1.8,4,3.3c5.5-1.9,13.9-4,24.4-4c10.3,0,18.6,2.2,24,4l0.1-0.1c7.7-5.8,15.6-11.3,24-16\r
+	c3.4-1.9,8.9,6.4,5.7,8.2c-4.4,2.5-8.6,5.1-12.7,7.9h225.2c-2.1-1.9-4-4-5.6-6.5c-0.8-1.2-2.5-4.4-0.7-5.6s4.2,1.2,5.1,2.5\r
+	c2.5,4,6.5,6.4,10.3,9.1c0.2,0.1,0.3,0.3,0.5,0.4h1.7c-0.4-1.4-0.4-3.1,1.2-3.4c1.9-0.3,3.8,1.7,4.8,3.4h3.4\r
+	c7.2,0,13.2-4.7,15.3-11.2c-0.5-0.5-1.1-1-1.7-1.4c-1.3-0.9-5.1-6.2-2.4-7.5c0.5-0.2,0.9-0.3,1.4-0.4c-2.1-4.2-2.9-8.6-0.2-12.6\r
+	c-0.8-1.4-1.6-2.9-2.3-4.5c-2.9-6.1,3.7-5.2,5.8-0.8c0,0.1,0.1,0.2,0.1,0.2c-3.3-4.7-5.9-9.3-8-13.8c-20.5-44-0.3-92.3,8-109.6\r
+	c-1.9-0.8-3.4-1.7-4.2-2.9c-7.2-10.3-2.7-22.9,4.2-32.5v-64c0-1.5-0.2-3-0.6-4.4c-4,3.5-9.8,4.8-16,3.7c-2.6-0.4-5.5-4.4-5-7.1\r
+	c0.6-2.9,1.7-5.7,3-8.2H280.8c0.6,1.5,1,3.1,1.4,4.7s0.3,4-2,3.6c-2.2-0.4-4.2-3-4.7-5c-0.3-1.1-0.6-2.2-0.9-3.3\r
+	c-33.4,2.2-69,3.1-106.7,2c-14.6-0.4-28.8-1.1-42.7-2c0.2,0.5,0.3,1.5,0.3,2.8c0,0.6-0.3,2-1,2.3C124.1,6.1,122.7,6.2,118.4,0.7z"/>\r
+<linearGradient id="parchment_2_svg_2" gradientUnits="userSpaceOnUse" x1="202.3793" y1="5.6" x2="223.3793" y2="260.6">\r
+	<stop  offset="0" style="stop-color:#FFFFFF"/>\r
+	<stop  offset="1" style="stop-color:#939393"/>\r
+</linearGradient>\r
+<path opacity="0.56" fill="url(#parchment_2_svg_2)" stroke="#351E13" d="M118.4,0.7c-9.9,1.4-20.4,2.4-31.5,3c-26.2,1.4-49.8-0.2-70-3\r
+	c-1.2,0-2.8,0.1-4.5,0.6C9,2.3,6,4.4,4,7.2c2,4.6,3.6,9.4,5.2,14.2c0.6,1.7,0.2,3.9-2,3.6c-2.3-0.3-4.1-3.1-4.7-5\r
+	c-0.5-1.5-1-3.1-1.6-4.6c0,0.4,0,0.8,0,1.3c2.3,8.1,4.6,19.8,4,34c-0.4,9.7-2.2,18-4,24.4c0.9,0.2,2.1,0.8,3.5,1.6\r
+	c2,1,3.9,3.5,4.1,5.8c0.1,2-1.2,3.2-3.1,2.2c-0.7-0.4-1.3-0.7-2-1c1.3,3.5,3.4,6.5,5.7,9.5c1,1.3,2.7,6.8-0.9,5.9\r
+	c-2.5-0.6-5-1.3-7.4-2.1c4.5,14.3,8.7,32.9,10,54.8c2.1,34.2-4.2,62.3-9.9,80.9c0.6-0.6,2.3-1.2,4.1-2.1c3.5-1.7,8.9,6.6,5.7,8.2\r
+	c-3.2,1.6-6.8,3.2-9.8,5.4v17.5c0,0.2,0,0.3,0,0.5c0.6-0.9,1.3-1.8,2.1-2.6c0.6-0.6,1.8-0.2,2.4,0.1c1.1,0.5,2,1.5,2.7,2.4\r
+	c1.1,1.6,2.2,4.1,0.7,5.7c-1.5,1.5-2.4,3.2-3.4,5.1c3,2.9,7,4.8,11.5,4.8h57.4c0.1-2.3,0.3-4.4,1.2-6.5c0.3-0.5,0.6-0.7,1.2-0.8\r
+	c6.3,0.1,11.9,2.1,17.8,4c1.6,0.6,3.1,1.8,4,3.3c5.5-1.9,13.9-4,24.4-4c10.3,0,18.6,2.2,24,4l0.1-0.1c7.7-5.8,15.6-11.3,24-16\r
+	c3.4-1.9,8.9,6.4,5.7,8.2c-4.4,2.5-8.6,5.1-12.7,7.9h225.2c-2.1-1.9-4-4-5.6-6.5c-0.8-1.2-2.5-4.4-0.7-5.6s4.2,1.2,5.1,2.5\r
+	c2.5,4,6.5,6.4,10.3,9.1c0.2,0.1,0.3,0.3,0.5,0.4h1.7c-0.4-1.4-0.4-3.1,1.2-3.4c1.9-0.3,3.8,1.7,4.8,3.4h3.4\r
+	c7.2,0,13.2-4.7,15.3-11.2c-0.5-0.5-1.1-1-1.7-1.4c-1.3-0.9-5.1-6.2-2.4-7.5c0.5-0.2,0.9-0.3,1.4-0.4c-2.1-4.2-2.9-8.6-0.2-12.6\r
+	c-0.8-1.4-1.6-2.9-2.3-4.5c-2.9-6.1,3.7-5.2,5.8-0.8c0,0.1,0.1,0.2,0.1,0.2c-3.3-4.7-5.9-9.3-8-13.8c-20.5-44-0.3-92.3,8-109.6\r
+	c-1.9-0.8-3.4-1.7-4.2-2.9c-7.2-10.3-2.7-22.9,4.2-32.5v-64c0-1.5-0.2-3-0.6-4.4c-4,3.5-9.8,4.8-16,3.7c-2.6-0.4-5.5-4.4-5-7.1\r
+	c0.6-2.9,1.7-5.7,3-8.2H280.8c0.6,1.5,1,3.1,1.4,4.7s0.3,4-2,3.6c-2.2-0.4-4.2-3-4.7-5c-0.3-1.1-0.6-2.2-0.9-3.3\r
+	c-33.4,2.2-69,3.1-106.7,2c-14.6-0.4-28.8-1.1-42.7-2c0.2,0.5,0.3,1.5,0.3,2.8c0,0.6-0.3,2-1,2.3C124.1,6.1,122.7,6.2,118.4,0.7z"/>\r
+</svg>\r
+`,fe=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="96" height="96">\r
+  <defs>\r
+    <linearGradient id="glow" x1="0" y1="0" x2="0" y2="1">\r
+      <stop offset="0%" stop-color="#b8eaff"/>\r
+      <stop offset="100%" stop-color="#2a3b5f"/>\r
+    </linearGradient>\r
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">\r
+      <stop offset="0%" stop-color="#f6d67a"/>\r
+      <stop offset="100%" stop-color="#c28b3b"/>\r
+    </linearGradient>\r
+  </defs>\r
+\r
+  <!-- Outer circle -->\r
+  <circle cx="48" cy="48" r="44" fill="none" stroke="url(#gold)" stroke-width="2"/>\r
+\r
+  <!-- Mystic triangle -->\r
+  <path d="M48 14 L18 70 L78 70 Z" fill="none" stroke="url(#gold)" stroke-width="2.5"/>\r
+\r
+  <!-- Crescent moon -->\r
+  <path d="M48 18 a10 10 0 1 0 0 20 a7 7 0 1 1 0 -20" fill="#d9e6ff" opacity="0.9"/>\r
+\r
+  <!-- Pause pillars -->\r
+  <rect x="36" y="30" width="8" height="28" rx="2" fill="url(#glow)"/>\r
+  <rect x="52" y="30" width="8" height="28" rx="2" fill="url(#glow)"/>\r
+\r
+  <!-- Glow aura -->\r
+  <ellipse cx="48" cy="44" rx="18" ry="22" fill="#6fb6ff" opacity="0.15"/>\r
+\r
+  <!-- Eye symbol -->\r
+  <circle cx="48" cy="66" r="6" fill="#101522" stroke="url(#gold)" stroke-width="1.5"/>\r
+  <path d="M42 66 Q48 60 54 66 Q48 72 42 66 Z" fill="none" stroke="#9fdcff" stroke-width="1"/>\r
+  <circle cx="48" cy="66" r="2.2" fill="#9fdcff"/>\r
+\r
+  <!-- Side runes -->\r
+  <path d="M26 44 L30 40 L34 44 L30 48 Z" fill="none" stroke="#9fdcff" stroke-width="1"/>\r
+  <path d="M62 40 L68 40 L68 48 L62 48 Z M64 42 L66 42 M64 46 L66 46" fill="none" stroke="#9fdcff" stroke-width="1"/>\r
+\r
+  <!-- Bottom crystal -->\r
+  <path d="M48 74 L44 82 L48 88 L52 82 Z" fill="url(#glow)" stroke="#9fdcff" stroke-width="1"/>\r
+</svg>\r
+`,pe=`<svg xmlns="http://www.w3.org/2000/svg"\r
 	 viewBox="0 0 53 61.2" >\r
 <linearGradient id="place_1_1" gradientUnits="userSpaceOnUse" x1="53" y1="30.0935" x2="1" y2="30.0935">\r
 	<stop  offset="1.649000e-02" style="stop-color:#D1D382"/>\r
@@ -4399,7 +4932,7 @@
 		c-0.2-0.2-0.5-0.3-0.8-0.3c-0.5,0-1.1,0.2-1.9,0.6L20.9,19.1z"/>\r
 </g>\r
 </svg>\r
-`,_=`<?xml version="1.0" encoding="utf-8"?>\r
+`,b=`<?xml version="1.0" encoding="utf-8"?>\r
 <!-- Generator: Adobe Illustrator 23.0.6, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->\r
 <svg version="1.0" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"\r
 	 viewBox="0 0 16.1 62.1" enable-background="new 0 0 16.1 62.1" xml:space="preserve">\r
@@ -4416,7 +4949,63 @@
 	"/>\r
 <circle fill="#FFFFFF" cx="11" cy="5.3" r="1.5"/>\r
 </svg>\r
-`,v={arrow:s,cauldron:c,clock:l,drop:u,fairy:d,heart:f,heart_empty:p,parchment:m,parchment_horizontal:h,place_1:g,rangeStop:_,stop:_,stroke_heart:`<?xml version="1.0" encoding="utf-8"?>\r
+`,x={arrow:re,book:ie,battle:ae,cauldron:h,clock:g,close:_,dragon:v,drop:y,fairy:oe,heart:se,heart_empty:ce,parchment:le,parchment_horizontal:ue,parchment_horizontal_2:de,pause:fe,place_1:pe,rangeStop:b,score:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="96" height="96">\r
+  <defs>\r
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">\r
+      <stop offset="0%" stop-color="#f6d67a"/>\r
+      <stop offset="100%" stop-color="#c28b3b"/>\r
+    </linearGradient>\r
+\r
+    <linearGradient id="glow" x1="0" y1="0" x2="0" y2="1">\r
+      <stop offset="0%" stop-color="#b8eaff"/>\r
+      <stop offset="100%" stop-color="#2a3b5f"/>\r
+    </linearGradient>\r
+  </defs>\r
+\r
+  <!-- Outer circle -->\r
+  <circle cx="48" cy="48" r="44" fill="none" stroke="url(#gold)" stroke-width="2"/>\r
+\r
+  <!-- Mystic triangle -->\r
+  <path d="M48 14 L18 70 L78 70 Z"\r
+        fill="none"\r
+        stroke="url(#gold)"\r
+        stroke-width="2.5"/>\r
+\r
+  <!-- Star / score symbol -->\r
+  <polygon points="48,26 52,38 64,40 54,48 58,60 48,54 38,60 42,48 32,40 44,38"\r
+           fill="url(#glow)"\r
+           stroke="#9fdcff"\r
+           stroke-width="1.5"/>\r
+\r
+  <!-- Glow aura -->\r
+  <ellipse cx="48" cy="44" rx="20" ry="24" fill="#6fb6ff" opacity="0.15"/>\r
+\r
+  <!-- Side runes -->\r
+  <path d="M26 44 L30 40 L34 44 L30 48 Z"\r
+        fill="none"\r
+        stroke="#9fdcff"\r
+        stroke-width="1"/>\r
+\r
+  <path d="M62 40 L68 40 L68 48 L62 48 Z\r
+           M64 42 L66 42\r
+           M64 46 L66 46"\r
+        fill="none"\r
+        stroke="#9fdcff"\r
+        stroke-width="1"/>\r
+\r
+  <!-- Bottom crystal -->\r
+  <path d="M48 74 L44 82 L48 88 L52 82 Z"\r
+        fill="url(#glow)"\r
+        stroke="#9fdcff"\r
+        stroke-width="1"/>\r
+</svg>\r
+`,settings:`<svg xmlns="http://www.w3.org/2000/svg"\r
+	 viewBox="0 0 50 50">\r
+<path fill="currentColor" d="M50,29.7v-9.4h-5.6l-2.2-5.6l4.1-4.1l-6.6-6.6l-4.1,4.1l-5.9-2.5V0h-9.4v5.6l-5.6,2.5l-4.1-4.1l-6.6,6.6\r
+	l4.1,4.1l-2.5,5.6H0v9.4h5.6l2.2,5.6l-4.1,4.1l6.6,6.6l4.1-4.1l5.6,2.2V50h9.4v-5.6l5.6-2.2l4.1,4.1l6.6-6.6l-4.1-4.1l2.2-5.6H50\r
+	V29.7z M25,37.5c-6.9,0-12.5-5.6-12.5-12.5S18.1,12.5,25,12.5S37.5,18.1,37.5,25S31.9,37.5,25,37.5z"/>\r
+</svg>\r
+`,stop:b,stroke_heart:`<?xml version="1.0" encoding="utf-8"?>\r
 <!-- Generator: Adobe Illustrator 23.0.6, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->\r
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"\r
 	 viewBox="0 0 190.3 147.6" enable-background="new 0 0 190.3 147.6" xml:space="preserve">\r
@@ -4507,4 +5096,4 @@
 </g>\r
 <ellipse fill="none" stroke="#DBF795" stroke-miterlimit="10" cx="137.3" cy="32.4" rx="17.8" ry="13.9"/>\r
 </svg>\r
-`},y={TIMER_TICK:`timer:tick`,SCORE_CHANGE:`score:change`,LIVES_CHANGE:`lives:change`,GAME_OVER:`game:over`,ROUND_START:`round:start`,ROUND_OVER:`round:over`,PAUSE:`game:pause`,RESUME:`game:resume`,SHELF_BLOCK:`shelf:block`,INGREDIENT_COUNT:`ingredient:count`,RECIPE_CHANGED:`recipe:changed`,INGREDIENT_IN_CAULDRON:`ingredient:inCauldron`,CAULDRON_STATE_CHANGED:`cauldron:stateChange`},b=[{id:`dragon_tears`,name:`Dragon Tears`,icon:`symbol`,temperature:25,density:8,magicPower:10,count:0},{id:`fairy_dust`,name:`Fairy Dust`,icon:`fairy`,temperature:12,density:9,magicPower:12,count:0},{id:`frost_lotus`,name:`Frost Lotus`,icon:`symbol`,temperature:-18,density:4,magicPower:14,count:0},{id:`mandrake_root`,name:`Mandrake Root`,icon:`symbol`,temperature:-5,density:20,magicPower:8,count:0},{id:`caustic_acid`,name:`Caustic Acid`,icon:`symbol`,temperature:10,density:14,magicPower:22,count:0},{id:`essence_void`,name:`Essence of the Void`,icon:`symbol`,temperature:-20,density:-10,magicPower:40,count:0},{id:`phoenix_feather`,name:`Phoenix Feather`,icon:`symbol`,temperature:50,density:-10,magicPower:30,count:0},{id:`toad_slime`,name:`Toad Slime`,icon:`symbol`,temperature:5,density:30,magicPower:0,count:0}],x=[{id:1,difficulty:`easy`,name:`Moon Mist`,temperature:[32,42],density:[12,22],magicPower:[17,27]},{id:2,difficulty:`easy`,name:`Root Bloom`,temperature:[2,12],density:[24,34],magicPower:[15,25]},{id:3,difficulty:`easy`,name:`Frost Steam`,temperature:[2,12],density:[7,17],magicPower:[19,29]},{id:4,difficulty:`easy`,name:`Quiet Swirl`,temperature:[-28,-18],density:[19,29],magicPower:[17,27]},{id:5,difficulty:`easy`,name:`Bright Dew`,temperature:[27,37],density:[32,42],magicPower:[25,35]},{id:6,difficulty:`easy`,name:`Snow Dust`,temperature:[-16,-6],density:[28,38],magicPower:[29,39]},{id:7,difficulty:`medium`,name:`Acid Spark`,temperature:[17,27],density:[18,28],magicPower:[29,39]},{id:8,difficulty:`medium`,name:`Void Ember`,temperature:[0,10],density:[0,10],magicPower:[45,55]},{id:9,difficulty:`medium`,name:`Heavy Acid`,temperature:[0,10],density:[29,39],magicPower:[25,35]},{id:10,difficulty:`medium`,name:`Frost Acid`,temperature:[-13,-3],density:[13,23],magicPower:[31,41]},{id:11,difficulty:`medium`,name:`Dusty Void`,temperature:[-13,-3],density:[0,10],magicPower:[47,57]},{id:12,difficulty:`medium`,name:`Dragon Void`,temperature:[25,35],density:[1,11],magicPower:[55,65]},{id:13,difficulty:`medium`,name:`Rooted Night`,temperature:[-18,-8],density:[14,24],magicPower:[55,65]},{id:14,difficulty:`hard`,name:`Phoenix Pulse`,temperature:[57,67],density:[0,10],magicPower:[37,47]},{id:15,difficulty:`hard`,name:`Slime Crown`,temperature:[-5,5],density:[45,55],magicPower:[3,13]},{id:16,difficulty:`hard`,name:`Void Flame`,temperature:[25,35],density:[0,10],magicPower:[60,70]},{id:17,difficulty:`hard`,name:`Acid Bog`,temperature:[10,20],density:[39,49],magicPower:[17,27]},{id:18,difficulty:`hard`,name:`Frozen Ash`,temperature:[27,37],density:[0,10],magicPower:[39,49]},{id:19,difficulty:`hard`,name:`Triple Eclipse`,temperature:[-20,-10],density:[19,29],magicPower:[60,70]},{id:20,difficulty:`hard`,name:`Ember Soup`,temperature:[62,72],density:[24,34],magicPower:[37,47]}],S={[e]:{gameTime:180,bonus:15},[n]:{gameTime:160,bonus:10},[t]:{gameTime:160,bonus:5}},C={[e]:12,[n]:8,[t]:5},w={[e]:5,[n]:3,[t]:3},T={[e]:4,[n]:4,[t]:5},E={[e]:4,[n]:6,[t]:8},D={[e]:100,[n]:200,[t]:300},O=class{node;constructor({parentNode:e,tagName:t=`div`,className:n,content:r,attrs:i}){if(this.node=document.createElement(t),Array.isArray(n)){let e=n.filter(Boolean);e.length&&this.node.classList.add(...e)}else typeof n==`string`&&n.trim()!==``&&(this.node.className=n);this.setContent(r),i&&this.setAttributes(i),e&&e.append(this.node)}setAttributes(e){Object.entries(e).forEach(([e,t])=>{t===null?this.node.removeAttribute(e):this.node.setAttribute(e,String(t))})}setContent(e){this.node.innerHTML=``,e&&(typeof e==`string`?this.node.textContent=e:e instanceof HTMLElement?this.node.append(e):e.forEach(e=>{typeof e==`string`?this.node.append(document.createTextNode(e)):this.node.append(e)}))}append(e){this.node.append(e)}destroy(){this.node.remove()}},k=class extends O{constructor({parentNode:e,icon:t,className:n,variant:r,size:i,shadow:a}){super({parentNode:e,tagName:`span`,className:[`app-icon`,n??``,r?`app-icon_${r}`:``,i?`app-icon_size-${i}`:``,a?`app-icon_shadow-${a}`:``]}),this.node.insertAdjacentHTML(`beforeend`,v[t])}},A=e=>e.map(e=>e?`app_button_${e}`:void 0).filter(e=>e!==void 0),j=class extends O{textNode=null;text;leftIcon=null;rightIcon=null;constructor({parentNode:e,className:t,variant:n,color:r,size:i,corner:a,text:o,leftIcon:s,rightIcon:c,fullWidth:l,disabled:u,ariaLabel:d,onClick:f}){super({parentNode:e,tagName:`button`,className:[`app_button`,...t?[t]:[],...A([r,n,i,a,l,u])],attrs:{ariaLabel:d??`Button`}}),this.text=o??null,this.leftIcon=s??null,this.rightIcon=c??null,f&&(this.node.onclick=()=>f()),this.render()}render(){this.leftIcon&&(this.node.insertAdjacentHTML(`beforeend`,v[this.leftIcon]),this.text&&this.renderTextNode(this.text)),this.text&&!this.textNode&&this.renderTextNode(this.text),this.rightIcon&&this.node.insertAdjacentHTML(`beforeend`,v[this.rightIcon])}renderTextNode(e){this.textNode=new O({parentNode:this.node,className:`app_button_text`,tagName:`span`,content:e})}setText(e){this.textNode&&this.textNode.setContent(e)}destroy(){this.node.onclick=null,super.destroy()}},M=(e,t=0,n=1)=>Array.from({length:e},(e,r)=>t+r*n),N=e=>{let t=Math.floor(e/60),n=e%60;return`${t.toString().padStart(2,`0`)}:${n.toString().padStart(2,`0`)}`},P=class extends O{rangeNem=7;step=10;rangeZone=this.rangeNem*this.step;rangeZoneOnePercent=this.rangeZone/100;value=0;leftStopper;rightStopper;arrow;min;max;firstNumber;lastNumber;constructor({parentNode:e,rangeMax:t,rangeMin:n,value:r}){super({parentNode:e,tagName:`span`,className:`app-range-line`}),this.render(t,n,r)}render(e,t,n){let r=this.generateScale(t,e);this.min=r.at(0)??0,this.max=r.at(-1)??this.rangeNem*this.step,this.leftStopper=new k({parentNode:this.node,className:this.setClass(`left-stop`),icon:`stop`}),this.leftStopper.node.style.left=this.getStopperPosition(t),this.arrow=new k({parentNode:this.node,className:this.setClass(`arrow`),icon:`arrow`}),this.arrow.node.style.left=this.getStopperPosition(n),this.rightStopper=new k({parentNode:this.node,className:this.setClass(`right-stop`),icon:`stop`}),this.rightStopper.node.style.left=this.getStopperPosition(e);let i=new O({parentNode:this.node,tagName:`span`,className:this.setClass(`stop-num-left`),content:t.toString()});i.node.style.left=this.getStopperPosition(t);let a=new O({parentNode:this.node,tagName:`span`,className:this.setClass(`stop-num-right`),content:e.toString()});a.node.style.left=this.getStopperPosition(e);let o=new O({parentNode:this.node,className:this.setClass(`count`)});r.forEach((e,t)=>{let n=new O({parentNode:o.node,tagName:`span`,content:e.toString()});t>0&&t<r.length-1&&(n.node.style.left=this.getStopperPosition(e)),t===0&&(this.firstNumber=n.node),t===r.length-1&&(this.lastNumber=n.node)})}setClass(e){return`app-range-line_${e}`}getStopperPosition(e){let t=this.max-this.min;return`${(e-this.min)/t*100}%`}roundToStep(e){return Math.round(e/this.step)*this.step}generateScale(e,t){let n=(e+t)/2,r=this.roundToStep(n),i=this.rangeNem,a=M(i,r-Math.floor(i/2)*this.step,this.step);for(;a[0]>0||a[a.length-1]<0;)i+=1,a=M(i,r-Math.floor(i/2)*this.step,this.step);return this.rangeNem=i,a}updateRange=e=>{e>this.max?(this.lastNumber.textContent=`...   ${e}`,this.arrow.node.style.left=`100%`):e<this.min?(this.firstNumber.textContent=`${e}   ...`,this.arrow.node.style.left=`0%`):(e<=this.max&&(this.lastNumber.textContent=this.max.toString()),e>=this.min&&(this.firstNumber.textContent=this.min.toString()),this.arrow.node.style.left=this.getStopperPosition(e))}},F=class extends O{nodeClassName=`app-range-slider`;range;value=0;rangeLine;constructor({parentNode:e,label:t,range:n,value:r,icon:i}){super({parentNode:e,tagName:`div`,className:`app-range-slider`}),this.range=n,this.value=r,this.render(t,i)}render(e,t){let n=new k({parentNode:this.node,icon:t,className:this.setClassName(`icon`)});t===`drop`&&(n.node.style.width=`60%`,n.node.style.justifySelf=`center`),new O({parentNode:this.node,tagName:`h3`,content:e,className:this.setClassName(`title`)}),this.rangeLine=new P({parentNode:this.node,rangeMax:this.range.max,rangeMin:this.range.min,value:4})}setClassName=e=>`${this.nodeClassName}_${e}`;updateRange=e=>{this.rangeLine.updateRange(e)}},I=class{events={};on(e,t){this.events[e]||(this.events[e]=new Set),this.events[e].add(t)}off(e,t){this.events[e]?.delete(t)}emit(e,t){this.events[e]?.forEach(e=>e(t))}},L=class{intervalId=null;endTimestamp=0;start(e,t,n){this.stop(),this.endTimestamp=Date.now()+e*1e3,this.intervalId=window.setInterval(()=>{let e=Date.now(),r=Math.max(0,Math.floor((this.endTimestamp-e)/1e3));t(r),r<=0&&(this.stop(),n())},250)}stop(){this.intervalId!==null&&(clearInterval(this.intervalId),this.intervalId=null)}resume(e,t,n){this.start(n,e,t)}},R=new class{save(e,t){let n=JSON.stringify(t);localStorage.setItem(e,n)}load(e){let t=localStorage.getItem(e);if(!t)return null;try{return JSON.parse(t)}catch{return null}}clear(e){localStorage.removeItem(e)}hasSave(e){return!!localStorage.getItem(e)}},z=new class{events=new I;timer=new L;leaderBoard=[];state={playerName:`Alchemist`,status:i,level:1,difficulty:n,score:0,lives:w.medium,maxLives:w.medium,timeLeft:0,currentRecipe:null,recipes:[],cauldronIngredients:[],cauldronValues:{density:0,magicPower:0,temperature:0},maxIngredients:T.medium,shelfIngredients:[],activeReactions:[],lastReactionId:null,startTimestamp:0,endTimestamp:0};getState=()=>this.state;subscribe(e,t){this.events.on(e,t)}emit(e,t){this.events.emit(e,t)}update(e){this.state={...this.state,...e}}startNewGame=()=>(this.resetGameState(),this.initShelf(),this.pickRandomRecipe(),this.state.status=o,this.setTimer(),this.getState());pauseGame(){this.timer.stop(),this.update({status:a}),this.emit(y.PAUSE,!0);let e=Math.max(0,Math.floor((this.state.endTimestamp-Date.now())/1e3));this.update({timeLeft:e}),this.timer.stop(),this.update({status:a}),this.saveToStorage(`GAME_STATE`,this.state)}resumeGame(){this.update({status:o});let e=Date.now()+this.state.timeLeft*1e3;this.update({endTimestamp:e,status:o}),this.timer.start(this.state.timeLeft,e=>{this.update({timeLeft:e}),this.emit(y.TIMER_TICK,e)},()=>this.gameOver())}resetGameState(){this.state={...this.state,score:0,lives:w[this.state.difficulty],timeLeft:0,currentRecipe:null,cauldronIngredients:[],cauldronValues:{density:0,magicPower:0,temperature:0},shelfIngredients:[],activeReactions:[],lastReactionId:null}}roundOver(e){this.timer.stop(),this.emit(y.ROUND_OVER,{score:this.state.score,lives:this.state.lives,time:this.state.timeLeft,variant:e})}newRound(){let e=Date.now()+this.state.timeLeft*1e3;this.update({endTimestamp:e}),this.timer.start(this.state.timeLeft,e=>{this.update({timeLeft:e}),this.emit(y.TIMER_TICK,e)},()=>this.gameOver()),this.emit(y.SHELF_BLOCK,{isBlock:!1}),this.pickRandomRecipe(),this.clearCauldron(),this.emit(y.ROUND_START,{isStart:!0})}gameOver(){this.update({status:r}),this.resetGameState(),this.clearStorage(`GAME_STATE`),this.emit(y.GAME_OVER,{isOver:!0})}continueGame(){let e=this.loadFromStorage(`GAME_STATE`);if(!e)return;this.state=e,this.update({status:o});let t=Math.max(0,Math.floor((e.endTimestamp-Date.now())/1e3));this.update({timeLeft:t}),this.resumeGame(),this.emit(y.RESUME,this.state)}initShelf(){let e=E[this.state.difficulty],t=[...b].slice(0,e);t.forEach(e=>{e.count=Math.floor(Math.random()*14)+2}),this.update({shelfIngredients:t})}pickRandomRecipe(){this.state.recipes.length===0&&(this.state.recipes=x.filter(e=>e.difficulty===this.state.difficulty).sort(()=>Math.random()-.5));let e=this.state.recipes.at(-1);this.state.recipes.pop(),e&&(this.update({currentRecipe:e}),this.emit(y.RECIPE_CHANGED,{recipe:e,ingInCauldron:0}))}setTimer(){let e=S[this.state.difficulty].gameTime,t=Date.now(),n=t+e*1e3;this.update({startTimestamp:t,endTimestamp:n,timeLeft:e}),this.timer.start(e,e=>{this.update({timeLeft:e}),this.emit(y.TIMER_TICK,e)},()=>this.gameOver())}addIngredientToCauldron(e){let t=this.state.shelfIngredients.find(t=>t.id===e);if(!t||!t.count)return;--t.count;let n={temperature:t.temperature+this.state.cauldronValues.temperature,density:t.density+this.state.cauldronValues.density,magicPower:t.magicPower+this.state.cauldronValues.magicPower},r=[...this.state.cauldronIngredients,t];this.update({cauldronIngredients:r,cauldronValues:n}),this.emit(y.CAULDRON_STATE_CHANGED,{values:n}),r.length===this.state.maxIngredients&&this.emit(y.SHELF_BLOCK,{isBlock:!0}),this.emit(y.INGREDIENT_IN_CAULDRON,r.length),this.emit(y.INGREDIENT_COUNT,{id:e,count:t.count})}brewCheck(){let e=this.state.currentRecipe;if(!e)return;let t=this.state.difficulty,n=C[t],{temperature:r,density:i,magicPower:a}=this.state.cauldronValues,o=(e,t)=>e>=t.min-n&&e<=t.max+n;if(o(r,{min:e.temperature.at(0)??0,max:e.temperature.at(1)??0})&&o(i,{min:e.density.at(0)??0,max:e.density.at(1)??0})&&o(a,{min:e.magicPower.at(0)??0,max:e.magicPower.at(1)??0})){let e=S[t].bonus+this.state.timeLeft,n=D[t]+this.state.score;this.update({timeLeft:e,score:n}),this.emit(y.TIMER_TICK,e),this.emit(y.SCORE_CHANGE,n),this.roundOver(`success`)}else this.loseLife(),this.state.lives>0&&this.roundOver(`fail`),this.state.lives===0&&this.gameOver()}loseLife(){let e=this.state.lives-1;this.update({lives:e}),this.emit(y.LIVES_CHANGE,{lives:e})}clearCauldron(){this.update({cauldronIngredients:[],cauldronValues:{temperature:0,density:0,magicPower:0}}),this.emit(y.CAULDRON_STATE_CHANGED,{values:this.state.cauldronValues})}saveToStorage(e,t){R.save(e,t)}loadFromStorage(e){let t=R.load(e);return t?e===`GAME_STATE`?(this.state=t,this.state):e===`LEADERBOARD`?(this.leaderBoard=t,this.leaderBoard):null:null}clearStorage(e){R.clear(e)}},B=class extends O{score;countNode;constructor({parentNode:e,score:t}){super({parentNode:e,tagName:`div`,className:`app-score`}),this.score=t??0,z.subscribe(y.SCORE_CHANGE,e=>{this.score!==e&&(this.score=e,this.countNode.node.textContent=e.toString())}),this.render()}render(){new k({parentNode:this.node,icon:`symbol`,variant:`magic-icon`,className:`app-score_icon`}),new O({parentNode:this.node,tagName:`span`,className:`app-score_text`,content:`Score: `}),this.countNode=new O({parentNode:this.node,tagName:`span`,className:`app-score_count`,content:`${this.score}`})}},V=class extends O{timerNode;timer=0;constructor({parentNode:e}){super({parentNode:e,tagName:`div`,className:`app-timer`}),z.subscribe(y.TIMER_TICK,e=>{this.timerNode.node.textContent=this.formatTime(e)}),this.render()}render(){new k({parentNode:this.node,icon:`clock`,className:`app-timer_icon`,variant:`magic`}),new O({parentNode:this.node,tagName:`span`,className:`app-timer_text`,content:`Time: `}),this.timerNode=new O({parentNode:this.node,tagName:`span`,className:`app-timer_count`,content:`${this.timer}`})}formatTime(e){let t=Math.floor(e/60),n=e%60;return`${t.toString().padStart(2,`0`)}:${n.toString().padStart(2,`0`)}`}},H=class extends O{maxLives;currentLivesCount;constructor({parentNode:e,currentLivesCount:t,maxLives:n}){super({parentNode:e,tagName:`div`,className:`app-lives`}),this.maxLives=n,this.currentLivesCount=t,z.subscribe(y.LIVES_CHANGE,({lives:e})=>{this.currentLivesCount=e,this.render()}),this.render()}render(){this.node.innerHTML=``;let e=this.maxLives-this.currentLivesCount;e>0&&M(e).forEach(()=>{new k({parentNode:this.node,icon:`heart_empty`})}),M(this.currentLivesCount).forEach(()=>{new k({parentNode:this.node,icon:`heart`})})}},U=class extends O{constructor({parentNode:e,currentLivesCount:t,maxLives:n}){super({parentNode:e,tagName:`header`,className:`app-header`}),this.render(t,n)}render(e,t){new B({parentNode:this.node,score:0}),new V({parentNode:this.node}),new H({parentNode:this.node,currentLivesCount:e,maxLives:t})}},W=class extends O{isStartState=!1;callback;mainBtn;constructor({parentNode:e,isStartState:t,callback:n}){super({parentNode:e,tagName:t?`div`:`footer`,className:t?`app-start-state`:`app-footer`}),this.isStartState=t??!1,this.callback=n,this.render()}render(){new j({parentNode:this.node,color:`magic-icon`,text:`N`}),this.mainBtn=new j({parentNode:this.node,color:`magic`,text:this.isStartState?`Start Game`:`Brew`,leftIcon:`symbol`,rightIcon:`symbol`}),this.mainBtn.node.onclick=()=>this.callback(),new j({parentNode:this.node,color:`magic-icon`,text:`S`})}destroy(){this.mainBtn.node.onclick=null,super.destroy()}},G=class extends O{constructor({parentNode:e,lives:t,score:n,timeLeft:r,variant:i,onClose:a}){super({parentNode:e,tagName:`div`,className:`app-info`}),this.render(i,n,t,r,a)}render(e,t,n,r,i){new k({parentNode:this.node,icon:`parchment_horizontal`,className:`app-info_bg`}),new O({parentNode:this.node,tagName:`h2`,className:`app-info_title`,content:e===`success`?`You have prepared a magical potion!`:`Wrong mixture, try again...`});let a=new O({parentNode:this.node,tagName:`ul`,className:`app-info_list`});[{name:`Score`,value:t},{name:`lives`,value:n},{name:`Time left`,value:r}].forEach(({name:e,value:t})=>{let n=new O({parentNode:a.node,tagName:`li`,className:`app-info_list_item`});new O({parentNode:n.node,tagName:`span`,className:`app-info_list_item_name`,content:`${e}: `}),e===`lives`?M(t).forEach(()=>{new k({parentNode:n.node,icon:`stroke_heart`,className:`app-info_list_item_icon`})}):new O({parentNode:n.node,tagName:`span`,className:`app-info_list_item_name`,content:e===`Time left`?N(t):t.toString()})});let o=new j({parentNode:this.node,className:`app-info_btn`,text:`Continue`,color:`magic`});o.node.onclick=()=>i()}},K=class extends O{timeout=null;activeComponent=null;isLocked=!1;onClose=null;constructor({className:e}={}){super({parentNode:null,tagName:`div`,className:[`app_portal`,e??``],attrs:{id:`appPortal`}}),this.node.addEventListener(`click`,this.handleOutsideClick),document.addEventListener(`keydown`,this.handleEsc)}mount(e,t){this.activeComponent=t??null,this.timeout&&=(clearTimeout(this.timeout),null),document.body.style.overflow=`hidden`,this.node.innerHTML=``,document.body.appendChild(this.node),this.node.appendChild(e),this.node.classList.add(`app_portal_open`)}closePortal=()=>{this.isLocked||this.onClose?.()};handleOutsideClick=e=>{this.isLocked||e.target.id===`appPortal`&&this.closePortal()};handleEsc=e=>{e.key===`Escape`&&this.closePortal()};unmount(){this.node.classList.remove(`app_portal_open`,`app_portal_bg-blur`),this.timeout=window.setTimeout(()=>{this.activeComponent?.destroy(),this.activeComponent=null,this.node.innerHTML=``,this.node.parentNode&&(this.node.parentNode.removeChild(this.node),document.body.style.overflow=`auto`)},300)}lock(){this.isLocked=!0}unlock(){this.isLocked=!1}setBlur(){this.node.classList.add(`app_portal_bg-blur`)}},q=class extends O{constructor({parentNode:e,onBack:t,onContinue:n}){super({parentNode:e,tagName:`div`,className:`app-pause`}),this.render(t,n)}render(e,t){new O({parentNode:this.node,tagName:`h2`,className:`app-pause_title`,content:`Game on pause`}),new k({parentNode:this.node,icon:`symbol`,size:`lg`,className:`app-pause_icon`});let n=new O({parentNode:this.node,tagName:`div`,className:`app-pause_btn-wrap`});new j({parentNode:n.node,className:`app-pause_btn-wrap_continue`,text:`Continue`,color:`magic`,onClick:t}),new j({parentNode:n.node,className:`app-pause_btn-wrap_continue`,text:`Back to menu`,color:`arrow-left`,onClick:e})}},J=class extends O{callback;child;constructor({parentNode:e,callback:t}){super({parentNode:e,tagName:`div`,className:`app-start-game-dialog`}),this.callback=t,this.render()}render(){new k({parentNode:this.node,className:`app-start-game-dialog_icon`,icon:`symbol`}),this.child=new W({parentNode:this.node,isStartState:!0,callback:this.callback})}destroy(){this.child.destroy(),super.destroy()}},Y=class extends O{constructor({parentNode:e}){super({parentNode:e,tagName:`div`,className:`app-cauldron`}),this.render()}render(){new O({parentNode:this.node,tagName:`h1`,className:`app-cauldron_title`,content:`Alchemist's Cauldron`});let e=new O({parentNode:this.node,tagName:`div`,className:`app-cauldron_cauldron-wrap`});new k({parentNode:e.node,icon:`cauldron`,className:`app-cauldron_cauldron-wrap_cauldron`}),new k({parentNode:e.node,icon:`symbol`,className:`app-cauldron_cauldron-wrap_icon`})}},X=class extends O{ingredients=[];ingredientsDate=[];constructor({parentNode:e,ingredients:t}){super({parentNode:e,tagName:`div`,className:`app-ingredients`}),this.ingredients=t,z.subscribe(y.INGREDIENT_COUNT,({id:e,count:t})=>{let n=this.ingredientsDate.find(t=>t.id===e);n&&(t===0&&(n.card.style.opacity=`0.5`,n.card.style.pointerEvents=`none`),n.countNode.textContent=t?t.toString():`out`,n.count=t??null)}),z.subscribe(y.SHELF_BLOCK,({isBlock:e})=>{this.ingredientsDate.forEach(({card:t,count:n})=>{let r=e||!n;t.style.opacity=r?`0.5`:`1`,t.style.pointerEvents=r?`none`:`all`})}),this.render()}render(){let e=new O({parentNode:this.node,tagName:`ul`,className:`app-ingredients_list`});this.ingredients.forEach(t=>{let{name:n,temperature:r,density:i,magicPower:a,count:o,id:s,icon:c}=t,l=new O({parentNode:e.node,tagName:`li`,className:`app-ingredients_list_item`});l.node.onclick=()=>z.addIngredientToCauldron(s),new k({parentNode:l.node,className:`app-ingredients_list_item_icon`,icon:c,variant:`magic`}),new O({parentNode:l.node,className:`app-ingredients_list_item_title`,tagName:`h2`,content:n});let u=new O({parentNode:l.node,className:`app-ingredients_list_item_props`,tagName:`span`});[{value:r,icon:`symbol`},{value:i,icon:`drop`},{value:a,icon:`symbol`}].forEach(({value:e,icon:t})=>{new k({parentNode:u.node,icon:t,className:`app-ingredients_list_item_props_icon`}),new O({parentNode:u.node,className:`app-ingredients_list_item_props_value`,content:e.toString()})});let d=new O({parentNode:l.node,className:`app-ingredients_list_item_count`,tagName:`span`,content:o?o.toString():`0`});this.ingredientsDate.push({id:s,card:l.node,countNode:d.node,count:o??null})})}},Z=class extends O{ingredientsCountNode;constructor({parentNode:e,currentIngredientsCount:t,currentRecipe:n,maxIngredients:r}){super({parentNode:e,tagName:`div`,className:`app-recipe`}),z.subscribe(y.INGREDIENT_IN_CAULDRON,e=>{this.ingredientsCountNode.node.textContent=e.toString()}),z.subscribe(y.RECIPE_CHANGED,({recipe:e,ingInCauldron:t})=>{let{maxIngredients:n}=z.getState();this.node.innerHTML=``,this.render(e,t,n)}),this.render(n,t,r)}render({name:e,temperature:t,density:n,magicPower:r},i,a){new k({parentNode:this.node,icon:`parchment`,className:`app-recipe_bg`}),new O({parentNode:this.node,tagName:`h2`,className:`app-recipe_title`,content:e});let o=new O({parentNode:this.node,tagName:`ul`,className:`app-recipe_value-wrap`});[{name:`temperature`,value:t},{name:`density`,value:n},{name:`magicPower`,value:r}].map(({name:e,value:t})=>{let n=new O({parentNode:o.node,tagName:`li`,className:`app-recipe_value-wrap_value`});new O({parentNode:n.node,tagName:`span`,className:`app-recipe_value-wrap_value_name`,content:e}),new O({parentNode:n.node,tagName:`span`,className:`app-recipe_value-wrap_value_v`,content:t.join(` - `)})});let s=new O({parentNode:this.node,tagName:`div`,className:`app-recipe_ingredients-count`});new O({parentNode:s.node,tagName:`span`,content:`Ingredients: `}),this.ingredientsCountNode=new O({parentNode:s.node,tagName:`span`,content:i.toString()}),new O({parentNode:s.node,tagName:`span`,content:` / `}),new O({parentNode:s.node,tagName:`span`,content:a.toString()})}},Q=class extends O{ingredientsCountNode;temperature;density;magicPower;constructor({parentNode:e,ranges:t}){super({parentNode:e,tagName:`div`,className:`app-ranges`}),z.subscribe(y.CAULDRON_STATE_CHANGED,({values:{temperature:e,density:t,magicPower:n}})=>{this.temperature.updateRange(e),this.density.updateRange(t),this.magicPower.updateRange(n)}),this.render(t)}render(e){this.temperature=new F({parentNode:this.node,label:`Temperature`,range:{min:e.temperature.at(0),max:e.temperature.at(1)},value:0,icon:`symbol`}),this.density=new F({parentNode:this.node,label:`Density`,range:{min:e.density.at(0),max:e.density.at(1)},value:0,icon:`drop`}),this.magicPower=new F({parentNode:this.node,label:`Magic Power`,range:{min:e.magicPower.at(0),max:e.magicPower.at(1)},value:0,icon:`symbol`})}},$=class extends O{constructor({parentNode:e,ingredients:t,currentRecipe:n,currentIngredientsCount:r,maxIngredients:i}){super({parentNode:e,tagName:`div`,className:`app-game`}),this.render(t,n,r,i)}render(e,t,n,r){new X({parentNode:this.node,ingredients:e}),new Y({parentNode:this.node}),new Z({parentNode:this.node,currentRecipe:t,currentIngredientsCount:n,maxIngredients:r}),new Q({parentNode:this.node,ranges:t})}},ee=class extends O{root;store=z;portal;header=null;main=null;footer=null;pause=null;startGameNode=null;constructor(e){super({parentNode:e,tagName:`div`,className:`app`,attrs:{id:`app`}}),z.subscribe(y.GAME_OVER,()=>{this.startGameNode?.destroy(),this.startGameNode=null,this.node.innerHTML=``,this.startGameNode=new J({parentNode:this.node,callback:this.handleStartGame})}),z.subscribe(y.ROUND_OVER,({score:e,lives:t,time:n,variant:r})=>{let i=()=>{this.store.newRound(),this.portal.unmount()},a=new G({parentNode:null,score:e,lives:t,timeLeft:n,variant:r,onClose:i});this.portal.mount(a.node,a),this.portal.onClose=i}),z.subscribe(y.PAUSE,()=>{this.pause=new q({parentNode:null,onBack:()=>{this.store.startNewGame(),this.renderStartGame()},onContinue:()=>{this.store.continueGame()}});let e=this.pause.node;e&&(this.portal.mount(e,this.pause),this.portal.onClose=()=>{this.store.continueGame()},this.portal.setBlur())}),z.subscribe(y.RESUME,()=>{this.pause?.destroy(),this.portal.unmount()}),document.addEventListener(`visibilitychange`,()=>{document.hidden&&z.pauseGame()}),document.addEventListener(`keydown`,e=>{if(e.code===`Space`){e.preventDefault();let{status:t}=this.store.getState();t===o?z.pauseGame():t===a&&z.continueGame()}}),this.root=e}init(){this.root.append(this.node),this.portal=new K,R.hasSave(`GAME_STATE`),this.renderStartGame()}renderStartGame(){this.pause?.destroy(),this.portal.unmount(),this.node.innerHTML=``,this.startGameNode=new J({parentNode:this.node,callback:this.handleStartGame})}renderGame(){this.startGameNode?.destroy(),this.startGameNode=null,this.node.innerHTML=``;let{shelfIngredients:e,currentRecipe:t,cauldronIngredients:n,maxIngredients:r,lives:i,maxLives:a}=this.store.getState();t&&(this.header=new U({parentNode:this.node,maxLives:a,currentLivesCount:i}),this.main=new O({parentNode:this.node,tagName:`main`,className:`app-main`}),new $({parentNode:this.main.node,ingredients:e,currentRecipe:t,currentIngredientsCount:n.length,maxIngredients:r}),this.footer=new W({parentNode:this.node,callback:()=>this.store.brewCheck()}))}handleStartGame=()=>{this.store.startNewGame(),this.renderGame()}},te=document.body;new ee(te).init();
+`},S={TIMER_TICK:`timer:tick`,SCORE_CHANGE:`score:change`,LIVES_CHANGE:`lives:change`,GAME_START:`game:start`,GAME_OVER:`game:over`,ROUND_START:`round:start`,ROUND_OVER:`round:over`,PAUSE:`game:pause`,RESUME:`game:resume`,SHELF_BLOCK:`shelf:block`,INGREDIENT_COUNT:`ingredient:count`,RECIPE_CHANGED:`recipe:changed`,INGREDIENT_IN_CAULDRON:`ingredient:inCauldron`,CAULDRON_STATE_CHANGED:`cauldron:stateChange`,SHOW_LEADERBOARD:`show:leaderboard`,PAGE_HIDDEN:`page:hidden`,SHOW_RULES:`show:rules`},me=[{id:`dragon_tears`,name:`Dragon Tears`,icon:`dragon`,temperature:25,density:8,magicPower:10,count:0},{id:`fairy_dust`,name:`Fairy Dust`,icon:`fairy`,temperature:12,density:9,magicPower:12,count:0},{id:`frost_lotus`,name:`Frost Lotus`,icon:`symbol`,temperature:-18,density:4,magicPower:14,count:0},{id:`mandrake_root`,name:`Mandrake Root`,icon:`symbol`,temperature:-5,density:20,magicPower:8,count:0},{id:`caustic_acid`,name:`Caustic Acid`,icon:`symbol`,temperature:10,density:14,magicPower:22,count:0},{id:`essence_void`,name:`Essence of the Void`,icon:`symbol`,temperature:-20,density:-10,magicPower:40,count:0},{id:`phoenix_feather`,name:`Phoenix Feather`,icon:`symbol`,temperature:50,density:-10,magicPower:30,count:0},{id:`toad_slime`,name:`Toad Slime`,icon:`symbol`,temperature:5,density:30,magicPower:0,count:0}],he=[{id:1,difficulty:`easy`,name:`Moon Mist`,temperature:[32,42],density:[12,22],magicPower:[17,27]},{id:2,difficulty:`easy`,name:`Root Bloom`,temperature:[2,12],density:[24,34],magicPower:[15,25]},{id:3,difficulty:`easy`,name:`Frost Steam`,temperature:[2,12],density:[7,17],magicPower:[19,29]},{id:4,difficulty:`easy`,name:`Quiet Swirl`,temperature:[-28,-18],density:[19,29],magicPower:[17,27]},{id:5,difficulty:`easy`,name:`Bright Dew`,temperature:[27,37],density:[32,42],magicPower:[25,35]},{id:6,difficulty:`easy`,name:`Snow Dust`,temperature:[-16,-6],density:[28,38],magicPower:[29,39]},{id:7,difficulty:`medium`,name:`Acid Spark`,temperature:[17,27],density:[18,28],magicPower:[29,39]},{id:8,difficulty:`medium`,name:`Void Ember`,temperature:[0,10],density:[0,10],magicPower:[45,55]},{id:9,difficulty:`medium`,name:`Heavy Acid`,temperature:[0,10],density:[29,39],magicPower:[25,35]},{id:10,difficulty:`medium`,name:`Frost Acid`,temperature:[-13,-3],density:[13,23],magicPower:[31,41]},{id:11,difficulty:`medium`,name:`Dusty Void`,temperature:[-13,-3],density:[0,10],magicPower:[47,57]},{id:12,difficulty:`medium`,name:`Dragon Void`,temperature:[25,35],density:[1,11],magicPower:[55,65]},{id:13,difficulty:`medium`,name:`Rooted Night`,temperature:[-18,-8],density:[14,24],magicPower:[55,65]},{id:14,difficulty:`hard`,name:`Phoenix Pulse`,temperature:[57,67],density:[0,10],magicPower:[37,47]},{id:15,difficulty:`hard`,name:`Slime Crown`,temperature:[-5,5],density:[45,55],magicPower:[3,13]},{id:16,difficulty:`hard`,name:`Void Flame`,temperature:[25,35],density:[0,10],magicPower:[60,70]},{id:17,difficulty:`hard`,name:`Acid Bog`,temperature:[10,20],density:[39,49],magicPower:[17,27]},{id:18,difficulty:`hard`,name:`Frozen Ash`,temperature:[27,37],density:[0,10],magicPower:[39,49]},{id:19,difficulty:`hard`,name:`Triple Eclipse`,temperature:[-20,-10],density:[19,29],magicPower:[60,70]},{id:20,difficulty:`hard`,name:`Ember Soup`,temperature:[62,72],density:[24,34],magicPower:[37,47]}],C={[e]:{gameTime:180,bonus:15},[n]:{gameTime:150,bonus:10},[t]:{gameTime:150,bonus:5}},ge={[e]:12,[n]:8,[t]:5},w={[e]:5,[n]:3,[t]:3},T={[e]:4,[n]:4,[t]:5},E={[e]:4,[n]:6,[t]:8},D={[e]:100,[n]:200,[t]:300},{BUBBLING:O,VOLATILE_MIX:k,SOLAR_FROST:A,ROOTED_STEAM:j,ASHEN_BLOOM:M,ANNIHILATION:N,PRESSURE_SPIKE:P,MAGMA_FLUX:F,DEEP_FREEZE:I,ARCANE_SATURATION:L,STEAM_BURST:_e,blaCK_ICE:ve,HEAVY_SPARK:ye,BURNING_ROOT:be,VOID_RESONANCE:xe}={BUBBLING:`bubbling`,VOLATILE_MIX:`volatile-mix`,SOLAR_FROST:`solar-frost`,ROOTED_STEAM:`rooted-steam`,ASHEN_BLOOM:`ashen-bloom`,ANNIHILATION:`annihilation`,PRESSURE_SPIKE:`pressure-spike`,MAGMA_FLUX:`magma-flux`,DEEP_FREEZE:`deep-freeze`,ARCANE_SATURATION:`arcane-saturation`,STEAM_BURST:`steam-burst`,blaCK_ICE:`black-ice`,HEAVY_SPARK:`heavy-spark`,BURNING_ROOT:`burning-root`,VOID_RESONANCE:`void-resonance`},Se=[{id:O,name:`Bubbling`},{id:k,name:`Volatile Mix`},{id:A,name:`Solar Frost`},{id:j,name:`Rooted Steam`},{id:M,name:`Ashen Bloom`},{id:N,name:`Annihilation`},{id:P,name:`Pressure Spike`},{id:F,name:`Magma Flux`},{id:I,name:`Deep Freeze`},{id:L,name:`Arcane Saturation`},{id:_e,name:`Steam Burst`},{id:ve,name:`Black Ice`},{id:ye,name:`Heavy Spark`},{id:be,name:`Burning Root`},{id:xe,name:`Void Resonance`}],R={easy:[],medium:[O,A],hard:[k,P,I]};R.easy.length,R.medium.length,R.hard.length;var z=class{node;constructor({parentNode:e,tagName:t=`div`,className:n,content:r,attrs:i}){if(this.node=document.createElement(t),Array.isArray(n)){let e=n.filter(Boolean);e.length&&this.node.classList.add(...e)}else typeof n==`string`&&n.trim()!==``&&(this.node.className=n);this.setContent(r),i&&this.setAttributes(i),e&&e.append(this.node)}setAttributes(e){Object.entries(e).forEach(([e,t])=>{t===null?this.node.removeAttribute(e):this.node.setAttribute(e,String(t))})}setContent(e){this.node.innerHTML=``,e&&(typeof e==`string`?this.node.textContent=e:e instanceof HTMLElement?this.node.append(e):e.forEach(e=>{typeof e==`string`?this.node.append(document.createTextNode(e)):this.node.append(e)}))}append(e){this.node.append(e)}destroy(){this.node.remove()}},B=class extends z{constructor({parentNode:e,icon:t,className:n,variant:r,size:i,shadow:a}){super({parentNode:e,tagName:`span`,className:[`app-icon`,n??``,r?`app-icon_${r}`:``,i?`app-icon_size-${i}`:``,a?`app-icon_shadow-${a}`:``]}),this.node.insertAdjacentHTML(`beforeend`,x[t])}},Ce=e=>e.map(e=>e?`app_button_${e}`:void 0).filter(e=>e!==void 0),V=class extends z{textNode=null;text;leftIcon=null;rightIcon=null;constructor({parentNode:e,className:t,variant:n,color:r,size:i,corner:a,text:o,leftIcon:s,rightIcon:c,fullWidth:l,disabled:u,ariaLabel:d,onClick:f}){super({parentNode:e,tagName:`button`,className:[`app_button`,...t?[t]:[],...Ce([r,n,i,a,l])],attrs:{ariaLabel:d??`Button`,disabled:u?`true`:null}}),this.text=o??null,this.leftIcon=s??null,this.rightIcon=c??null,f&&(this.node.onclick=()=>f()),this.render()}render(){this.leftIcon&&(this.node.insertAdjacentHTML(`beforeend`,x[this.leftIcon]),this.text&&this.renderTextNode(this.text)),this.text&&!this.textNode&&this.renderTextNode(this.text),this.rightIcon&&this.node.insertAdjacentHTML(`beforeend`,x[this.rightIcon])}renderTextNode(e){this.textNode=new z({parentNode:this.node,className:`app_button_text`,tagName:`span`,content:e})}setLeftIcon(e){this.text||(this.node.innerHTML=``,this.node.insertAdjacentHTML(`beforeend`,x[e]))}setText(e){this.textNode&&this.textNode.setContent(e)}setDisabled=e=>{e?this.node.setAttribute(`disabled`,`true`):this.node.removeAttribute(`disabled`)};destroy(){this.node.onclick=null,super.destroy()}},H=(e,t=0,n=1)=>Array.from({length:e},(e,r)=>t+r*n),we=e=>{let t=Math.floor(e/60),n=e%60;return`${t.toString().padStart(2,`0`)}:${n.toString().padStart(2,`0`)}`},Te=e=>`${String(e.getDate()).padStart(2,`0`)}.${String(e.getMonth()+1).padStart(2,`0`)}.${e.getFullYear()} ${String(e.getHours()).padStart(2,`0`)}:${String(e.getMinutes()).padStart(2,`0`)}`,Ee=class extends z{rangeNem=7;step=10;rangeZone=this.rangeNem*this.step;rangeZoneOnePercent=this.rangeZone/100;value=0;leftStopper;rightStopper;arrow;min;max;recipeMin;recipeMax;firstNumber;lastNumber;constructor({parentNode:e,rangeMax:t,rangeMin:n,value:r}){super({parentNode:e,tagName:`span`,className:`app-range-line`}),this.render(t,n,r)}render(e,t,n){this.recipeMin=t,this.recipeMax=e;let r=this.generateScale(t,e);this.min=r.at(0)??0,this.max=r.at(-1)??this.rangeNem*this.step,this.leftStopper=new B({parentNode:this.node,className:this.setClass(`left-stop`),icon:`stop`}),this.leftStopper.node.style.left=this.getStopperPosition(t),this.arrow=new B({parentNode:this.node,className:this.setClass(`arrow`),icon:`arrow`}),this.arrow.node.style.left=this.getStopperPosition(n),this.rightStopper=new B({parentNode:this.node,className:this.setClass(`right-stop`),icon:`stop`}),this.rightStopper.node.style.left=this.getStopperPosition(e);let i=new z({parentNode:this.node,tagName:`span`,className:this.setClass(`stop-num-left`),content:t.toString()});i.node.style.left=this.getStopperPosition(t);let a=new z({parentNode:this.node,tagName:`span`,className:this.setClass(`stop-num-right`),content:e.toString()});a.node.style.left=this.getStopperPosition(e);let o=new z({parentNode:this.node,className:this.setClass(`count`)});r.forEach((e,t)=>{let n=new z({parentNode:o.node,tagName:`span`,content:e.toString()});t>0&&t<r.length-1&&(n.node.style.left=this.getStopperPosition(e)),t===0&&(this.firstNumber=n.node),t===r.length-1&&(this.lastNumber=n.node)}),this.setInRange(0)}setClass(e){return`app-range-line_${e}`}getStopperPosition(e){let t=this.max-this.min;return`${(e-this.min)/t*100}%`}roundToStep(e){return Math.round(e/this.step)*this.step}generateScale(e,t){let n=(e+t)/2,r=this.roundToStep(n),i=this.rangeNem,a=H(i,r-Math.floor(i/2)*this.step,this.step);for(;a[0]>0||a[a.length-1]<0;)i+=1,a=H(i,r-Math.floor(i/2)*this.step,this.step);return this.rangeNem=i,a}setInRange(e){this.node.classList.toggle(`app-range-line--in-range`,e>=this.recipeMin&&e<=this.recipeMax)}updateRange=e=>{this.setInRange(e),e>this.max?(this.lastNumber.textContent=`...   ${e}`,this.arrow.node.style.left=`100%`):e<this.min?(this.firstNumber.textContent=`${e}   ...`,this.arrow.node.style.left=`0%`):(e<=this.max&&(this.lastNumber.textContent=this.max.toString()),e>=this.min&&(this.firstNumber.textContent=this.min.toString()),this.arrow.node.style.left=this.getStopperPosition(e))}},U=class extends z{nodeClassName=`app-range-slider`;range;value=0;rangeLine;constructor({parentNode:e,label:t,range:n,value:r,icon:i}){super({parentNode:e,tagName:`div`,className:`app-range-slider`}),this.range=n,this.value=r,this.render(t,i)}render(e,t){let n=new B({parentNode:this.node,icon:t,className:this.setClassName(`icon`)});t===`drop`&&(n.node.style.width=`60%`,n.node.style.justifySelf=`center`),new z({parentNode:this.node,tagName:`h3`,content:e,className:this.setClassName(`title`)}),this.rangeLine=new Ee({parentNode:this.node,rangeMax:this.range.max,rangeMin:this.range.min,value:4})}setClassName=e=>`${this.nodeClassName}_${e}`;updateRange=e=>{this.rangeLine.updateRange(e)}},De=class extends z{inputNode;errorNode;constructor({parentNode:e,placeholder:t,maxlength:n,className:r}){super({parentNode:e,tagName:`div`,className:[`app-input`,r??``]}),this.inputNode=new z({parentNode:this.node,tagName:`input`,className:`app-input_field`,attrs:{placeholder:t,maxlength:n,autofill:`off`}}),this.errorNode=new z({parentNode:this.node,tagName:`span`,className:`app-input_error`,content:``})}setError(e){this.errorNode.node.textContent=e,e?(this.node.classList.add(`has-error`),this.errorNode.node.classList.add(`visible`)):(this.node.classList.remove(`has-error`),this.errorNode.node.classList.remove(`visible`))}getInput(){return this.inputNode}setDisabled(e){let t=this.inputNode.node;e?(t.setAttribute(`disabled`,`true`),this.node.classList.add(`input-disabled`)):(t.removeAttribute(`disabled`),this.node.classList.remove(`input-disabled`))}onInput(e){let t=this.inputNode.node;t.addEventListener(`input`,()=>{e(t.value.trim())})}getValue(){return this.inputNode.node.value.trim()}destroy(){this.inputNode.node.onblur=null,this.inputNode.node.onfocus=null,super.destroy()}},Oe=class{events={};on(e,t){this.events[e]||(this.events[e]=new Set),this.events[e].add(t)}off(e,t){this.events[e]?.delete(t)}emit(e,t){this.events[e]?.forEach(e=>e(t))}},ke=class{intervalId=null;endTimestamp=0;start(e,t,n){this.stop(),this.endTimestamp=Date.now()+e*1e3,this.intervalId=window.setInterval(()=>{let e=Date.now(),r=Math.max(0,Math.floor((this.endTimestamp-e)/1e3));t(r),r<=0&&(this.stop(),n())},250)}stop(){this.intervalId!==null&&(clearInterval(this.intervalId),this.intervalId=null)}resume(e,t,n){this.start(n,e,t)}},W=new class{save(e,t){try{return localStorage.setItem(e,JSON.stringify(t)),!0}catch{return!1}}load(e){try{let t=localStorage.getItem(e);return t?JSON.parse(t):null}catch{return null}}clear(e){try{localStorage.removeItem(e)}catch{}}hasSave(e){try{return!!localStorage.getItem(e)}catch{return!1}}},G=e=>Array.isArray(e)&&e.length===2&&Number.isFinite(e[0])&&Number.isFinite(e[1])&&e[0]<=e[1],K=e=>{if(!e||typeof e!=`object`)return!1;let t=e;return typeof t.id==`string`&&typeof t.icon==`string`&&typeof t.name==`string`&&Number.isFinite(t.density)&&Number.isFinite(t.temperature)&&Number.isFinite(t.magicPower)&&(t.count===void 0||Number.isInteger(t.count)&&t.count>=0&&t.count<=15)},Ae=(e,t)=>{let n=t===`hard`?8:t===`medium`?6:4;return Array.isArray(e)&&e.length===n&&e.every(K)},je=(e,t)=>Array.isArray(e)&&e.length<=t&&e.every(K),q=(e,t)=>{if(!e||typeof e!=`object`)return!1;let n=e;return Number.isFinite(n.id)&&typeof n.name==`string`&&n.difficulty===t&&G(n.temperature)&&G(n.density)&&G(n.magicPower)},Me=(e,t)=>Array.isArray(e)?e.filter(e=>!q(e,t)).length===0:!1,Ne=e=>{if(!e||typeof e!=`object`)return!1;let t=e;return Number.isFinite(t.density)&&Number.isFinite(t.temperature)&&Number.isFinite(t.magicPower)},J=e=>Se.some(({id:t})=>t===e),Pe=(e,t)=>{let n=R[t];return Array.isArray(e)&&e.length===n.length&&e.every((e,t)=>J(e)&&e===n[t])},Fe=(e,t)=>{let n=R[t];return Array.isArray(e)&&e.every(e=>J(e)&&n.includes(e))},Ie=e=>{if(!e||typeof e!=`object`)return!1;let t=e,n=t.difficulty===`easy`&&typeof t.lives==`number`&&t.lives<=5&&t.lives>=1,r=(t.difficulty===`hard`||t.difficulty===`medium`)&&typeof t.lives==`number`&&t.lives<=3&&t.lives>=1,i=n||r;return t.difficulty!==`easy`&&t.difficulty!==`medium`&&t.difficulty!==`hard`||!i?!1:typeof t.playerName==`string`&&(t.status===`playing`||t.status===`paused`)&&(t.level===1||t.level===2||t.level===3)&&typeof t.score==`number`&&Number.isFinite(t.score)&&t.score>=0&&typeof t.timeLeft==`number`&&Number.isFinite(t.timeLeft)&&t.timeLeft>0&&t.maxIngredients===(t.difficulty===`hard`?5:4)&&Ae(t.shelfIngredients,t.difficulty)&&q(t.currentRecipe,t.difficulty)&&je(t.cauldronIngredients,t.maxIngredients)&&Ne(t.cauldronValues)&&Array.isArray(t.recipes)&&Me(t.recipes,t.difficulty)&&Array.isArray(t.activeReactions)&&Pe(t.enabledReactionIds,t.difficulty)&&Fe(t.activeReactions,t.difficulty)&&(t.lastReactionId===null||J(t.lastReactionId))&&Number.isFinite(t.startTimestamp)&&Number.isFinite(t.endTimestamp)},Le=e=>{if(!e||typeof e!=`object`||!Array.isArray(e.easy)||!Array.isArray(e.medium)||!Array.isArray(e.hard))return!1;let t=!0;return[e.easy,e.medium,e.hard].forEach(e=>{e.forEach(e=>{e&&typeof e==`object`&&typeof e.name==`string`&&typeof e.score==`number`&&e.score>0&&(e.date instanceof Date||typeof e.date==`string`||typeof e.date==`number`)||(t=!1)})}),t},Y=new class{events=new Oe;timer=new ke;timerRunning=!1;leaderBoard={easy:[],medium:[],hard:[]};storage;state={playerName:`Alchemist`,status:i,level:1,difficulty:n,score:0,lives:w.medium,maxLives:w.medium,timeLeft:0,currentRecipe:null,recipes:[],cauldronIngredients:[],cauldronValues:{density:0,magicPower:0,temperature:0},maxIngredients:T.medium,shelfIngredients:[],enabledReactionIds:[...R.medium],activeReactions:[],lastReactionId:null,startTimestamp:0,endTimestamp:0};constructor(){this.storage=W;let e=this.storage.load(`LEADERBOARD`);e&&(this.leaderBoard=e)}getState=()=>this.state;subscribe(e,t){this.events.on(e,t)}emit(e,t){this.events.emit(e,t)}update(e){this.state={...this.state,...e}}startNewGame=()=>{this.resetGameState(),this.initShelf(),this.pickRandomRecipe(),this.state.status=o,this.setTimer(),this.saveGame(),this.emit(S.GAME_START,this.state)};pauseGame(){let e=this.timerRunning?Math.max(0,Math.floor((this.state.endTimestamp-Date.now())/1e3)):this.state.timeLeft;this.timer.stop(),this.timerRunning=!1,this.update({status:a,timeLeft:e}),this.saveGame(),this.emit(S.PAUSE,{auto:!1})}resumeGame(){this.update({status:o});let e=Date.now()+this.state.timeLeft*1e3;this.update({endTimestamp:e}),this.timer.start(this.state.timeLeft,e=>{let t=e!==this.state.timeLeft;this.update({timeLeft:e}),this.emit(S.TIMER_TICK,e),t&&this.saveGame()},()=>this.gameOver()),this.timerRunning=!0,this.saveGame(),this.emit(S.RESUME,this.state)}resetGameState(){this.timer.stop(),this.timerRunning=!1,this.state={...this.state,status:i,score:0,lives:w[this.state.difficulty],timeLeft:0,currentRecipe:null,recipes:[],cauldronIngredients:[],cauldronValues:{density:0,magicPower:0,temperature:0},shelfIngredients:[],enabledReactionIds:[...R[this.state.difficulty]],activeReactions:[],lastReactionId:null}}roundOver(e){this.timer.stop(),this.timerRunning=!1,this.saveGame(),this.emit(S.ROUND_OVER,{score:this.state.score,lives:this.state.lives,time:this.state.timeLeft,variant:e})}newRound(){let e=Date.now()+this.state.timeLeft*1e3;this.update({endTimestamp:e}),this.timer.start(this.state.timeLeft,e=>{let t=e!==this.state.timeLeft;this.update({timeLeft:e}),this.emit(S.TIMER_TICK,e),t&&this.saveGame()},()=>this.gameOver()),this.timerRunning=!0,this.emit(S.SHELF_BLOCK,{isBlock:!1}),this.pickRandomRecipe(),this.clearCauldron(),this.state.shelfIngredients.every(e=>!e.count)?this.gameOver(`ingredients`):(this.emit(S.ROUND_START,{isStart:!0}),this.saveGame())}gameOver(e=`time`){let t=this.state.score,n=this.checkLeaderboard();this.timer.stop(),this.update({status:r}),this.emit(S.GAME_OVER,{score:t,isRecord:n,reason:e}),this.resetGameState(),this.clearStorage(`GAME_STATE`)}initShelf(){let e=E[this.state.difficulty],t=me.map(e=>({...e})).slice(0,e);t.forEach(e=>{e.count=Math.floor(Math.random()*14)+2}),this.update({shelfIngredients:t})}pickRandomRecipe(){this.state.recipes.length===0&&(this.state.recipes=he.filter(e=>e.difficulty===this.state.difficulty).sort(()=>Math.random()-.5));let e=this.state.recipes.at(-1);this.state.recipes.pop(),e&&(this.update({currentRecipe:e}),this.emit(S.RECIPE_CHANGED,{recipe:e,ingInCauldron:0}))}setTimer(){let e=C[this.state.difficulty].gameTime,t=Date.now(),n=t+e*1e3;this.update({startTimestamp:t,endTimestamp:n,timeLeft:e}),this.timer.start(e,e=>{let t=e!==this.state.timeLeft;this.update({timeLeft:e}),this.emit(S.TIMER_TICK,e),t&&this.saveGame()},()=>this.gameOver()),this.timerRunning=!0}addIngredientToCauldron(e){let t=this.state.shelfIngredients.find(t=>t.id===e);if(!t||!t.count)return;--t.count;let n={temperature:t.temperature+this.state.cauldronValues.temperature,density:t.density+this.state.cauldronValues.density,magicPower:t.magicPower+this.state.cauldronValues.magicPower},r=[...this.state.cauldronIngredients,t];this.update({cauldronIngredients:r,cauldronValues:n}),this.saveGame(),this.emit(S.CAULDRON_STATE_CHANGED,{values:n}),r.length===this.state.maxIngredients&&this.emit(S.SHELF_BLOCK,{isBlock:!0}),this.emit(S.INGREDIENT_IN_CAULDRON,r.length),this.emit(S.INGREDIENT_COUNT,{id:e,count:t.count})}brewCheck(){let e=this.state.currentRecipe;if(!e)return;let t=this.state.difficulty,n=ge[t],{temperature:r,density:i,magicPower:a}=this.state.cauldronValues,o=(e,t)=>e>=t.min-n&&e<=t.max+n;if(o(r,{min:e.temperature.at(0)??0,max:e.temperature.at(1)??0})&&o(i,{min:e.density.at(0)??0,max:e.density.at(1)??0})&&o(a,{min:e.magicPower.at(0)??0,max:e.magicPower.at(1)??0})){let e=Math.min(C[t].gameTime,C[t].bonus+this.state.timeLeft),n=D[t]+this.state.score;this.update({timeLeft:e,score:n}),this.emit(S.TIMER_TICK,e),this.emit(S.SCORE_CHANGE,n),this.roundOver(`success`)}else this.loseLife(),this.state.lives>0&&this.roundOver(`fail`),this.state.lives===0&&this.gameOver(`lives`)}loseLife(){let e=this.state.lives-1;this.update({lives:e}),this.emit(S.LIVES_CHANGE,{lives:e})}clearCauldron(){this.update({cauldronIngredients:[],cauldronValues:{temperature:0,density:0,magicPower:0}}),this.emit(S.CAULDRON_STATE_CHANGED,{values:this.state.cauldronValues})}saveToStorage(e,t){W.save(e,t)}saveGame(){let{status:e,endTimestamp:t,timeLeft:n}=this.state;if(e!==o&&e!==a)return;let r=e===o&&this.timerRunning?Math.max(0,Math.floor((t-Date.now())/1e3)):n;this.saveToStorage(`GAME_STATE`,{...this.state,timeLeft:r})}loadFromStorage(e){let t=W.load(e);return t?e===`GAME_STATE`?Ie(t)?t:(this.storage.clear(`GAME_STATE`),null):e===`LEADERBOARD`?Le(t)?t:(this.storage.clear(`LEADERBOARD`),null):null:(this.storage.hasSave(e)&&this.clearStorage(e),null)}clearStorage(e){W.clear(e)}checkLeaderboard(){let e=this.state.score;if(e<=0)return!1;let t=this.leaderBoard[this.state.difficulty];return t.length<10||e>=(t.at(-1)?.score??0)}submitScore(e){let t=this.state.score,n=new Date;this.setToLeaderboard({name:e,score:t,date:n})}setToLeaderboard({name:e,score:t,date:n}){this.leaderBoard[this.state.difficulty].push({name:e,score:t,date:n}),this.leaderBoard[this.state.difficulty].sort((e,t)=>t.score-e.score),this.leaderBoard[this.state.difficulty].length>10&&(this.leaderBoard[this.state.difficulty]=this.leaderBoard[this.state.difficulty].slice(0,10)),this.saveToStorage(`LEADERBOARD`,this.leaderBoard),this.emit(S.SHOW_LEADERBOARD,this.leaderBoard)}clearLeaderboard(){this.leaderBoard={easy:[],medium:[],hard:[]},this.saveToStorage(`LEADERBOARD`,this.leaderBoard),this.emit(S.SHOW_LEADERBOARD,this.leaderBoard)}showLeaderboard(){let e=this.loadFromStorage(`LEADERBOARD`);e&&(this.leaderBoard=e),this.emit(S.SHOW_LEADERBOARD,this.leaderBoard)}showRules(){this.emit(S.SHOW_RULES,!0)}changeDifficulty=e=>{this.state.status===i&&this.update({difficulty:e,lives:w[e],maxLives:w[e],maxIngredients:T[e]})};continueLastGame(){let e=this.loadFromStorage(`GAME_STATE`);e&&(this.timer.stop(),this.timerRunning=!1,this.update({...e,endTimestamp:Date.now()+e.timeLeft*1e3}),this.emit(S.GAME_START,this.state),this.pauseGame())}exitToMenu(){this.timer.stop(),this.resetGameState(),this.clearStorage(`GAME_STATE`)}},Re=class extends z{triggerIcon;menuSettings=[{name:f,callback:e=>Y.changeDifficulty(e)},{name:d,callback:()=>Y.continueLastGame()},{name:m,callback:()=>Y.startNewGame()},{name:p,callback:()=>Y.showLeaderboard()}];difficultyRadios=[];dropdownList;isDropdownOpen=!1;onWindowResize=()=>{this.onClose()};constructor({parentNode:e,className:t,triggerIcon:n}){super({parentNode:e,tagName:`div`,className:[`app-menu`,t??``]}),this.triggerIcon=n,window.addEventListener(`resize`,this.onWindowResize),this.render()}handleOutsideClick=e=>{let t=e.target;this.node.contains(t)||this.onClose()};render(){new V({parentNode:this.node,color:`magic-icon`,leftIcon:this.triggerIcon,onClick:()=>this.onToggle()}),this.dropdownList=new z({parentNode:this.node,className:[`app-menu_dropdown`,`app-menu_dropdown_top`],tagName:`ul`}),this.menuSettings.forEach(({name:r,callback:a})=>{let{difficulty:s,status:c}=Y.getState();if(r===f){let a=new z({parentNode:this.dropdownList.node,tagName:`li`,className:[`app-menu_dropdown_item_radios`,`app-menu_dropdown_item`,c===i?``:`app-menu_dropdown_item_disabled`]});new z({parentNode:a.node,tagName:`span`,content:`${r}: `}),[e,n,t].forEach(e=>{let t=s===e,n=new z({parentNode:a.node,tagName:`button`,className:`app-menu_dropdown_item_radios_radio`});n.node.onclick=()=>{this.difficultyRadios.forEach(({radio:t,name:n})=>{n===e?t.classList.add(`app-menu_dropdown_item_radios_radio_selected`):t.classList.remove(`app-menu_dropdown_item_radios_radio_selected`)}),this.onChangeDifficulty(e)};let r=new z({parentNode:n.node,tagName:`span`,className:t?`app-menu_dropdown_item_radios_radio_selected`:void 0});this.difficultyRadios.push({name:e,radio:r.node})});return}let l=new z({parentNode:this.dropdownList.node,tagName:`li`,className:[`app-menu_dropdown_item`],content:r});r===d&&(c===o||!Y.loadFromStorage(`GAME_STATE`))||r===m&&c===`playing`?l.node.classList.add(`app-menu_dropdown_item_disabled`):l.node.onclick=()=>{this.onClose(),a()}})}updatePosition(){let e=this.dropdownList.node,t=document.querySelector(`#app`)?.getBoundingClientRect();if(!t)return;e.style.left=``;let n=e.getBoundingClientRect().right-(t.right-24);if(n>0){let t=parseInt(window.getComputedStyle(e).left)||e.offsetLeft;e.style.left=`${t-n-24}px`}}onOpen(){this.isDropdownOpen=!0,this.dropdownList.node.classList.add(`app-menu_dropdown_open`),this.updatePosition(),document.addEventListener(`click`,this.handleOutsideClick)}onClose(){this.isDropdownOpen=!1,this.dropdownList.node.classList.remove(`app-menu_dropdown_open`),document.removeEventListener(`click`,this.handleOutsideClick)}onToggle(){this.isDropdownOpen?this.onClose():this.onOpen()}onChangeDifficulty(e){Y.changeDifficulty(e)}destroy(){document.removeEventListener(`click`,this.handleOutsideClick),window.removeEventListener(`resize`,this.onWindowResize),this.onClose(),super.destroy()}},ze=class extends z{score;countNode;constructor({parentNode:e,score:t}){super({parentNode:e,tagName:`div`,className:`app-score`}),this.score=t??0,Y.subscribe(S.SCORE_CHANGE,e=>{this.score!==e&&(this.score=e,this.countNode.node.textContent=e.toString())}),this.render()}render(){new B({parentNode:this.node,icon:`score`,variant:`magic`,className:`app-score_icon`}),new z({parentNode:this.node,tagName:`span`,className:`app-score_text`,content:`Score: `}),this.countNode=new z({parentNode:this.node,tagName:`span`,className:`app-score_count`,content:`${this.score}`})}},Be=15,Ve=class extends z{timerNode;barFill;constructor({parentNode:e,showPauseButton:t=!0}){super({parentNode:e,tagName:`div`,className:`app-timer`}),Y.subscribe(S.TIMER_TICK,e=>{this.update(e)}),this.render(t)}render(e){if(e){let e=new z({parentNode:this.node,tagName:`div`,className:`app-timer_btn-wrap`});new V({parentNode:e.node,leftIcon:`clock`,className:`app-timer_btn-wrap_btn`,color:`magic-icon-2`,onClick:()=>Y.pauseGame()}),new B({parentNode:e.node,icon:`pause`,className:`app-timer_btn-wrap_pause`})}let t=new z({parentNode:this.node,tagName:`div`,className:`app-timer_info`}),n=new z({parentNode:t.node,tagName:`div`,className:`app-timer_row`});new z({parentNode:n.node,tagName:`span`,className:`app-timer_text`,content:`Time: `}),this.timerNode=new z({parentNode:n.node,tagName:`span`,className:`app-timer_count`,content:`0`});let r=new z({parentNode:t.node,tagName:`div`,className:`app-timer_bar`});this.barFill=new z({parentNode:r.node,tagName:`div`,className:`app-timer_bar_fill`}),this.barFill.node.style.transform=`scaleX(0)`}update(e){let{difficulty:t}=Y.getState(),n=C[t].gameTime,r=Math.max(0,Math.min(1,e/n));this.timerNode.node.textContent=this.formatTime(e),this.barFill.node.style.transform=`scaleX(${r})`,this.node.classList.toggle(`app-timer--danger`,e>0&&e<Be)}formatTime(e){let t=Math.floor(e/60),n=e%60;return`${t.toString().padStart(2,`0`)}:${n.toString().padStart(2,`0`)}`}},He=class extends z{maxLives;currentLivesCount;constructor({parentNode:e,currentLivesCount:t,maxLives:n}){super({parentNode:e,tagName:`div`,className:`app-lives`}),this.maxLives=n,this.currentLivesCount=t,Y.subscribe(S.LIVES_CHANGE,({lives:e})=>{this.currentLivesCount=e,this.render()}),this.render()}render(){this.node.innerHTML=``;let e=this.maxLives-this.currentLivesCount;e>0&&H(e).forEach(()=>{new B({parentNode:this.node,icon:`heart_empty`})}),H(this.currentLivesCount).forEach(()=>{new B({parentNode:this.node,icon:`heart`})})}},X=class extends z{constructor({parentNode:e,currentLivesCount:t,maxLives:n,showLives:r=!0,showPauseButton:i=!0}){super({parentNode:e,tagName:`header`,className:`app-header`}),this.render(t,n,r,i)}render(e,t,n,r){new ze({parentNode:this.node,score:0}),new Ve({parentNode:this.node,showPauseButton:r}),n&&new He({parentNode:this.node,currentLivesCount:e,maxLives:t})}},Z=class extends z{isStartState=!1;callback;mainBtn;currentClassName=`;`;menu=null;rulesBtn=null;constructor({parentNode:e,isStartState:t,callback:n}){super({parentNode:e,tagName:t?`div`:`footer`,className:t?`app-start-menu`:`app-footer`}),this.isStartState=t??!1,this.callback=n,this.currentClassName=t?`app-start-menu`:`app-footer`,t||(Y.subscribe(S.INGREDIENT_IN_CAULDRON,e=>{e===0?this.mainBtn.node.setAttribute(`disabled`,`true`):this.mainBtn.node.removeAttribute(`disabled`)}),Y.subscribe(S.ROUND_START,()=>{this.mainBtn.node.removeAttribute(`disabled`)})),this.render()}render(){this.rulesBtn=new V({parentNode:this.node,className:`${this.currentClassName}_rules-btn`,color:`magic-icon`,leftIcon:`book`,onClick:()=>{Y.showRules()}}),this.mainBtn=new V({parentNode:this.node,className:`${this.currentClassName}_main-btn`,color:`magic`,text:this.isStartState?`Start Game`:`Brew`,leftIcon:`symbol`,rightIcon:`symbol`,onClick:()=>this.callback()}),this.isStartState||this.mainBtn.setDisabled(!0),this.menu=new Re({parentNode:this.node,className:`${this.currentClassName}_menu`,position:this.isStartState?l:u,triggerIcon:`settings`})}destroy(){this.rulesBtn?.destroy(),this.mainBtn.destroy(),this.menu?.destroy(),super.destroy()}},Q=class extends z{constructor({parentNode:e,lives:t,score:n,timeLeft:r,variant:i,onClose:a}){super({parentNode:e,tagName:`div`,className:`app-info`}),this.render(i,n,t,r,a)}render(e,t,n,r,i){new z({parentNode:this.node,tagName:`h2`,className:`app-info_title`,content:e===`success`?`You have prepared a magical potion!`:`Wrong mixture, try again...`});let a=new z({parentNode:this.node,tagName:`ul`,className:`app-info_list`});[{name:`Score`,value:t},{name:`lives`,value:n},{name:`Time left`,value:r}].forEach(({name:e,value:t})=>{let n=new z({parentNode:a.node,tagName:`li`,className:`app-info_list_item`});new z({parentNode:n.node,tagName:`span`,className:`app-info_list_item_name`,content:`${e}: `}),e===`lives`?H(t).forEach(()=>{new B({parentNode:n.node,icon:`stroke_heart`,className:`app-info_list_item_icon`})}):new z({parentNode:n.node,tagName:`span`,className:`app-info_list_item_name`,content:e===`Time left`?we(t):t.toString()})});let o=new V({parentNode:this.node,className:`app-info_btn`,text:`Continue`,color:`magic`});o.node.onclick=()=>i()}},Ue=class extends z{timeout=null;activeComponent=null;isLocked=!1;onClose=null;constructor({className:e}={}){super({parentNode:null,tagName:`div`,className:[`app_portal`,e??``],attrs:{id:`appPortal`}}),this.node.addEventListener(`click`,this.handleOutsideClick),document.addEventListener(`keydown`,this.handleEsc)}mount(e,t){this.activeComponent=t??null,this.timeout&&=(clearTimeout(this.timeout),null),document.body.style.overflow=`hidden`,this.node.innerHTML=``,document.body.appendChild(this.node),this.node.appendChild(e),this.node.classList.add(`app_portal_open`)}closePortal=()=>{this.isLocked||this.onClose?.()};handleOutsideClick=e=>{this.isLocked||e.target.id===`appPortal`&&this.closePortal()};handleEsc=e=>{e.key===`Escape`&&this.closePortal()};unmount(){this.node.classList.remove(`app_portal_open`,`app_portal_bg-blur`),this.timeout=window.setTimeout(()=>{this.activeComponent?.destroy(),this.activeComponent=null,this.node.innerHTML=``,this.node.parentNode&&(this.node.parentNode.removeChild(this.node),document.body.style.overflow=`auto`)},300)}lock(){this.isLocked=!0}unlock(){this.isLocked=!1}setBlur(){this.node.classList.add(`app_portal_bg-blur`)}},We=class extends z{constructor({parentNode:e,onBack:t,onContinue:n}){super({parentNode:e,tagName:`div`,className:`app-pause`}),this.render(t,n)}render(e,t){new z({parentNode:this.node,tagName:`h2`,className:`app-pause_title`,content:`Game on pause`}),new B({parentNode:this.node,icon:`symbol`,size:`lg`,className:`app-pause_icon`});let n=new z({parentNode:this.node,tagName:`div`,className:`app-pause_btn-wrap`});new V({parentNode:n.node,className:`app-pause_btn-wrap_continue`,text:`Continue`,color:`magic`,onClick:t}),new V({parentNode:n.node,className:`app-pause_btn-wrap_continue`,text:`Back to menu`,color:`arrow-left`,onClick:e})}},Ge=class extends z{rules=[`Click Start Game button`,`To pause the game, hover over the clock icon and click it, or switch to another tab`,`Look at recipe required ranges for temperature, density and magic power.`,`Pick ingredients from the shelf and add them to the cauldron to change these three parameters.`,`Watch the bars: each ingredient increases or decreases temperature, density and magic power.`,`Your goal is to keep all three parameters inside the recipe ranges when you press Brew.`,`If all parameters are within the ranges, the brew is successful and you gain score and bonus time.`,`If at least one parameter is out of range, the brew fails and you lose one life.`,`When you lose all lives, run out of time or run out of ingredients, the game ends. A score above 0 that makes the Top-10 can be added to the leaderboard.`];constructor({parentNode:e,onClose:t}){super({parentNode:e,tagName:`div`,className:`app-rules`}),this.render(t)}render(e){let t=new z({parentNode:this.node,className:`app-rules_wrap`,tagName:`div`});new z({parentNode:t.node,tagName:`h2`,className:`app-rules_wrap_title`,content:`Game Rules`});let n=new z({parentNode:t.node,tagName:`ul`,className:`app-rules_wrap_list`});this.rules.forEach(e=>{new z({parentNode:n.node,tagName:`li`,content:e})}),new V({parentNode:t.node,className:`app-rules_wrap_btn`,text:`Close`,color:`magic`,leftIcon:`symbol`,onClick:()=>e()})}},Ke=[e,n,t],qe=class extends z{constructor({parentNode:e,onBack:t,onClean:n,data:r}){super({parentNode:e,tagName:`div`,className:`app-leaderboard`}),this.render(r,t,n)}render(e,t,n){let r=new z({parentNode:this.node,tagName:`div`,className:`app-leaderboard_wrap`});new z({parentNode:r.node,tagName:`h2`,className:`app-leaderboard_wrap_title`,content:`Top Alchemists Leaderboard`});let i=new z({parentNode:r.node,tagName:`table`,className:`app-leaderboard_wrap_table`}),a=new z({parentNode:i.node,tagName:`thead`,className:`app-leaderboard_wrap_table_head`}),o=Ke.flatMap(t=>e[t].map((e,n)=>({...e,difficulty:t,rank:n}))),s=new z({parentNode:a.node,tagName:`tr`});[`Rank`,`Name`,`Score`,`Difficulty`,`Date`].forEach(e=>{new z({parentNode:s.node,tagName:`th`,content:e})});let c=new z({parentNode:i.node,tagName:`tbody`,className:`app-leaderboard_wrap_table_body`}),l=o.length>0;l?o.forEach(e=>{let t=new z({parentNode:c.node,tagName:`tr`}),n=new z({parentNode:t.node,tagName:`td`,content:e.rank>=3?(e.rank+1).toString():void 0});e.rank<=2&&new B({parentNode:n.node,icon:`place_1`,size:`md`}),new z({parentNode:t.node,tagName:`td`,className:`app-leaderboard_wrap_table_name`,content:e.name}),new z({parentNode:t.node,tagName:`td`,content:String(e.score)}),new z({parentNode:t.node,tagName:`td`,content:e.difficulty[0].toUpperCase()+e.difficulty.slice(1)}),new z({parentNode:t.node,tagName:`td`,className:`app-leaderboard_wrap_table_date`,content:Te(new Date(e.date))})}):new z({parentNode:new z({parentNode:c.node,tagName:`tr`}).node,tagName:`td`,className:`app-leaderboard_wrap_table_empty`,attrs:{colspan:`5`},content:`Leaderboard is empty`});let u=new z({parentNode:r.node,tagName:`div`,className:`app-leaderboard_wrap_actions `});new V({parentNode:u.node,color:`arrow-left`,text:`Back`,className:`app-leaderboard_back-btn`,onClick:t});let d=new z({parentNode:r.node,tagName:`div`,className:`app-leaderboard_confirm app-leaderboard_confirm--hidden`});new z({parentNode:d.node,tagName:`p`,className:`app-leaderboard_confirm-text`,content:`Clear the whole leaderboard? This cannot be undone.`});let f=new z({parentNode:d.node,tagName:`div`,className:`app-leaderboard_confirm-actions`}),p=e=>{d.node.classList.toggle(`app-leaderboard_confirm--hidden`,!e),u.node.classList.toggle(`app-leaderboard_confirm--hidden`,e)};new V({parentNode:f.node,color:`arrow-left`,text:`Cancel`,onClick:()=>p(!1)}),new V({parentNode:f.node,color:`magic`,text:`Yes, clear`,onClick:n}),new V({parentNode:u.node,color:`magic`,text:`Clear Leaderboard`,className:`app-leaderboard_clear-btn`,leftIcon:`symbol`,disabled:l?void 0:`disabled`,onClick:()=>{l&&p(!0)}})}destroy(){super.destroy()}},Je=class extends z{callback;child;constructor({parentNode:e,callback:t}){super({parentNode:e,tagName:`div`,className:`app-start-game-dialog`}),this.callback=t,this.render()}render(){let{maxIngredients:e}=Y.getState();new X({parentNode:this.node,currentLivesCount:0,maxLives:0,showLives:!1,showPauseButton:!1}),new $({parentNode:this.node,currentIngredientsCount:0,currentRecipe:null,ingredients:[],maxIngredients:e}),this.child=new Z({parentNode:this.node,isStartState:!0,callback:this.callback})}destroy(){this.child.destroy(),super.destroy()}},Ye={time:`Time is up`,lives:`No lives left`,ingredients:`Out of ingredients`},Xe=class extends z{name=``;inputNode=null;constructor({parentNode:e,score:t,isRecord:n,reason:r}){super({parentNode:e,tagName:`div`,className:`app-game-over`}),this.render(t,n,r)}render(e,t,n){let r=new z({parentNode:this.node,tagName:`div`,className:`app-game-over_wrap`});new z({parentNode:r.node,tagName:`h1`,className:`app-game-over_wrap_title`,content:`GAME OVER`}),new z({parentNode:r.node,tagName:`div`,className:`app-game-over_wrap_reason`,content:Ye[n]}),new z({parentNode:r.node,tagName:`div`,className:`app-game-over_wrap_score`,content:`Final Score: ${e}`}),t&&(this.inputNode=new De({parentNode:r.node,placeholder:`Enter your name (2–15 chars)`,maxlength:`15`,className:`app-game-over_wrap_input`}),this.inputNode.onInput(e=>{this.validateName(e)})),t&&new V({parentNode:r.node,className:`app-game-over_wrap_back`,text:`SUBMIT SCORE`,leftIcon:`symbol`,onClick:()=>{this.name?Y.submitScore(this.name):this.inputNode?.setError(`Enter valid name`)},color:`magic`}),new V({parentNode:r.node,className:`app-game-over_wrap_replay`,text:`REPLAY`,leftIcon:`symbol`,onClick:()=>{Y.startNewGame()},color:`magic`})}validateName(e){/^[A-Za-z0-9 _-]{2,15}$/.test(e)?(this.inputNode?.setError(``),this.name=e):(this.inputNode?.setError(`Name must be 2–15 chars: letters, digits, space, _ or -`),this.name=``)}},Ze=class extends z{constructor({parentNode:e}){super({parentNode:e,tagName:`div`,className:`app-cauldron`}),this.render()}render(){new z({parentNode:this.node,tagName:`h1`,className:`app-cauldron_title`,content:`Alchemist's Cauldron`});let e=new z({parentNode:this.node,tagName:`div`,className:`app-cauldron_cauldron-wrap`});new B({parentNode:e.node,icon:`cauldron`,className:`app-cauldron_cauldron-wrap_cauldron`}),new B({parentNode:e.node,icon:`symbol`,className:`app-cauldron_cauldron-wrap_icon`})}},Qe=class extends z{ingredients=[];ingredientsDate=[];constructor({parentNode:e,ingredients:t}){super({parentNode:e,tagName:`div`,className:`app-ingredients`}),this.ingredients=t,Y.subscribe(S.INGREDIENT_COUNT,({id:e,count:t})=>{let n=this.ingredientsDate.find(t=>t.id===e);n&&(t===0&&(n.card.style.opacity=`0.5`,n.card.style.pointerEvents=`none`,n.card.setAttribute(`disabled`,`true`),n.iconNode.innerHTML=``),n.countNode.textContent=t.toString(),n.count=t??null)}),Y.subscribe(S.SHELF_BLOCK,({isBlock:e})=>{this.ingredientsDate.forEach(({card:t,count:n})=>{let r=e||!n;t.style.opacity=r?`0.5`:`1`,t.style.pointerEvents=r?`none`:`all`,e?t.setAttribute(`disabled`,`true`):t.removeAttribute(`disabled`)})}),this.render()}render(){let e=new z({parentNode:this.node,tagName:`div`,className:`app-ingredients_list`});this.ingredients.length===0&&new z({parentNode:e.node,tagName:`p`,className:`app-ingredients_empty`,content:`Shelf is empty`}),this.ingredients.forEach(t=>{let{name:n,temperature:r,density:i,magicPower:a,count:o,id:s,icon:c}=t,l=new z({parentNode:e.node,tagName:`button`,className:`app-ingredients_list_item`});l.node.onclick=()=>Y.addIngredientToCauldron(s);let u=new B({parentNode:l.node,className:`app-ingredients_list_item_icon`,icon:c,variant:`magic`});new z({parentNode:l.node,className:`app-ingredients_list_item_title`,tagName:`span`,content:n});let d=new z({parentNode:l.node,className:`app-ingredients_list_item_props`,tagName:`span`});[{value:r,icon:`symbol`},{value:i,icon:`drop`},{value:a,icon:`symbol`}].forEach(({value:e,icon:t})=>{new B({parentNode:d.node,icon:t,className:`app-ingredients_list_item_props_icon`}),new z({parentNode:d.node,className:`app-ingredients_list_item_props_value`,content:e.toString()})});let f=new z({parentNode:l.node,className:`app-ingredients_list_item_count`,tagName:`span`,content:o?o.toString():`0`});this.ingredientsDate.push({id:s,card:l.node,countNode:f.node,iconNode:u.node,count:o??null})}),new V({parentNode:new z({parentNode:this.node,className:`app-ingredients_mobile`,tagName:`div`}).node,leftIcon:`battle`,color:`magic-icon-2`})}},$e=class extends z{ingredientsCountNode;recipeWrap=null;isMobileRecipeShow=!1;toggleBtn;constructor({parentNode:e,currentIngredientsCount:t,currentRecipe:n,maxIngredients:r}){super({parentNode:e,tagName:`div`,className:`app-recipe`}),Y.subscribe(S.INGREDIENT_IN_CAULDRON,e=>{this.ingredientsCountNode.node.textContent=e.toString()}),Y.subscribe(S.RECIPE_CHANGED,({recipe:e,ingInCauldron:t})=>{if(!this.recipeWrap)return;let{maxIngredients:n}=Y.getState();this.recipeWrap.node.innerHTML=``,this.renderRecipe(e,t,n)}),document.addEventListener(`click`,this.handleOutsideClick),document.addEventListener(`resize`,this.onClose),this.render(n,t,r)}renderRecipe({name:e,temperature:t,density:n,magicPower:r},i,a){if(!this.recipeWrap)return;let o=`app-recipe_wrap`,s=this.recipeWrap;new B({parentNode:s.node,icon:`parchment`,className:`${o}_bg`}),new z({parentNode:s.node,tagName:`h2`,className:`${o}_title`,content:e});let c=new z({parentNode:s.node,tagName:`ul`,className:`${o}_value-wrap`});[{name:`temperature`,value:t},{name:`density`,value:n},{name:`magicPower`,value:r}].forEach(({name:e,value:t})=>{let n=new z({parentNode:c.node,tagName:`li`,className:`${o}_value-wrap_value`});new z({parentNode:n.node,tagName:`span`,className:`${o}_value-wrap_value_name`,content:e}),new z({parentNode:n.node,tagName:`span`,className:`${o}_value-wrap_value_v`,content:t.join(` - `)})});let l=new z({parentNode:s.node,tagName:`div`,className:`${o}_ingredients-count`});new z({parentNode:l.node,tagName:`span`,content:`Ingredients: `}),this.ingredientsCountNode=new z({parentNode:l.node,tagName:`span`,content:i.toString()}),new z({parentNode:l.node,tagName:`span`,content:` / `}),new z({parentNode:l.node,tagName:`span`,content:a.toString()})}render(e,t,n){this.recipeWrap=new z({parentNode:this.node,className:`app-recipe_wrap`}),this.renderRecipe(e,t,n);let r=new z({parentNode:this.node,className:`app-recipe_mobile`,tagName:`div`});this.toggleBtn=new V({parentNode:r.node,leftIcon:`parchment_horizontal`,className:`app-recipe_mobile_btn`,color:`magic-icon-2`,onClick:()=>{this.isMobileRecipeShow?(this.onClose(),this.isMobileRecipeShow=!1,this.toggleBtn.setLeftIcon(`parchment_horizontal`)):this.isMobileRecipeShow||(this.onOpen(),this.isMobileRecipeShow=!0,this.toggleBtn.setLeftIcon(`close`))}})}onOpen(){this.recipeWrap?.node.classList.add(`app-recipe_wrap_mobile`),this.isMobileRecipeShow=!0}onClose(){this.recipeWrap?.node.classList.remove(`app-recipe_wrap_mobile`),this.isMobileRecipeShow=!1}handleOutsideClick=e=>{let t=e.target;this.isMobileRecipeShow&&!this.node.contains(t)&&(this.onClose(),this.toggleBtn.setLeftIcon(`parchment_horizontal`))};destroy(){this.isMobileRecipeShow=!1,this.recipeWrap?.node.classList.remove(`app-recipe_wrap_mobile`),document.removeEventListener(`click`,this.handleOutsideClick),super.destroy()}},et=class extends z{ingredientsCountNode;temperature;density;magicPower;constructor({parentNode:e,ranges:t}){super({parentNode:e,tagName:`div`,className:`app-ranges`}),Y.subscribe(S.CAULDRON_STATE_CHANGED,({values:{temperature:e,density:t,magicPower:n}})=>{this.temperature.updateRange(e),this.density.updateRange(t),this.magicPower.updateRange(n)}),this.render(t)}render(e){this.temperature=new U({parentNode:this.node,label:`Temperature`,range:{min:e.temperature.at(0),max:e.temperature.at(1)},value:0,icon:`symbol`}),this.density=new U({parentNode:this.node,label:`Density`,range:{min:e.density.at(0),max:e.density.at(1)},value:0,icon:`drop`}),this.magicPower=new U({parentNode:this.node,label:`Magic Power`,range:{min:e.magicPower.at(0),max:e.magicPower.at(1)},value:0,icon:`symbol`})}},$=class extends z{constructor({parentNode:e,ingredients:t,currentRecipe:n,currentIngredientsCount:r,maxIngredients:i}){super({parentNode:e,tagName:`div`,className:`app-game`}),this.render(t,n,r,i)}render(e,t,n,r){new Qe({parentNode:this.node,ingredients:e}),new Ze({parentNode:this.node}),t&&(new $e({parentNode:this.node,currentRecipe:t,currentIngredientsCount:n,maxIngredients:r}),new et({parentNode:this.node,ranges:t}))}},tt=class extends z{root;store=Y;currentView=null;portal;header=null;main=null;footer=null;pause=null;startGameNode=null;constructor(e){super({parentNode:e,tagName:`div`,className:`app`,attrs:{id:`app`}}),this.root=e,Y.subscribe(S.GAME_START,()=>{this.renderGameView()}),Y.subscribe(S.ROUND_OVER,({score:e,lives:t,time:n,variant:r})=>{let i=()=>{this.store.newRound(),this.portal.unmount()},a=new Q({parentNode:null,score:e,lives:t,timeLeft:n,variant:r,onClose:i});this.portal.mount(a.node,a),this.portal.onClose=i}),Y.subscribe(S.PAUSE,({auto:e})=>{e||this.renderPauseDialog()}),Y.subscribe(S.RESUME,()=>{this.portal.unmount()}),Y.subscribe(S.SHOW_LEADERBOARD,e=>{this.renderLeaderboardDialog(e)}),Y.subscribe(S.SHOW_RULES,()=>{this.renderRulesDialog()}),Y.subscribe(S.GAME_OVER,({score:e,isRecord:t,reason:n})=>{this.renderGameOverView(e,t,n)}),document.addEventListener(`visibilitychange`,()=>{document.hidden&&this.store.getState().status===o&&this.store.pauseGame()}),window.addEventListener(`pagehide`,()=>this.store.saveGame()),document.addEventListener(`keydown`,e=>{if(e.code===`Space`){e.preventDefault();let{status:t}=this.store.getState();t===o?this.store.pauseGame():t===a&&this.store.resumeGame()}})}setView(e){this.currentView&&this.currentView.destroy(),this.currentView=e}init(){this.root.append(this.node),this.portal=new Ue,this.renderStartView()}renderStartView(){this.portal.unmount();let e=new Je({parentNode:this.node,callback:()=>this.handleStartGame()});this.setView(e)}renderGameView(){this.portal.unmount();let{shelfIngredients:e,currentRecipe:t,cauldronIngredients:n,maxIngredients:r,lives:i,maxLives:a}=this.store.getState(),o=new z({parentNode:this.node,tagName:`div`,className:`app-game-view`});new X({parentNode:o.node,maxLives:a,currentLivesCount:i}),new $({parentNode:new z({parentNode:o.node,tagName:`main`,className:`app-main`}).node,ingredients:e,currentRecipe:t,currentIngredientsCount:n.length,maxIngredients:r}),new Z({parentNode:o.node,callback:()=>this.store.brewCheck()}),this.setView(o)}renderGameOverView(e,t,n){this.portal.unmount();let r=new Xe({parentNode:this.node,score:e,isRecord:t,reason:n});this.setView(r)}renderLeaderboardDialog(e){this.store.getState().status===o&&this.store.pauseGame();let t=new qe({parentNode:null,onBack:()=>this.closeLeaderboardDialog(),onClean:()=>this.store.clearLeaderboard(),data:e});this.portal.mount(t.node,t),this.portal.setBlur()}renderPauseDialog(){let e=new We({parentNode:null,onBack:()=>{this.store.exitToMenu(),this.renderStartView()},onContinue:()=>{this.store.resumeGame()}});this.portal.mount(e.node,e),this.portal.onClose=()=>this.store.resumeGame(),this.portal.setBlur()}renderRulesDialog(){this.store.getState().status===o&&this.store.pauseGame();let e=new Ge({parentNode:null,onClose:()=>{this.store.getState().status===a&&this.store.resumeGame(),this.portal.unmount()}});this.portal.mount(e.node,e),this.portal.setBlur()}closeLeaderboardDialog(){this.store.getState().status===a&&this.store.resumeGame(),this.portal.unmount()}handleStartGame=()=>{this.store.startNewGame()}},nt=document.body;new tt(nt).init();
