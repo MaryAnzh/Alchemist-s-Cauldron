@@ -2,8 +2,52 @@
 @use '../../../../styles/mixin/media.scss' as *;
 
 .app-ingredients {
+  position: relative;
   width: 100%;
   height: 100%;
+
+  &.is-paused &_tooltip {
+    display: none;
+  }
+
+  &_tooltip {
+    position: absolute;
+    left: calc(100% + var(--size-1));
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: var(--size-05);
+    min-width: 170px;
+    padding: var(--size-1) var(--size-2);
+    background: var(--color-bg-night);
+    border: var(--border-lg) solid var(--color-bg-light);
+    border-radius: var(--radius-md);
+    color: var(--color-parchment-dark);
+    font-size: var(--font-size-sm);
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    z-index: 50;
+
+    &--left {
+      left: auto;
+      right: calc(100% + var(--size-1));
+    }
+
+    &--up {
+      top: auto;
+      bottom: 0;
+      transform: none;
+    }
+  }
+  &_is-hard {
+    &_list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(var(--size-6), 1fr));
+    }
+  }
 
   &_list {
     height: 100%;
@@ -55,6 +99,21 @@
           inset 0 0 var(--size-1) rgba(255, 215, 0, 0.2);
         transform: translateY(-1px);
         outline: none;
+      }
+
+      &:hover,
+      &:focus-visible {
+        z-index: 20;
+      }
+
+      &:hover .app-ingredients_tooltip,
+      &:focus-visible .app-ingredients_tooltip {
+        opacity: 1;
+      }
+
+      &--compact {
+        grid-template-rows: auto;
+        align-items: center;
       }
 
       &::before {

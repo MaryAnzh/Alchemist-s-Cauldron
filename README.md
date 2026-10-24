@@ -90,6 +90,8 @@ https://maryanzh.github.io/Alchemist-s-Cauldron/
 - **US 3.4 Pour Out** — button under the cauldron, costs 10 s, disabled when the cauldron is empty
 - **US 3.1 Drag & Drop** — ingredient cards are draggable into the cauldron (`dragstart` / `dragover` / `dragleave` / `drop`), the cauldron glows on drag-over, drops are ignored when paused / cauldron full / stock `0`, click still works
 - Ingredient cards: gold glow (box-shadow) on hover and keyboard focus
+- **US 3.2 Ingredient Tooltip** — on Hard the card shows only icon and name, values (`+` / `−`) are shown in a tooltip that opens left / up near screen edges and is hidden on pause
+- New SVG icons: ingredient bottles in the Dragon Tears style (Frost Lotus, Mandrake Root, Caustic Acid, Essence of the Void, Phoenix Feather, Toad Slime) and Temperature / Magic Power icons on cards and range bars
 - **US 3.6 Keyboard Shortcuts** — one handler, only in the `playing` state: `1–8` add ingredient, `B` brew, `X` pour out, `P` / `Esc` pause; ignored in text fields; hints in Rules and in the pause dialog
 - Cauldron SVG split into layers (back wall / potion / front); potion appears when the cauldron has ingredients
 - Game Over: **Play again** button (new game with a new random stock), validation error under the name input no longer overlaps the field
@@ -117,7 +119,7 @@ https://maryanzh.github.io/Alchemist-s-Cauldron/
 ## 📌 To Do — Level 3 (115 points)
 
 - [x] **US 3.1 Drag & Drop (20)** — HTML5 drag events (`dragstart`, `dragover`, `dragleave`, `drop`), drop-zone highlight, ignore drop when paused / cauldron full / stock `0`, click still works
-- [ ] **US 3.2 Ingredient Tooltip (15)** — cards show icon and name only; tooltip with Temperature / Density / Magic Power (`+` / `−`), opens left / up near screen edges, hidden on pause
+- [x] **US 3.2 Ingredient Tooltip (15)** — cards show icon and name only; tooltip with Temperature / Density / Magic Power (`+` / `−`), opens left / up near screen edges, hidden on pause
 - [ ] **US 3.3 Chemical Reactions (35)** — typed `IReaction[]` (15 reactions), Easy 0 / Medium 2 / Hard 3, fire only on `inactive → active`, recalculate values from the ingredient list every time
 - [x] **US 3.4 Pour Out (10)** — button clears the cauldron, costs 10 s, no life lost, disabled when empty, ingredients are not returned
 - [ ] **US 3.5 Visual Feedback (20)** — success animation, explosion + short screen shake on fail, floating ingredient icons in the cauldron, smooth bars, CSS-only animations (no `setInterval` / `setTimeout`)

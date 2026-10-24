@@ -259,9 +259,9 @@ export class App extends Component {
     if (this.store.getState().status !== PLAYING) return;
     if (e.repeat || e.ctrlKey || e.metaKey || e.altKey) return;
 
-    const target = e.target as HTMLElement | null;
+    const target = e.target instanceof Element ? e.target : null;
     if (target?.closest('input, textarea, select, [contenteditable="true"]')) return;
-    // let focused buttons keep native Enter/Space behavior
+
     if (target?.closest('button, a') && (e.code === 'Space' || e.code === 'Enter')) return;
 
     const digit = /^(?:Digit|Numpad)([1-9])$/.exec(e.code);

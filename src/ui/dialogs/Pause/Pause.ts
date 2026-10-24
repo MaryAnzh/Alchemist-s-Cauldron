@@ -50,7 +50,7 @@ export class Pause extends Component {
     new Button({
       parentNode: btnWrap.node,
       className: 'app-pause_btn-wrap_continue',
-      text: 'Back to menu',
+      text: 'Exit to menu',
       color: 'arrow-left',
       onClick: onBack,
     });

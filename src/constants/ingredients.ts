@@ -20,7 +20,7 @@ export const INGREDIENTS = [
   {
     id: 'frost_lotus',
     name: 'Frost Lotus',
-    icon: 'symbol',
+    icon: 'frost_lotus',
     temperature: -18,
     density: 4,
     magicPower: 14,
@@ -29,7 +29,7 @@ export const INGREDIENTS = [
   {
     id: 'mandrake_root',
     name: 'Mandrake Root',
-    icon: 'symbol',
+    icon: 'mandrake_root',
     temperature: -5,
     density: 20,
     magicPower: 8,
@@ -38,7 +38,7 @@ export const INGREDIENTS = [
   {
     id: 'caustic_acid',
     name: 'Caustic Acid',
-    icon: 'symbol',
+    icon: 'caustic_acid',
     temperature: 10,
     density: 14,
     magicPower: 22,
@@ -47,7 +47,7 @@ export const INGREDIENTS = [
   {
     id: 'essence_void',
     name: 'Essence of the Void',
-    icon: 'symbol',
+    icon: 'essence_void',
     temperature: -20,
     density: -10,
     magicPower: 40,
@@ -56,7 +56,7 @@ export const INGREDIENTS = [
   {
     id: 'phoenix_feather',
     name: 'Phoenix Feather',
-    icon: 'symbol',
+    icon: 'phoenix_feather',
     temperature: 50,
     density: -10,
     magicPower: 30,
@@ -65,7 +65,7 @@ export const INGREDIENTS = [
   {
     id: 'toad_slime',
     name: 'Toad Slime',
-    icon: 'symbol',
+    icon: 'toad_slime',
     temperature: 5,
     density: 30,
     magicPower: 0,

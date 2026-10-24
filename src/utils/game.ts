@@ -18,3 +18,5 @@ export const formatDate = (date: Date): string => {
 
   return `${dd}.${mm}.${yyyy} ${hh}:${min}`;
 };
+
+export const fmt = (n: number) => (n > 0 ? `+${n}` : n < 0 ? `−${Math.abs(n)}` : '0');

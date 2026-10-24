@@ -1,0 +1,46 @@
+<svg width="128" height="160" viewBox="0 0 128 160" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="mandrake_rootgold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FFF1B5"/>
+      <stop offset="35%" stop-color="#EDCB72"/>
+      <stop offset="70%" stop-color="#C8933D"/>
+      <stop offset="100%" stop-color="#85571C"/>
+    </linearGradient>
+    <linearGradient id="mandrake_rootglassOuter" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#EEF6FF"/>
+      <stop offset="100%" stop-color="#88A7D7"/>
+    </linearGradient>
+    <linearGradient id="mandrake_rootglassInner" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#B6D7FF"/>
+    </linearGradient>
+    <linearGradient id="mandrake_rootlid" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFE9A7"/>
+      <stop offset="50%" stop-color="#D8AD56"/>
+      <stop offset="100%" stop-color="#A16C27"/>
+    </linearGradient>
+    <clipPath id="mandrake_rootclip">
+      <path d="M50 34 L50 44 C50 50 40 57 40 72 L40 124 C40 137 49 144 64 144 C79 144 88 137 88 124 L88 72 C88 57 78 50 78 44 L78 34 Z"/>
+    </clipPath>
+    <linearGradient id="mr_root" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#E9C791"/><stop offset="100%" stop-color="#9A6A38"/></linearGradient>
+  </defs>
+
+  <rect x="36" y="12" width="56" height="18" rx="5" fill="url(#mandrake_rootlid)" stroke="url(#mandrake_rootgold)" stroke-width="2"/>
+  <rect x="42" y="15" width="44" height="4" rx="2" fill="#FFF5D0" opacity="0.7"/>
+
+  <path d="M46 30 L46 42 C46 49 34 55 34 72 L34 128 C34 145 46 152 64 152 C82 152 94 145 94 128 L94 72 C94 55 82 49 82 42 L82 30"
+    fill="none" stroke="url(#mandrake_rootglassOuter)" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M50 34 L50 44 C50 50 40 57 40 72 L40 124 C40 137 49 144 64 144 C79 144 88 137 88 124 L88 72 C88 57 78 50 78 44 L78 34"
+    fill="none" stroke="url(#mandrake_rootglassInner)" stroke-width="2"/>
+
+  <g clip-path="url(#mandrake_rootclip)">
+    <path d="M64 92 C58 74 50 70 45 72 C49 82 56 90 64 92 Z" fill="#6FCB5A" stroke="#C9F2A8" stroke-width="1.2"/>
+    <path d="M64 92 C70 72 80 68 85 70 C81 82 72 90 64 92 Z" fill="#6FCB5A" stroke="#C9F2A8" stroke-width="1.2"/>
+    <path d="M64 92 C61 76 63 66 64 58 C67 68 67 80 64 92 Z" fill="#8EE070" stroke="#C9F2A8" stroke-width="1.2"/>
+    <path d="M64 92 C53 94 51 108 55 120 C51 126 46 130 44 136 C50 134 55 132 59 130 C60 134 60 138 62 142 C63 144 65 144 66 142 C68 138 68 134 69 130 C73 132 78 134 84 136 C82 130 77 126 73 120 C77 108 75 94 64 92 Z" fill="url(#mr_root)" stroke="url(#mandrake_rootgold)" stroke-width="1.5"/>
+    <path d="M58 106 L62 108 M70 106 L66 108" stroke="#5A3A1A" stroke-width="2" stroke-linecap="round"/>
+    <path d="M60 116 Q64 120 68 116" fill="none" stroke="#5A3A1A" stroke-width="2" stroke-linecap="round"/>
+  </g>
+
+  <path d="M46 52 C42 60 42 72 42 90 C42 105 45 116 52 126" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" opacity="0.85"/>
+</svg>

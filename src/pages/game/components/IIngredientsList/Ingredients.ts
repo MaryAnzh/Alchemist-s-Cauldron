@@ -5,6 +5,8 @@ import { Button, Component, Icon } from '@ui';
 
 type IngredientsProps = ParentNodeType & { ingredients: IngredientType[] };
 
+const fmt = (n: number) => (n > 0 ? `+${n}` : n < 0 ? `−${Math.abs(n)}` : '0');
+
 export class IngredientsList extends Component {
   ingredients: IngredientType[] = [];
   ingredientsDate: {
@@ -49,10 +51,18 @@ export class IngredientsList extends Component {
       });
     });
 
+    store.subscribe(GAME_EVENTS.PAUSE, () => this.node.classList.add('is-paused'));
+    store.subscribe(GAME_EVENTS.RESUME, () => this.node.classList.remove('is-paused'));
+
     this.render();
   }
 
   render() {
+    const isHard = store.getState().difficulty === 'hard';
+    if (isHard) {
+      this.node.classList.add('app-ingredients_is-hard');
+    }
+
     const wrap = new Component({
       parentNode: this.node,
       tagName: 'div',
@@ -103,27 +113,64 @@ export class IngredientsList extends Component {
         content: name,
       });
 
-      const propsWrap = new Component({
-        parentNode: card.node,
-        className: 'app-ingredients_list_item_props',
-        tagName: 'span',
-      });
-      [
-        { value: temperature, icon: 'symbol' },
-        { value: density, icon: 'drop' },
-        { value: magicPower, icon: 'symbol' },
-      ].forEach(({ value, icon }) => {
-        new Icon({
-          parentNode: propsWrap.node,
-          icon: icon as IconPickerType,
-          className: 'app-ingredients_list_item_props_icon',
+      if (!isHard) {
+        const propsWrap = new Component({
+          parentNode: card.node,
+          className: 'app-ingredients_list_item_props',
+          tagName: 'span',
         });
-        new Component({
-          parentNode: propsWrap.node,
-          className: 'app-ingredients_list_item_props_value',
-          content: value.toString(),
+        [
+          { value: temperature, icon: 'temperature' },
+          { value: density, icon: 'drop' },
+          { value: magicPower, icon: 'magic' },
+        ].forEach(({ value, icon }) => {
+          new Icon({
+            parentNode: propsWrap.node,
+            icon: icon as IconPickerType,
+            className: 'app-ingredients_list_item_props_icon',
+          });
+          new Component({
+            parentNode: propsWrap.node,
+            className: 'app-ingredients_list_item_props_value',
+            content: value.toString(),
+          });
         });
-      });
+      } else {
+        const tooltip = new Component({
+          parentNode: card.node,
+          tagName: 'span',
+          className: 'app-ingredients_tooltip',
+          attrs: { role: 'tooltip' },
+        });
+        (
+          [
+            ['Temperature', temperature],
+            ['Density', density],
+            ['Magic Power', magicPower],
+          ] as const
+        ).forEach(([label, value]) => {
+          new Component({
+            parentNode: tooltip.node,
+            tagName: 'span',
+            className: 'app-ingredients_tooltip_row',
+            content: `${label}: ${fmt(value)}`,
+          });
+        });
+
+        card.node.addEventListener('mouseenter', () => {
+          const r = card.node.getBoundingClientRect();
+          tooltip.node.classList.toggle(
+            'app-ingredients_tooltip--left',
+            r.right > window.innerWidth - 260,
+          );
+          tooltip.node.classList.toggle(
+            'app-ingredients_tooltip--up',
+            r.bottom > window.innerHeight - 160,
+          );
+        });
+      }
+
+      card.node.classList.toggle('app-ingredients_list_item--compact', isHard);
 
       const countNode = new Component({
         parentNode: card.node,

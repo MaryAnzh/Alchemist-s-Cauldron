@@ -34,7 +34,7 @@ export class Ranges extends Component {
       label: 'Temperature',
       range: { min: ranges.temperature.at(0) as number, max: ranges.temperature.at(1) as number },
       value: 0,
-      icon: 'symbol',
+      icon: 'temperature',
     });
 
     this.density = new RangeSlider({
@@ -50,7 +50,7 @@ export class Ranges extends Component {
       label: 'Magic Power',
       range: { min: ranges.magicPower.at(0) as number, max: ranges.magicPower.at(1) as number },
       value: 0,
-      icon: 'symbol',
+      icon: 'magic',
     });
   }
 }
