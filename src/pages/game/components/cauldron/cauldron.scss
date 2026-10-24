@@ -52,6 +52,10 @@
       z-index: 1;
     }
 
+    &_pot--over {
+      filter: drop-shadow(0 0 var(--size-2) rgba(255, 215, 0, 0.8));
+    }
+
     &_back,
     &_front {
       position: absolute;
@@ -76,8 +80,8 @@
     // Potion surface: the ellipse inside the rim, in % of the cauldron box
     &_potion {
       position: absolute;
-      left: 15.3%;
-      top: 7.3%;
+      left: 18.3%;
+      top: 16.3%;
       width: 62.4%;
       height: 17%;
       border-radius: 50%;
@@ -95,6 +99,7 @@
         transform: scale(1);
       }
     }
+
     &_icon {
       position: absolute;
       width: 20%;

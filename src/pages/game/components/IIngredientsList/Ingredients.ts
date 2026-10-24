@@ -1,4 +1,4 @@
-import { GAME_EVENTS } from '@constants';
+import { GAME_EVENTS, PLAYING } from '@constants';
 import { store } from '@store';
 import type { IconPickerType, IngredientType, ParentNodeType } from '@types';
 import { Button, Component, Icon } from '@ui';
@@ -77,6 +77,17 @@ export class IngredientsList extends Component {
         className: 'app-ingredients_list_item',
       });
       card.node.onclick = () => store.addIngredientToCauldron(id);
+      card.node.draggable = true;
+      card.node.addEventListener('dragstart', (e) => {
+        if (store.getState().status !== PLAYING) {
+          e.preventDefault();
+          return;
+        }
+        e.dataTransfer?.setData('text/plain', id);
+        if (e.dataTransfer) e.dataTransfer.effectAllowed = 'copy';
+        card.node.classList.add('is-dragging');
+      });
+      card.node.addEventListener('dragend', () => card.node.classList.remove('is-dragging'));
 
       const ingIcon = new Icon({
         parentNode: card.node,

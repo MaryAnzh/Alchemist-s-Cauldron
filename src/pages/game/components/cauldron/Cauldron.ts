@@ -1,4 +1,4 @@
-import { GAME_EVENTS } from '@constants';
+import { GAME_EVENTS, PLAYING } from '@constants';
 import { store } from '@store';
 import type { ParentNodeType } from '@types';
 import { Button, Component, Icon } from '@ui';
@@ -39,6 +39,29 @@ export class Cauldron extends Component {
       tagName: 'div',
       className: `${CLASS}_pot`,
     });
+
+    const canDrop = () => {
+      const s = store.getState();
+      return s.status === PLAYING && s.cauldronIngredients.length < s.maxIngredients;
+    };
+
+    pot.node.addEventListener('dragover', (e) => {
+      if (!canDrop()) return;
+      e.preventDefault();
+      pot.node.classList.add(`${CLASS}_pot--over`);
+    });
+    pot.node.addEventListener('dragleave', (e) => {
+      if (!pot.node.contains(e.relatedTarget as Node | null)) {
+        pot.node.classList.remove(`${CLASS}_pot--over`);
+      }
+    });
+    pot.node.addEventListener('drop', (e) => {
+      e.preventDefault();
+      pot.node.classList.remove(`${CLASS}_pot--over`);
+      const id = e.dataTransfer?.getData('text/plain');
+      if (id && canDrop()) store.addIngredientToCauldron(id);
+    });
+
     new Icon({ parentNode: pot.node, icon: 'cauldron_back', className: `${CLASS}_back` });
     this.potion = new Component({
       parentNode: pot.node,
