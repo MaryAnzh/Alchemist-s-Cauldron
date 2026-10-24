@@ -97,6 +97,7 @@ https://maryanzh.github.io/Alchemist-s-Cauldron/
 ## 🚧 In Progress
 
 - Add red/green color for incorrect ranges
+- Add red color for timer
 
 ---
 
