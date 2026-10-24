@@ -428,6 +428,7 @@ class Store {
       activeReactions: [],
     });
     this.emit(C.GAME_EVENTS.CAULDRON_STATE_CHANGED, { values: this.state.cauldronValues });
+    this.emit(C.GAME_EVENTS.INGREDIENT_IN_CAULDRON, 0);
   }
 
   pourOut() {

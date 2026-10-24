@@ -1,17 +1,7 @@
 import { GAME_EVENTS, PAUSED, PLAYING } from '@constants';
 import { Game } from '@pages';
 import { store } from '@store';
-import {
-  Component,
-  Header,
-  Footer,
-  StartGame,
-  Portal,
-  Info,
-  Pause,
-  GameOver,
-  Leaderboard,
-} from '@ui';
+import { Component, Header, Footer, StartGame, Portal, Pause, GameOver, Leaderboard } from '@ui';
 import type { GameOverReasonType, LeaderboardStorageType, RecipeType } from '@types';
 import { Rules } from './ui/dialogs/Rules/Rules';
 
@@ -42,24 +32,9 @@ export class App extends Component {
       this.renderGameView();
     });
 
-    // ROUND OVER
-    store.subscribe(GAME_EVENTS.ROUND_OVER, ({ score, lives, time, variant }) => {
-      const handleClose = () => {
-        this.store.newRound();
-        this.portal.unmount();
-      };
-
-      const info = new Info({
-        parentNode: null,
-        score,
-        lives,
-        timeLeft: time,
-        variant,
-        onClose: handleClose,
-      });
-
-      this.portal.mount(info.node, info);
-      this.portal.onClose = handleClose;
+    // ROUND OVER: feedback is shown by the cauldron animation, the next round starts at once
+    store.subscribe(GAME_EVENTS.ROUND_OVER, () => {
+      this.store.newRound();
     });
 
     // PAUSE → local dialog

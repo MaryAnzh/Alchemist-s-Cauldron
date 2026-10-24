@@ -32,10 +32,6 @@ export class Footer extends Component {
           this.mainBtn.node.removeAttribute('disabled');
         }
       });
-
-      store.subscribe(GAME_EVENTS.ROUND_START, () => {
-        this.mainBtn.node.removeAttribute('disabled');
-      });
     }
 
     this.render();
@@ -62,7 +58,7 @@ export class Footer extends Component {
       onClick: () => this.callback(),
     });
     if (!this.isStartState) {
-      this.mainBtn.setDisabled(true);
+      this.mainBtn.setDisabled(!store.getState().cauldronIngredients.length);
     }
 
     this.menu = new Menu({

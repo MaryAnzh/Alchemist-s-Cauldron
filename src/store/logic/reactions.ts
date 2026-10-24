@@ -14,7 +14,7 @@ export const REACTION_TABLE: IReaction[] = [
   {
     id: R.BUBBLING,
     type: 'ingredients',
-    isActive: (ings) => has(ings, I.FAIRY_DUST, I.CAUSTIC_ACID),
+    isActive: (ingS) => has(ingS, I.FAIRY_DUST, I.CAUSTIC_ACID),
     applyValues: (v) => patch(v, { magicPower: pct(v.magicPower, 50) }),
     effect: { timeDelta: -10 },
   },
@@ -81,34 +81,34 @@ export const REACTION_TABLE: IReaction[] = [
   {
     id: R.STEAM_BURST,
     type: 'mix',
-    isActive: (ings, t) => has(ings, I.DRAGON_TEARS, I.CAUSTIC_ACID) && t.temperature >= 35,
+    isActive: (ingS, t) => has(ingS, I.DRAGON_TEARS, I.CAUSTIC_ACID) && t.temperature >= 35,
     applyValues: (v) => patch(v, { temperature: v.temperature + 10 }),
     effect: { timeDelta: -5 },
   },
   {
     id: R.blaCK_ICE,
     type: 'mix',
-    isActive: (ings, t) => has(ings, I.FROST_LOTUS, I.ESSENCE_VOID) && t.density <= 0,
+    isActive: (ingS, t) => has(ingS, I.FROST_LOTUS, I.ESSENCE_VOID) && t.density <= 0,
     applyValues: (v) =>
       patch(v, { temperature: v.temperature - 10, magicPower: pct(v.magicPower, 20) }),
   },
   {
     id: R.HEAVY_SPARK,
     type: 'mix',
-    isActive: (ings, t) => has(ings, I.FAIRY_DUST, I.TOAD_SLIME) && t.density >= 40,
+    isActive: (ingS, t) => has(ingS, I.FAIRY_DUST, I.TOAD_SLIME) && t.density >= 40,
     applyValues: (v) =>
       patch(v, { density: pct(v.density, 20), magicPower: pct(v.magicPower, 10) }),
   },
   {
     id: R.BURNING_ROOT,
     type: 'mix',
-    isActive: (ings, t) => has(ings, I.MANDRAKE_ROOT, I.PHOENIX_FEATHER) && t.temperature >= 40,
+    isActive: (ingS, t) => has(ingS, I.MANDRAKE_ROOT, I.PHOENIX_FEATHER) && t.temperature >= 40,
     applyValues: (v) => patch(v, { temperature: v.temperature + 15, density: pct(v.density, -10) }),
   },
   {
     id: R.VOID_RESONANCE,
     type: 'mix',
-    isActive: (ings, t) => has(ings, I.ESSENCE_VOID, I.DRAGON_TEARS) && t.magicPower >= 50,
+    isActive: (ingS, t) => has(ingS, I.ESSENCE_VOID, I.DRAGON_TEARS) && t.magicPower >= 50,
     applyValues: (v) =>
       patch(v, { magicPower: pct(v.magicPower, 30), temperature: v.temperature - 5 }),
   },

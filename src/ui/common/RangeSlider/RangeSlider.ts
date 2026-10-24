@@ -45,7 +45,7 @@ export class RangeSlider extends Component {
       parentNode: this.node,
       rangeMax: this.range.max,
       rangeMin: this.range.min,
-      value: 4,
+      value: this.value,
     });
   }
 

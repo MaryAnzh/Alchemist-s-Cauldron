@@ -10,11 +10,14 @@ const CLASS = 'app-cauldron_cauldron-wrap';
 export class Cauldron extends Component {
   potion!: Component;
   pourBtn!: Button;
+  pot!: Component;
 
   constructor({ parentNode }: CauldronProps) {
     super({ parentNode, tagName: 'div', className: 'app-cauldron' });
 
     store.subscribe(GAME_EVENTS.CAULDRON_STATE_CHANGED, () => this.updatePotion());
+
+    store.subscribe(GAME_EVENTS.ROUND_OVER, ({ variant }) => this.playFeedback(variant));
 
     this.render();
     this.updatePotion();
@@ -34,7 +37,7 @@ export class Cauldron extends Component {
     });
 
     // Layers, bottom to top: back wall -> potion -> front wall
-    const pot = new Component({
+    this.pot = new Component({
       parentNode: wrap.node,
       tagName: 'div',
       className: `${CLASS}_pot`,
@@ -45,30 +48,30 @@ export class Cauldron extends Component {
       return s.status === PLAYING && s.cauldronIngredients.length < s.maxIngredients;
     };
 
-    pot.node.addEventListener('dragover', (e) => {
+    this.pot.node.addEventListener('dragover', (e) => {
       if (!canDrop()) return;
       e.preventDefault();
-      pot.node.classList.add(`${CLASS}_pot--over`);
+      this.pot.node.classList.add(`${CLASS}_pot--over`);
     });
-    pot.node.addEventListener('dragleave', (e) => {
-      if (!pot.node.contains(e.relatedTarget as Node | null)) {
-        pot.node.classList.remove(`${CLASS}_pot--over`);
+    this.pot.node.addEventListener('dragleave', (e) => {
+      if (!this.pot.node.contains(e.relatedTarget as Node | null)) {
+        this.pot.node.classList.remove(`${CLASS}_pot--over`);
       }
     });
-    pot.node.addEventListener('drop', (e) => {
+    this.pot.node.addEventListener('drop', (e) => {
       e.preventDefault();
-      pot.node.classList.remove(`${CLASS}_pot--over`);
+      this.pot.node.classList.remove(`${CLASS}_pot--over`);
       const id = e.dataTransfer?.getData('text/plain');
       if (id && canDrop()) store.addIngredientToCauldron(id);
     });
 
-    new Icon({ parentNode: pot.node, icon: 'cauldron_back', className: `${CLASS}_back` });
+    new Icon({ parentNode: this.pot.node, icon: 'cauldron_back', className: `${CLASS}_back` });
     this.potion = new Component({
-      parentNode: pot.node,
+      parentNode: this.pot.node,
       tagName: 'div',
       className: `${CLASS}_potion`,
     });
-    new Icon({ parentNode: pot.node, icon: 'cauldron_front', className: `${CLASS}_front` });
+    new Icon({ parentNode: this.pot.node, icon: 'cauldron_front', className: `${CLASS}_front` });
 
     new Icon({
       parentNode: wrap.node,
@@ -90,5 +93,35 @@ export class Cauldron extends Component {
     const hasIngredients = store.getState().cauldronIngredients.length > 0;
     this.potion.node.classList.toggle(`${CLASS}_potion--filled`, hasIngredients);
     this.pourBtn.setDisabled(!hasIngredients);
+  }
+
+  private playFeedback(variant: 'success' | 'fail') {
+    const appRoot = document.querySelector('#app');
+    const potClass = `${CLASS}_pot--${variant}`;
+
+    this.pot.node.classList.remove(`${CLASS}_pot--success`, `${CLASS}_pot--fail`);
+    void this.pot.node.offsetWidth;
+    this.pot.node.classList.add(potClass);
+
+    if (variant === 'fail') {
+      appRoot?.classList.remove('is-shaking');
+      void appRoot?.offsetWidth;
+      appRoot?.classList.add('is-shaking');
+    }
+
+    this.pot.node.addEventListener(
+      'animationend',
+      (e) => {
+        if (e.target === this.pot.node) this.pot.node.classList.remove(potClass);
+      },
+      { once: true },
+    );
+    appRoot?.addEventListener(
+      'animationend',
+      (e) => {
+        if (e.target === appRoot) appRoot.classList.remove('is-shaking');
+      },
+      { once: true },
+    );
   }
 }

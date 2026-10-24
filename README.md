@@ -128,6 +128,49 @@ https://maryanzh.github.io/Alchemist-s-Cauldron/
 
 ---
 
+## 🧪 Test combinations (manual check)
+
+> For manual testing only. Combos were calculated by script with the real tolerance (Easy ±12, Medium ±8, Hard ±5), max ingredients (4 / 4 / 5) and enabled reactions of each level. Combos that fire Volatile Mix are excluded. The shelf is a random subset of ingredients, so use the 2nd combo if the 1st ingredient is not on the shelf. Mark `[x]` after a check.
+
+### Easy (no reactions)
+
+- [ ] **Moon Mist** — Dragon Tears; or Dragon Tears + Dragon Tears
+- [ ] **Root Bloom** — Mandrake Root; or Caustic Acid
+- [ ] **Frost Steam** — Fairy Dust; or Mandrake Root
+- [ ] **Quiet Swirl** — Fairy Dust + Frost Lotus; or Frost Lotus + Frost Lotus
+- [ ] **Bright Dew** — Dragon Tears + Mandrake Root; or Dragon Tears + Caustic Acid
+- [ ] **Snow Dust** — Frost Lotus + Mandrake Root; or Frost Lotus + Caustic Acid
+
+### Medium (reactions: Bubbling, Solar Frost)
+
+- [ ] **Acid Spark** — Caustic Acid; or Dragon Tears + Caustic Acid
+- [ ] **Void Ember** — Dragon Tears + Essence of the Void; or Fairy Dust + Essence of the Void
+- [ ] **Heavy Acid** — Fairy Dust + Mandrake Root; or Mandrake Root + Caustic Acid
+- [ ] **Frost Acid** — Fairy Dust + Frost Lotus; or Frost Lotus + Caustic Acid
+- [ ] **Dusty Void** — Dragon Tears + Essence of the Void; or Fairy Dust + Essence of the Void
+- [ ] **Dragon Void** — Dragon Tears ×2 + Essence of the Void; or Dragon Tears + Fairy Dust + Essence of the Void
+- [ ] **Rooted Night** — Mandrake Root + Essence of the Void; or Dragon Tears + Mandrake Root + Essence of the Void
+
+### Hard (reactions: Volatile Mix, Pressure Spike, Deep Freeze)
+
+- [ ] **Phoenix Pulse** — Fairy Dust + Phoenix Feather; or Caustic Acid + Phoenix Feather
+- [ ] **Slime Crown** — Mandrake Root ×2; or Mandrake Root + Toad Slime
+- [ ] **Void Flame** — Dragon Tears ×2 + Essence of the Void; or Dragon Tears + Frost Lotus ×2 + Phoenix Feather
+- [ ] **Acid Bog** — Fairy Dust + Toad Slime; or Mandrake Root + Caustic Acid
+- [ ] **Frozen Ash** — Frost Lotus + Mandrake Root + Phoenix Feather
+- [ ] **Triple Eclipse** — Fairy Dust + Mandrake Root + Essence of the Void; or Mandrake Root + Caustic Acid + Essence of the Void
+- [ ] **Ember Soup** — Dragon Tears ×2 + Fairy Dust; or Dragon Tears ×2 + Caustic Acid
+
+### Reaction checks
+
+- [ ] Medium: Dragon Tears + Frost Lotus → Temperature `0`, Density +20% (Solar Frost)
+- [ ] Medium: Fairy Dust + Caustic Acid → Magic Power +50%, timer −10 s once (Bubbling)
+- [ ] Hard: Phoenix Feather + Essence of the Void → −1 life and the cauldron is cleared (Volatile Mix)
+- [ ] Easy: any pair → no reactions
+- [ ] Reload the page after a reaction → no second time / life penalty
+
+---
+
 ## 🎨 Animations
 
 - Range arrow animation
