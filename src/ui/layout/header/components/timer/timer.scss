@@ -46,10 +46,54 @@
     }
   }
 
+  &_info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--size-05);
+    transform-origin: left center;
+  }
+
+  &_row {
+    display: flex;
+    align-items: center;
+    gap: var(--size-1);
+  }
+
   &_count {
     width: var(--size-8);
     display: flex;
     justify-content: start;
+  }
+
+  &_bar {
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(0, 0, 0, 0.45);
+    overflow: hidden;
+
+    &_fill {
+      width: 100%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #997938, #fbf5b7);
+      transform-origin: left center;
+      transition:
+        transform 0.3s linear,
+        background 0.3s ease;
+    }
+  }
+
+  &--danger {
+    color: #ff4d5a;
+
+    .app-timer_info {
+      animation: timer-pulse 1s ease-in-out infinite;
+    }
+
+    .app-timer_bar_fill {
+      background: #e63946;
+    }
   }
 }
 
@@ -70,5 +114,23 @@
         pointer-events: none;
       }
     }
+  }
+}
+
+@keyframes timer-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(1.08);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-timer--danger .app-timer_info {
+    animation: none;
   }
 }

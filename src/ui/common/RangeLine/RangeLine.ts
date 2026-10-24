@@ -21,6 +21,8 @@ export class RangeLine extends Component {
   arrow!: Icon;
   min!: number;
   max!: number;
+  recipeMin!: number;
+  recipeMax!: number;
   firstNumber!: HTMLElement;
   lastNumber!: HTMLElement;
 
@@ -31,6 +33,9 @@ export class RangeLine extends Component {
   }
 
   render(rangeMax: number, rangeMin: number, value: number) {
+    this.recipeMin = rangeMin;
+    this.recipeMax = rangeMax;
+
     const scale = this.generateScale(rangeMin, rangeMax);
     this.min = scale.at(0) ?? 0;
     this.max = scale.at(-1) ?? this.rangeNem * this.step;
@@ -89,6 +94,8 @@ export class RangeLine extends Component {
         this.lastNumber = num.node;
       }
     });
+
+    this.setInRange(0);
   }
 
   setClass(name: string) {
@@ -123,7 +130,16 @@ export class RangeLine extends Component {
     return arr;
   }
 
+  private setInRange(value: number) {
+    this.node.classList.toggle(
+      'app-range-line--in-range',
+      value >= this.recipeMin && value <= this.recipeMax,
+    );
+  }
+
   public updateRange = (value: number) => {
+    this.setInRange(value);
+
     if (value > this.max) {
       this.lastNumber.textContent = `...   ${value}`;
       this.arrow.node.style.left = '100%';

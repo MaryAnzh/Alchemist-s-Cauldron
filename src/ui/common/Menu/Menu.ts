@@ -153,16 +153,13 @@ export class Menu extends Component {
       return;
     }
 
-    // Сбрасываем инлайновый стиль перед замером, чтобы он не искажал повторное открытие
     dropdown.style.left = '';
 
     const dropdownRect = dropdown.getBoundingClientRect();
 
-    // Проверяем, вылазит ли дропдаун за правый край контейнера/экрана с учетом отступа
     const overflowRight = dropdownRect.right - (wrapRect.right - padding);
 
     if (overflowRight > 0) {
-      // Сдвигаем влево на величину переполнения + запас padding
       const currentLeft = parseInt(window.getComputedStyle(dropdown).left) || dropdown.offsetLeft;
       dropdown.style.left = `${currentLeft - overflowRight - padding}px`;
     }
