@@ -69,38 +69,65 @@ export class Leaderboard extends Component {
       className: 'app-leaderboard_wrap_table_body',
     });
 
-    rows.forEach((row) => {
+    const hasRows = rows.length > 0;
+
+    if (!hasRows) {
       const tr = new Component({
         parentNode: tbody.node,
         tagName: 'tr',
       });
 
-      const iconWrap = new Component({
+      new Component({
         parentNode: tr.node,
         tagName: 'td',
-        content: row.rank >= 3 ? (row.rank + 1).toString() : undefined,
+        className: 'app-leaderboard_wrap_table_empty',
+        attrs: { colspan: '5' },
+        content: 'Leaderboard is empty',
       });
-      if (row.rank <= 2) {
-        new Icon({
-          parentNode: iconWrap.node,
-          icon: 'place_1',
-          size: 'md',
+    } else {
+      rows.forEach((row) => {
+        const tr = new Component({
+          parentNode: tbody.node,
+          tagName: 'tr',
         });
-      }
 
-      new Component({ parentNode: tr.node, tagName: 'td', content: row.name });
-      new Component({ parentNode: tr.node, tagName: 'td', content: String(row.score) });
-      new Component({
-        parentNode: tr.node,
-        tagName: 'td',
-        content: row.difficulty[0].toUpperCase() + row.difficulty.slice(1),
+        const iconWrap = new Component({
+          parentNode: tr.node,
+          tagName: 'td',
+          content: row.rank >= 3 ? (row.rank + 1).toString() : undefined,
+        });
+
+        if (row.rank <= 2) {
+          new Icon({
+            parentNode: iconWrap.node,
+            icon: 'place_1',
+            size: 'md',
+          });
+        }
+
+        new Component({
+          parentNode: tr.node,
+          tagName: 'td',
+          className: 'app-leaderboard_wrap_table_name',
+          content: row.name,
+        });
+
+        new Component({ parentNode: tr.node, tagName: 'td', content: String(row.score) });
+
+        new Component({
+          parentNode: tr.node,
+          tagName: 'td',
+          content: row.difficulty[0].toUpperCase() + row.difficulty.slice(1),
+        });
+
+        new Component({
+          parentNode: tr.node,
+          tagName: 'td',
+          className: 'app-leaderboard_wrap_table_date',
+          content: formatDate(new Date(row.date)),
+        });
       });
-      new Component({
-        parentNode: tr.node,
-        tagName: 'td',
-        content: formatDate(new Date(row.date)),
-      });
-    });
+    }
 
     const actions = new Component({
       parentNode: wrap.node,
@@ -116,13 +143,55 @@ export class Leaderboard extends Component {
       onClick: onBack,
     });
 
+    const confirm = new Component({
+      parentNode: wrap.node,
+      tagName: 'div',
+      className: 'app-leaderboard_confirm app-leaderboard_confirm--hidden',
+    });
+
+    new Component({
+      parentNode: confirm.node,
+      tagName: 'p',
+      className: 'app-leaderboard_confirm-text',
+      content: 'Clear the whole leaderboard? This cannot be undone.',
+    });
+
+    const confirmActions = new Component({
+      parentNode: confirm.node,
+      tagName: 'div',
+      className: 'app-leaderboard_confirm-actions',
+    });
+
+    const toggleConfirm = (isOpen: boolean) => {
+      confirm.node.classList.toggle('app-leaderboard_confirm--hidden', !isOpen);
+      actions.node.classList.toggle('app-leaderboard_confirm--hidden', isOpen);
+    };
+
+    new Button({
+      parentNode: confirmActions.node,
+      color: 'arrow-left',
+      text: 'Cancel',
+      onClick: () => toggleConfirm(false),
+    });
+
+    new Button({
+      parentNode: confirmActions.node,
+      color: 'magic',
+      text: 'Yes, clear',
+      onClick: onClean,
+    });
+
     new Button({
       parentNode: actions.node,
       color: 'magic',
       text: 'Clear Leaderboard',
       className: 'app-leaderboard_clear-btn',
       leftIcon: 'symbol',
-      onClick: onClean,
+      disabled: hasRows ? undefined : 'disabled',
+      onClick: () => {
+        if (!hasRows) return;
+        toggleConfirm(true);
+      },
     });
   }
 

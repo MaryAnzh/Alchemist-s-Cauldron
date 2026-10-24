@@ -74,6 +74,11 @@ https://maryanzh.github.io/Alchemist-s-Cauldron/
 - Auto-pause when the tab is hidden
 - Leaderboard per difficulty with a Difficulty column
 - Game over reason (time / lives / out of ingredients)
+- Score `0` is never added to the leaderboard; **Submit Score** is shown only for a new record
+- Leaderboard: in-app confirmation for **Clear Leaderboard**, empty state, disabled clear button when empty, responsive table (name and date wrap on small screens)
+- Menu closes on outside click
+- Ingredient stock no longer leaks between games (shelf objects are copied)
+- Pre-push hook checks `tsc`, ESLint, Prettier and build and fails on any error
 
 ### Fixes & Improvements
 
@@ -92,8 +97,6 @@ https://maryanzh.github.io/Alchemist-s-Cauldron/
 ## 🚧 In Progress
 
 - Add red/green color for incorrect ranges
-- Confirmation dialog for Clear Leaderboard
-- Manual layout check at 375 px and 1920 px
 
 ---
 

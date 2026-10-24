@@ -69,20 +69,22 @@ export class GameOver extends Component {
       });
     }
 
-    new Button({
-      parentNode: wrap.node,
-      className: 'app-game-over_wrap_back',
-      text: 'SUBMIT SCORE',
-      leftIcon: 'symbol',
-      onClick: () => {
-        if (!this.name) {
-          this.inputNode?.setError('Enter valid name');
-          return;
-        }
-        store.submitScore(this.name);
-      },
-      color: 'magic',
-    });
+    if (isRecord) {
+      new Button({
+        parentNode: wrap.node,
+        className: 'app-game-over_wrap_back',
+        text: 'SUBMIT SCORE',
+        leftIcon: 'symbol',
+        onClick: () => {
+          if (!this.name) {
+            this.inputNode?.setError('Enter valid name');
+            return;
+          }
+          store.submitScore(this.name);
+        },
+        color: 'magic',
+      });
+    }
 
     new Button({
       parentNode: wrap.node,

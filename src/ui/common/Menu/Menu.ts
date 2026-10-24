@@ -13,7 +13,6 @@ type MenuProps = ParentNodeType & {
 };
 
 export class Menu extends Component {
-  // private position: PositionType;
   private triggerIcon: IconPickerType;
   menuSettings = [
     {
@@ -28,6 +27,9 @@ export class Menu extends Component {
 
   private dropdownList!: Component;
   private isDropdownOpen = false;
+  private onWindowResize = () => {
+    this.onClose();
+  };
 
   constructor({ parentNode, className, triggerIcon }: MenuProps) {
     super({
@@ -38,10 +40,7 @@ export class Menu extends Component {
 
     this.triggerIcon = triggerIcon;
 
-    document.addEventListener('resize', () => {
-      this.onClose();
-    });
-    document.addEventListener('click', this.handleOutsideClick);
+    window.addEventListener('resize', this.onWindowResize);
 
     this.render();
   }
@@ -172,11 +171,10 @@ export class Menu extends Component {
   onOpen() {
     this.isDropdownOpen = true;
 
-    // Сначала открываем, чтобы элемент отрисовался в DOM и получил размеры
     this.dropdownList.node.classList.add('app-menu_dropdown_open');
 
-    // Вычисляем позицию сразу после того, как браузер применил отображение
     this.updatePosition();
+    document.addEventListener('click', this.handleOutsideClick);
   }
 
   onClose() {
@@ -202,10 +200,9 @@ export class Menu extends Component {
 
   destroy(): void {
     document.removeEventListener('click', this.handleOutsideClick);
-    document.removeEventListener('resize', this.onClose);
+    window.removeEventListener('resize', this.onWindowResize);
 
     this.onClose();
-
     super.destroy();
   }
 }

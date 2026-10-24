@@ -411,11 +411,14 @@ class Store {
   }
 
   checkLeaderboard(): boolean {
+    const score = this.state.score;
+    if (score <= 0) return false;
+
     const current = this.leaderBoard[this.state.difficulty];
     if (current.length < 10) return true;
 
     const minTopScore = current.at(-1)?.score ?? 0;
-    return this.state.score !== 0 && this.state.score >= minTopScore;
+    return score >= minTopScore;
   }
 
   public submitScore(name: string) {
