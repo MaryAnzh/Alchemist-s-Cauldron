@@ -17,6 +17,9 @@ export const {
   TIME,
   LIVES_TITLE,
   INGREDIENTS_TITLE,
+  TEMPERATURE,
+  DENSITY,
+  MAGIC_POWER,
 } = {
   EASY: 'easy',
   HARD: 'hard',
@@ -36,4 +39,7 @@ export const {
   TIME: 'time',
   LIVES_TITLE: 'lives',
   INGREDIENTS_TITLE: 'ingredients',
+  TEMPERATURE: 'temperature',
+  DENSITY: 'density',
+  MAGIC_POWER: 'magicPower',
 } as const;

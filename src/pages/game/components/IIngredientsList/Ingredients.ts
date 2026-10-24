@@ -157,17 +157,38 @@ export class IngredientsList extends Component {
           });
         });
 
-        card.node.addEventListener('mouseenter', () => {
-          const r = card.node.getBoundingClientRect();
-          tooltip.node.classList.toggle(
-            'app-ingredients_tooltip--left',
-            r.right > window.innerWidth - 260,
-          );
-          tooltip.node.classList.toggle(
-            'app-ingredients_tooltip--up',
-            r.bottom > window.innerHeight - 160,
-          );
-        });
+        const placeTooltip = () => {
+          const gap = 8;
+          const cardRect = card.node.getBoundingClientRect();
+          const { width, height } = tooltip.node.getBoundingClientRect();
+          const { innerWidth: vw, innerHeight: vh } = window;
+          const clamp = (v: number, max: number) => Math.max(gap, Math.min(v, max - gap));
+
+          const flipLeft = cardRect.right + gap + width > vw - gap;
+          const flipUp = cardRect.top + cardRect.height / 2 + height / 2 > vh - gap;
+          tooltip.node.classList.toggle('app-ingredients_tooltip--left', flipLeft);
+          tooltip.node.classList.toggle('app-ingredients_tooltip--up', flipUp);
+
+          let left = flipLeft ? cardRect.left - gap - width : cardRect.right + gap;
+          const sideFits = left >= gap;
+          let top = flipUp ? cardRect.bottom - height : cardRect.top;
+
+          if (!sideFits) {
+            left = cardRect.left;
+            top = cardRect.bottom + gap;
+            tooltip.node.classList.toggle('app-ingredients_tooltip--up', false);
+            if (top + height > vh - gap) {
+              top = cardRect.top - gap - height;
+              tooltip.node.classList.toggle('app-ingredients_tooltip--up', true);
+            }
+          }
+
+          tooltip.node.style.left = `${clamp(left, vw - width + gap)}px`;
+          tooltip.node.style.top = `${clamp(top, vh - height + gap)}px`;
+        };
+
+        card.node.addEventListener('mouseenter', placeTooltip);
+        card.node.addEventListener('focusin', placeTooltip);
       }
 
       card.node.classList.toggle('app-ingredients_list_item--compact', isHard);
