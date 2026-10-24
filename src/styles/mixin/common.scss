@@ -1,0 +1,26 @@
+@use './media.scss' as *;
+
+@mixin section-paddings {
+  padding: var(--size-1);
+  gap: var(--size-2);
+
+  @media (min-width: $tablet) {
+    padding: var(--size-1) var(--size-4);
+    gap: var(--size-1);
+  }
+
+  @media (min-width: $desktop-sm) {
+    padding: var(--size-1) var(--size-8);
+  }
+}
+
+@mixin clipping-mask {
+  mask:
+    linear-gradient(#fff 0 0) padding-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) padding-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}

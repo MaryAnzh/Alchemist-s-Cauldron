@@ -1,0 +1,46 @@
+@use '../../../styles/mixin/media.scss' as *;
+
+.app-info {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-3);
+  width: 520px;
+  max-width: 100%;
+  border-radius: var(--radius-md);
+  padding: var(--size-3);
+  background: var(--color-bg-light);
+  border-radius: var(--radius-md);
+  z-index: 11;
+
+  &_title {
+    text-align: center;
+    font-family: var(--font-title);
+    color: var(--color-burnt-text-alt);
+    font-size: var(--heading-md);
+    z-index: 0;
+  }
+
+  &_list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--size-1);
+    color: var(--color-burnt-text-alt);
+    font-size: var(--font-size-lg);
+
+    z-index: 0;
+
+    &_item {
+      display: flex;
+      gap: var(--size-1);
+      &_icon {
+        width: var(--size-3);
+      }
+    }
+  }
+
+  &_btn {
+    align-self: center;
+  }
+}

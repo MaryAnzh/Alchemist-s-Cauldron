@@ -1,0 +1,74 @@
+@use '../../../../../styles/mixin/media.scss' as *;
+
+.app-timer {
+  display: flex;
+  gap: var(--size-1);
+  align-items: center;
+
+  &_btn-wrap {
+    width: var(--size-5);
+    height: var(--size-5);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &_pause {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      transition: opacity 0.3s;
+      z-index: 0;
+
+      & svg {
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    &_btn {
+      width: 100%;
+      height: 100%;
+      opacity: 1;
+      transition: opacity 0.3s;
+      z-index: 5;
+
+      &:hover {
+        opacity: 0;
+      }
+    }
+
+    &_btn:hover ~ &_pause {
+      opacity: 1;
+    }
+  }
+
+  &_count {
+    width: var(--size-8);
+    display: flex;
+    justify-content: start;
+  }
+}
+
+@media (max-width: $tablet) {
+  .app-timer {
+    font-size: var(--font-size-md);
+
+    &_btn-wrap {
+      width: var(--size-4);
+      height: var(--size-4);
+
+      &_btn {
+        opacity: 0;
+        background: transparent;
+      }
+      &_pause {
+        opacity: 1;
+        pointer-events: none;
+      }
+    }
+  }
+}

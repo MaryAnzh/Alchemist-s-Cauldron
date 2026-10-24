@@ -1,0 +1,111 @@
+@use '../../../../styles/mixin/media.scss' as *;
+
+.app-recipe {
+  width: 100%;
+
+  &_wrap {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: var(--size-3);
+    gap: var(--size-3);
+    color: var(--color-burnt-text-alt);
+
+    &_bg {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      inset: 0;
+      z-index: -1;
+    }
+
+    &_title {
+      text-align: center;
+      font-family: var(--font-title);
+      font-size: var(--heading-md);
+      font-weight: var(--weight-bold);
+      z-index: 1;
+    }
+
+    &_value-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: var(--size-1);
+      z-index: 1;
+
+      &_value {
+        display: flex;
+        gap: var(--size-1);
+
+        &_name {
+          text-transform: uppercase;
+        }
+
+        &_v {
+          color: var(--black);
+          font-style: italic;
+        }
+      }
+    }
+
+    &_ingredients-count {
+      display: flex;
+      gap: var(--size-1);
+    }
+  }
+
+  &_mobile {
+    display: none;
+  }
+}
+
+@media (max-width: $tablet) {
+  .app-recipe {
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+
+    &_wrap {
+      display: none;
+
+      &_mobile {
+        position: absolute;
+        display: flex;
+        inset: 0;
+        z-index: 5;
+      }
+    }
+    &_mobile {
+      display: flex;
+      width: var(--size-5);
+      height: var(--size-5);
+
+      &_btn {
+        width: 100%;
+        height: 100%;
+        z-index: 6;
+
+        svg {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: $laptop-md) {
+  .app-recipe {
+    &_wrap {
+      gap: var(--size-2);
+
+      &_title {
+        font-size: var(--heading-sm);
+      }
+      &_value-wrap {
+        font-size: var(--font-size-xsm);
+      }
+    }
+  }
+}

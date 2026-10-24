@@ -1,0 +1,32 @@
+. "$(dirname "$0")/_/husky.sh"
+
+
+echo "✅ Branch name is valid!"
+echo
+
+echo "🔍 Running TSC..."
+npm run tsc
+tsc_status=$?
+
+echo
+echo "🔍 Running ESLint..."
+npm run lint
+eslint_status=$?
+
+echo "🎨 Running Prettier check..."
+npx prettier --check .
+prettier_status=$?
+
+echo
+echo "🎨 Running Build..."
+npm run build
+build_status=$?
+
+if [ $tsc_status -ne 0 ] || [ $eslint_status -ne 0 ] || [ $prettier_status -ne 0 ] || [ $build_status -ne 0 ]; then
+  echo
+  echo "❌ Push aborted: TSC, lint, format or build failed."
+  exit 1
+fi
+
+echo
+echo "✅ All checks passed. Ready to push."
