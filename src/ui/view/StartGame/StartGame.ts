@@ -1,5 +1,7 @@
+import { Game } from '@pages';
+import { store } from '@store';
 import type { ParentNodeType } from '@types';
-import { Component, Footer, Icon } from '@ui';
+import { Component, Footer, Header } from '@ui';
 
 type StartGameProps = ParentNodeType & { callback: () => void };
 
@@ -14,11 +16,24 @@ export class StartGame extends Component {
   }
 
   render() {
-    new Icon({
+    const { maxIngredients } = store.getState();
+
+    new Header({
       parentNode: this.node,
-      className: 'app-start-game-dialog_icon',
-      icon: 'symbol',
+      currentLivesCount: 0,
+      maxLives: 0,
+      showLives: false,
+      showPauseButton: false,
     });
+
+    new Game({
+      parentNode: this.node,
+      currentIngredientsCount: 0,
+      currentRecipe: null,
+      ingredients: [],
+      maxIngredients,
+    });
+
     this.child = new Footer({ parentNode: this.node, isStartState: true, callback: this.callback });
   }
 

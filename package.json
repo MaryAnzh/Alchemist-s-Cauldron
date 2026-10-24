@@ -11,6 +11,7 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "prepare": "husky",
+    "format:check": "prettier --check .",
     "deploy": "vite build && gh-pages -d dist"
   },
   "devDependencies": {

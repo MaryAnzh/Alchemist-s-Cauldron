@@ -1,0 +1,26 @@
+<svg>
+<g>
+  <!-- Lotus -->
+  <path d="M64 115 L52 95 L64 80 L76 95 Z"
+        fill="#BFE9FF"
+        stroke="#EAFBFF"
+        stroke-width="1.5"/>
+
+  <path d="M48 105 L64 82 L80 105"
+        fill="#9FE0FF"
+        stroke="#EAFBFF"
+        stroke-width="1.5"/>
+
+  <path d="M40 114 L64 90 L88 114"
+        fill="#D8F4FF"
+        stroke="#FFFFFF"
+        stroke-width="1.5"/>
+
+  <!-- Crystals -->
+  <path d="M48 72 L52 78 L48 84 L44 78 Z"
+        fill="#FFFFFF"/>
+
+  <path d="M80 78 L84 84 L80 90 L76 84 Z"
+        fill="#DFF7FF"/>
+</g>
+</svg>

@@ -12,8 +12,7 @@ import {
   GameOver,
   Leaderboard,
 } from '@ui';
-import { storage } from './store/storage/Storage';
-import type { RecipeType } from '@types';
+import type { GameOverReasonType, LeaderboardStorageType, RecipeType } from '@types';
 import { Rules } from './ui/dialogs/Rules/Rules';
 
 export class App extends Component {
@@ -26,7 +25,6 @@ export class App extends Component {
   main: Component | null = null;
   footer: Footer | null = null;
   pause: Pause | null = null;
-  isDocumentHidden: boolean = false;
 
   startGameNode: StartGame | null = null;
 
@@ -42,12 +40,6 @@ export class App extends Component {
 
     store.subscribe(GAME_EVENTS.GAME_START, () => {
       this.renderGameView();
-    });
-
-    // GAME OVER
-    store.subscribe(GAME_EVENTS.GAME_OVER, ({ score, isRecord }) => {
-      if (this.isDocumentHidden) return;
-      this.renderGameOverView(score, isRecord);
     });
 
     // ROUND OVER
@@ -81,29 +73,26 @@ export class App extends Component {
       this.portal.unmount();
     });
 
-    store.subscribe(GAME_EVENTS.LEADERBOARD_UPDATED, () => {
-      this.renderLeaderboardDialog();
+    store.subscribe(GAME_EVENTS.SHOW_LEADERBOARD, (leaderboard) => {
+      this.renderLeaderboardDialog(leaderboard);
     });
 
     store.subscribe(GAME_EVENTS.SHOW_RULES, () => {
       this.renderRulesDialog();
     });
 
-    // visibilitychange - auto pause
-    // document.addEventListener('visibilitychange', () => {
-    //   if (document.hidden) {
-    //     this.isDocumentHidden = true;
-    //     const state = store.getState();
-    //     if (state.status === PLAYING) {
-    //       const remaining = Math.max(0, Math.floor((state.endTimestamp - Date.now()) / 1000));
+    // GAME OVER
+    store.subscribe(GAME_EVENTS.GAME_OVER, ({ score, isRecord, reason }) => {
+      this.renderGameOverView(score, isRecord, reason);
+    });
 
-    //       this.store.pageHidden(remaining);
-    //       this.renderPauseDialog();
-    //     }
-    //   } else {
-    //     this.isDocumentHidden = false;
-    //   }
-    // });
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden && this.store.getState().status === PLAYING) {
+        this.store.pauseGame();
+      }
+    });
+
+    window.addEventListener('pagehide', () => this.store.saveGame());
 
     // Space pause
     document.addEventListener('keydown', (e) => {
@@ -131,9 +120,7 @@ export class App extends Component {
   init() {
     this.root.append(this.node);
     this.portal = new Portal();
-    if (storage.hasSave('GAME_STATE')) {
-      // To Do action
-    }
+
     this.renderStartView();
   }
 
@@ -197,19 +184,20 @@ export class App extends Component {
     this.setView(view);
   }
 
-  renderGameOverView(score: number, isRecord: boolean) {
+  renderGameOverView(score: number, isRecord: boolean, reason: GameOverReasonType) {
     this.portal.unmount();
 
     const view = new GameOver({
       parentNode: this.node,
       score,
       isRecord,
+      reason,
     });
 
     this.setView(view);
   }
 
-  renderLeaderboardDialog() {
+  renderLeaderboardDialog(leaderboard: LeaderboardStorageType) {
     const state = this.store.getState();
 
     if (state.status === PLAYING) {
@@ -220,6 +208,7 @@ export class App extends Component {
       parentNode: null,
       onBack: () => this.closeLeaderboardDialog(),
       onClean: () => this.store.clearLeaderboard(),
+      data: leaderboard,
     });
 
     this.portal.mount(view.node, view);
@@ -230,7 +219,7 @@ export class App extends Component {
     const pause = new Pause({
       parentNode: null,
       onBack: () => {
-        this.store.startNewGame();
+        this.store.exitToMenu();
         this.renderStartView();
       },
       onContinue: () => {

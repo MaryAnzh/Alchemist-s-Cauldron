@@ -3,40 +3,42 @@ import { store } from '@store';
 import type { ParentNodeType } from '@types';
 import { Button, Component, Icon } from '@ui';
 
-type TimerProps = ParentNodeType;
+type TimerProps = ParentNodeType & { showPauseButton?: boolean };
 
 export class Timer extends Component {
   timerNode!: Component;
   timer: number = 0;
 
-  constructor({ parentNode }: TimerProps) {
+  constructor({ parentNode, showPauseButton = true }: TimerProps) {
     super({ parentNode, tagName: 'div', className: 'app-timer' });
 
     store.subscribe(GAME_EVENTS.TIMER_TICK, (time: number) => {
       this.timerNode.node.textContent = this.formatTime(time);
     });
 
-    this.render();
+    this.render(showPauseButton);
   }
 
-  render() {
-    const btnWrap = new Component({
-      parentNode: this.node,
-      tagName: 'div',
-      className: 'app-timer_btn-wrap',
-    });
-    new Button({
-      parentNode: btnWrap.node,
-      leftIcon: 'clock',
-      className: 'app-timer_btn-wrap_btn',
-      color: 'magic-icon-2',
-      onClick: () => store.pauseGame(),
-    });
-    new Icon({
-      parentNode: btnWrap.node,
-      icon: 'pause',
-      className: 'app-timer_btn-wrap_pause',
-    });
+  render(showPauseButton: boolean) {
+    if (showPauseButton) {
+      const btnWrap = new Component({
+        parentNode: this.node,
+        tagName: 'div',
+        className: 'app-timer_btn-wrap',
+      });
+      new Button({
+        parentNode: btnWrap.node,
+        leftIcon: 'clock',
+        className: 'app-timer_btn-wrap_btn',
+        color: 'magic-icon-2',
+        onClick: () => store.pauseGame(),
+      });
+      new Icon({
+        parentNode: btnWrap.node,
+        icon: 'pause',
+        className: 'app-timer_btn-wrap_pause',
+      });
+    }
 
     new Component({
       parentNode: this.node,

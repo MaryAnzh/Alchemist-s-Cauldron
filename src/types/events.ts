@@ -1,7 +1,7 @@
 import { GAME_EVENTS as GE } from '@constants';
 import type { GameState } from './state';
-import type { cauldronValuesType, RecipeType } from './data';
-import type { LeaderboardRowType } from './leaderboard';
+import type { cauldronValuesType, GameOverReasonType, RecipeType } from './data';
+import type { LeaderboardStorageType } from './leaderboard';
 
 export type GameEventsPayload = {
   [GE.TIMER_TICK]: number;
@@ -9,7 +9,7 @@ export type GameEventsPayload = {
   [GE.SCORE_CHANGE]: number;
 
   [GE.GAME_START]: GameState;
-  [GE.GAME_OVER]: { isRecord: boolean; score: number };
+  [GE.GAME_OVER]: { isRecord: boolean; score: number; reason: GameOverReasonType };
   [GE.ROUND_OVER]: { score: number; lives: number; time: number; variant: 'success' | 'fail' };
   [GE.ROUND_START]: { isStart: boolean };
   [GE.PAUSE]: { auto: boolean };
@@ -22,7 +22,7 @@ export type GameEventsPayload = {
   [GE.INGREDIENT_IN_CAULDRON]: number;
 
   [GE.CAULDRON_STATE_CHANGED]: { values: cauldronValuesType };
-  [GE.LEADERBOARD_UPDATED]: LeaderboardRowType[];
+  [GE.SHOW_LEADERBOARD]: LeaderboardStorageType;
   [GE.PAGE_HIDDEN]: boolean;
   [GE.SHOW_RULES]: boolean;
 };

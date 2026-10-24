@@ -12,6 +12,18 @@
     gap: var(--size-1);
     justify-content: space-between;
 
+    .app-ingredients_empty {
+      display: flex;
+      min-height: 160px;
+      align-items: center;
+      justify-content: center;
+      border: 1px dashed var(--color-parchment-dark);
+      border-radius: var(--radius-md);
+      background: rgba(15, 15, 15, 0.3);
+      color: var(--color-parchment-dark);
+      font-family: var(--font-title);
+    }
+
     &_item {
       position: relative;
       width: 100%;

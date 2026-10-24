@@ -1,15 +1,15 @@
 import { STORAGE_KEYS, type GAME_DIFFICULT, type GAME_STATUS } from '@constants';
 import type { KeysTemplateType } from './common';
-import type { cauldronValuesType, IngredientType, RecipeType } from './data';
+import type { cauldronValuesType, IngredientType, ReactionId, RecipeType } from './data';
 
-export type GameStatusType = KeysTemplateType<typeof GAME_STATUS>;
-export type GameDifficultType = KeysTemplateType<typeof GAME_DIFFICULT>;
+export type GameStatusType = KeysTemplateType<typeof GAME_STATUS>; // 'menu' | 'plating' | 'game-over' | 'paused'
+export type GameDifficultType = KeysTemplateType<typeof GAME_DIFFICULT>; //"easy"|"medium"|"hard";
 
 export type GameState = {
   playerName: string;
   status: GameStatusType;
   level: 1 | 2 | 3;
-  maxLives: 3 | 4;
+  maxLives: 3 | 5;
   difficulty: GameDifficultType;
 
   // HUD
@@ -29,12 +29,13 @@ export type GameState = {
   // Shelf
   shelfIngredients: IngredientType[];
 
-  // Reactions (Level 3)
-  activeReactions: string[];
-  lastReactionId: string | null;
-
   startTimestamp: number;
   endTimestamp: number;
+
+  // Reactions (Level 3)
+  enabledReactionIds: ReactionId[];
+  activeReactions: ReactionId[];
+  lastReactionId: ReactionId | null;
 };
 
 export type StorageKeysType = keyof typeof STORAGE_KEYS;

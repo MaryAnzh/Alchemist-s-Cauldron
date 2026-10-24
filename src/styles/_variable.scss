@@ -5,6 +5,7 @@
   --size-025: 2px;
   --size-05: 4px;
   --size-1: 8px;
+  --size-1-5: 12px;
   --size-2: 16px;
   --size-3: 24px;
   --size-4: 32px;
@@ -41,6 +42,7 @@
   --color-parchment: #f4ebd0;
   --color-parchment-dark: #e3d3ab;
   --color-bg-light: #c2a882;
+  --color-bg-light-2: #bfa77f;
 
   /* font color */
   --color-text-light: #f0f2f5;
@@ -126,6 +128,8 @@
   --input-placeholder: #b6a479;
   --input-text-color: #dbd1b9;
 
+  /*12px*/
+  --font-size-xsm: 12px;
   /* 14px */
   --font-size-sm: 0.875rem;
   /* 16px */
@@ -150,4 +154,6 @@
   --scrollbar-bg: #b89c74;
 
   --scrollbar-border-color-2: #3a2a1a --dropdown-width: 260px;
+
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
 }

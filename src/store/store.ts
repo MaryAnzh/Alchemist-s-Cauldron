@@ -6,15 +6,21 @@ import type {
   RecipeType,
   LeaderboardRowType,
   StorageKeysType,
+  GameDifficultType,
+  LeaderboardStorageType,
+  GameOverReasonType,
 } from '@types';
 
 import { GameTimer } from './logic/timer';
 import { storage } from './storage/Storage';
+import { ValidateLeaderboard, ValidateState } from './logic/validate';
 
 class Store {
   private events = new EventEmitter<GameEventsPayload>();
   private timer = new GameTimer();
-  private leaderBoard: LeaderboardRowType[] = [];
+  private timerRunning = false;
+  private leaderBoard: LeaderboardStorageType = { easy: [], medium: [], hard: [] };
+  private storage: typeof storage;
 
   private state: GameState = {
     playerName: 'Alchemist',
@@ -39,12 +45,21 @@ class Store {
     shelfIngredients: [],
 
     // Reactions (Level 3)
+    enabledReactionIds: [...C.REACTION_IDS_BY_DIFFICULTY.medium],
     activeReactions: [],
     lastReactionId: null,
 
     startTimestamp: 0,
     endTimestamp: 0,
   };
+
+  constructor() {
+    this.storage = storage;
+    const leaderBoard = this.storage.load('LEADERBOARD') as LeaderboardStorageType | null;
+    if (leaderBoard) {
+      this.leaderBoard = leaderBoard;
+    }
+  }
 
   /** Utils  */
   public getState = () => {
@@ -74,21 +89,24 @@ class Store {
     this.pickRandomRecipe();
     this.state.status = C.PLAYING;
     this.setTimer();
+    this.saveGame();
 
     this.emit(C.GAME_EVENTS.GAME_START, this.state);
   };
 
   pauseGame() {
+    const remaining = this.timerRunning
+      ? Math.max(0, Math.floor((this.state.endTimestamp - Date.now()) / 1000))
+      : this.state.timeLeft;
     this.timer.stop();
-
-    const remaining = Math.max(0, Math.floor((this.state.endTimestamp - Date.now()) / 1000));
+    this.timerRunning = false;
 
     this.update({
       status: C.PAUSED,
       timeLeft: remaining,
     });
 
-    this.saveToStorage('GAME_STATE', this.state);
+    this.saveGame();
 
     this.emit(C.GAME_EVENTS.PAUSE, { auto: false });
   }
@@ -103,15 +121,21 @@ class Store {
     this.timer.start(
       this.state.timeLeft,
       (remaining) => {
+        const timeChanged = remaining !== this.state.timeLeft;
         this.update({ timeLeft: remaining });
         this.emit(C.GAME_EVENTS.TIMER_TICK, remaining);
+        if (timeChanged) this.saveGame();
       },
       () => this.gameOver(),
     );
+    this.timerRunning = true;
+    this.saveGame();
     this.emit(C.GAME_EVENTS.RESUME, this.state);
   }
 
   resetGameState() {
+    this.timer.stop();
+    this.timerRunning = false;
     this.state = {
       ...this.state,
       status: C.MENU,
@@ -119,9 +143,11 @@ class Store {
       lives: C.LIVES[this.state.difficulty],
       timeLeft: 0,
       currentRecipe: null,
+      recipes: [],
       cauldronIngredients: [],
       cauldronValues: { density: 0, magicPower: 0, temperature: 0 },
       shelfIngredients: [],
+      enabledReactionIds: [...C.REACTION_IDS_BY_DIFFICULTY[this.state.difficulty]],
       activeReactions: [],
       lastReactionId: null,
     };
@@ -129,6 +155,8 @@ class Store {
 
   roundOver(variant: 'success' | 'fail') {
     this.timer.stop();
+    this.timerRunning = false;
+    this.saveGame();
     this.emit(C.GAME_EVENTS.ROUND_OVER, {
       score: this.state.score,
       lives: this.state.lives,
@@ -144,50 +172,46 @@ class Store {
     this.timer.start(
       this.state.timeLeft,
       (remaining) => {
+        const timeChanged = remaining !== this.state.timeLeft;
         this.update({ timeLeft: remaining });
         this.emit(C.GAME_EVENTS.TIMER_TICK, remaining);
+        if (timeChanged) this.saveGame();
       },
       () => this.gameOver(),
     );
+    this.timerRunning = true;
 
     this.emit(C.GAME_EVENTS.SHELF_BLOCK, { isBlock: false });
     this.pickRandomRecipe();
     this.clearCauldron();
+    if (this.state.shelfIngredients.every((ing) => !ing.count)) {
+      this.gameOver('ingredients');
+      return;
+    }
+
     this.emit(C.GAME_EVENTS.ROUND_START, { isStart: true });
+    this.saveGame();
   }
 
-  public gameOver() {
+  public gameOver(reason: GameOverReasonType = 'time') {
+    const score = this.state.score;
+    const isRecord = this.checkLeaderboard();
+
+    this.timer.stop();
+
     this.update({ status: C.GAME_OVER });
+
+    this.emit(C.GAME_EVENTS.GAME_OVER, { score, isRecord, reason });
+
     this.resetGameState();
     this.clearStorage('GAME_STATE');
-
-    this.emit(C.GAME_EVENTS.GAME_OVER, {
-      isRecord: this.checkLeaderboard(),
-      score: this.state.score,
-    });
-  }
-
-  public continueGame() {
-    const saved = this.loadFromStorage('GAME_STATE');
-    if (!saved) return;
-
-    this.state = saved as GameState;
-
-    const remaining = Math.max(0, Math.floor(this.state.endTimestamp - Date.now()) / 1000);
-
-    this.update({
-      timeLeft: remaining,
-      status: C.PAUSED,
-    });
-
-    this.emit(C.GAME_EVENTS.RESUME, this.state);
   }
 
   /** Inits data */
   initShelf() {
     const count = C.SHELF_SIZE[this.state.difficulty];
 
-    const shuffled = [...C.INGREDIENTS];
+    const shuffled = C.INGREDIENTS.map((ing) => ({ ...ing }));
     const shelfIngredients = shuffled.slice(0, count);
 
     shelfIngredients.forEach((ing) => {
@@ -232,11 +256,14 @@ class Store {
     this.timer.start(
       initialTime,
       (remaining) => {
+        const timeChanged = remaining !== this.state.timeLeft;
         this.update({ timeLeft: remaining });
         this.emit(C.GAME_EVENTS.TIMER_TICK, remaining);
+        if (timeChanged) this.saveGame();
       },
       () => this.gameOver(),
     );
+    this.timerRunning = true;
   }
 
   /** Games Actions */
@@ -256,6 +283,7 @@ class Store {
       cauldronIngredients: ingredients,
       cauldronValues: values,
     });
+    this.saveGame();
 
     this.emit(C.GAME_EVENTS.CAULDRON_STATE_CHANGED, { values });
     if (ingredients.length === this.state.maxIngredients) {
@@ -292,7 +320,10 @@ class Store {
       });
 
     if (success) {
-      const timeLeft = C.TIMER[difficulty].bonus + this.state.timeLeft;
+      const timeLeft = Math.min(
+        C.TIMER[difficulty].gameTime,
+        C.TIMER[difficulty].bonus + this.state.timeLeft,
+      );
 
       const score = C.SCORE[difficulty] + this.state.score;
 
@@ -311,7 +342,7 @@ class Store {
       this.roundOver('fail');
     }
     if (this.state.lives === 0) {
-      this.gameOver();
+      this.gameOver('lives');
     }
   }
 
@@ -330,20 +361,47 @@ class Store {
     this.emit(C.GAME_EVENTS.CAULDRON_STATE_CHANGED, { values: this.state.cauldronValues });
   }
 
-  saveToStorage(key: StorageKeysType, state: GameState | LeaderboardRowType[]): void {
+  saveToStorage(key: StorageKeysType, state: GameState | LeaderboardStorageType): void {
     storage.save(key, state);
+  }
+
+  public saveGame() {
+    const { status, endTimestamp, timeLeft } = this.state;
+    if (status !== C.PLAYING && status !== C.PAUSED) return;
+
+    const remaining =
+      status === C.PLAYING && this.timerRunning
+        ? Math.max(0, Math.floor((endTimestamp - Date.now()) / 1000))
+        : timeLeft;
+
+    this.saveToStorage('GAME_STATE', { ...this.state, timeLeft: remaining });
   }
 
   public loadFromStorage(key: StorageKeysType) {
     const saved = storage.load(key);
-    if (!saved) return null;
+    if (!saved) {
+      if (this.storage.hasSave(key)) {
+        this.clearStorage(key);
+      }
+      return null;
+    }
+
     if (key === 'GAME_STATE') {
-      this.state = saved as GameState;
-      return this.state;
+      const Validate = ValidateState(saved);
+      if (!Validate) {
+        this.storage.clear('GAME_STATE');
+        return null;
+      }
+      return saved as GameState;
     }
     if (key === 'LEADERBOARD') {
-      this.leaderBoard = saved as LeaderboardRowType[];
-      return this.leaderBoard;
+      const Validate = ValidateLeaderboard(saved as LeaderboardStorageType);
+      if (!Validate) {
+        this.storage.clear('LEADERBOARD');
+        return null;
+      }
+
+      return saved as LeaderboardStorageType;
     }
     return null;
   }
@@ -352,24 +410,15 @@ class Store {
     storage.clear(key);
   }
 
-  public pageHidden(remaining: number) {
-    this.timer.stop();
+  checkLeaderboard(): boolean {
+    const score = this.state.score;
+    if (score <= 0) return false;
 
-    this.update({
-      status: C.PAUSED,
-      timeLeft: remaining,
-    });
+    const current = this.leaderBoard[this.state.difficulty];
+    if (current.length < 10) return true;
 
-    this.saveToStorage('GAME_STATE', this.state);
-
-    this.emit(C.GAME_EVENTS.PAUSE, { auto: true });
-  }
-
-  checkLeaderboard() {
-    if (this.leaderBoard.length < 10) return true;
-
-    const minTopScore = this.leaderBoard.at(-1)?.score ?? 0;
-    return this.state.score >= minTopScore;
+    const minTopScore = current.at(-1)?.score ?? 0;
+    return score >= minTopScore;
   }
 
   public submitScore(name: string) {
@@ -380,32 +429,70 @@ class Store {
   }
 
   public setToLeaderboard({ name, score, date }: LeaderboardRowType) {
-    this.leaderBoard.push({ name, score, date });
+    this.leaderBoard[this.state.difficulty].push({ name, score, date });
 
-    this.leaderBoard.sort((a, b) => b.score - a.score);
+    this.leaderBoard[this.state.difficulty].sort((a, b) => b.score - a.score);
 
-    this.leaderBoard = this.leaderBoard.slice(0, 10);
+    if (this.leaderBoard[this.state.difficulty].length > 10) {
+      this.leaderBoard[this.state.difficulty] = this.leaderBoard[this.state.difficulty].slice(
+        0,
+        10,
+      );
+    }
 
     this.saveToStorage('LEADERBOARD', this.leaderBoard);
-
-    this.emit(C.GAME_EVENTS.LEADERBOARD_UPDATED, this.leaderBoard);
+    this.emit(C.GAME_EVENTS.SHOW_LEADERBOARD, this.leaderBoard);
   }
 
   public clearLeaderboard() {
-    this.leaderBoard = [];
+    this.leaderBoard = { easy: [], medium: [], hard: [] };
+
     this.saveToStorage('LEADERBOARD', this.leaderBoard);
-    this.emit(C.GAME_EVENTS.LEADERBOARD_UPDATED, this.leaderBoard);
+    this.emit(C.GAME_EVENTS.SHOW_LEADERBOARD, this.leaderBoard);
   }
 
   public showLeaderboard() {
     const leaderboard = this.loadFromStorage('LEADERBOARD');
-    if (!leaderboard) return;
-    this.leaderBoard = leaderboard as LeaderboardRowType[];
-    this.emit(C.GAME_EVENTS.LEADERBOARD_UPDATED, this.leaderBoard);
+    if (leaderboard) {
+      this.leaderBoard = leaderboard as LeaderboardStorageType;
+    }
+
+    this.emit(C.GAME_EVENTS.SHOW_LEADERBOARD, this.leaderBoard);
   }
 
   public showRules() {
     this.emit(C.GAME_EVENTS.SHOW_RULES, true);
+  }
+
+  public changeDifficulty = (difficulty: GameDifficultType) => {
+    if (this.state.status === C.MENU) {
+      this.update({
+        difficulty,
+        lives: C.LIVES[difficulty],
+        maxLives: C.LIVES[difficulty],
+        maxIngredients: C.MAX_INGREDIENTS[difficulty],
+      });
+    }
+  };
+
+  public continueLastGame() {
+    const savedState = this.loadFromStorage('GAME_STATE') as GameState;
+    if (!savedState) return;
+
+    this.timer.stop();
+    this.timerRunning = false;
+    this.update({
+      ...(savedState as GameState),
+      endTimestamp: Date.now() + savedState.timeLeft * 1000,
+    });
+    this.emit(C.GAME_EVENTS.GAME_START, this.state);
+    this.pauseGame();
+  }
+
+  public exitToMenu() {
+    this.timer.stop();
+    this.resetGameState();
+    this.clearStorage('GAME_STATE');
   }
 }
 

@@ -1,5 +1,13 @@
+@use '../../../../../styles/mixin/media.scss' as *;
+
 .app-score {
   display: flex;
   gap: var(--size-1);
   align-items: center;
+}
+
+@media (max-width: $tablet) {
+  .app-score {
+    font-size: var(--font-size-md);
+  }
 }

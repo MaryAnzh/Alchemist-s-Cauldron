@@ -8,14 +8,14 @@ type RulesProps = ParentNodeType & {
 export class Rules extends Component {
   rules = [
     'Click Start Game button',
-    'For game pause hover for clock icon and click on it',
+    'To pause the game, hover over the clock icon and click it, or switch to another tab',
     'Look at recipe required ranges for temperature, density and magic power.',
     'Pick ingredients from the shelf and add them to the cauldron to change these three parameters.',
     'Watch the bars: each ingredient increases or decreases temperature, density and magic power.',
     'Your goal is to keep all three parameters inside the recipe ranges when you press Brew.',
     'If all parameters are within the ranges, the brew is successful and you gain score and bonus time.',
     'If at least one parameter is out of range, the brew fails and you lose one life.',
-    'When you lose all lives, the game ends and your final score can be added to the leaderboard.',
+    'When you lose all lives, run out of time or run out of ingredients, the game ends. A score above 0 that makes the Top-10 can be added to the leaderboard.',
   ];
 
   constructor({ parentNode, onClose }: RulesProps) {

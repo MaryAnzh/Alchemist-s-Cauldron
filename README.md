@@ -58,6 +58,28 @@ https://maryanzh.github.io/Alchemist-s-Cauldron/
 
 - Top‑10 leaderboard
 
+### US 2.1 — Difficulty selection
+
+- Easy / Medium / Hard with separate settings (time, lives, tolerance, score, shelf size, cauldron size, reactions)
+- Difficulty switch in the menu
+- Start screen with empty shelf and cauldron
+
+### US 2.2 — Save & continue
+
+- Auto-save on every important change and on pause
+- **Continue Game** in the menu only for a valid unfinished save
+- Saved game opens paused, ingredient stock is restored
+- New game overwrites the save, **Exit to Menu** clears it
+- Storage data validation, safe localStorage access
+- Auto-pause when the tab is hidden
+- Leaderboard per difficulty with a Difficulty column
+- Game over reason (time / lives / out of ingredients)
+- Score `0` is never added to the leaderboard; **Submit Score** is shown only for a new record
+- Leaderboard: in-app confirmation for **Clear Leaderboard**, empty state, disabled clear button when empty, responsive table (name and date wrap on small screens)
+- Menu closes on outside click
+- Ingredient stock no longer leaks between games (shelf objects are copied)
+- Pre-push hook checks `tsc`, ESLint, Prettier and build and fails on any error
+
 ### Fixes & Improvements
 
 - Timer fix
@@ -67,23 +89,18 @@ https://maryanzh.github.io/Alchemist-s-Cauldron/
 - Refactored view rendering
 - Leaderboard item removal
 - Menu settings
+- Update leaderboard icons (2nd and 3rd place)
+- Responsive layout
 
 ---
 
 ## 🚧 In Progress
 
-- Update leaderboard icons (2nd and 3rd place)
 - Add red/green color for incorrect ranges
-- Responsive layout
 
 ---
 
 ## 📌 To Do
-
-### US 2.1 — US 2.2
-
-- Difficulty selection
-- Save & continue game
 
 ### US 3.1 — US 3.6
 
@@ -102,6 +119,20 @@ https://maryanzh.github.io/Alchemist-s-Cauldron/
 - Hover: change timer button to pause button
 - Open menu animation
 
+## 🚀 Run locally
+
+Requirements: Node.js 20+ and npm.
+
+```bash
+npm install
+npm run dev       # dev server (Vite)
+npm run build     # type check + production build
+npm run preview   # preview the build
+npm run lint      # ESLint
+npm run tsc       # type check
+npm run format:check  # Prettier check
+```
+
 ## Game Rules
 
 - Each recipe defines required ranges for **temperature**, **density**, and **magic power**.
@@ -109,7 +140,7 @@ https://maryanzh.github.io/Alchemist-s-Cauldron/
 - Your goal is to match all recipe ranges within the allowed tolerance.
 - A successful brew gives **score** and **bonus time**.
 - A failed brew costs **one life**.
-- When lives reach zero, the game ends.
+- When lives reach zero, time runs out, or no ingredients are left, the game ends.
 - The timer runs continuously unless the game is paused.
 - The **Top‑10 leaderboard** stores the best results.
 - You can continue an unfinished game if a valid save exists.

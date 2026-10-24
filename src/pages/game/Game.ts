@@ -4,7 +4,7 @@ import { IngredientsList, Cauldron, Recipe, Ranges } from './components';
 
 type GameProps = ParentNodeType & {
   ingredients: IngredientType[];
-  currentRecipe: RecipeType;
+  currentRecipe: RecipeType | null;
   currentIngredientsCount: number;
   maxIngredients: number;
 };
@@ -23,12 +23,14 @@ export class Game extends Component {
 
   render(
     ingredients: IngredientType[],
-    currentRecipe: RecipeType,
+    currentRecipe: RecipeType | null,
     currentIngredientsCount: number,
     maxIngredients: number,
   ) {
     new IngredientsList({ parentNode: this.node, ingredients });
     new Cauldron({ parentNode: this.node });
+
+    if (!currentRecipe) return;
 
     new Recipe({ parentNode: this.node, currentRecipe, currentIngredientsCount, maxIngredients });
     new Ranges({

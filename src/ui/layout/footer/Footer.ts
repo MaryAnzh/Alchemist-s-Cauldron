@@ -11,13 +11,6 @@ export class Footer extends Component {
   callback: () => void;
   mainBtn!: Button;
   currentClassName = ';';
-
-  menuSettings = [
-    { name: 'Difficulty', callback: () => {}, isDisabled: true },
-    { name: 'Continue last game', callback: () => {}, isDisabled: true },
-    { name: 'Start new game', callback: () => store.startNewGame(), isDisabled: false },
-    { name: 'Leaderboard', callback: () => store.showLeaderboard(), isDisabled: false },
-  ];
   menu: Menu | null = null;
   rulesBtn: Button | null = null;
 
@@ -77,7 +70,6 @@ export class Footer extends Component {
       className: `${this.currentClassName}_menu`,
       position: this.isStartState ? BOTTOM : TOP,
       triggerIcon: 'settings',
-      items: this.menuSettings,
     });
   }
 

@@ -1,28 +1,39 @@
-import type { GameState, LeaderboardRowType, StorageKeysType } from '@types';
+import type { GameState, LeaderboardStorageType, StorageKeysType } from '@types';
 
 export class StorageHelper {
-  save(key: StorageKeysType, state: GameState | LeaderboardRowType[]) {
-    const data = JSON.stringify(state);
-    localStorage.setItem(key, data);
+  save(key: StorageKeysType, state: GameState | LeaderboardStorageType): boolean {
+    try {
+      localStorage.setItem(key, JSON.stringify(state));
+      return true;
+    } catch {
+      return false;
+    }
   }
 
-  load(key: StorageKeysType): GameState | LeaderboardRowType[] | null {
-    const raw = localStorage.getItem(key);
-    if (!raw) return null;
-
+  load(key: StorageKeysType): GameState | LeaderboardStorageType | null {
     try {
-      return JSON.parse(raw) as GameState | LeaderboardRowType[];
+      const raw = localStorage.getItem(key);
+      if (!raw) return null;
+      return JSON.parse(raw) as GameState | LeaderboardStorageType;
     } catch {
       return null;
     }
   }
 
   clear(key: StorageKeysType) {
-    localStorage.removeItem(key);
+    try {
+      localStorage.removeItem(key);
+    } catch {
+      // storage is unavailable, nothing to clear
+    }
   }
 
   hasSave(key: StorageKeysType): boolean {
-    return Boolean(localStorage.getItem(key));
+    try {
+      return Boolean(localStorage.getItem(key));
+    } catch {
+      return false;
+    }
   }
 }
 
