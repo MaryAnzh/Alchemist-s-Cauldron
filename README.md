@@ -163,7 +163,7 @@ https://maryanzh.github.io/Alchemist-s-Cauldron/
 
 | Reaction          | Difficulty  | Condition                                               | Effect                                      |
 | ----------------- | ----------- | ------------------------------------------------------- | ------------------------------------------- |
-| Bubbling          | Medium      | Fairy Dust + Caustic Acid                               | Magic Power +50%, timer −10 s (once)       |
+| Bubbling          | Medium      | Fairy Dust + Caustic Acid                               | Magic Power +50%, timer −10 s (once)        |
 | Solar Frost       | Medium      | Dragon Tears + Frost Lotus                              | Temperature becomes `0`, Density +20%       |
 | Volatile Mix      | Hard        | Phoenix Feather + Essence of the Void                   | −1 life, the cauldron is cleared (once)     |
 | Pressure Spike    | Hard        | Density ≥ 70                                            | Density is capped at `70`, Magic Power +10% |
