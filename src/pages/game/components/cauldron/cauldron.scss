@@ -116,6 +116,161 @@
       }
     }
 
+    &_floaters {
+      position: absolute;
+      left: 18.3%;
+      top: 8%;
+      width: 62.4%;
+      height: 22%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 2%;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    &_floater {
+      width: 14%;
+      flex: none;
+      display: block;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+      animation:
+        floater-in 0.5s ease-out backwards,
+        floater-bob 2.4s ease-in-out infinite;
+      animation-delay: 0s, calc(var(--i, 0) * -0.6s);
+
+      svg {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+    }
+
+    // Bubbles that boil on the surface while the cauldron has ingredients
+    &_boiling {
+      position: absolute;
+      left: 18.3%;
+      top: 16.3%;
+      width: 62.4%;
+      height: 17%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    &_boil {
+      position: absolute;
+      left: var(--x);
+      top: var(--y);
+      width: 5%;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: radial-gradient(
+        circle at 35% 35%,
+        rgba(255, 255, 255, 0.95),
+        rgba(190, 255, 210, 0.35) 55%,
+        rgba(255, 255, 255, 0) 75%
+      );
+      box-shadow: inset 0 0 3px rgba(255, 255, 255, 0.7);
+      opacity: 0;
+    }
+
+    &_pot--filled &_boil {
+      animation: bubble-boil 1.8s ease-in-out infinite;
+      animation-delay: calc(var(--i, 0) * -0.35s);
+    }
+
+    // Effects layer: same box as the potion surface, overflow is visible on purpose
+    &_fx {
+      position: absolute;
+      left: 18.3%;
+      top: 16.3%;
+      width: 62.4%;
+      height: 17%;
+      z-index: 4;
+      pointer-events: none;
+    }
+
+    &_bubble {
+      position: absolute;
+      left: var(--x);
+      top: 40%;
+      width: 6%;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: radial-gradient(
+        circle at 35% 35%,
+        rgba(255, 255, 255, 0.95),
+        rgba(160, 255, 190, 0.45) 55%,
+        rgba(255, 255, 255, 0) 75%
+      );
+      box-shadow: inset 0 0 4px rgba(255, 255, 255, 0.8);
+      opacity: 0;
+      animation: bubble-burst 1.3s ease-out var(--delay, 0s) forwards;
+
+      &--dark {
+        background: radial-gradient(
+          circle at 35% 35%,
+          rgba(255, 220, 160, 0.95),
+          rgba(255, 110, 40, 0.5) 55%,
+          rgba(255, 255, 255, 0) 75%
+        );
+      }
+    }
+
+    &_smoke {
+      position: absolute;
+      left: var(--x);
+      top: 0;
+      width: 24%;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: radial-gradient(
+        circle,
+        rgba(235, 225, 255, 0.85),
+        rgba(190, 170, 235, 0.45) 45%,
+        rgba(190, 170, 235, 0) 72%
+      );
+      filter: blur(3px);
+      opacity: 0;
+      animation: smoke-rise 1.9s ease-out var(--delay, 0s) forwards;
+
+      &--dark {
+        background: radial-gradient(
+          circle,
+          rgba(70, 60, 70, 0.9),
+          rgba(40, 35, 45, 0.55) 45%,
+          rgba(40, 35, 45, 0) 72%
+        );
+      }
+    }
+
+    &_float-text {
+      position: absolute;
+      left: 50%;
+      top: -90%;
+      white-space: nowrap;
+      font-family: var(--font-title);
+      font-size: clamp(1rem, 2.2vw, 1.7rem);
+      letter-spacing: 0.04em;
+      opacity: 0;
+      animation: float-text-up 1.6s ease-out forwards;
+
+      &--bonus {
+        color: #ffe27a;
+        text-shadow:
+          0 0 8px rgba(255, 190, 40, 0.9),
+          0 2px 3px rgba(0, 0, 0, 0.7);
+      }
+
+      &--reaction {
+        color: #e9d8ff;
+        text-shadow:
+          0 0 8px rgba(190, 140, 255, 0.95),
+          0 2px 3px rgba(0, 0, 0, 0.7);
+      }
+    }
+
     // On success the potion turns white, then fades out with the cleared cauldron
     &_pot--success &_potion {
       animation: potion-fade 0.9s ease-out;
@@ -253,6 +408,72 @@
   }
 }
 
+@keyframes bubble-boil {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0.2);
+  }
+  35% {
+    opacity: 0.95;
+    transform: scale(1) translateY(-20%);
+  }
+  60% {
+    opacity: 0.8;
+    transform: scale(1.15) translateY(-35%);
+  }
+  75% {
+    opacity: 0;
+    transform: scale(1.5) translateY(-45%);
+  }
+}
+
+@keyframes bubble-burst {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0.3);
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(calc(var(--dx, 0%) * 0.4), -650%) scale(calc(var(--scale, 1) * 1.4));
+  }
+}
+
+@keyframes smoke-rise {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0.4);
+  }
+  25% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--dx, 0%), -190%) scale(calc(var(--scale, 1) * 1.9));
+  }
+}
+
+@keyframes float-text-up {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, calc(var(--n, 0) * -120%)) scale(0.7);
+  }
+  20% {
+    opacity: 1;
+    transform: translate(-50%, calc(var(--n, 0) * -120% - 30%)) scale(1.1);
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, calc(var(--n, 0) * -120% - 160%)) scale(1);
+  }
+}
+
 @keyframes pot-glow {
   0% {
     opacity: 0;
@@ -308,5 +529,28 @@
   }
   80% {
     transform: translate(4px, -2px);
+  }
+}
+
+@keyframes floater-in {
+  from {
+    opacity: 0;
+    transform: translateY(-80%) scale(0.5);
+  }
+}
+
+@keyframes floater-bob {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-4deg);
+  }
+  50% {
+    transform: translateY(-14%) rotate(4deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-cauldron_cauldron-wrap_floater {
+    animation: none;
   }
 }

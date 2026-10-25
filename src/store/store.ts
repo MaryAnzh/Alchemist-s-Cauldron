@@ -62,8 +62,6 @@ class Store {
     if (leaderBoard) {
       this.leaderBoard = leaderBoard;
     }
-
-    this.subscribe(C.GAME_EVENTS.REACTION_FIRED, (r) => console.log('REACTION', r));
   }
 
   /** Utils  */

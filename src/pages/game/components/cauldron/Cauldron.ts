@@ -1,26 +1,47 @@
-import { GAME_EVENTS, PLAYING } from '@constants';
+import { GAME_EVENTS, PLAYING, REACTION_IDS, TIMER } from '@constants';
 import { store } from '@store';
-import type { ParentNodeType } from '@types';
+import type { IconPickerType, ParentNodeType } from '@types';
 import { Button, Component, Icon } from '@ui';
 
 type CauldronProps = ParentNodeType;
 
 const CLASS = 'app-cauldron_cauldron-wrap';
 
+// Positions (in %) of the bubbles that always boil on the potion surface
+const BOILING_BUBBLES = [
+  { x: 18, y: 40 },
+  { x: 38, y: 22 },
+  { x: 58, y: 48 },
+  { x: 72, y: 26 },
+  { x: 28, y: 62 },
+  { x: 82, y: 54 },
+];
+
+const BURST = { bubble: 9, smoke: 5 };
+const BURST_DARK = { bubble: 5, smoke: 8 };
+
 export class Cauldron extends Component {
   potion!: Component;
   pourBtn!: Button;
   pot!: Component;
+  floaters!: Component;
+  fx!: Component;
+  private floatersCount = 0;
 
   constructor({ parentNode }: CauldronProps) {
     super({ parentNode, tagName: 'div', className: 'app-cauldron' });
 
-    store.subscribe(GAME_EVENTS.CAULDRON_STATE_CHANGED, () => this.updatePotion());
+    store.subscribe(GAME_EVENTS.CAULDRON_STATE_CHANGED, () => {
+      this.updatePotion();
+      this.updateFloaters();
+    });
 
     store.subscribe(GAME_EVENTS.ROUND_OVER, ({ variant }) => this.playFeedback(variant));
+    store.subscribe(GAME_EVENTS.REACTION_FIRED, ({ id, name }) => this.playReaction(id, name));
 
     this.render();
     this.updatePotion();
+    this.updateFloaters();
   }
 
   render() {
@@ -71,7 +92,37 @@ export class Cauldron extends Component {
       tagName: 'div',
       className: `${CLASS}_potion`,
     });
+
+    this.floaters = new Component({
+      parentNode: this.pot.node,
+      tagName: 'div',
+      className: `${CLASS}_floaters`,
+    });
+
+    const boiling = new Component({
+      parentNode: this.pot.node,
+      tagName: 'div',
+      className: `${CLASS}_boiling`,
+    });
+    BOILING_BUBBLES.forEach(({ x, y }, i) => {
+      const bubble = new Component({
+        parentNode: boiling.node,
+        tagName: 'span',
+        className: `${CLASS}_boil`,
+      });
+      bubble.node.style.setProperty('--x', `${x}%`);
+      bubble.node.style.setProperty('--y', `${y}%`);
+      bubble.node.style.setProperty('--i', i.toString());
+    });
+
     new Icon({ parentNode: this.pot.node, icon: 'cauldron_front', className: `${CLASS}_front` });
+
+    // Effects layer: reaction bubbles, smoke and floating texts live above the front wall
+    this.fx = new Component({
+      parentNode: this.pot.node,
+      tagName: 'div',
+      className: `${CLASS}_fx`,
+    });
 
     new Icon({
       parentNode: wrap.node,
@@ -92,11 +143,52 @@ export class Cauldron extends Component {
   private updatePotion() {
     const hasIngredients = store.getState().cauldronIngredients.length > 0;
     this.potion.node.classList.toggle(`${CLASS}_potion--filled`, hasIngredients);
+    this.pot.node.classList.toggle(`${CLASS}_pot--filled`, hasIngredients);
     this.pourBtn.setDisabled(!hasIngredients);
   }
 
+  // Random values go to CSS variables; timing and movement stay in CSS keyframes
+  private spawnFx(kind: 'bubble' | 'smoke', dark: boolean) {
+    const item = new Component({
+      parentNode: this.fx.node,
+      tagName: 'span',
+      className: [`${CLASS}_${kind}`, dark ? `${CLASS}_${kind}--dark` : ''],
+    });
+    const { style } = item.node;
+    style.setProperty('--x', `${10 + Math.random() * 80}%`);
+    style.setProperty('--dx', `${(Math.random() - 0.5) * 90}%`);
+    style.setProperty('--delay', `${(Math.random() * 0.5).toFixed(2)}s`);
+    style.setProperty('--scale', (0.6 + Math.random() * 0.8).toFixed(2));
+    item.node.addEventListener('animationend', () => item.node.remove(), { once: true });
+  }
+
+  private floatText(text: string, variant: 'bonus' | 'reaction') {
+    const stacked = this.fx.node.querySelectorAll(`.${CLASS}_float-text`).length;
+    const item = new Component({
+      parentNode: this.fx.node,
+      tagName: 'span',
+      className: [`${CLASS}_float-text`, `${CLASS}_float-text--${variant}`],
+      content: text,
+    });
+    item.node.style.setProperty('--n', stacked.toString());
+    item.node.addEventListener('animationend', () => item.node.remove(), { once: true });
+  }
+
+  private playReaction(id: string, name: string) {
+    const dark = id === REACTION_IDS.VOLATILE_MIX;
+    const count = dark ? BURST_DARK : BURST;
+
+    Array.from({ length: count.smoke }).forEach(() => this.spawnFx('smoke', dark));
+    Array.from({ length: count.bubble }).forEach(() => this.spawnFx('bubble', dark));
+    this.floatText(name, 'reaction');
+  }
+
   private playFeedback(variant: 'success' | 'fail') {
-    const appRoot = document.querySelector('#app');
+    if (variant === 'success') {
+      this.floatText(`+${TIMER[store.getState().difficulty].bonus}s`, 'bonus');
+    }
+
+    const appRoot = document.querySelector('#app') as HTMLElement;
     const potClass = `${CLASS}_pot--${variant}`;
 
     this.pot.node.classList.remove(`${CLASS}_pot--success`, `${CLASS}_pot--fail`);
@@ -123,5 +215,26 @@ export class Cauldron extends Component {
       },
       { once: true },
     );
+  }
+
+  private updateFloaters() {
+    const { cauldronIngredients } = store.getState();
+
+    if (cauldronIngredients.length < this.floatersCount) {
+      this.floaters.node.innerHTML = '';
+      this.floatersCount = 0;
+    }
+
+    cauldronIngredients.slice(this.floatersCount).forEach(({ icon }, i) => {
+      const index = this.floatersCount + i;
+      const item = new Icon({
+        parentNode: this.floaters.node,
+        icon: icon as IconPickerType,
+        className: `${CLASS}_floater`,
+      });
+      item.node.style.setProperty('--i', index.toString());
+    });
+
+    this.floatersCount = cauldronIngredients.length;
   }
 }

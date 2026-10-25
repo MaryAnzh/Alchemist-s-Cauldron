@@ -94,6 +94,10 @@ https://maryanzh.github.io/Alchemist-s-Cauldron/
 - New SVG icons: ingredient bottles in the Dragon Tears style (Frost Lotus, Mandrake Root, Caustic Acid, Essence of the Void, Phoenix Feather, Toad Slime) and Temperature / Magic Power icons on cards and range bars
 - **US 3.6 Keyboard Shortcuts** — one handler, only in the `playing` state: `1–8` add ingredient, `B` brew, `X` pour out, `P` / `Esc` pause; ignored in text fields; hints in Rules and in the pause dialog
 - Cauldron SVG split into layers (back wall / potion / front); potion appears when the cauldron has ingredients
+- **US 3.3 Chemical Reactions** — 15 reactions in `store/logic/reactions.ts` (typed `IReaction[]`), `evaluateReactions` recalculates values from the ingredient list and returns only reactions that went `inactive → active`; one-time effects (time, life, clear cauldron) are applied by the store; layering `constants → types → logic` keeps imports free of cycles
+- **US 3.5 Visual Feedback** — success: white potion + glow; fail: explosion + screen shake; ingredient icons float in the cauldron; recipe fades out and the new one fades in; all CSS keyframes
+- Round result dialog removed: after Brew the next round starts at once, feedback is shown by animations
+- Brew is disabled while the cauldron is empty; range arrows start at `0`
 - Game Over: **Play again** button (new game with a new random stock), validation error under the name input no longer overlaps the field
 
 ### Fixes & Improvements
@@ -112,7 +116,7 @@ https://maryanzh.github.io/Alchemist-s-Cauldron/
 
 ## 🚧 In Progress
 
-- Animated cauldron potion (bubbles, success / fail effects, floating ingredients) — part of US 3.5
+- Final manual check of Level 3 (see test combinations below), PR and deploy
 
 ---
 
@@ -120,11 +124,11 @@ https://maryanzh.github.io/Alchemist-s-Cauldron/
 
 - [x] **US 3.1 Drag & Drop (20)** — HTML5 drag events (`dragstart`, `dragover`, `dragleave`, `drop`), drop-zone highlight, ignore drop when paused / cauldron full / stock `0`, click still works
 - [x] **US 3.2 Ingredient Tooltip (15)** — cards show icon and name only; tooltip with Temperature / Density / Magic Power (`+` / `−`), opens left / up near screen edges, hidden on pause
-- [ ] **US 3.3 Chemical Reactions (35)** — typed `IReaction[]` (15 reactions), Easy 0 / Medium 2 / Hard 3, fire only on `inactive → active`, recalculate values from the ingredient list every time
+- [x] **US 3.3 Chemical Reactions (35)** — typed `IReaction[]` (15 reactions), Easy 0 / Medium 2 / Hard 3, fire only on `inactive → active`, recalculate values from the ingredient list every time
 - [x] **US 3.4 Pour Out (10)** — button clears the cauldron, costs 10 s, no life lost, disabled when empty, ingredients are not returned
-- [ ] **US 3.5 Visual Feedback (20)** — success animation, explosion + short screen shake on fail, floating ingredient icons in the cauldron, smooth bars, CSS-only animations (no `setInterval` / `setTimeout`)
+- [x] **US 3.5 Visual Feedback (20)** — white potion + glow on success, explosion + short screen shake on fail, floating ingredient icons in the cauldron, smooth range arrows, recipe fade out / in, CSS-only animations (no `setInterval` / `setTimeout`)
 - [x] **US 3.6 Keyboard Shortcuts (15)** — one handler gated by `playing` state, pause / resume, ignored in text fields and on menu / pause / game-over screens
-- [ ] Level 3 settings: 150 s and 3 lives
+- [x] Level 3 settings: 150 s and 3 lives (Medium / Hard, see the settings table in the task)
 
 ---
 
@@ -176,6 +180,32 @@ https://maryanzh.github.io/Alchemist-s-Cauldron/
 - Range arrow animation
 - Hover: change timer button to pause button
 - Open menu animation
+
+### ✨ Cauldron effects (US 3.5, CSS only)
+
+All effects are pure CSS keyframes. JS only creates elements and removes them on `animationend` (no `setTimeout` / `setInterval`).
+
+| Effect | When | Which reactions |
+| --- | --- | --- |
+| Boiling bubbles on the surface (6, looping) | While the cauldron has ≥ 1 ingredient | — (always) |
+| Burst of bubbles (9) + light purple smoke (5) + reaction name | A reaction fires | Any: Bubbling, Solar Frost (Medium); Pressure Spike, Deep Freeze (Hard); etc. |
+| Dark smoke (8) + orange bubbles (5) + reaction name | Volatile Mix fires | Volatile Mix (Hard) |
+| Floating `+Ns` (gold, 15 / 10 / 5 by difficulty) | Successful brew | — |
+| Green glow, white potion | Successful brew | — |
+| Red explosion + screen shake | Failed brew | — |
+
+**How to check**
+
+- [ ] Add 1 ingredient → small bubbles keep popping on the potion surface
+- [ ] Pour out / new round → the bubbles stop (cauldron is empty)
+- [ ] Medium: Fairy Dust + Caustic Acid → the name «Bubbling» floats up, bubbles and smoke rise, all gone in ~3 s
+- [ ] Medium: Dragon Tears + Frost Lotus → same effect with «Solar Frost»
+- [ ] Hard: Phoenix Feather + Essence of the Void → dark smoke and orange bubbles, «Volatile Mix», −1 life
+- [ ] Trigger two reactions in a row → the names stack, not overlap
+- [ ] Brew a correct combo (see tables above) → `+Ns` floats up, potion turns white
+- [ ] Brew a wrong combo → red explosion and screen shake
+- [ ] Check at 375 px and 1920 px: effects stay above the cauldron and don't block clicks
+- [ ] OS setting «reduce motion» → no heavy motion
 
 ## 🚀 Run locally
 
