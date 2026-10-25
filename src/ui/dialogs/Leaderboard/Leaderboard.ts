@@ -50,10 +50,6 @@ export class Leaderboard extends Component {
       className: 'app-leaderboard_wrap_table_head',
     });
 
-    const rows = DIFFICULTIES.flatMap((difficulty) =>
-      leaders[difficulty].map((row, index) => ({ ...row, difficulty, rank: index })),
-    );
-
     const headRow = new Component({
       parentNode: thead.node,
       tagName: 'tr',
@@ -74,6 +70,10 @@ export class Leaderboard extends Component {
       className: 'app-leaderboard_wrap_table_body',
     });
 
+    const rows = DIFFICULTIES.flatMap((difficulty) =>
+      leaders[difficulty].map((row, index) => ({ ...row, difficulty, rank: index })),
+    );
+
     const hasRows = rows.length > 0;
 
     if (!hasRows) {
@@ -90,48 +90,50 @@ export class Leaderboard extends Component {
         content: 'Leaderboard is empty',
       });
     } else {
-      rows.forEach((row) => {
-        const tr = new Component({
-          parentNode: tbody.node,
-          tagName: 'tr',
-        });
-
-        const iconWrap = new Component({
-          parentNode: tr.node,
-          tagName: 'td',
-          content: row.rank >= 3 ? (row.rank + 1).toString() : undefined,
-        });
-
-        if (row.rank <= 2) {
-          new Icon({
-            parentNode: iconWrap.node,
-            icon: `place_${row.rank + 1}` as IconPickerType,
-            size: 'md',
+      rows
+        .sort((a, b) => b.score - a.score)
+        .forEach((row, rowIndex) => {
+          const tr = new Component({
+            parentNode: tbody.node,
+            tagName: 'tr',
           });
-        }
 
-        new Component({
-          parentNode: tr.node,
-          tagName: 'td',
-          className: 'app-leaderboard_wrap_table_name',
-          content: row.name,
+          const iconWrap = new Component({
+            parentNode: tr.node,
+            tagName: 'td',
+            content: rowIndex >= 3 ? (rowIndex + 1).toString() : undefined,
+          });
+
+          if (rowIndex <= 2) {
+            new Icon({
+              parentNode: iconWrap.node,
+              icon: `place_${rowIndex + 1}` as IconPickerType,
+              size: 'md',
+            });
+          }
+
+          new Component({
+            parentNode: tr.node,
+            tagName: 'td',
+            className: 'app-leaderboard_wrap_table_name',
+            content: row.name,
+          });
+
+          new Component({ parentNode: tr.node, tagName: 'td', content: String(row.score) });
+
+          new Component({
+            parentNode: tr.node,
+            tagName: 'td',
+            content: row.difficulty[0].toUpperCase() + row.difficulty.slice(1),
+          });
+
+          new Component({
+            parentNode: tr.node,
+            tagName: 'td',
+            className: 'app-leaderboard_wrap_table_date',
+            content: formatDate(new Date(row.date)),
+          });
         });
-
-        new Component({ parentNode: tr.node, tagName: 'td', content: String(row.score) });
-
-        new Component({
-          parentNode: tr.node,
-          tagName: 'td',
-          content: row.difficulty[0].toUpperCase() + row.difficulty.slice(1),
-        });
-
-        new Component({
-          parentNode: tr.node,
-          tagName: 'td',
-          className: 'app-leaderboard_wrap_table_date',
-          content: formatDate(new Date(row.date)),
-        });
-      });
     }
 
     const actions = new Component({

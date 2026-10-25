@@ -503,8 +503,7 @@ class Store {
     return score >= minTopScore;
   }
 
-  public submitScore(name: string) {
-    const score = this.state.score;
+  public submitScore(name: string, score: number) {
     const date = new Date();
 
     this.setToLeaderboard({ name, score, date });
