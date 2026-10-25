@@ -28,6 +28,7 @@ import settings from '../assets/settings.svg?raw';
 import stop from '../assets/range-stop.svg?raw';
 import stroke_heart from '../assets/stroke_heart.svg?raw';
 import symbol from '../assets/symbol.svg?raw';
+import symbol_2 from '../assets/symbol_2.svg?raw';
 import temperature from '../assets/temperature.svg?raw';
 import toad_slime from '../assets/toad_slime.svg?raw';
 
@@ -62,6 +63,7 @@ export const ICON_PICKER = {
   stop,
   stroke_heart,
   symbol,
+  symbol_2,
   temperature,
   toad_slime,
 };

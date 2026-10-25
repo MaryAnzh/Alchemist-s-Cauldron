@@ -23,7 +23,7 @@ export class Pause extends Component {
 
     new Icon({
       parentNode: this.node,
-      icon: 'symbol',
+      icon: 'symbol_2',
       size: 'lg',
       className: 'app-pause_icon',
     });
