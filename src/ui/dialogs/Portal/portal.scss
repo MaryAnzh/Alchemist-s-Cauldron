@@ -1,0 +1,34 @@
+@use '../../../styles/variable' as *;
+
+.app_portal {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--portal-bg);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  overflow: hidden;
+  z-index: 100;
+
+  &_open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  &_bg-blur {
+    &::after {
+      position: absolute;
+      content: '';
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      filter: blur(5px);
+    }
+  }
+}

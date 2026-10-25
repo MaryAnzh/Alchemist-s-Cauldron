@@ -1,0 +1,108 @@
+@use './styles/mixin/media.scss' as *;
+
+.app {
+  position: relative;
+  width: 100%;
+  max-width: $desktop-lg;
+  height: fit-content;
+  min-height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  grid-template-columns: 100%;
+  overflow: auto;
+
+  align-items: center;
+  justify-content: space-between;
+  background-image: url('/bg_tablet.webp');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  gap: var(--size-1);
+  font-family: var(--font-main);
+  font-size: var(--font-size-md);
+  color: var(--color-text-light);
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 0;
+  }
+  .app-game-view {
+    z-index: 2;
+
+    main {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+@media (min-width: $tablet) {
+  .app {
+    background-image: url('/bg_laptop.webp');
+    background-size: cover;
+    gap: var(--size-2);
+  }
+}
+
+@media (min-width: $laptop) {
+  .app {
+    width: 100%;
+    height: 100%;
+    background-image: url('/bg_desktop.webp');
+  }
+}
+
+::-webkit-scrollbar {
+  width: var(--size-1);
+}
+
+::-webkit-scrollbar-track {
+  background: linear-gradient(180deg, #c2a882 0%, #b89c74 100%);
+  border-radius: var(--radius-sm);
+  border: var(--border-md) solid var(--scrollbar-border-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #7a5a3a 0%, #5a4632 100%);
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--scrollbar-border-color-2);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #8b6a48 0%, #6a523c 100%);
+}
+
+::-webkit-scrollbar-corner {
+  background: var(--scrollbar-bg);
+}
+
+@media (max-width: $tablet) {
+  ::-webkit-scrollbar {
+    width: 0;
+    display: none;
+  }
+}
+
+ul,
+li {
+  list-style: none;
+}
+button {
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app.is-shaking {
+    animation: none;
+  }
+}

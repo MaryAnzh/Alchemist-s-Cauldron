@@ -1,338 +1,264 @@
-# Alchemist-s-Cauldron
+# 🧪 Alchemist’s Cauldron
 
-RS School game task
-Task Url: https://github.com/rolling-scopes-school/qualifying-stage/blob/main/tasks/game-alchemists-cauldron/README.md
+RS School game task  
+Task URL: https://github.com/rolling-scopes-school/qualifying-stage/blob/main/tasks/game-alchemists-cauldron/README.md
 
-# 🧪 Alchemist's Cauldron
+## 🔗 Deploy
 
-Mix ingredients, match 3 target ranges, and brew potions before time or lives run out.
+https://maryanzh.github.io/Alchemist-s-Cauldron/
 
-## Levels and score
+## 🧰 Tech Stack
 
-Students can stop after any finished level.
+- TypeScript
+- Vite
+- Custom UI Kit (Component, Button, Input, Portal)
+- Vanilla State Store (EventEmitter + GameTimer + Storage)
 
-| Stage                      | What you add                                                                      | Story points | Total score |
-| -------------------------- | --------------------------------------------------------------------------------- | :----------: | :---------: |
-| 🟣 **Precondition 1**      | Repository setup, tooling, folder structure and quality checks                    |      58      |     58      |
-| 🟢 **Level 1 — Basic**     | One full playable game with one fixed rule set                                    |     170      |     228     |
-| 🟡 **Level 2 — Extended**  | Difficulty selection and save / continue                                          |      50      |     278     |
-| 🔴 **Level 3 — Full game** | Drag & drop, tooltip, reactions, Pour Out, keyboard shortcuts and visual feedback |     115      |     393     |
+---
 
-Maximum possible score: **393**.
+## ✅ Completed
 
-## Repository workflow
+### Story 1 — project setup
 
-Work in story branches and keep the history easy to review:
+- Repository preparation
+- Tooling, folder structure
+- Quality checks and linting
 
-- create `story-1` from `main` / `master`, then create feature branches for individual tasks from the current story branch;
-- keep commits small and step-by-step, following the RS School git convention;
-- when a story is finished, open an unmerged PR from the story branch to the previous branch and submit that PR link in RS App via **Cross-Check: Submit**.
+### Game Logic
 
-## Start screen
+- Base store with core game logic
 
-The game starts from a start screen. Before the first run, the shelf is empty, the cauldron is empty, the score and time are `0`, and there are no life icons yet. A centered **Start Game** button is shown instead of **Brew**.
+### US 1.1
 
-It should also include a **Help** button that opens the rules for the game.
+- Ingredient data
+- Shelf cards
+- Cauldron ingredient list
 
-The **Settings** or **Menu** button opens the panel with actions the player uses outside the run itself, such as:
+### US 1.2
 
-- choose the difficulty;
-- continue the last valid game when it exists;
-- start a new game;
-- open the leaderboard.
+- Three parameter bars
+- Pure function for summing ingredient values
 
-### Level 1 — example screen
+### US 1.3
 
-Ingredient cards show the 3 numbers directly and the stock badge (the number in a circle). The recipe panel shows the ingredient counter.
+- Recipe table
+- Random recipe selection
+- Recipe panel
+- Brew check
 
-![Alchemist's Cauldron — Level 1 example](./images/game_example_1.png)
+### US 1.4 — US 1.5
 
-### Level 3 — example screen
+- Timer
+- Lives
+- Pause
+- Game-over flow
+- Save state
 
-Cards show only the icon, name and stock badge. The 3 numbers appear in a tooltip on hover.
+### US 1.6
 
-![Alchemist's Cauldron — Level 3 example](./images/game_example_2.png)
+- Top‑10 leaderboard
 
-> The pictures show the idea of the screen. Ingredient values, ingredient names and the stock numbers in the pictures may differ from the tables below (the real stock is random, 2–15). Use the tables in this README.
+### US 2.1 — Difficulty selection
 
-## How the game works
+- Easy / Medium / Hard with separate settings (time, lives, tolerance, score, shelf size, cauldron size, reactions)
+- Difficulty switch in the menu
+- Start screen with empty shelf and cauldron
 
-1. Start a game. The app picks one random recipe from the [recipe pool](#recipe-pool), and the recipe panel shows how many ingredients you may use, for example **Ingredients: 0 / 4**.
-   When the run starts, the shelf is filled according to the chosen difficulty, the cauldron is still empty, and the score/time/lives switch from the start screen state to the active game state.
-2. Add ingredients from the shelf to the cauldron. The counter grows with every ingredient (**1 / 4**, **2 / 4** …). At the maximum the shelf is blocked.
-3. Watch the 3 bars: **Temperature**, **Density** and **Magic Power**.
-4. Try to move every value into the recipe target zones.
-5. Click **Brew** to check the mix. In Level 3, **Pour Out** is also available.
-6. Keep brewing until time ends, you lose all lives, or the ingredients run out.
+### US 2.2 — Save & continue
 
-Every ingredient has a **limited stock**. The number on the shelf card shows how many portions are left (see [Ingredient stock](#ingredient-stock)).
+- Auto-save on every important change and on pause
+- **Continue Game** in the menu only for a valid unfinished save
+- Saved game opens paused, ingredient stock is restored
+- New game overwrites the save, **Exit to Menu** clears it
+- Storage data validation, safe localStorage access
+- Auto-pause when the tab is hidden
+- Leaderboard per difficulty with a Difficulty column
+- Game over reason (time / lives / out of ingredients)
+- Score `0` is never added to the leaderboard; **Submit Score** is shown only for a new record
+- Leaderboard: in-app confirmation for **Clear Leaderboard**, empty state, disabled clear button when empty, responsive table (name and date wrap on small screens)
+- Menu closes on outside click
+- Ingredient stock no longer leaks between games (shelf objects are copied)
+- Pre-push hook checks `tsc`, ESLint, Prettier and build and fails on any error
 
-Worked example round:
+### Level 1 visuals (US 1.2, US 1.4)
 
-1. The selected recipe is **Moon Mist** from the recipe pool. It says: Temperature **32..42**, Density **12..22**, Magic Power **17..27**.
-2. You add **Dragon Tears** `(+25, +8, +10)` and **Fairy Dust** `(+12, +9, +12)`.
-3. The cauldron totals become **37 / 17 / 22**, and the counter shows **Ingredients: 2 / 4**.
-4. Level 1 uses the **Medium** rules, so brew tolerance is **±8**.
-5. The checked ranges become **24..50**, **4..30** and **9..35**.
-6. `37 / 17 / 22` is inside all 3 checked ranges, so the brew succeeds.
+- Timer: red and pulsing when less than 15 seconds remain, shrinking time bar next to `MM:SS`
+- Parameter bars: green glow when the current value is inside the recipe range
 
-## Difficulty table
+### Level 3 (Done)
 
-Level 1 always uses the **Medium** column below. In Level 2, the player chooses the difficulty from the **Settings/Menu** panel on the start screen.
+- **US 3.4 Pour Out** — button under the cauldron, costs 10 s, disabled when the cauldron is empty
+- **US 3.1 Drag & Drop** — ingredient cards are draggable into the cauldron (`dragstart` / `dragover` / `dragleave` / `drop`), the cauldron glows on drag-over, drops are ignored when paused / cauldron full / stock `0`, click still works
+- Ingredient cards: gold glow (box-shadow) on hover and keyboard focus
+- **US 3.2 Ingredient Tooltip** — on Hard the card shows only icon and name, values (`+` / `−`) are shown in a tooltip that opens left / up near screen edges and is hidden on pause
+- New SVG icons: ingredient bottles in the Dragon Tears style (Frost Lotus, Mandrake Root, Caustic Acid, Essence of the Void, Phoenix Feather, Toad Slime) and Temperature / Magic Power icons on cards and range bars
+- **US 3.6 Keyboard Shortcuts** — one handler, only in the `playing` state: `1–8` add ingredient, `B` brew, `X` pour out, `P` / `Esc` pause; ignored in text fields; hints in Rules and in the pause dialog
+- Cauldron SVG split into layers (back wall / potion / front); potion appears when the cauldron has ingredients
+- **US 3.3 Chemical Reactions** — 15 reactions in `store/logic/reactions.ts` (typed `IReaction[]`), `evaluateReactions` recalculates values from the ingredient list and returns only reactions that went `inactive → active`; one-time effects (time, life, clear cauldron) are applied by the store; layering `constants → types → logic` keeps imports free of cycles
+- **US 3.5 Visual Feedback** — success: white potion + glow; fail: explosion + screen shake; ingredient icons float in the cauldron; recipe fades out and the new one fades in; all CSS keyframes
+- Round result dialog removed: after Brew the next round starts at once, feedback is shown by animations
+- Brew is disabled while the cauldron is empty; range arrows start at `0`
+- Game Over: **Play again** button (new game with a new random stock), validation error under the name input no longer overlaps the field
 
-| Setting                     | Easy  |   Medium    |    Hard     |
-| --------------------------- | :---: | :---------: | :---------: |
-| Ingredients on shelf        |   4   |      6      |      8      |
-| Max ingredients in cauldron |   4   |      4      |      5      |
-| Starting time               | 180 s |    150 s    |    150 s    |
-| Recipe tolerance            |  ±12  |     ±8      |     ±5      |
-| Lives                       |   5   |      3      |      3      |
-| Score per brew              |  100  |     200     |     300     |
-| Time bonus per brew         | +15 s |    +10 s    |    +5 s     |
-| Reactions                   | none  | 2 reactions | 3 reactions |
+### Fixes & Improvements
 
-Use this table as the single source of numbers.
+- Timer fix
+- Empty ingredient view fix
+- Visual pause button
+- User name input
+- Refactored view rendering
+- Leaderboard item removal
+- Menu settings
+- Update leaderboard icons (2nd and 3rd place)
+- Responsive layout
 
-## Ingredient catalogue
+## 📌 Done -- Level 3 (115 points)
 
-The game uses this fixed ordered list of ingredient types. Level 1 uses the first **6** ingredients. In Level 2, Easy uses the first **4**, Medium the first **6**, and Hard all **8**.
+- [x] **US 3.1 Drag & Drop (20)** — HTML5 drag events (`dragstart`, `dragover`, `dragleave`, `drop`), drop-zone highlight, ignore drop when paused / cauldron full / stock `0`, click still works
+- [x] **US 3.2 Ingredient Tooltip (15)** — cards show icon and name only; tooltip with Temperature / Density / Magic Power (`+` / `−`), opens left / up near screen edges, hidden on pause
+- [x] **US 3.3 Chemical Reactions (35)** — typed `IReaction[]` (15 reactions), Easy 0 / Medium 2 / Hard 3, fire only on `inactive → active`, recalculate values from the ingredient list every time
+- [x] **US 3.4 Pour Out (10)** — button clears the cauldron, costs 10 s, no life lost, disabled when empty, ingredients are not returned
+- [x] **US 3.5 Visual Feedback (20)** — success glow and white potion, fail explosion and short screen shake, floating ingredient icons, smooth parameter bars, CSS-only animations. Optional floating time-bonus text is also implemented; recipe fade is an additional effect.
+- [x] **US 3.6 Keyboard Shortcuts (15)** — one handler gated by `playing` state, pause / resume, ignored in text fields and on menu / pause / game-over screens
+- [x] Level 3 settings: 150 s and 3 lives (Medium / Hard, see the settings table in the task)
 
-In Level 1 and Level 2, every card shows the 3 numbers directly. In Level 3, the card shows only the icon and name, and the numbers move to a tooltip.
+---
 
-| #   | Ingredient          | Temperature | Density | Magic Power |
-| --- | ------------------- | :---------: | :-----: | :---------: |
-| 1   | Dragon Tears        |     +25     |   +8    |     +10     |
-| 2   | Fairy Dust          |     +12     |   +9    |     +12     |
-| 3   | Frost Lotus         |     −18     |   +4    |     +14     |
-| 4   | Mandrake Root       |     −5      |   +20   |     +8      |
-| 5   | Caustic Acid        |     +10     |   +14   |     +22     |
-| 6   | Essence of the Void |     −20     |   −10   |     +40     |
-| 7   | Phoenix Feather     |     +50     |   −10   |     +30     |
-| 8   | Toad Slime          |     +5      |   +30   |      0      |
+## 🧪 Test combinations (manual check)
 
-## Ingredient stock
+> For manual testing only. Combos were calculated by script with the real tolerance (Easy ±12, Medium ±8, Hard ±5), max ingredients (4 / 4 / 5) and enabled reactions of each level. Combos that fire Volatile Mix are excluded. The shelf is a random subset of ingredients, so use the 2nd combo if the 1st ingredient is not on the shelf. Mark `[x]` after a check.
 
-The shelf does not have unlimited ingredients. Stock is a resource that the player must use carefully.
+### Easy (no reactions)
 
-| Rule                     | Value                                                                                                                                                       |
-| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Start stock              | At the start of **every new game**, each ingredient on the shelf gets a **random whole number from 2 to 15**. Every ingredient gets its own number.         |
-| Where the player sees it | A number badge on the shelf card (in the pictures below it is the number in a circle).                                                                      |
-| Adding to the cauldron   | Each added ingredient reduces its stock by **1**.                                                                                                           |
-| Empty ingredient         | When the stock is **0**, the shelf slot becomes **empty**: no icon, dimmed, badge **0**. The slot stays in place and cannot be clicked, dragged or focused. |
-| After Brew               | Used ingredients are **spent**. They are **not** returned. The stock is **not** refilled.                                                                   |
-| Wrong mixture            | A failed brew still spends the ingredients.                                                                                                                 |
-| New game / Play again    | A new random stock is created.                                                                                                                              |
-| Continue Game (Level 2)  | The saved stock is restored (not re-rolled).                                                                                                                |
+- [ ] **Moon Mist** — Dragon Tears; or Dragon Tears + Dragon Tears
+- [ ] **Root Bloom** — Mandrake Root; or Caustic Acid
+- [ ] **Frost Steam** — Fairy Dust; or Mandrake Root
+- [ ] **Quiet Swirl** — Fairy Dust + Frost Lotus; or Frost Lotus + Frost Lotus
+- [ ] **Bright Dew** — Dragon Tears + Mandrake Root; or Dragon Tears + Caustic Acid
+- [ ] **Snow Dust** — Frost Lotus + Mandrake Root; or Frost Lotus + Caustic Acid
 
-The stock is the same range (2–15) on all difficulties.
+### Medium (reactions: Bubbling, Solar Frost)
 
-**Recipes and stock.** A new recipe is picked randomly from the table below for the current difficulty (see US 1.3).
+- [ ] **Acid Spark** — Caustic Acid; or Dragon Tears + Caustic Acid
+- [ ] **Void Ember** — Dragon Tears + Essence of the Void; or Fairy Dust + Essence of the Void
+- [ ] **Heavy Acid** — Fairy Dust + Mandrake Root; or Mandrake Root + Caustic Acid
+- [ ] **Frost Acid** — Fairy Dust + Frost Lotus; or Frost Lotus + Caustic Acid
+- [ ] **Dusty Void** — Dragon Tears + Essence of the Void; or Fairy Dust + Essence of the Void
+- [ ] **Dragon Void** — Dragon Tears ×2 + Essence of the Void; or Dragon Tears + Fairy Dust + Essence of the Void
+- [ ] **Rooted Night** — Mandrake Root + Essence of the Void; or Dragon Tears + Mandrake Root + Essence of the Void
 
-**Out of ingredients.** The game ends with the message **Out of ingredients** when:
+### Hard (reactions: Volatile Mix, Pressure Spike, Deep Freeze)
 
-- the shelf is empty (all stocks are 0) and the cauldron is empty.
+- [ ] **Phoenix Pulse** — Fairy Dust + Phoenix Feather; or Caustic Acid + Phoenix Feather
+- [ ] **Slime Crown** — Mandrake Root ×2; or Mandrake Root + Toad Slime
+- [ ] **Void Flame** — Dragon Tears ×2 + Essence of the Void; or Dragon Tears + Frost Lotus ×2 + Phoenix Feather
+- [ ] **Acid Bog** — Fairy Dust + Toad Slime; or Mandrake Root + Caustic Acid
+- [ ] **Frozen Ash** — Frost Lotus + Mandrake Root + Phoenix Feather
+- [ ] **Triple Eclipse** — Fairy Dust + Mandrake Root + Essence of the Void; or Mandrake Root + Caustic Acid + Essence of the Void
+- [ ] **Ember Soup** — Dragon Tears ×2 + Fairy Dust; or Dragon Tears ×2 + Caustic Acid
 
-Time and lives still end the game as before.
+### 🧬 Reactions
 
-## Recipe pool
+15 reactions exist in `src/store/logic/reactions.ts`. Each difficulty enables only its own subset: **Easy** — none, **Medium** — Bubbling and Solar Frost, **Hard** — Volatile Mix, Pressure Spike and Deep Freeze. A reaction fires once, when it goes from inactive to active; values are always recalculated from the ingredient list.
 
-Use one fixed table of **20** recipes. At the start of a new game and after each successful brew, pick **one random recipe** from the rows that:
+| Reaction          | Difficulty  | Condition                                               | Effect                                      |
+| ----------------- | ----------- | ------------------------------------------------------- | ------------------------------------------- |
+| Bubbling          | Medium      | Fairy Dust + Caustic Acid                               | Magic Power +50%, timer −10 s (once)        |
+| Solar Frost       | Medium      | Dragon Tears + Frost Lotus                              | Temperature becomes `0`, Density +20%       |
+| Volatile Mix      | Hard        | Phoenix Feather + Essence of the Void                   | −1 life, the cauldron is cleared (once)     |
+| Pressure Spike    | Hard        | Density ≥ 70                                            | Density is capped at `70`, Magic Power +10% |
+| Deep Freeze       | Hard        | Temperature ≤ −20                                       | Density +15%, Magic Power −15%              |
+| Rooted Steam      | not enabled | Mandrake Root + Toad Slime                              | Density +25%, Magic Power −10%              |
+| Ashen Bloom       | not enabled | Phoenix Feather + Fairy Dust                            | Temperature +10, Magic Power +25%           |
+| Annihilation      | not enabled | One ingredient with Temp > 15 and one with Temp < −15   | Temperature becomes `0`, Density ×2         |
+| Magma Flux        | not enabled | Temperature ≥ 60                                        | Magic Power +20%, Density −10%              |
+| Arcane Saturation | not enabled | Magic Power ≥ 80                                        | Magic Power capped at `80`, Temperature +5  |
+| Steam Burst       | not enabled | Dragon Tears + Caustic Acid and Temperature ≥ 35        | Temperature +10, timer −5 s (once)          |
+| Black Ice         | not enabled | Frost Lotus + Essence of the Void and Density ≤ 0       | Temperature −10, Magic Power +20%           |
+| Heavy Spark       | not enabled | Fairy Dust + Toad Slime and Density ≥ 40                | Density +20%, Magic Power +10%              |
+| Burning Root      | not enabled | Mandrake Root + Phoenix Feather and Temperature ≥ 40    | Temperature +15, Density −10%               |
+| Void Resonance    | not enabled | Essence of the Void + Dragon Tears and Magic Power ≥ 50 | Magic Power +30%, Temperature −5            |
 
-- match the current difficulty.
+Visual effects of reactions are described in «Cauldron effects» below.
 
-The player sees only the recipe name and the 3 target ranges. During the game, calculate the current cauldron values and compare them with these ranges.
+### Reaction checks
 
-| #   | Difficulty | Recipe name    | Temperature | Density | Magic Power |
-| --- | ---------- | -------------- | :---------: | :-----: | :---------: |
-| 1   | Easy       | Moon Mist      |   32..42    | 12..22  |   17..27    |
-| 2   | Easy       | Root Bloom     |    2..12    | 24..34  |   15..25    |
-| 3   | Easy       | Frost Steam    |    2..12    |  7..17  |   19..29    |
-| 4   | Easy       | Quiet Swirl    |  -28..-18   | 19..29  |   17..27    |
-| 5   | Easy       | Bright Dew     |   27..37    | 32..42  |   25..35    |
-| 6   | Easy       | Snow Dust      |   -16..-6   | 28..38  |   29..39    |
-| 7   | Medium     | Acid Spark     |   17..27    | 18..28  |   29..39    |
-| 8   | Medium     | Void Ember     |    0..10    |  0..10  |   45..55    |
-| 9   | Medium     | Heavy Acid     |    0..10    | 29..39  |   25..35    |
-| 10  | Medium     | Frost Acid     |   -13..-3   | 13..23  |   31..41    |
-| 11  | Medium     | Dusty Void     |   -13..-3   |  0..10  |   47..57    |
-| 12  | Medium     | Dragon Void    |   25..35    |  1..11  |   55..65    |
-| 13  | Medium     | Rooted Night   |   -18..-8   | 14..24  |   55..65    |
-| 14  | Hard       | Phoenix Pulse  |   57..67    |  0..10  |   37..47    |
-| 15  | Hard       | Slime Crown    |    -5..5    | 45..55  |    3..13    |
-| 16  | Hard       | Void Flame     |   25..35    |  0..10  |   60..70    |
-| 17  | Hard       | Acid Bog       |   10..20    | 39..49  |   17..27    |
-| 18  | Hard       | Frozen Ash     |   27..37    |  0..10  |   39..49    |
-| 19  | Hard       | Triple Eclipse |  -20..-10   | 19..29  |   60..70    |
-| 20  | Hard       | Ember Soup     |   62..72    | 24..34  |   37..47    |
+- [ ] Medium: Dragon Tears + Frost Lotus → Temperature `0`, Density +20% (Solar Frost)
+- [ ] Medium: Fairy Dust + Caustic Acid → Magic Power +50%, timer −10 s once (Bubbling)
+- [ ] Hard: Phoenix Feather + Essence of the Void → −1 life and the cauldron is cleared (Volatile Mix)
+- [ ] Easy: any pair → no reactions
+- [ ] Reload the page after a reaction → no second time / life penalty
 
-The table above is the full reaction catalog. Each difficulty uses only its configured subset of reactions: none on Easy, 2 on Medium, and 3 on Hard.
+---
 
-## Words explained
+## 🎨 Animations
 
-- **state** — one object with all current game data.
-- **localStorage** — browser storage that keeps small data after reload.
-- **JSON** — text format used to save objects in `localStorage`.
-- **function** — a named block of code that does one job.
-- **type / interface** — a TypeScript description of data.
-- **drag & drop** — move an item with the mouse into another area.
-- **tooltip** — a small box with extra info near an element.
-- **timestamp** — the current time from `Date.now()`.
-- **stock** — how many portions of an ingredient are left on the shelf.
+### Implemented for the task
 
-## How to start
+- **Timer warning (US 1.4)** — below 15 seconds, the timer turns red and pulses; the time bar shrinks as time runs out.
+- **Parameter bars (US 1.2 / US 3.5)** — range arrows move smoothly; the target-zone glow indicates when a value is in range.
+- **Brew success (US 3.5)** — the cauldron glows and the potion turns white.
+- **Brew failure (US 3.5)** — an explosion effect and a short screen shake.
+- **Ingredients in the cauldron (US 3.5)** — ingredient icons float.
 
-Suggested order of work:
+### Additional effects added
 
-1. **Story 1** — prepare the repository, tooling, folder structure and quality checks.
-2. **US 1.1** — create the ingredient data, shelf cards and cauldron list.
-3. **US 1.2** — add the 3 bars and a pure function that sums ingredient values.
-4. **US 1.3** — add the recipe table, random recipe selection, the recipe panel and the **Brew** check.
-5. **US 1.4** and **US 1.5** — add timer, lives, pause and the game-over flow.
-6. **US 1.6** — add the Top-10 leaderboard.
-7. **US 2.1** and **US 2.2** — add difficulty selection, save and continue.
-8. **US 3.1** to **US 3.6** — add drag & drop, tooltip, reactions, Pour Out, keyboard shortcuts and animations.
+- **Cauldron boiling** — bubbles loop while ingredients are present and stop when the cauldron is emptied.
+- **Reactions** — bubbles, smoke and the reaction name float up when an enabled reaction fires. Volatile Mix has dark smoke and orange bubbles.
+- **Successful brew** — floating `+Ns` bonus-time text (15 / 10 / 5 seconds by difficulty); this is optional in the task.
+- **Recipe change** — the old recipe fades out and the new one fades in.
 
-Suggested file structure:
+All visual effects use CSS animations; JavaScript creates/removes effect elements but does not use `setTimeout` or `setInterval` to animate them.
 
-```text
-src/
-  data/
-    ingredients.ts
-    recipes.ts
-    difficulty.ts
-    reactions.ts
-  logic/
-    calculate-cauldron.ts
-    recipe-generator.ts
-    stock.ts
-    brew-check.ts
-    timer.ts
-  state/
-    game-state.ts
-  storage/
-    save.ts
-    leaderboard.ts
-  ui/
-    menu.ts
-    shelf.ts
-    cauldron.ts
-    bars.ts
-    dialogs.ts
-  styles/
-    style.css
+The earlier animation notes also listed the menu-opening effect and the timer-button hover change. These are separate UI polish items, not US 3.5 requirements; their final manual check is still outstanding.
+
+### ✨ Cauldron effects (US 3.5, CSS only)
+
+All effects are pure CSS keyframes. JS only creates elements and removes them on `animationend` (no `setTimeout` / `setInterval`).
+
+| Effect                                                        | When                                  | Which reactions                                                               |
+| ------------------------------------------------------------- | ------------------------------------- | ----------------------------------------------------------------------------- |
+| Boiling bubbles on the surface (6, looping)                   | While the cauldron has ≥ 1 ingredient | — (always)                                                                    |
+| Burst of bubbles (9) + light purple smoke (5) + reaction name | A reaction fires                      | Any: Bubbling, Solar Frost (Medium); Pressure Spike, Deep Freeze (Hard); etc. |
+| Dark smoke (8) + orange bubbles (5) + reaction name           | Volatile Mix fires                    | Volatile Mix (Hard)                                                           |
+| Floating `+Ns` (gold, 15 / 10 / 5 by difficulty)              | Successful brew                       | —                                                                             |
+| Green glow, white potion                                      | Successful brew                       | —                                                                             |
+| Red explosion + screen shake                                  | Failed brew                           | —                                                                             |
+
+**How to check**
+
+- [ ] Add 1 ingredient → small bubbles keep popping on the potion surface
+- [ ] Pour out / new round → the bubbles stop (cauldron is empty)
+- [ ] Medium: Fairy Dust + Caustic Acid → the name «Bubbling» floats up, bubbles and smoke rise, all gone in ~3 s
+- [ ] Medium: Dragon Tears + Frost Lotus → same effect with «Solar Frost»
+- [ ] Hard: Phoenix Feather + Essence of the Void → dark smoke and orange bubbles, «Volatile Mix», −1 life
+- [ ] Trigger two reactions in a row → the names stack, not overlap
+- [ ] Brew a correct combo (see tables above) → `+Ns` floats up, potion turns white
+- [ ] Brew a wrong combo → red explosion and screen shake
+- [ ] Check at 375 px and 1920 px: effects stay above the cauldron and don't block clicks
+
+## 🚀 Run locally
+
+Requirements: Node.js 20+ and npm.
+
+```bash
+npm install
+npm run dev       # dev server (Vite)
+npm run build     # type check + production build
+npm run preview   # preview the build
+npm run lint      # ESLint
+npm run tsc       # type check
+npm run format:check  # Prettier check
 ```
 
-## TypeScript types
+## Game Rules
 
-```ts
-type Difficulty = "easy" | "medium" | "hard"; // Level 2+
-type GameStatus = "menu" | "playing" | "paused" | "game-over";
-
-interface IIngredient {
-  id: string;
-  name: string;
-  icon: string;
-  temperature: number;
-  density: number;
-  magicPower: number;
-}
-
-interface IRecipeRange {
-  min: number;
-  max: number;
-}
-
-interface IRecipe {
-  id: string;
-  name: string;
-  difficulty: Difficulty;
-  temperature: IRecipeRange;
-  density: IRecipeRange;
-  magicPower: IRecipeRange;
-}
-
-interface IGameState {
-  status: GameStatus;
-  score: number;
-  timeLeft: number;
-  lives: number;
-  activeRecipe: IRecipe;
-  cauldronIngredients: IIngredient[];
-  shelfStock: Record<string, number>; // ingredient id -> portions left
-  difficulty?: Difficulty; // Level 2+
-  lastReactionId?: string | null; // Level 3+
-}
-
-interface IReaction {
-  id: string;
-  name: string;
-  difficulty: Exclude<Difficulty, "easy">;
-  isActive: (ingredients: IIngredient[]) => boolean;
-  apply: (values: {
-    temperature: number;
-    density: number;
-    magicPower: number;
-  }) => {
-    temperature: number;
-    density: number;
-    magicPower: number;
-  };
-}
-```
-
-## Precondition 1
-
-| Story                                                                  | Points |
-| ---------------------------------------------------------------------- | :----: |
-| [Story 1](./precondition-user-story.md) Project Setup & Technical Base |   58   |
-| **Precondition 1 points**                                              | **58** |
-
-## Level 1 stories
-
-| Story                                                                                        | Points  |
-| -------------------------------------------------------------------------------------------- | :-----: |
-| [US 1.1](./user_story_1.1.md) Ingredient Shelf & Cauldron                                    |   35    |
-| [US 1.2](./user_story_1.2.md) Cauldron Parameter Bars                                        |   25    |
-| [US 1.3](./user_story_1.3.md) Recipe & Brewing Check                                         |   45    |
-| [US 1.4](./user_story_1.4.md) Timer & Game Over                                              |   30    |
-| [US 1.5](./user_story_1.5.md) Pause                                                          |   15    |
-| [US 1.6](./user_story_1.6.md) Leaderboard (Top-10)                                           |   20    |
-| Precondition 1 points                                                                        |   58    |
-| **Level 1 story points**                                                                     | **170** |
-| Common requirements (listed separately, see [common requirements](./common-requirements.md)) |   30    |
-| **Level 1 total score**                                                                      | **228** |
-
-## Level 2 stories
-
-| Story                                                   | Points  |
-| ------------------------------------------------------- | :-----: |
-| [US 2.1](./user_story_2.1.md) Difficulty Selection      |   25    |
-| [US 2.2](./user_story_2.2.md) Auto-save & Continue Game |   25    |
-| **Level 1 + Level 2 story points**                      | **220** |
-| **Level 2 total score**                                 | **278** |
-
-Chemical reactions need the difficulty selection from Level 2, because Easy / Medium / Hard use different reaction sets.
-
-## Level 3 stories
-
-| Story                                            | Points  |
-| ------------------------------------------------ | :-----: |
-| [US 3.1](./user_story_3.1.md) Drag & Drop        |   20    |
-| [US 3.2](./user_story_3.2.md) Ingredient Tooltip |   15    |
-| [US 3.3](./user_story_3.3.md) Chemical Reactions |   35    |
-| [US 3.4](./user_story_3.4.md) Pour Out           |   10    |
-| [US 3.5](./user_story_3.5.md) Visual Feedback    |   20    |
-| [US 3.6](./user_story_3.6.md) Keyboard Shortcuts |   15    |
-| **All story points**                             | **335** |
-| **Level 3 total score**                          | **393** |
-
-## Technical constraints
-
-- Use **TypeScript** only. Do not use frameworks, game engines or other libraries.
-- Do not use the `any` type.
-- Use **CSS**, **SVG**, **Canvas** or text symbols for icons and shapes.
-- Keep game rules in separate files from DOM rendering.
-- Make the game work in the latest Google Chrome on screens from **375 px** to **1920 px** wide.
-
-See [common requirements](./common-requirements.md) for the shared scoring rules, penalties and repository rules.
+- Each recipe defines required ranges for **temperature**, **density**, and **magic power**.
+- Every ingredient changes these parameters when added to the cauldron.
+- Your goal is to match all recipe ranges within the allowed tolerance.
+- A successful brew gives **score** and **bonus time**.
+- A failed brew costs **one life**.
+- When lives reach zero, time runs out, or no ingredients are left, the game ends.
+- The timer runs continuously unless the game is paused.
+- The **Top‑10 leaderboard** stores the best results.
+- You can continue an unfinished game if a valid save exists.

@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="96" height="96">
+  <defs>
+    <linearGradient id="glow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#b8eaff"/>
+      <stop offset="100%" stop-color="#2a3b5f"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f6d67a"/>
+      <stop offset="100%" stop-color="#c28b3b"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Outer circle -->
+  <circle cx="48" cy="48" r="44" fill="none" stroke="url(#gold)" stroke-width="2"/>
+
+  <!-- Mystic triangle -->
+  <path d="M48 14 L18 70 L78 70 Z" fill="none" stroke="url(#gold)" stroke-width="2.5"/>
+
+  <!-- Crescent moon -->
+  <path d="M48 18 a10 10 0 1 0 0 20 a7 7 0 1 1 0 -20" fill="#d9e6ff" opacity="0.9"/>
+
+  <!-- Pause pillars -->
+  <rect x="36" y="30" width="8" height="28" rx="2" fill="url(#glow)"/>
+  <rect x="52" y="30" width="8" height="28" rx="2" fill="url(#glow)"/>
+
+  <!-- Glow aura -->
+  <ellipse cx="48" cy="44" rx="18" ry="22" fill="#6fb6ff" opacity="0.15"/>
+
+  <!-- Eye symbol -->
+  <circle cx="48" cy="66" r="6" fill="#101522" stroke="url(#gold)" stroke-width="1.5"/>
+  <path d="M42 66 Q48 60 54 66 Q48 72 42 66 Z" fill="none" stroke="#9fdcff" stroke-width="1"/>
+  <circle cx="48" cy="66" r="2.2" fill="#9fdcff"/>
+
+  <!-- Side runes -->
+  <path d="M26 44 L30 40 L34 44 L30 48 Z" fill="none" stroke="#9fdcff" stroke-width="1"/>
+  <path d="M62 40 L68 40 L68 48 L62 48 Z M64 42 L66 42 M64 46 L66 46" fill="none" stroke="#9fdcff" stroke-width="1"/>
+
+  <!-- Bottom crystal -->
+  <path d="M48 74 L44 82 L48 88 L52 82 Z" fill="url(#glow)" stroke="#9fdcff" stroke-width="1"/>
+</svg>

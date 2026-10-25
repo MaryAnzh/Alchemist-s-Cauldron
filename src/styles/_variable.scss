@@ -1,0 +1,162 @@
+:root {
+  --font-title: 'Cinzel', serif;
+  --font-main: 'Inter', sans-serif;
+
+  --size-025: 2px;
+  --size-05: 4px;
+  --size-1: 8px;
+  --size-1-5: 12px;
+  --size-2: 16px;
+  --size-2-5: 20px;
+  --size-3: 24px;
+  --size-4: 32px;
+  --size-5: 40px;
+  --size-6: 48px;
+  --size-7: 56px;
+  --size-8: 64px;
+  --size-9: 72px;
+  --size-10: 80px;
+
+  --ui-cauldron-width: 400px;
+
+  --border-sm: 0.5px;
+  --border-md: 1px;
+  --border-lg: 2.5px;
+  --border-sm-neg: -0.5px;
+  --border-md-neg: -1px;
+  --border-lg-neg: -2.5px;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-round: 50%;
+
+  --weight-regular: 300;
+  --weight-bold: 600;
+
+  --white: #fff;
+  --black: #111;
+
+  /* main bg */
+  --color-bg-night: #0a0d14;
+  /* cards bg */
+  --color-parchment: #f4ebd0;
+  --color-parchment-dark: #e3d3ab;
+  --color-bg-light: #c2a882;
+  --color-bg-light-2: #9e875e;
+  --color-bg-light-3: rgba(194, 168, 130, 0.5);
+
+  /* font color */
+  --color-text-light: #f0f2f5;
+  --color-text-dark: #2c221e;
+  --color-text-muted: #8c9ba5;
+
+  /* accent */
+  --color-accent: #7b2cbf;
+  --color-accent-hover: #9d4edd;
+  --color-success: #2d6a4f;
+
+  /* state */
+  --color-warning: #ffb703;
+  --color-error: #dda4a9;
+  --color-info: #219ebc;
+
+  /* liquids  */
+  --color-liquid-default: #4a90e2;
+  --color-liquid-healing: #2d6a4f;
+  --color-liquid-explosion: #ff5722;
+  --color-liquid-magic: #9d4edd;
+
+  --color-burnt-text-alt: #4a2f1f;
+  --color-burnt-value: #9c7b56;
+
+  --color-table-text: #2b1f14;
+  --color-table-line: #5a4632;
+  --color-table-head: #1f140c;
+  --color-table-head-text: #bda482;
+
+  /* highlight */
+  --glow-accent: 0 0 12px rgba(123, 44, 191, 0.6);
+  --glow-success: 0 0 12px rgba(45, 106, 79, 0.6);
+  --glow-error: 0 0 12px rgba(230, 57, 70, 0.6);
+
+  /* gradients */
+  --gradient-accent: linear-gradient(135deg, #7b2cbf 0%, #9d4edd 100%);
+  --gradient-gold-1:
+    linear-gradient(var(--black), var(--black)),
+    linear-gradient(183deg, #997938, #50401f, #856728, #fbf5b7, #aa771c);
+  --gradient-gold-2:
+    linear-gradient(var(--black), var(--black)),
+    linear-gradient(214deg, #997938, #c4b515, #50401f, #856728, #aaa143, #776443);
+  --gradient-dark: linear-gradient(135deg, #0a0d14 0%, #1e222b 100%);
+  --gradient-magic: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(180, 200, 255, 0.45) 12%,
+    rgba(120, 140, 200, 0.25) 28%,
+    rgba(60, 70, 120, 0.35) 45%,
+    rgba(180, 200, 255, 0.45) 65%,
+    rgba(0, 0, 0, 0.8) 100%
+  );
+  --game-over-text: linear-gradient(180deg, #9fffa8 0%, #4cff5a 60%, #1a3f1d 100%);
+
+  --portal-bg: rgba(0, 0, 0, 0.4);
+
+  /* DARK button*/
+  --btn-dark-bg: #1e222b;
+  --btn-dark-text: #f0f2f5;
+  --btn-dark-border: #2e3644;
+
+  /* LIGHT button */
+  --btn-light-bg: #f4ebd0;
+  --btn-light-text: #2c221e;
+  --btn-light-border: #d4c399;
+
+  /* Ghost button */
+  --btn-ghost-bg: transparent;
+  --btn-ghost-text: #f0f2f5;
+  --btn-ghost-hover: rgba(255, 255, 255, 0.08);
+
+  --btn-large-padding: 16px 24px;
+  --btn-medium-padding: 10px 20px;
+  --btn-small-padding: 8px 16px;
+
+  --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.6);
+  --shadow-dialog: 0 12px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(123, 44, 191, 0.15);
+  --shadow-btn: 0 4px 12px rgba(0, 0, 0, 0.4);
+
+  --input-bg: #090909;
+  --input-bg-focus: #252222;
+  --input-placeholder: #b6a479;
+  --input-text-color: #dbd1b9;
+
+  /*12px*/
+  --font-size-xsm: 12px;
+  /* 14px */
+  --font-size-sm: 0.875rem;
+  /* 16px */
+  --font-size-md: 1rem;
+  /*24px subtitles*/
+  --font-size-lg: 1.5rem;
+  /* section titles 32px */
+  --font-size-xl: 2rem;
+  /* 40px main titles */
+  --font-size-xxl: 3rem;
+
+  --heading-x-sm: 20px;
+  --heading-sm: 24px;
+  --heading-md: 32px;
+  --heading-lg: 48px;
+
+  --dialog-width-sm: 360px;
+  --dialog-width-md: 500px;
+  --dialog-width-lg: 760px;
+  --dialog-width-xlg: 1024px;
+
+  --scrollbar-border-color: #5a4632;
+  --scrollbar-bg: #b89c74;
+
+  --scrollbar-border-color-2: #3a2a1a --dropdown-width: 260px;
+
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+}

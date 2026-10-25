@@ -1,0 +1,117 @@
+$menu-width: 240px;
+
+.app-menu {
+  position: relative;
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+
+  &_dropdown {
+    position: absolute;
+    left: 50%;
+    width: $menu-width;
+    height: 0;
+    padding: var(--size-3);
+
+    display: flex;
+    flex-direction: column;
+
+    border-radius: var(--radius-md);
+    background-color: var(--color-bg-light);
+
+    opacity: 0;
+
+    overflow: hidden;
+
+    transform: translateX(-50%) scaleY(0);
+    pointer-events: none;
+
+    transition:
+      opacity 0.25s ease,
+      transform 0.25s ease;
+
+    &_open {
+      opacity: 1;
+      pointer-events: auto;
+      height: fit-content;
+
+      transform: translateX(-50%) scaleY(1);
+    }
+
+    &_top {
+      bottom: 117%;
+      transform-origin: bottom center;
+    }
+
+    &_bottom {
+      top: 117%;
+      transform-origin: top center;
+    }
+
+    &_item {
+      width: 100%;
+
+      padding: var(--size-1) 0;
+
+      color: var(--color-burnt-text-alt);
+
+      font-size: var(--font-size-md);
+      font-family: var(--font-title);
+
+      border-bottom: 1px solid var(--color-table-line);
+
+      cursor: pointer;
+
+      transition: color 0.25s ease;
+
+      &:hover {
+        color: var(--color-bg-night);
+      }
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      &_disabled {
+        pointer-events: none;
+        color: var(--color-table-line);
+        text-decoration: line-through;
+      }
+
+      &_radios {
+        display: flex;
+        gap: var(--size-1);
+        align-items: center;
+        color: var(--color-bg-night);
+        justify-content: space-between;
+
+        &_radio {
+          width: var(--size-2);
+          height: var(--size-2);
+          border-radius: 50%;
+          border: var(--border-md) solid var(--color-bg-night);
+          padding: var(--size-05);
+          display: flex;
+          &:nth-of-type(1) {
+            transform: scale(0.9);
+          }
+          &:nth-of-type(3) {
+            transform: scale(1.1);
+          }
+
+          span {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+          }
+
+          &_selected {
+            background: var(--color-bg-night);
+          }
+        }
+      }
+    }
+  }
+}

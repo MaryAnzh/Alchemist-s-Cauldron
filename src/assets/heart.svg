@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" overflow="visible" viewBox="0 0 204.2 157.3">
+  <defs>
+    <radialGradient id="heartBody" cx="50%" cy="38%" r="70%">
+      <stop offset="0" stop-color="#ff5a3c"/>
+      <stop offset="0.55" stop-color="#d4161c"/>
+      <stop offset="1" stop-color="#7d0610"/>
+    </radialGradient>
+    <linearGradient id="heartRim" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffd27a"/>
+      <stop offset="0.5" stop-color="#b8731f"/>
+      <stop offset="1" stop-color="#6b3a0c"/>
+    </linearGradient>
+    <linearGradient id="heartShine" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff" stop-opacity="0.85"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#heartBody)" stroke="url(#heartRim)" stroke-width="6" stroke-linejoin="round"
+    d="M201.9,43.4C196.3,24.8,177.8,3.9,150.4,2c-1.3-0.1-2.6-0.1-3.9-0.1c-17.1,0-33.2,7.5-44.4,20.7C94.7,13.7,80.5,0.7,59.3,0c-0.6,0-1.2,0-1.8,0c-28,0-49,21.9-55.4,43.5c-5.7,19.7,1.3,36.4,4.7,44.4c10.9,25.8,37,45.1,90.1,66.8l3.3,2.6l3.9-1.4c0.9-0.3,1.7-0.6,2.3-1c53.5-21.8,79.8-41.2,90.7-67C200.6,79.8,207.8,62.8,201.9,43.4z"/>
+  <path fill="none" stroke="#ff8a6a" stroke-opacity="0.55" stroke-width="3"
+    d="M30,92C18,76,12,62,16,46C22,26,38,14,57,14"/>
+  <path fill="url(#heartShine)"
+    d="M30,40C34,26,46,18,60,19C74,20,82,30,84,40C70,32,48,32,30,40Z"/>
+  <ellipse cx="156" cy="34" rx="14" ry="8" fill="#fff" fill-opacity="0.35" transform="rotate(-25 156 34)"/>
+</svg>
