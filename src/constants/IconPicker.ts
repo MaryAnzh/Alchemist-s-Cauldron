@@ -22,6 +22,8 @@ import parchment_horizontal_2 from '../assets/parchment_3.svg?raw';
 import pause from '../assets/pause.svg?raw';
 import phoenix_feather from '../assets/phoenix_feather.svg?raw';
 import place_1 from '../assets/place_1.svg?raw';
+import place_2 from '../assets/place_2.svg?raw';
+import place_3 from '../assets/place_3.svg?raw';
 import rangeStop from '../assets/range-stop.svg?raw';
 import score from '../assets/score.svg?raw';
 import settings from '../assets/settings.svg?raw';
@@ -57,6 +59,8 @@ export const ICON_PICKER = {
   pause,
   phoenix_feather,
   place_1,
+  place_2,
+  place_3,
   rangeStop,
   score,
   settings,

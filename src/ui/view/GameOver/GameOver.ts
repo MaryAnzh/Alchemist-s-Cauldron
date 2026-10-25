@@ -17,6 +17,7 @@ type GameOverProps = ParentNodeType & {
 export class GameOver extends Component {
   private name = '';
   private inputNode: Input | null = null;
+  private submit!: Button;
 
   constructor({ parentNode, score, isRecord, reason }: GameOverProps) {
     super({
@@ -70,7 +71,7 @@ export class GameOver extends Component {
     }
 
     if (isRecord) {
-      new Button({
+      this.submit = new Button({
         parentNode: wrap.node,
         className: 'app-game-over_wrap_back',
         text: 'SUBMIT SCORE',
@@ -80,6 +81,8 @@ export class GameOver extends Component {
             this.inputNode?.setError('Enter valid name');
             return;
           }
+          this.submit.setDisabled(true);
+          this.inputNode?.setDisabled(true);
           store.submitScore(this.name);
         },
         color: 'magic',

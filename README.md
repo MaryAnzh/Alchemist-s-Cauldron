@@ -85,7 +85,7 @@ https://maryanzh.github.io/Alchemist-s-Cauldron/
 - Timer: red and pulsing when less than 15 seconds remain, shrinking time bar next to `MM:SS`
 - Parameter bars: green glow when the current value is inside the recipe range
 
-### Level 3 (in progress)
+### Level 3 (Done)
 
 - **US 3.4 Pour Out** — button under the cauldron, costs 10 s, disabled when the cauldron is empty
 - **US 3.1 Drag & Drop** — ingredient cards are draggable into the cauldron (`dragstart` / `dragover` / `dragleave` / `drop`), the cauldron glows on drag-over, drops are ignored when paused / cauldron full / stock `0`, click still works
@@ -112,13 +112,7 @@ https://maryanzh.github.io/Alchemist-s-Cauldron/
 - Update leaderboard icons (2nd and 3rd place)
 - Responsive layout
 
----
-
-## 🚧 In Progress
-
-- Final manual check of Level 3 (see test combinations below), PR and deploy
-
----
+- Final manual check of Level 3
 
 ## 📌 To Do — Level 3 (115 points)
 

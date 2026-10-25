@@ -1,5 +1,10 @@
 import { EASY, HARD, MEDIUM } from '@constants';
-import type { ParentNodeType, LeaderboardStorageType, GameDifficultType } from '@types';
+import type {
+  ParentNodeType,
+  LeaderboardStorageType,
+  GameDifficultType,
+  IconPickerType,
+} from '@types';
 import { Button, Component, Icon } from '@ui';
 import { formatDate } from '@utils';
 
@@ -100,7 +105,7 @@ export class Leaderboard extends Component {
         if (row.rank <= 2) {
           new Icon({
             parentNode: iconWrap.node,
-            icon: 'place_1',
+            icon: `place_${row.rank + 1}` as IconPickerType,
             size: 'md',
           });
         }

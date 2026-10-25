@@ -141,15 +141,15 @@
 
 @media (max-width: $tablet) {
   .app-leaderboard {
-    padding: var(--size-1);
+    padding: 0;
 
     &_wrap {
       gap: var(--size-2);
-      padding: var(--size-1);
-      margin: var(--size-2);
+      padding: var(--size-2);
+      margin: var(--size-1);
 
       &:before {
-        inset: calc(var(--size-2) * -1);
+        inset: calc(var(--size-1) * -1);
       }
 
       &_title {
@@ -165,7 +165,7 @@
         }
         td {
           border-bottom: 1.5px solid var(--color-table-line);
-          padding: var(--size-1) var(--size-05);
+          padding: var(--size-1);
         }
 
         tr {
@@ -181,7 +181,7 @@
         border-top-left-radius: var(--radius-md);
         border-top-right-radius: var(--radius-md);
         &_head {
-          font-size: var(--font-size-sm);
+          font-size: var(--font-size-xsm);
         }
 
         &_body {
@@ -231,12 +231,6 @@
         }
       }
     }
-  }
-}
-
-@media (max-width: $laptop) {
-  .app-leaderboard {
-    padding: var(--size-6);
   }
 }
 
