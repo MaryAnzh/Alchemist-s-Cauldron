@@ -9,11 +9,14 @@ import type {
   GameDifficultType,
   LeaderboardStorageType,
   GameOverReasonType,
+  IReaction,
 } from '@types';
 
 import { GameTimer } from './logic/timer';
 import { storage } from './storage/Storage';
 import { ValidateLeaderboard, ValidateState } from './logic/validate';
+
+import { evaluateReactions, getReactionName } from './logic/reactions';
 
 class Store {
   private events = new EventEmitter<GameEventsPayload>();
@@ -166,6 +169,11 @@ class Store {
   }
 
   public newRound() {
+    if (this.state.shelfIngredients.every((ing) => !ing.count)) {
+      this.gameOver('ingredients');
+      return;
+    }
+
     const newEnd = Date.now() + this.state.timeLeft * 1000;
     this.update({ endTimestamp: newEnd });
 
@@ -270,18 +278,22 @@ class Store {
   addIngredientToCauldron(id: string) {
     const stock = this.state.shelfIngredients.find((ing) => ing.id === id);
     if (!stock || !stock.count) return;
+    if (this.state.cauldronIngredients.length >= this.state.maxIngredients) return;
+
     stock.count = stock.count - 1;
 
-    const values = {
-      temperature: stock.temperature + this.state.cauldronValues.temperature,
-      density: stock.density + this.state.cauldronValues.density,
-      magicPower: stock.magicPower + this.state.cauldronValues.magicPower,
-    };
     const ingredients = [...this.state.cauldronIngredients, stock];
+    const { values, active, fired } = evaluateReactions(
+      ingredients,
+      this.state.enabledReactionIds,
+      this.state.activeReactions,
+    );
 
     this.update({
       cauldronIngredients: ingredients,
       cauldronValues: values,
+      activeReactions: active,
+      lastReactionId: fired.at(-1)?.id ?? this.state.lastReactionId,
     });
     this.saveGame();
 
@@ -291,9 +303,69 @@ class Store {
     }
     this.emit(C.GAME_EVENTS.INGREDIENT_IN_CAULDRON, ingredients.length);
     this.emit(C.GAME_EVENTS.INGREDIENT_COUNT, { id, count: stock.count });
+
+    this.applyReactionEffects(fired);
+  }
+
+  private applyReactionEffects(fired: IReaction[]) {
+    if (!fired.length) return;
+
+    fired.forEach(({ id }) =>
+      this.emit(C.GAME_EVENTS.REACTION_FIRED, { id, name: getReactionName(id) }),
+    );
+
+    const lifeLoss = fired.reduce((sum, r) => sum - (r.effect?.lifeDelta ?? 0), 0);
+    const timeDelta = fired.reduce((sum, r) => sum + (r.effect?.timeDelta ?? 0), 0);
+    const shouldClear = fired.some((r) => r.effect?.clearCauldron);
+
+    for (let i = 0; i < lifeLoss; i++) this.loseLife();
+    if (this.state.lives <= 0) {
+      this.gameOver('lives');
+      return;
+    }
+
+    if (shouldClear) {
+      this.clearCauldron();
+      this.emit(C.GAME_EVENTS.SHELF_BLOCK, { isBlock: false });
+      this.emit(C.GAME_EVENTS.INGREDIENT_IN_CAULDRON, 0);
+    }
+
+    if (timeDelta) this.shiftTime(timeDelta);
+    this.saveGame();
+  }
+
+  // Сдвигает таймер на delta секунд; false, если время вышло
+  private shiftTime(delta: number): boolean {
+    const remaining = Math.max(0, Math.floor((this.state.endTimestamp - Date.now()) / 1000));
+    const timeLeft = remaining + delta;
+
+    if (timeLeft <= 0) {
+      this.update({ timeLeft: 0 });
+      this.emit(C.GAME_EVENTS.TIMER_TICK, 0);
+      this.gameOver('time');
+      return false;
+    }
+
+    this.timer.stop();
+    this.update({ timeLeft, endTimestamp: Date.now() + timeLeft * 1000 });
+    this.emit(C.GAME_EVENTS.TIMER_TICK, timeLeft);
+    this.timer.start(
+      timeLeft,
+      (left) => {
+        const timeChanged = left !== this.state.timeLeft;
+        this.update({ timeLeft: left });
+        this.emit(C.GAME_EVENTS.TIMER_TICK, left);
+        if (timeChanged) this.saveGame();
+      },
+      () => this.gameOver(),
+    );
+    this.saveGame();
+    return true;
   }
 
   brewCheck() {
+    if (this.state.status !== C.PLAYING || !this.state.cauldronIngredients.length) return;
+
     const recipe = this.state.currentRecipe;
     if (!recipe) return;
 
@@ -356,9 +428,19 @@ class Store {
     this.update({
       cauldronIngredients: [],
       cauldronValues: { temperature: 0, density: 0, magicPower: 0 },
+      activeReactions: [],
     });
-
     this.emit(C.GAME_EVENTS.CAULDRON_STATE_CHANGED, { values: this.state.cauldronValues });
+    this.emit(C.GAME_EVENTS.INGREDIENT_IN_CAULDRON, 0);
+  }
+
+  pourOut() {
+    if (this.state.status !== C.PLAYING || !this.state.cauldronIngredients.length) return;
+
+    this.clearCauldron();
+    this.emit(C.GAME_EVENTS.SHELF_BLOCK, { isBlock: false });
+    this.emit(C.GAME_EVENTS.INGREDIENT_IN_CAULDRON, 0);
+    this.shiftTime(-C.POUR_OUT_PENALTY);
   }
 
   saveToStorage(key: StorageKeysType, state: GameState | LeaderboardStorageType): void {

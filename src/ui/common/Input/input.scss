@@ -62,21 +62,24 @@
   /* ERROR MESSAGE */
   &_error {
     position: absolute;
-    bottom: 0;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-top: var(--size-05);
+    text-align: center;
     color: var(--color-error);
     font-size: var(--font-size-sm);
     font-weight: var(--weight-regular);
-    min-height: var(--size-2);
     opacity: 0;
-    transform: translateY(-8px);
+    transform: translateY(-4px);
+    pointer-events: none;
     transition:
       opacity 0.2s ease,
       transform 0.2s ease;
 
-    /* visible */
     &.visible {
       opacity: 1;
-      transform: translateY(var(--size-3));
+      transform: translateY(0);
     }
   }
 }

@@ -28,3 +28,19 @@ export type cauldronValuesType = Pick<IngredientType, 'temperature' | 'density' 
 export type ReactionId = KeysTemplateType<typeof REACTION_IDS>;
 
 export type GameOverReasonType = 'time' | 'lives' | 'ingredients';
+
+export type ReactionType = 'ingredients' | 'stats' | 'mix';
+
+export type ReactionEffect = {
+  timeDelta?: number;
+  lifeDelta?: number;
+  clearCauldron?: boolean;
+};
+
+export interface IReaction {
+  id: ReactionId;
+  type: ReactionType;
+  isActive: (ingredients: IngredientType[], totals: cauldronValuesType) => boolean;
+  applyValues: (values: cauldronValuesType) => cauldronValuesType;
+  effect?: ReactionEffect;
+}

@@ -80,6 +80,26 @@ https://maryanzh.github.io/Alchemist-s-Cauldron/
 - Ingredient stock no longer leaks between games (shelf objects are copied)
 - Pre-push hook checks `tsc`, ESLint, Prettier and build and fails on any error
 
+### Level 1 visuals (US 1.2, US 1.4)
+
+- Timer: red and pulsing when less than 15 seconds remain, shrinking time bar next to `MM:SS`
+- Parameter bars: green glow when the current value is inside the recipe range
+
+### Level 3 (in progress)
+
+- **US 3.4 Pour Out** — button under the cauldron, costs 10 s, disabled when the cauldron is empty
+- **US 3.1 Drag & Drop** — ingredient cards are draggable into the cauldron (`dragstart` / `dragover` / `dragleave` / `drop`), the cauldron glows on drag-over, drops are ignored when paused / cauldron full / stock `0`, click still works
+- Ingredient cards: gold glow (box-shadow) on hover and keyboard focus
+- **US 3.2 Ingredient Tooltip** — on Hard the card shows only icon and name, values (`+` / `−`) are shown in a tooltip that opens left / up near screen edges and is hidden on pause
+- New SVG icons: ingredient bottles in the Dragon Tears style (Frost Lotus, Mandrake Root, Caustic Acid, Essence of the Void, Phoenix Feather, Toad Slime) and Temperature / Magic Power icons on cards and range bars
+- **US 3.6 Keyboard Shortcuts** — one handler, only in the `playing` state: `1–8` add ingredient, `B` brew, `X` pour out, `P` / `Esc` pause; ignored in text fields; hints in Rules and in the pause dialog
+- Cauldron SVG split into layers (back wall / potion / front); potion appears when the cauldron has ingredients
+- **US 3.3 Chemical Reactions** — 15 reactions in `store/logic/reactions.ts` (typed `IReaction[]`), `evaluateReactions` recalculates values from the ingredient list and returns only reactions that went `inactive → active`; one-time effects (time, life, clear cauldron) are applied by the store; layering `constants → types → logic` keeps imports free of cycles
+- **US 3.5 Visual Feedback** — success: white potion + glow; fail: explosion + screen shake; ingredient icons float in the cauldron; recipe fades out and the new one fades in; all CSS keyframes
+- Round result dialog removed: after Brew the next round starts at once, feedback is shown by animations
+- Brew is disabled while the cauldron is empty; range arrows start at `0`
+- Game Over: **Play again** button (new game with a new random stock), validation error under the name input no longer overlaps the field
+
 ### Fixes & Improvements
 
 - Timer fix
@@ -96,21 +116,86 @@ https://maryanzh.github.io/Alchemist-s-Cauldron/
 
 ## 🚧 In Progress
 
-- Add red/green color for incorrect ranges
-- Add red color for timer
+- Final manual check of Level 3 (see test combinations below), PR and deploy
 
 ---
 
-## 📌 To Do
+## 📌 To Do — Level 3 (115 points)
 
-### US 3.1 — US 3.6
+- [x] **US 3.1 Drag & Drop (20)** — HTML5 drag events (`dragstart`, `dragover`, `dragleave`, `drop`), drop-zone highlight, ignore drop when paused / cauldron full / stock `0`, click still works
+- [x] **US 3.2 Ingredient Tooltip (15)** — cards show icon and name only; tooltip with Temperature / Density / Magic Power (`+` / `−`), opens left / up near screen edges, hidden on pause
+- [x] **US 3.3 Chemical Reactions (35)** — typed `IReaction[]` (15 reactions), Easy 0 / Medium 2 / Hard 3, fire only on `inactive → active`, recalculate values from the ingredient list every time
+- [x] **US 3.4 Pour Out (10)** — button clears the cauldron, costs 10 s, no life lost, disabled when empty, ingredients are not returned
+- [x] **US 3.5 Visual Feedback (20)** — white potion + glow on success, explosion + short screen shake on fail, floating ingredient icons in the cauldron, smooth range arrows, recipe fade out / in, CSS-only animations (no `setInterval` / `setTimeout`)
+- [x] **US 3.6 Keyboard Shortcuts (15)** — one handler gated by `playing` state, pause / resume, ignored in text fields and on menu / pause / game-over screens
+- [x] Level 3 settings: 150 s and 3 lives (Medium / Hard, see the settings table in the task)
 
-- Drag & drop
-- Tooltip
-- Reactions
-- Pour Out
-- Keyboard shortcuts
-- Animations
+---
+
+## 🧪 Test combinations (manual check)
+
+> For manual testing only. Combos were calculated by script with the real tolerance (Easy ±12, Medium ±8, Hard ±5), max ingredients (4 / 4 / 5) and enabled reactions of each level. Combos that fire Volatile Mix are excluded. The shelf is a random subset of ingredients, so use the 2nd combo if the 1st ingredient is not on the shelf. Mark `[x]` after a check.
+
+### Easy (no reactions)
+
+- [ ] **Moon Mist** — Dragon Tears; or Dragon Tears + Dragon Tears
+- [ ] **Root Bloom** — Mandrake Root; or Caustic Acid
+- [ ] **Frost Steam** — Fairy Dust; or Mandrake Root
+- [ ] **Quiet Swirl** — Fairy Dust + Frost Lotus; or Frost Lotus + Frost Lotus
+- [ ] **Bright Dew** — Dragon Tears + Mandrake Root; or Dragon Tears + Caustic Acid
+- [ ] **Snow Dust** — Frost Lotus + Mandrake Root; or Frost Lotus + Caustic Acid
+
+### Medium (reactions: Bubbling, Solar Frost)
+
+- [ ] **Acid Spark** — Caustic Acid; or Dragon Tears + Caustic Acid
+- [ ] **Void Ember** — Dragon Tears + Essence of the Void; or Fairy Dust + Essence of the Void
+- [ ] **Heavy Acid** — Fairy Dust + Mandrake Root; or Mandrake Root + Caustic Acid
+- [ ] **Frost Acid** — Fairy Dust + Frost Lotus; or Frost Lotus + Caustic Acid
+- [ ] **Dusty Void** — Dragon Tears + Essence of the Void; or Fairy Dust + Essence of the Void
+- [ ] **Dragon Void** — Dragon Tears ×2 + Essence of the Void; or Dragon Tears + Fairy Dust + Essence of the Void
+- [ ] **Rooted Night** — Mandrake Root + Essence of the Void; or Dragon Tears + Mandrake Root + Essence of the Void
+
+### Hard (reactions: Volatile Mix, Pressure Spike, Deep Freeze)
+
+- [ ] **Phoenix Pulse** — Fairy Dust + Phoenix Feather; or Caustic Acid + Phoenix Feather
+- [ ] **Slime Crown** — Mandrake Root ×2; or Mandrake Root + Toad Slime
+- [ ] **Void Flame** — Dragon Tears ×2 + Essence of the Void; or Dragon Tears + Frost Lotus ×2 + Phoenix Feather
+- [ ] **Acid Bog** — Fairy Dust + Toad Slime; or Mandrake Root + Caustic Acid
+- [ ] **Frozen Ash** — Frost Lotus + Mandrake Root + Phoenix Feather
+- [ ] **Triple Eclipse** — Fairy Dust + Mandrake Root + Essence of the Void; or Mandrake Root + Caustic Acid + Essence of the Void
+- [ ] **Ember Soup** — Dragon Tears ×2 + Fairy Dust; or Dragon Tears ×2 + Caustic Acid
+
+### 🧬 Reactions
+
+15 reactions exist in `src/store/logic/reactions.ts`. Each difficulty enables only its own subset: **Easy** — none, **Medium** — Bubbling and Solar Frost, **Hard** — Volatile Mix, Pressure Spike and Deep Freeze. A reaction fires once, when it goes from inactive to active; values are always recalculated from the ingredient list.
+
+| Reaction          | Difficulty  | Condition                                               | Effect                                      |
+| ----------------- | ----------- | ------------------------------------------------------- | ------------------------------------------- |
+| Bubbling          | Medium      | Fairy Dust + Caustic Acid                               | Magic Power +50%, timer −10 s (once)        |
+| Solar Frost       | Medium      | Dragon Tears + Frost Lotus                              | Temperature becomes `0`, Density +20%       |
+| Volatile Mix      | Hard        | Phoenix Feather + Essence of the Void                   | −1 life, the cauldron is cleared (once)     |
+| Pressure Spike    | Hard        | Density ≥ 70                                            | Density is capped at `70`, Magic Power +10% |
+| Deep Freeze       | Hard        | Temperature ≤ −20                                       | Density +15%, Magic Power −15%              |
+| Rooted Steam      | not enabled | Mandrake Root + Toad Slime                              | Density +25%, Magic Power −10%              |
+| Ashen Bloom       | not enabled | Phoenix Feather + Fairy Dust                            | Temperature +10, Magic Power +25%           |
+| Annihilation      | not enabled | One ingredient with Temp > 15 and one with Temp < −15   | Temperature becomes `0`, Density ×2         |
+| Magma Flux        | not enabled | Temperature ≥ 60                                        | Magic Power +20%, Density −10%              |
+| Arcane Saturation | not enabled | Magic Power ≥ 80                                        | Magic Power capped at `80`, Temperature +5  |
+| Steam Burst       | not enabled | Dragon Tears + Caustic Acid and Temperature ≥ 35        | Temperature +10, timer −5 s (once)          |
+| Black Ice         | not enabled | Frost Lotus + Essence of the Void and Density ≤ 0       | Temperature −10, Magic Power +20%           |
+| Heavy Spark       | not enabled | Fairy Dust + Toad Slime and Density ≥ 40                | Density +20%, Magic Power +10%              |
+| Burning Root      | not enabled | Mandrake Root + Phoenix Feather and Temperature ≥ 40    | Temperature +15, Density −10%               |
+| Void Resonance    | not enabled | Essence of the Void + Dragon Tears and Magic Power ≥ 50 | Magic Power +30%, Temperature −5            |
+
+Visual effects of reactions are described in «Cauldron effects» below.
+
+### Reaction checks
+
+- [ ] Medium: Dragon Tears + Frost Lotus → Temperature `0`, Density +20% (Solar Frost)
+- [ ] Medium: Fairy Dust + Caustic Acid → Magic Power +50%, timer −10 s once (Bubbling)
+- [ ] Hard: Phoenix Feather + Essence of the Void → −1 life and the cauldron is cleared (Volatile Mix)
+- [ ] Easy: any pair → no reactions
+- [ ] Reload the page after a reaction → no second time / life penalty
 
 ---
 
@@ -119,6 +204,32 @@ https://maryanzh.github.io/Alchemist-s-Cauldron/
 - Range arrow animation
 - Hover: change timer button to pause button
 - Open menu animation
+
+### ✨ Cauldron effects (US 3.5, CSS only)
+
+All effects are pure CSS keyframes. JS only creates elements and removes them on `animationend` (no `setTimeout` / `setInterval`).
+
+| Effect                                                        | When                                  | Which reactions                                                               |
+| ------------------------------------------------------------- | ------------------------------------- | ----------------------------------------------------------------------------- |
+| Boiling bubbles on the surface (6, looping)                   | While the cauldron has ≥ 1 ingredient | — (always)                                                                    |
+| Burst of bubbles (9) + light purple smoke (5) + reaction name | A reaction fires                      | Any: Bubbling, Solar Frost (Medium); Pressure Spike, Deep Freeze (Hard); etc. |
+| Dark smoke (8) + orange bubbles (5) + reaction name           | Volatile Mix fires                    | Volatile Mix (Hard)                                                           |
+| Floating `+Ns` (gold, 15 / 10 / 5 by difficulty)              | Successful brew                       | —                                                                             |
+| Green glow, white potion                                      | Successful brew                       | —                                                                             |
+| Red explosion + screen shake                                  | Failed brew                           | —                                                                             |
+
+**How to check**
+
+- [ ] Add 1 ingredient → small bubbles keep popping on the potion surface
+- [ ] Pour out / new round → the bubbles stop (cauldron is empty)
+- [ ] Medium: Fairy Dust + Caustic Acid → the name «Bubbling» floats up, bubbles and smoke rise, all gone in ~3 s
+- [ ] Medium: Dragon Tears + Frost Lotus → same effect with «Solar Frost»
+- [ ] Hard: Phoenix Feather + Essence of the Void → dark smoke and orange bubbles, «Volatile Mix», −1 life
+- [ ] Trigger two reactions in a row → the names stack, not overlap
+- [ ] Brew a correct combo (see tables above) → `+Ns` floats up, potion turns white
+- [ ] Brew a wrong combo → red explosion and screen shake
+- [ ] Check at 375 px and 1920 px: effects stay above the cauldron and don't block clicks
+- [ ] OS setting «reduce motion» → no heavy motion
 
 ## 🚀 Run locally
 

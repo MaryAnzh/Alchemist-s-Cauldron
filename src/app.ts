@@ -1,17 +1,7 @@
 import { GAME_EVENTS, PAUSED, PLAYING } from '@constants';
 import { Game } from '@pages';
 import { store } from '@store';
-import {
-  Component,
-  Header,
-  Footer,
-  StartGame,
-  Portal,
-  Info,
-  Pause,
-  GameOver,
-  Leaderboard,
-} from '@ui';
+import { Component, Header, Footer, StartGame, Portal, Pause, GameOver, Leaderboard } from '@ui';
 import type { GameOverReasonType, LeaderboardStorageType, RecipeType } from '@types';
 import { Rules } from './ui/dialogs/Rules/Rules';
 
@@ -42,24 +32,9 @@ export class App extends Component {
       this.renderGameView();
     });
 
-    // ROUND OVER
-    store.subscribe(GAME_EVENTS.ROUND_OVER, ({ score, lives, time, variant }) => {
-      const handleClose = () => {
-        this.store.newRound();
-        this.portal.unmount();
-      };
-
-      const info = new Info({
-        parentNode: null,
-        score,
-        lives,
-        timeLeft: time,
-        variant,
-        onClose: handleClose,
-      });
-
-      this.portal.mount(info.node, info);
-      this.portal.onClose = handleClose;
+    // ROUND OVER: feedback is shown by the cauldron animation, the next round starts at once
+    store.subscribe(GAME_EVENTS.ROUND_OVER, () => {
+      this.store.newRound();
     });
 
     // PAUSE → local dialog
@@ -94,20 +69,8 @@ export class App extends Component {
 
     window.addEventListener('pagehide', () => this.store.saveGame());
 
-    // Space pause
-    document.addEventListener('keydown', (e) => {
-      if (e.code === 'Space') {
-        e.preventDefault();
-
-        const { status } = this.store.getState();
-
-        if (status === PLAYING) {
-          this.store.pauseGame();
-        } else if (status === PAUSED) {
-          this.store.resumeGame();
-        }
-      }
-    });
+    // Keyboard shortcuts: one handler, active only while playing
+    document.addEventListener('keydown', (e) => this.handleHotkeys(e));
   }
 
   private setView(view: Component) {
@@ -266,4 +229,38 @@ export class App extends Component {
   public handleStartGame = () => {
     this.store.startNewGame();
   };
+
+  private handleHotkeys(e: KeyboardEvent) {
+    if (this.store.getState().status !== PLAYING) return;
+    if (e.repeat || e.ctrlKey || e.metaKey || e.altKey) return;
+
+    const target = e.target instanceof Element ? e.target : null;
+    if (target?.closest('input, textarea, select, [contenteditable="true"]')) return;
+
+    if (target?.closest('button, a') && (e.code === 'Space' || e.code === 'Enter')) return;
+
+    const digit = /^(?:Digit|Numpad)([1-9])$/.exec(e.code);
+    if (digit) {
+      const ingredient = this.store.getState().shelfIngredients[Number(digit[1]) - 1];
+      if (ingredient) this.store.addIngredientToCauldron(ingredient.id);
+      e.preventDefault();
+      return;
+    }
+
+    switch (e.code) {
+      case 'KeyB':
+        this.store.brewCheck();
+        break;
+      case 'KeyX':
+        this.store.pourOut();
+        break;
+      case 'KeyP':
+      case 'Escape':
+        this.store.pauseGame();
+        break;
+      default:
+        return;
+    }
+    e.preventDefault();
+  }
 }

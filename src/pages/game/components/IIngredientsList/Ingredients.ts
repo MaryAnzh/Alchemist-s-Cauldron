@@ -1,9 +1,11 @@
-import { GAME_EVENTS } from '@constants';
+import { GAME_EVENTS, PLAYING } from '@constants';
 import { store } from '@store';
 import type { IconPickerType, IngredientType, ParentNodeType } from '@types';
 import { Button, Component, Icon } from '@ui';
 
 type IngredientsProps = ParentNodeType & { ingredients: IngredientType[] };
+
+const fmt = (n: number) => (n > 0 ? `+${n}` : n < 0 ? `−${Math.abs(n)}` : '0');
 
 export class IngredientsList extends Component {
   ingredients: IngredientType[] = [];
@@ -49,10 +51,18 @@ export class IngredientsList extends Component {
       });
     });
 
+    store.subscribe(GAME_EVENTS.PAUSE, () => this.node.classList.add('is-paused'));
+    store.subscribe(GAME_EVENTS.RESUME, () => this.node.classList.remove('is-paused'));
+
     this.render();
   }
 
   render() {
+    const isHard = store.getState().difficulty === 'hard';
+    if (isHard) {
+      this.node.classList.add('app-ingredients_is-hard');
+    }
+
     const wrap = new Component({
       parentNode: this.node,
       tagName: 'div',
@@ -77,6 +87,17 @@ export class IngredientsList extends Component {
         className: 'app-ingredients_list_item',
       });
       card.node.onclick = () => store.addIngredientToCauldron(id);
+      card.node.draggable = true;
+      card.node.addEventListener('dragstart', (e) => {
+        if (store.getState().status !== PLAYING) {
+          e.preventDefault();
+          return;
+        }
+        e.dataTransfer?.setData('text/plain', id);
+        if (e.dataTransfer) e.dataTransfer.effectAllowed = 'copy';
+        card.node.classList.add('is-dragging');
+      });
+      card.node.addEventListener('dragend', () => card.node.classList.remove('is-dragging'));
 
       const ingIcon = new Icon({
         parentNode: card.node,
@@ -92,27 +113,85 @@ export class IngredientsList extends Component {
         content: name,
       });
 
-      const propsWrap = new Component({
-        parentNode: card.node,
-        className: 'app-ingredients_list_item_props',
-        tagName: 'span',
-      });
-      [
-        { value: temperature, icon: 'symbol' },
-        { value: density, icon: 'drop' },
-        { value: magicPower, icon: 'symbol' },
-      ].forEach(({ value, icon }) => {
-        new Icon({
-          parentNode: propsWrap.node,
-          icon: icon as IconPickerType,
-          className: 'app-ingredients_list_item_props_icon',
+      if (!isHard) {
+        const propsWrap = new Component({
+          parentNode: card.node,
+          className: 'app-ingredients_list_item_props',
+          tagName: 'span',
         });
-        new Component({
-          parentNode: propsWrap.node,
-          className: 'app-ingredients_list_item_props_value',
-          content: value.toString(),
+        [
+          { value: temperature, icon: 'temperature' },
+          { value: density, icon: 'density' },
+          { value: magicPower, icon: 'magic' },
+        ].forEach(({ value, icon }) => {
+          new Icon({
+            parentNode: propsWrap.node,
+            icon: icon as IconPickerType,
+            className: 'app-ingredients_list_item_props_icon',
+          });
+          new Component({
+            parentNode: propsWrap.node,
+            className: 'app-ingredients_list_item_props_value',
+            content: value.toString(),
+          });
         });
-      });
+      } else {
+        const tooltip = new Component({
+          parentNode: card.node,
+          tagName: 'span',
+          className: 'app-ingredients_tooltip',
+          attrs: { role: 'tooltip' },
+        });
+        (
+          [
+            ['Temperature', temperature],
+            ['Density', density],
+            ['Magic Power', magicPower],
+          ] as const
+        ).forEach(([label, value]) => {
+          new Component({
+            parentNode: tooltip.node,
+            tagName: 'span',
+            className: 'app-ingredients_tooltip_row',
+            content: `${label}: ${fmt(value)}`,
+          });
+        });
+
+        const placeTooltip = () => {
+          const gap = 8;
+          const cardRect = card.node.getBoundingClientRect();
+          const { width, height } = tooltip.node.getBoundingClientRect();
+          const { innerWidth: vw, innerHeight: vh } = window;
+          const clamp = (v: number, max: number) => Math.max(gap, Math.min(v, max - gap));
+
+          const flipLeft = cardRect.right + gap + width > vw - gap;
+          const flipUp = cardRect.top + cardRect.height / 2 + height / 2 > vh - gap;
+          tooltip.node.classList.toggle('app-ingredients_tooltip--left', flipLeft);
+          tooltip.node.classList.toggle('app-ingredients_tooltip--up', flipUp);
+
+          let left = flipLeft ? cardRect.left - gap - width : cardRect.right + gap;
+          const sideFits = left >= gap;
+          let top = flipUp ? cardRect.bottom - height : cardRect.top;
+
+          if (!sideFits) {
+            left = cardRect.left;
+            top = cardRect.bottom + gap;
+            tooltip.node.classList.toggle('app-ingredients_tooltip--up', false);
+            if (top + height > vh - gap) {
+              top = cardRect.top - gap - height;
+              tooltip.node.classList.toggle('app-ingredients_tooltip--up', true);
+            }
+          }
+
+          tooltip.node.style.left = `${clamp(left, vw - width + gap)}px`;
+          tooltip.node.style.top = `${clamp(top, vh - height + gap)}px`;
+        };
+
+        card.node.addEventListener('mouseenter', placeTooltip);
+        card.node.addEventListener('focusin', placeTooltip);
+      }
+
+      card.node.classList.toggle('app-ingredients_list_item--compact', isHard);
 
       const countNode = new Component({
         parentNode: card.node,

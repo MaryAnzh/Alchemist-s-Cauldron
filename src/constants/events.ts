@@ -21,6 +21,7 @@ export const GAME_EVENTS = {
   INGREDIENT_IN_CAULDRON: 'ingredient:inCauldron',
 
   CAULDRON_STATE_CHANGED: 'cauldron:stateChange',
+  REACTION_FIRED: 'cauldron:reactionFired',
   SHOW_LEADERBOARD: 'show:leaderboard',
   PAGE_HIDDEN: 'page:hidden',
   SHOW_RULES: 'show:rules',

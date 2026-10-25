@@ -89,7 +89,7 @@ export class GameOver extends Component {
     new Button({
       parentNode: wrap.node,
       className: 'app-game-over_wrap_replay',
-      text: 'REPLAY',
+      text: 'PLAY AGAIN',
       leftIcon: 'symbol',
       onClick: () => {
         store.startNewGame();

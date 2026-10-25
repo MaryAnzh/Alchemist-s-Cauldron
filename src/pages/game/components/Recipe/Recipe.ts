@@ -29,7 +29,25 @@ export class Recipe extends Component {
 
       const { maxIngredients } = store.getState();
 
+      // The old recipe fades out as a ghost copy, the new one fades in after it (CSS only)
+      if (!this.isMobileRecipeShow && this.recipeWrap.node.hasChildNodes()) {
+        const ghost = this.recipeWrap.node.cloneNode(true) as HTMLElement;
+        ghost.classList.add('app-recipe_ghost');
+        ghost.classList.remove('app-recipe_wrap--enter', 'app-recipe_wrap_mobile');
+        ghost.addEventListener(
+          'animationend',
+          (e) => {
+            if (e.target === ghost) ghost.remove();
+          },
+          { once: false },
+        );
+        this.node.append(ghost);
+      }
+
       this.recipeWrap.node.innerHTML = '';
+      this.recipeWrap.node.classList.remove('app-recipe_wrap--enter');
+      void this.recipeWrap.node.offsetWidth;
+      this.recipeWrap.node.classList.add('app-recipe_wrap--enter');
 
       this.renderRecipe(recipe, ingInCauldron, maxIngredients);
     });

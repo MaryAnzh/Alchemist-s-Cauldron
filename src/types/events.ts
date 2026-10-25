@@ -1,6 +1,6 @@
 import { GAME_EVENTS as GE } from '@constants';
 import type { GameState } from './state';
-import type { cauldronValuesType, GameOverReasonType, RecipeType } from './data';
+import type { cauldronValuesType, GameOverReasonType, ReactionId, RecipeType } from './data';
 import type { LeaderboardStorageType } from './leaderboard';
 
 export type GameEventsPayload = {
@@ -19,6 +19,7 @@ export type GameEventsPayload = {
   [GE.INGREDIENT_COUNT]: { id: string; count: number };
 
   [GE.RECIPE_CHANGED]: { recipe: RecipeType; ingInCauldron: number };
+  [GE.REACTION_FIRED]: { id: ReactionId; name: string };
   [GE.INGREDIENT_IN_CAULDRON]: number;
 
   [GE.CAULDRON_STATE_CHANGED]: { values: cauldronValuesType };

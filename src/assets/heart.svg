@@ -1,38 +1,25 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 23.0.6, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
-	 viewBox="0 0 204.2 157.3" enable-background="new 0 0 204.2 157.3" xml:space="preserve">
-<g>
-	<g>
-		<radialGradient id="heartSvg" cx="144.0764" cy="51.166" r="89.0678" gradientUnits="userSpaceOnUse">
-			<stop  offset="0" style="stop-color:#FFFFFF"/>
-			<stop  offset="0.1353" style="stop-color:#FFF8FF"/>
-			<stop  offset="0.3287" style="stop-color:#FFE5FF"/>
-			<stop  offset="0.5572" style="stop-color:#FFC6FF"/>
-			<stop  offset="0.8103" style="stop-color:#FF9CFF"/>
-			<stop  offset="1" style="stop-color:#FF77FF"/>
-		</radialGradient>
-		<path fill="url(#heartSvg)" d="M200,44C194.6,26,176.7,5.9,150.3,4c-1.2-0.1-2.5-0.1-3.8-0.1c-17.3,0-33.6,8.1-44.4,21.9
-			C96.1,18,81.6,2.8,59.2,2c-0.6,0-1.1,0-1.7,0c-27,0-47.3,21.1-53.4,42c-5.5,19,1.3,35.3,4.6,43.1c10.7,25.2,36.5,44.3,89.3,65.8
-			l0.3,0.2l2.3,1.9l2.9-1c0.9-0.3,1.6-0.6,2.1-0.9c53-21.5,79-40.7,89.7-66C198.7,79.2,205.7,62.7,200,44z"/>
-		<linearGradient id="heartSvg_2" gradientUnits="userSpaceOnUse" x1="0" y1="78.6304" x2="204.1532" y2="78.6304">
-			<stop  offset="0" style="stop-color:#FFFFFF"/>
-			<stop  offset="0.1353" style="stop-color:#FFF8FF"/>
-			<stop  offset="0.3287" style="stop-color:#FFE5FF"/>
-			<stop  offset="0.5572" style="stop-color:#FFC6FF"/>
-			<stop  offset="0.8103" style="stop-color:#FF9CFF"/>
-			<stop  offset="1" style="stop-color:#FF77FF"/>
-		</linearGradient>
-		<path fill="url(heartSvg_2)" d="M100.3,157.3l-3.3-2.6c-53.1-21.7-79.2-41-90.1-66.8c-3.4-8-10.5-24.8-4.7-44.4
-			C8.5,21.9,29.5,0,57.5,0c0.6,0,1.2,0,1.8,0c21.2,0.7,35.4,13.7,42.8,22.6c11.2-13.2,27.3-20.7,44.4-20.7c1.3,0,2.6,0,3.9,0.1
-			c27.3,1.9,45.9,22.8,51.5,41.4c5.9,19.4-1.3,36.4-4.7,44.5c-10.9,25.8-37.2,45.3-90.7,67c-0.7,0.4-1.4,0.6-2.3,1L100.3,157.3z
-			 M57.5,4C31.5,4,11.9,24.4,6,44.6c-5.3,18.3,1.3,34.1,4.6,41.7c10.4,24.7,36,43.5,88.2,64.7l0.3,0.1l1.9,1.6l1.8-0.7
-			c0.8-0.3,1.4-0.5,1.9-0.8l0.2-0.1c52.5-21.3,78.2-40.1,88.6-64.9c3.3-7.7,10-23.7,4.5-41.8C192.8,27.2,175.6,7.8,150.1,6
-			c-1.2-0.1-2.4-0.1-3.6-0.1c-16.7,0-32.3,7.7-42.9,21.1l-1.6,2l-1.6-2C94.1,18.7,80.3,4.7,59.2,4C58.6,4,58.1,4,57.5,4z"/>
-	</g>
-</g>
-<path fill="#FFFFFF" d="M33.3,33.7C35.8,27.1,43,22,49.8,23.2c9,1.6,14.9,13.8,10.5,22.5c-4,7.9-15.4,11.1-22.5,6
-	C32.2,47.7,31,39.8,33.3,33.7z"/>
-<path fill="#FFFFFF" d="M66.2,69.7c0.5-1.3,1.9-2.3,3.3-2.1c1.8,0.3,3,2.8,2.1,4.5c-0.8,1.6-3.1,2.2-4.5,1.2
-	C66,72.4,65.8,70.9,66.2,69.7z"/>
+<svg xmlns="http://www.w3.org/2000/svg" overflow="visible" viewBox="0 0 204.2 157.3">
+  <defs>
+    <radialGradient id="heartBody" cx="50%" cy="38%" r="70%">
+      <stop offset="0" stop-color="#ff5a3c"/>
+      <stop offset="0.55" stop-color="#d4161c"/>
+      <stop offset="1" stop-color="#7d0610"/>
+    </radialGradient>
+    <linearGradient id="heartRim" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffd27a"/>
+      <stop offset="0.5" stop-color="#b8731f"/>
+      <stop offset="1" stop-color="#6b3a0c"/>
+    </linearGradient>
+    <linearGradient id="heartShine" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff" stop-opacity="0.85"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#heartBody)" stroke="url(#heartRim)" stroke-width="6" stroke-linejoin="round"
+    d="M201.9,43.4C196.3,24.8,177.8,3.9,150.4,2c-1.3-0.1-2.6-0.1-3.9-0.1c-17.1,0-33.2,7.5-44.4,20.7C94.7,13.7,80.5,0.7,59.3,0c-0.6,0-1.2,0-1.8,0c-28,0-49,21.9-55.4,43.5c-5.7,19.7,1.3,36.4,4.7,44.4c10.9,25.8,37,45.1,90.1,66.8l3.3,2.6l3.9-1.4c0.9-0.3,1.7-0.6,2.3-1c53.5-21.8,79.8-41.2,90.7-67C200.6,79.8,207.8,62.8,201.9,43.4z"/>
+  <path fill="none" stroke="#ff8a6a" stroke-opacity="0.55" stroke-width="3"
+    d="M30,92C18,76,12,62,16,46C22,26,38,14,57,14"/>
+  <path fill="url(#heartShine)"
+    d="M30,40C34,26,46,18,60,19C74,20,82,30,84,40C70,32,48,32,30,40Z"/>
+  <ellipse cx="156" cy="34" rx="14" ry="8" fill="#fff" fill-opacity="0.35" transform="rotate(-25 156 34)"/>
 </svg>
