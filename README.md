@@ -165,6 +165,30 @@ https://maryanzh.github.io/Alchemist-s-Cauldron/
 - [ ] **Triple Eclipse** — Fairy Dust + Mandrake Root + Essence of the Void; or Mandrake Root + Caustic Acid + Essence of the Void
 - [ ] **Ember Soup** — Dragon Tears ×2 + Fairy Dust; or Dragon Tears ×2 + Caustic Acid
 
+### 🧬 Reactions
+
+15 reactions exist in `src/store/logic/reactions.ts`. Each difficulty enables only its own subset: **Easy** — none, **Medium** — Bubbling and Solar Frost, **Hard** — Volatile Mix, Pressure Spike and Deep Freeze. A reaction fires once, when it goes from inactive to active; values are always recalculated from the ingredient list.
+
+| Reaction | Difficulty | Condition | Effect |
+| --- | --- | --- | --- |
+| Bubbling | Medium | Fairy Dust + Caustic Acid | Magic Power +50%, timer −10 s (once) |
+| Solar Frost | Medium | Dragon Tears + Frost Lotus | Temperature becomes `0`, Density +20% |
+| Volatile Mix | Hard | Phoenix Feather + Essence of the Void | −1 life, the cauldron is cleared (once) |
+| Pressure Spike | Hard | Density ≥ 70 | Density is capped at `70`, Magic Power +10% |
+| Deep Freeze | Hard | Temperature ≤ −20 | Density +15%, Magic Power −15% |
+| Rooted Steam | not enabled | Mandrake Root + Toad Slime | Density +25%, Magic Power −10% |
+| Ashen Bloom | not enabled | Phoenix Feather + Fairy Dust | Temperature +10, Magic Power +25% |
+| Annihilation | not enabled | One ingredient with Temp > 15 and one with Temp < −15 | Temperature becomes `0`, Density ×2 |
+| Magma Flux | not enabled | Temperature ≥ 60 | Magic Power +20%, Density −10% |
+| Arcane Saturation | not enabled | Magic Power ≥ 80 | Magic Power capped at `80`, Temperature +5 |
+| Steam Burst | not enabled | Dragon Tears + Caustic Acid and Temperature ≥ 35 | Temperature +10, timer −5 s (once) |
+| Black Ice | not enabled | Frost Lotus + Essence of the Void and Density ≤ 0 | Temperature −10, Magic Power +20% |
+| Heavy Spark | not enabled | Fairy Dust + Toad Slime and Density ≥ 40 | Density +20%, Magic Power +10% |
+| Burning Root | not enabled | Mandrake Root + Phoenix Feather and Temperature ≥ 40 | Temperature +15, Density −10% |
+| Void Resonance | not enabled | Essence of the Void + Dragon Tears and Magic Power ≥ 50 | Magic Power +30%, Temperature −5 |
+
+Visual effects of reactions are described in «Cauldron effects» below.
+
 ### Reaction checks
 
 - [ ] Medium: Dragon Tears + Frost Lotus → Temperature `0`, Density +20% (Solar Frost)

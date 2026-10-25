@@ -42,7 +42,7 @@ export class Ranges extends Component {
       label: 'Density',
       range: { min: ranges.density.at(0) as number, max: ranges.density.at(1) as number },
       value: 0,
-      icon: 'drop',
+      icon: 'density',
     });
 
     this.magicPower = new RangeSlider({

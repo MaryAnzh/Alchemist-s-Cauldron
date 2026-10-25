@@ -121,7 +121,7 @@ export class IngredientsList extends Component {
         });
         [
           { value: temperature, icon: 'temperature' },
-          { value: density, icon: 'drop' },
+          { value: density, icon: 'density' },
           { value: magicPower, icon: 'magic' },
         ].forEach(({ value, icon }) => {
           new Icon({

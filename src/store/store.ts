@@ -169,6 +169,11 @@ class Store {
   }
 
   public newRound() {
+    if (this.state.shelfIngredients.every((ing) => !ing.count)) {
+      this.gameOver('ingredients');
+      return;
+    }
+
     const newEnd = Date.now() + this.state.timeLeft * 1000;
     this.update({ endTimestamp: newEnd });
 

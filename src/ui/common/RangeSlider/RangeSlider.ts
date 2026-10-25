@@ -24,15 +24,11 @@ export class RangeSlider extends Component {
   }
 
   render(label: string, icon: IconPickerType) {
-    const iconWrap = new Icon({
+    new Icon({
       parentNode: this.node,
       icon,
       className: this.setClassName('icon'),
     });
-    if (icon === 'drop') {
-      iconWrap.node.style.width = '60%';
-      iconWrap.node.style.justifySelf = 'center';
-    }
 
     new Component({
       parentNode: this.node,

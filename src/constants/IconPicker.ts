@@ -7,8 +7,8 @@ import cauldron_front from '../assets/cauldron-front.svg?raw';
 import caustic_acid from '../assets/caustic_acid.svg?raw';
 import clock from '../assets/clock.svg?raw';
 import close from '../assets/close.svg?raw';
+import density from '../assets/density.svg?raw';
 import dragon from '../assets/dragon.svg?raw';
-import drop from '../assets/drop.svg?raw';
 import essence_void from '../assets/essence_void.svg?raw';
 import fairy from '../assets/fairy.svg?raw';
 import frost_lotus from '../assets/frost_lotus.svg?raw';
@@ -42,7 +42,7 @@ export const ICON_PICKER = {
   clock,
   close,
   dragon,
-  drop,
+  density,
   essence_void,
   fairy,
   frost_lotus,

@@ -5,7 +5,7 @@ type PortalProps = {
 };
 
 export class Portal extends Component {
-  private timeout: number | null = null;
+  private pendingClose: ((event: TransitionEvent) => void) | null = null;
   private activeComponent: Component | null = null;
   private isLocked = false;
   onClose: (() => void) | null = null;
@@ -25,10 +25,7 @@ export class Portal extends Component {
   mount(content: HTMLElement, component?: Component) {
     this.activeComponent = component ?? null;
 
-    if (this.timeout) {
-      clearTimeout(this.timeout);
-      this.timeout = null;
-    }
+    this.cancelPendingClose();
 
     document.body.style.overflow = 'hidden';
     this.node.innerHTML = '';
@@ -58,18 +55,38 @@ export class Portal extends Component {
   };
 
   unmount() {
+    this.cancelPendingClose();
     this.node.classList.remove('app_portal_open', 'app_portal_bg-blur');
 
-    this.timeout = window.setTimeout(() => {
-      this.activeComponent?.destroy();
-      this.activeComponent = null;
+    // Nothing to fade out (already transparent), so transitionend would never fire
+    if (getComputedStyle(this.node).opacity === '0') {
+      this.cleanup();
+      return;
+    }
 
-      this.node.innerHTML = '';
-      if (this.node.parentNode) {
-        this.node.parentNode.removeChild(this.node);
-        document.body.style.overflow = 'auto';
-      }
-    }, 300);
+    this.pendingClose = (event: TransitionEvent) => {
+      if (event.target !== this.node || event.propertyName !== 'opacity') return;
+      this.cancelPendingClose();
+      this.cleanup();
+    };
+    this.node.addEventListener('transitionend', this.pendingClose);
+  }
+
+  private cancelPendingClose() {
+    if (!this.pendingClose) return;
+    this.node.removeEventListener('transitionend', this.pendingClose);
+    this.pendingClose = null;
+  }
+
+  private cleanup() {
+    this.activeComponent?.destroy();
+    this.activeComponent = null;
+
+    this.node.innerHTML = '';
+    if (this.node.parentNode) {
+      this.node.parentNode.removeChild(this.node);
+      document.body.style.overflow = 'auto';
+    }
   }
 
   public lock() {

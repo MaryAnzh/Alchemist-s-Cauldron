@@ -86,7 +86,7 @@ export const REACTION_TABLE: IReaction[] = [
     effect: { timeDelta: -5 },
   },
   {
-    id: R.blaCK_ICE,
+    id: R.BLACK_ICE,
     type: 'mix',
     isActive: (ingS, t) => has(ingS, I.FROST_LOTUS, I.ESSENCE_VOID) && t.density <= 0,
     applyValues: (v) =>
