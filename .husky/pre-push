@@ -1,3 +1,6 @@
+. "$(dirname "$0")/_/husky.sh"
+
+
 echo "✅ Branch name is valid!"
 echo
 

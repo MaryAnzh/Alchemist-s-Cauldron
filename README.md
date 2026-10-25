@@ -169,23 +169,23 @@ https://maryanzh.github.io/Alchemist-s-Cauldron/
 
 15 reactions exist in `src/store/logic/reactions.ts`. Each difficulty enables only its own subset: **Easy** — none, **Medium** — Bubbling and Solar Frost, **Hard** — Volatile Mix, Pressure Spike and Deep Freeze. A reaction fires once, when it goes from inactive to active; values are always recalculated from the ingredient list.
 
-| Reaction | Difficulty | Condition | Effect |
-| --- | --- | --- | --- |
-| Bubbling | Medium | Fairy Dust + Caustic Acid | Magic Power +50%, timer −10 s (once) |
-| Solar Frost | Medium | Dragon Tears + Frost Lotus | Temperature becomes `0`, Density +20% |
-| Volatile Mix | Hard | Phoenix Feather + Essence of the Void | −1 life, the cauldron is cleared (once) |
-| Pressure Spike | Hard | Density ≥ 70 | Density is capped at `70`, Magic Power +10% |
-| Deep Freeze | Hard | Temperature ≤ −20 | Density +15%, Magic Power −15% |
-| Rooted Steam | not enabled | Mandrake Root + Toad Slime | Density +25%, Magic Power −10% |
-| Ashen Bloom | not enabled | Phoenix Feather + Fairy Dust | Temperature +10, Magic Power +25% |
-| Annihilation | not enabled | One ingredient with Temp > 15 and one with Temp < −15 | Temperature becomes `0`, Density ×2 |
-| Magma Flux | not enabled | Temperature ≥ 60 | Magic Power +20%, Density −10% |
-| Arcane Saturation | not enabled | Magic Power ≥ 80 | Magic Power capped at `80`, Temperature +5 |
-| Steam Burst | not enabled | Dragon Tears + Caustic Acid and Temperature ≥ 35 | Temperature +10, timer −5 s (once) |
-| Black Ice | not enabled | Frost Lotus + Essence of the Void and Density ≤ 0 | Temperature −10, Magic Power +20% |
-| Heavy Spark | not enabled | Fairy Dust + Toad Slime and Density ≥ 40 | Density +20%, Magic Power +10% |
-| Burning Root | not enabled | Mandrake Root + Phoenix Feather and Temperature ≥ 40 | Temperature +15, Density −10% |
-| Void Resonance | not enabled | Essence of the Void + Dragon Tears and Magic Power ≥ 50 | Magic Power +30%, Temperature −5 |
+| Reaction          | Difficulty  | Condition                                               | Effect                                      |
+| ----------------- | ----------- | ------------------------------------------------------- | ------------------------------------------- |
+| Bubbling          | Medium      | Fairy Dust + Caustic Acid                               | Magic Power +50%, timer −10 s (once)        |
+| Solar Frost       | Medium      | Dragon Tears + Frost Lotus                              | Temperature becomes `0`, Density +20%       |
+| Volatile Mix      | Hard        | Phoenix Feather + Essence of the Void                   | −1 life, the cauldron is cleared (once)     |
+| Pressure Spike    | Hard        | Density ≥ 70                                            | Density is capped at `70`, Magic Power +10% |
+| Deep Freeze       | Hard        | Temperature ≤ −20                                       | Density +15%, Magic Power −15%              |
+| Rooted Steam      | not enabled | Mandrake Root + Toad Slime                              | Density +25%, Magic Power −10%              |
+| Ashen Bloom       | not enabled | Phoenix Feather + Fairy Dust                            | Temperature +10, Magic Power +25%           |
+| Annihilation      | not enabled | One ingredient with Temp > 15 and one with Temp < −15   | Temperature becomes `0`, Density ×2         |
+| Magma Flux        | not enabled | Temperature ≥ 60                                        | Magic Power +20%, Density −10%              |
+| Arcane Saturation | not enabled | Magic Power ≥ 80                                        | Magic Power capped at `80`, Temperature +5  |
+| Steam Burst       | not enabled | Dragon Tears + Caustic Acid and Temperature ≥ 35        | Temperature +10, timer −5 s (once)          |
+| Black Ice         | not enabled | Frost Lotus + Essence of the Void and Density ≤ 0       | Temperature −10, Magic Power +20%           |
+| Heavy Spark       | not enabled | Fairy Dust + Toad Slime and Density ≥ 40                | Density +20%, Magic Power +10%              |
+| Burning Root      | not enabled | Mandrake Root + Phoenix Feather and Temperature ≥ 40    | Temperature +15, Density −10%               |
+| Void Resonance    | not enabled | Essence of the Void + Dragon Tears and Magic Power ≥ 50 | Magic Power +30%, Temperature −5            |
 
 Visual effects of reactions are described in «Cauldron effects» below.
 
@@ -209,14 +209,14 @@ Visual effects of reactions are described in «Cauldron effects» below.
 
 All effects are pure CSS keyframes. JS only creates elements and removes them on `animationend` (no `setTimeout` / `setInterval`).
 
-| Effect | When | Which reactions |
-| --- | --- | --- |
-| Boiling bubbles on the surface (6, looping) | While the cauldron has ≥ 1 ingredient | — (always) |
-| Burst of bubbles (9) + light purple smoke (5) + reaction name | A reaction fires | Any: Bubbling, Solar Frost (Medium); Pressure Spike, Deep Freeze (Hard); etc. |
-| Dark smoke (8) + orange bubbles (5) + reaction name | Volatile Mix fires | Volatile Mix (Hard) |
-| Floating `+Ns` (gold, 15 / 10 / 5 by difficulty) | Successful brew | — |
-| Green glow, white potion | Successful brew | — |
-| Red explosion + screen shake | Failed brew | — |
+| Effect                                                        | When                                  | Which reactions                                                               |
+| ------------------------------------------------------------- | ------------------------------------- | ----------------------------------------------------------------------------- |
+| Boiling bubbles on the surface (6, looping)                   | While the cauldron has ≥ 1 ingredient | — (always)                                                                    |
+| Burst of bubbles (9) + light purple smoke (5) + reaction name | A reaction fires                      | Any: Bubbling, Solar Frost (Medium); Pressure Spike, Deep Freeze (Hard); etc. |
+| Dark smoke (8) + orange bubbles (5) + reaction name           | Volatile Mix fires                    | Volatile Mix (Hard)                                                           |
+| Floating `+Ns` (gold, 15 / 10 / 5 by difficulty)              | Successful brew                       | —                                                                             |
+| Green glow, white potion                                      | Successful brew                       | —                                                                             |
+| Red explosion + screen shake                                  | Failed brew                           | —                                                                             |
 
 **How to check**
 
