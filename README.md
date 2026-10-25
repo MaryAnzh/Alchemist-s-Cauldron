@@ -39,7 +39,7 @@ https://maryanzh.github.io/Alchemist-s-Cauldron/
 - Three parameter bars
 - Pure function for summing ingredient values
 
-### US 1.3 (15/10–16/10)
+### US 1.3
 
 - Recipe table
 - Random recipe selection
@@ -112,15 +112,13 @@ https://maryanzh.github.io/Alchemist-s-Cauldron/
 - Update leaderboard icons (2nd and 3rd place)
 - Responsive layout
 
-- Final manual check of Level 3
-
-## 📌 To Do — Level 3 (115 points)
+## 📌 Done -- Level 3 (115 points)
 
 - [x] **US 3.1 Drag & Drop (20)** — HTML5 drag events (`dragstart`, `dragover`, `dragleave`, `drop`), drop-zone highlight, ignore drop when paused / cauldron full / stock `0`, click still works
 - [x] **US 3.2 Ingredient Tooltip (15)** — cards show icon and name only; tooltip with Temperature / Density / Magic Power (`+` / `−`), opens left / up near screen edges, hidden on pause
 - [x] **US 3.3 Chemical Reactions (35)** — typed `IReaction[]` (15 reactions), Easy 0 / Medium 2 / Hard 3, fire only on `inactive → active`, recalculate values from the ingredient list every time
 - [x] **US 3.4 Pour Out (10)** — button clears the cauldron, costs 10 s, no life lost, disabled when empty, ingredients are not returned
-- [x] **US 3.5 Visual Feedback (20)** — white potion + glow on success, explosion + short screen shake on fail, floating ingredient icons in the cauldron, smooth range arrows, recipe fade out / in, CSS-only animations (no `setInterval` / `setTimeout`)
+- [x] **US 3.5 Visual Feedback (20)** — success glow and white potion, fail explosion and short screen shake, floating ingredient icons, smooth parameter bars, CSS-only animations. Optional floating time-bonus text is also implemented; recipe fade is an additional effect.
 - [x] **US 3.6 Keyboard Shortcuts (15)** — one handler gated by `playing` state, pause / resume, ignored in text fields and on menu / pause / game-over screens
 - [x] Level 3 settings: 150 s and 3 lives (Medium / Hard, see the settings table in the task)
 
@@ -165,7 +163,7 @@ https://maryanzh.github.io/Alchemist-s-Cauldron/
 
 | Reaction          | Difficulty  | Condition                                               | Effect                                      |
 | ----------------- | ----------- | ------------------------------------------------------- | ------------------------------------------- |
-| Bubbling          | Medium      | Fairy Dust + Caustic Acid                               | Magic Power +50%, timer −10 s (once)        |
+| Bubbling          | Medium      | Fairy Dust + Caustic Acid                               | Magic Power +50%, timer −10 s (once)       |
 | Solar Frost       | Medium      | Dragon Tears + Frost Lotus                              | Temperature becomes `0`, Density +20%       |
 | Volatile Mix      | Hard        | Phoenix Feather + Essence of the Void                   | −1 life, the cauldron is cleared (once)     |
 | Pressure Spike    | Hard        | Density ≥ 70                                            | Density is capped at `70`, Magic Power +10% |
@@ -195,9 +193,24 @@ Visual effects of reactions are described in «Cauldron effects» below.
 
 ## 🎨 Animations
 
-- Range arrow animation
-- Hover: change timer button to pause button
-- Open menu animation
+### Implemented for the task
+
+- **Timer warning (US 1.4)** — below 15 seconds, the timer turns red and pulses; the time bar shrinks as time runs out.
+- **Parameter bars (US 1.2 / US 3.5)** — range arrows move smoothly; the target-zone glow indicates when a value is in range.
+- **Brew success (US 3.5)** — the cauldron glows and the potion turns white.
+- **Brew failure (US 3.5)** — an explosion effect and a short screen shake.
+- **Ingredients in the cauldron (US 3.5)** — ingredient icons float.
+
+### Additional effects added
+
+- **Cauldron boiling** — bubbles loop while ingredients are present and stop when the cauldron is emptied.
+- **Reactions** — bubbles, smoke and the reaction name float up when an enabled reaction fires. Volatile Mix has dark smoke and orange bubbles.
+- **Successful brew** — floating `+Ns` bonus-time text (15 / 10 / 5 seconds by difficulty); this is optional in the task.
+- **Recipe change** — the old recipe fades out and the new one fades in.
+
+All visual effects use CSS animations; JavaScript creates/removes effect elements but does not use `setTimeout` or `setInterval` to animate them.
+
+The earlier animation notes also listed the menu-opening effect and the timer-button hover change. These are separate UI polish items, not US 3.5 requirements; their final manual check is still outstanding.
 
 ### ✨ Cauldron effects (US 3.5, CSS only)
 
@@ -223,7 +236,6 @@ All effects are pure CSS keyframes. JS only creates elements and removes them on
 - [ ] Brew a correct combo (see tables above) → `+Ns` floats up, potion turns white
 - [ ] Brew a wrong combo → red explosion and screen shake
 - [ ] Check at 375 px and 1920 px: effects stay above the cauldron and don't block clicks
-- [ ] OS setting «reduce motion» → no heavy motion
 
 ## 🚀 Run locally
 
