@@ -1,9 +1,20 @@
-import { GAME_EVENTS, PAUSED, PLAYING } from '@constants';
-import { Game } from '@pages';
+import { GAME_EVENTS, PAUSED, PLAYING, ROUTES } from '@constants';
 import { store } from '@store';
-import { Component, Header, Footer, StartGame, Portal, Pause, GameOver, Leaderboard } from '@ui';
+import {
+  Component,
+  Header,
+  Footer,
+  StartGame,
+  Portal,
+  Pause,
+  GameOver,
+  Leaderboard,
+  Rules,
+} from '@ui';
 import type { GameOverReasonType, LeaderboardStorageType, RecipeType } from '@types';
-import { Rules } from './ui/dialogs/Rules/Rules';
+
+import { Game, Profile } from '@pages';
+import { router, type RoutePath } from '@router';
 
 export class App extends Component {
   root: HTMLElement;
@@ -84,7 +95,8 @@ export class App extends Component {
     this.root.append(this.node);
     this.portal = new Portal();
 
-    this.renderStartView();
+    router.onChange((route) => this.handleRoute(route));
+    this.handleRoute(router.current());
   }
 
   renderStartView() {
@@ -262,5 +274,22 @@ export class App extends Component {
         return;
     }
     e.preventDefault();
+  }
+
+  private handleRoute(route: RoutePath) {
+    if (route === ROUTES.HOME) {
+      if (this.currentView instanceof Profile) this.renderStartView();
+      else if (!this.currentView) this.renderStartView();
+      return;
+    }
+    this.renderProfileView();
+  }
+
+  renderProfileView() {
+    const { status } = this.store.getState();
+    if (status === PLAYING || status === PAUSED) this.store.exitToMenu();
+    this.portal.unmount();
+
+    this.setView(new Profile({ parentNode: this.node }));
   }
 }

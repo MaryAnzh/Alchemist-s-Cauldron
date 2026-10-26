@@ -1,0 +1,11 @@
+@use '../../styles/mixin/common.scss' as *;
+@use '../../styles/mixin/media.scss' as *;
+
+.app-profile {
+  @include section-paddings;
+}
+@media (max-width: $tablet) {
+  .app-profile {
+    width: 100%;
+  }
+}
