@@ -16,6 +16,7 @@ This is a client-side feature built with the existing Vanilla TypeScript archite
 - [x] Add route parsing tests with Vitest (4 tests passing)
 - [x] Pass TypeScript checks
 - [ ] Configure automated deployment to GitHub Pages
+- [x] Configure ProfileService and profile state validator
 - [ ] Request and save the player's name at game start
 - [ ] Show the player's name and avatar in the game header
 - [ ] Build the profile page with avatar presets and image upload

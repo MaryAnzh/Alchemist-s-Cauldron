@@ -39,3 +39,10 @@ export type GameState = {
 };
 
 export type StorageKeysType = keyof typeof STORAGE_KEYS;
+
+export type SessionStats = {
+  startedAt: number;
+  successfulBrews: number;
+  failedBrews: number;
+  reactionsTriggered: number;
+};

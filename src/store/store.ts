@@ -17,11 +17,14 @@ import { storage } from './storage/Storage';
 import { ValidateLeaderboard, ValidateState } from './logic/validate';
 
 import { evaluateReactions, getReactionName } from './logic/reactions';
+import { profileService } from './storage/ProfileService';
+import { appendRecord, buildGameRecord, createSessionStats } from './logic/gameRecord';
 
 class Store {
   private events = new EventEmitter<GameEventsPayload>();
   private timer = new GameTimer();
   private timerRunning = false;
+  private session = createSessionStats(Date.now());
   private leaderBoard: LeaderboardStorageType = { easy: [], medium: [], hard: [] };
   private storage: typeof storage;
 
@@ -87,6 +90,7 @@ class Store {
   /** main game actions */
   public startNewGame = () => {
     this.resetGameState();
+    this.session = createSessionStats(Date.now());
 
     this.initShelf();
     this.pickRandomRecipe();
@@ -203,9 +207,11 @@ class Store {
 
   public gameOver(reason: GameOverReasonType = 'time') {
     const score = this.state.score;
+    const wasActive = this.state.status === C.PLAYING || this.state.status === C.PAUSED;
     const isRecord = this.checkLeaderboard();
 
     this.timer.stop();
+    if (wasActive) this.recordGame(reason, score);
 
     this.update({ status: C.GAME_OVER });
 
@@ -309,6 +315,7 @@ class Store {
 
   private applyReactionEffects(fired: IReaction[]) {
     if (!fired.length) return;
+    this.session.reactionsTriggered += fired.length;
 
     fired.forEach(({ id }) =>
       this.emit(C.GAME_EVENTS.REACTION_FIRED, { id, name: getReactionName(id) }),
@@ -403,11 +410,13 @@ class Store {
       this.emit(C.GAME_EVENTS.TIMER_TICK, timeLeft);
       this.emit(C.GAME_EVENTS.SCORE_CHANGE, score);
 
+      this.session.successfulBrews++;
       this.roundOver('success');
       return;
     }
 
     // fail
+    this.session.failedBrews++;
     this.loseLife();
 
     if (this.state.lives > 0) {
@@ -559,6 +568,7 @@ class Store {
   public continueLastGame() {
     const savedState = this.loadFromStorage('GAME_STATE') as GameState;
     if (!savedState) return;
+    this.session = createSessionStats(Date.now());
 
     this.timer.stop();
     this.timerRunning = false;
@@ -574,6 +584,22 @@ class Store {
     this.timer.stop();
     this.resetGameState();
     this.clearStorage('GAME_STATE');
+  }
+
+  private recordGame(reason: GameOverReasonType, score: number) {
+    try {
+      const profile = profileService.loadOrCreate();
+      const record = buildGameRecord({
+        stats: this.session,
+        difficulty: this.state.difficulty,
+        score,
+        reason,
+        now: Date.now(),
+      });
+      profileService.save({ ...profile, history: appendRecord(profile.history, record) });
+    } catch {
+      // profile storage is unavailable: the game must still end normally
+    }
   }
 }
 
