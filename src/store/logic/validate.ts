@@ -7,6 +7,7 @@ import type {
   LeaderboardStorageType,
   ReactionId,
   RecipeType,
+  ProfileStorageType,
 } from '@types';
 const checkCauldronProps = (props: [number, number]): boolean =>
   Array.isArray(props) &&
@@ -156,4 +157,72 @@ export const ValidateLeaderboard = (
     });
   });
   return check;
+};
+
+const isObject = (value: unknown): value is Record<string, unknown> =>
+  typeof value === 'object' && value !== null;
+
+const isNonNegativeInteger = (value: unknown): value is number =>
+  Number.isInteger(value) && typeof value === 'number' && value >= 0;
+
+const isValidAvatar = (value: unknown): boolean => {
+  if (!isObject(value)) return false;
+
+  if (
+    value.kind === C.PRESET &&
+    typeof value.id === 'string' &&
+    C.PRESET_AVATARS.includes(value.id)
+  ) {
+    return true;
+  }
+
+  return (
+    value.kind === 'image' &&
+    typeof value.dataUrl === 'string' &&
+    value.dataUrl.length <= C.MAX_AVATAR_DATA_LENGTH &&
+    /^data:image\/(?:png|jpeg|webp);base64,[A-Za-z0-9+/]+={0,2}$/.test(value.dataUrl)
+  );
+};
+
+const isValidRecord = (value: unknown): boolean => {
+  if (!isObject(value)) return false;
+
+  return (
+    typeof value.playedAt === 'number' &&
+    Number.isFinite(value.playedAt) &&
+    value.playedAt >= 0 &&
+    (value.difficulty === C.EASY || value.difficulty === C.MEDIUM || value.difficulty === C.HARD) &&
+    typeof value.score === 'number' &&
+    Number.isFinite(value.score) &&
+    value.score >= 0 &&
+    (value.reason === C.TIME || value.reason === 'lives' || value.reason === 'ingredients') &&
+    isNonNegativeInteger(value.durationSeconds) &&
+    isNonNegativeInteger(value.successfulBrews) &&
+    isNonNegativeInteger(value.failedBrews) &&
+    isNonNegativeInteger(value.reactionsTriggered)
+  );
+};
+
+export const ValidateProfile = (value: unknown): value is ProfileStorageType => {
+  if (!isObject(value)) return false;
+
+  const validName =
+    typeof value.name === 'string' &&
+    (value.name === '' ||
+      (value.name.trim() === value.name &&
+        value.name.length >= 2 &&
+        value.name.length <= 15 &&
+        !/[\u0000-\u001f]/.test(value.name)));
+
+  return (
+    value.version === 1 &&
+    validName &&
+    isValidAvatar(value.avatar) &&
+    Array.isArray(value.history) &&
+    value.history.length <= C.MAX_HISTORY_LENGTH &&
+    value.history.every(isValidRecord) &&
+    Array.isArray(value.achievements) &&
+    value.achievements.every((id) => typeof id === 'string' && /^[a-z0-9-]+$/.test(id)) &&
+    new Set(value.achievements).size === value.achievements.length
+  );
 };

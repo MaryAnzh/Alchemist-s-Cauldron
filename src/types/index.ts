@@ -4,3 +4,4 @@ export * from './data';
 export * from './state';
 export * from './events';
 export * from './leaderboard';
+export * from './profile';

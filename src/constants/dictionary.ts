@@ -20,6 +20,9 @@ export const {
   TEMPERATURE,
   DENSITY,
   MAGIC_POWER,
+  PRESET,
+  ERROR_INVALID_PROFILE,
+  ERROR_UNABLE_TO_SAVE_PROFILE,
 } = {
   EASY: 'easy',
   HARD: 'hard',
@@ -42,4 +45,8 @@ export const {
   TEMPERATURE: 'temperature',
   DENSITY: 'density',
   MAGIC_POWER: 'magicPower',
+  PRESET: 'preset',
+
+  ERROR_INVALID_PROFILE: 'Cannot save an invalid player profile',
+  ERROR_UNABLE_TO_SAVE_PROFILE: 'Unable to save the player profile to localStorage',
 } as const;

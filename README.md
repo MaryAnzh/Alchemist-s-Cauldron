@@ -3,6 +3,37 @@
 RS School game task  
 Task URL: https://github.com/rolling-scopes-school/qualifying-stage/blob/main/tasks/game-alchemists-cauldron/README.md
 
+## ✨ Creative Extension — Alchemist Profile
+
+**Goal:** extend the game with a personal player profile that keeps gameplay history, statistics, achievements, and avatar preferences in `localStorage`.
+
+This is a client-side feature built with the existing Vanilla TypeScript architecture. No backend or framework migration is planned.
+
+### Progress
+
+- [x] Add hash-based routes for the home and profile pages
+- [x] Add a placeholder profile page
+- [x] Add route parsing tests with Vitest (4 tests passing)
+- [x] Pass TypeScript checks
+- [ ] Configure automated deployment to GitHub Pages
+- [ ] Request and save the player's name at game start
+- [ ] Show the player's name and avatar in the game header
+- [ ] Build the profile page with avatar presets and image upload
+- [ ] Store profile settings and gameplay history in `localStorage`
+- [ ] Add gameplay statistics and history
+- [ ] Add achievements and unlock notifications
+- [ ] Add unit tests for profile, statistics, and achievement logic
+- [ ] Add charts if time allows
+- [ ] Add localization if time allows
+
+### Planned profile data
+
+- Player name and avatar
+- Recent game records: date, difficulty, score, outcome, and gameplay counters
+- Aggregated statistics and unlocked achievements
+
+Uploaded avatars will be resized before being stored as Base64 data to limit `localStorage` usage.
+
 ## 🔗 Deploy
 
 https://maryanzh.github.io/Alchemist-s-Cauldron/

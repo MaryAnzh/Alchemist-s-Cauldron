@@ -59,3 +59,9 @@ export const SCORE = {
 } as const;
 
 export const POUR_OUT_PENALTY = 10;
+
+export const GAME_OVER_REASON = {
+  TIME: 'time',
+  LIVES: 'lives',
+  INGREDIENTS: 'ingredients',
+} as const;
