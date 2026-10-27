@@ -4,7 +4,7 @@
 @use '../../../styles/mixin/common.scss' as *;
 @use '../../../styles/mixin/media.scss' as *;
 
-.app-header {
+.app-game-header {
   @include section-paddings;
 
   width: 100%;
@@ -18,7 +18,7 @@
 }
 
 @media (max-width: $tablet) {
-  .app-header {
+  .app-game-header {
     display: grid;
     grid-template-columns: 1fr auto;
     gap: var(--size-1);

@@ -23,6 +23,11 @@ export const {
   PRESET,
   ERROR_INVALID_PROFILE,
   ERROR_UNABLE_TO_SAVE_PROFILE,
+
+  HOME,
+  PRESENTATION,
+  PROFILE,
+  STATS,
 } = {
   EASY: 'easy',
   HARD: 'hard',
@@ -49,4 +54,9 @@ export const {
 
   ERROR_INVALID_PROFILE: 'Cannot save an invalid player profile',
   ERROR_UNABLE_TO_SAVE_PROFILE: 'Unable to save the player profile to localStorage',
+
+  HOME: 'home',
+  PROFILE: 'profile',
+  STATS: 'statistics',
+  PRESENTATION: 'presentation',
 } as const;

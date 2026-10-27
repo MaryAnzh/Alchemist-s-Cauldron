@@ -1,7 +1,7 @@
 import { Game } from '@pages';
 import { store } from '@store';
 import type { ParentNodeType } from '@types';
-import { Component, Footer, Header } from '@ui';
+import { Component, Footer, GameHeader } from '@ui';
 
 type StartGameProps = ParentNodeType & { callback: () => void };
 
@@ -18,7 +18,7 @@ export class StartGame extends Component {
   render() {
     const { maxIngredients } = store.getState();
 
-    new Header({
+    new GameHeader({
       parentNode: this.node,
       currentLivesCount: 0,
       maxLives: 0,

@@ -1,0 +1,9 @@
+@use '../../styles/mixin/common.scss' as *;
+@use '../../styles/mixin/media.scss' as *;
+
+.app-presentation {
+  @include section-paddings;
+  display: flex;
+  justify-content: center;
+  z-index: 10;
+}

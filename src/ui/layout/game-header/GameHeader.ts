@@ -2,22 +2,22 @@ import type { ParentNodeType } from '@types';
 import { Component } from '@ui';
 import { Lives, Score, Timer } from './components';
 
-type HeaderProps = ParentNodeType & {
+type GameHeaderProps = ParentNodeType & {
   currentLivesCount: number;
   maxLives: number;
   showLives?: boolean;
   showPauseButton?: boolean;
 };
 
-export class Header extends Component {
+export class GameHeader extends Component {
   constructor({
     parentNode,
     currentLivesCount,
     maxLives,
     showLives = true,
     showPauseButton = true,
-  }: HeaderProps) {
-    super({ parentNode, tagName: 'header', className: 'app-header' });
+  }: GameHeaderProps) {
+    super({ parentNode, tagName: 'header', className: 'app-game-header' });
     this.render(currentLivesCount, maxLives, showLives, showPauseButton);
   }
 

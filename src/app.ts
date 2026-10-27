@@ -1,8 +1,8 @@
-import { GAME_EVENTS, PAUSED, PLAYING, ROUTES } from '@constants';
+import { GAME_EVENTS, HOME, PAUSED, PLAYING, PRESENTATION, ROUTES } from '@constants';
 import { store } from '@store';
 import {
   Component,
-  Header,
+  GameHeader,
   Footer,
   StartGame,
   Portal,
@@ -13,7 +13,7 @@ import {
 } from '@ui';
 import type { GameOverReasonType, LeaderboardStorageType, RecipeType } from '@types';
 
-import { Game, Profile } from '@pages';
+import { Game, Profile, Presentation } from '@pages';
 import { router, type RoutePath } from '@router';
 
 export class App extends Component {
@@ -22,7 +22,7 @@ export class App extends Component {
   currentView: Component | null = null;
   portal!: Portal;
 
-  header: Header | null = null;
+  GameHeader: GameHeader | null = null;
   main: Component | null = null;
   footer: Footer | null = null;
   pause: Pause | null = null;
@@ -128,8 +128,8 @@ export class App extends Component {
       className: 'app-game-view',
     });
 
-    // header
-    new Header({
+    // GameHeader
+    new GameHeader({
       parentNode: view.node,
       maxLives,
       currentLivesCount: lives,
@@ -277,9 +277,13 @@ export class App extends Component {
   }
 
   private handleRoute(route: RoutePath) {
-    if (route === ROUTES.HOME) {
+    if (route === ROUTES[HOME]) {
       if (this.currentView instanceof Profile) this.renderStartView();
       else if (!this.currentView) this.renderStartView();
+      return;
+    }
+    if (route === ROUTES[PRESENTATION]) {
+      this.renderPresentationView();
       return;
     }
     this.renderProfileView();
@@ -290,6 +294,14 @@ export class App extends Component {
     if (status === PLAYING || status === PAUSED) this.store.exitToMenu();
     this.portal.unmount();
 
-    this.setView(new Profile({ parentNode: this.node }));
+    this.setView(new Profile({ parentNode: this.node, router }));
+  }
+
+  renderPresentationView() {
+    const { status } = this.store.getState();
+    if (status === PLAYING || status === PAUSED) this.store.exitToMenu();
+    this.portal.unmount();
+
+    this.setView(new Presentation({ parentNode: this.node }));
   }
 }

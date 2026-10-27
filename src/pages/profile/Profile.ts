@@ -1,11 +1,18 @@
-import { router } from '@router';
-import { ROUTES } from '@constants';
+import { HOME, ROUTES } from '@constants';
+import type { Router } from '@router';
 import type { ParentNodeType } from '@types';
 import { Button, Component } from '@ui';
 
+type ProfileProps = ParentNodeType & {
+  router: Router;
+};
+
 export class Profile extends Component {
-  constructor({ parentNode }: ParentNodeType) {
+  private router: Router;
+
+  constructor({ parentNode, router }: ProfileProps) {
     super({ parentNode, tagName: 'div', className: 'app-profile' });
+    this.router = router;
 
     new Component({
       parentNode: this.node,
@@ -17,7 +24,7 @@ export class Profile extends Component {
       parentNode: this.node,
       color: 'arrow-left',
       text: 'Back',
-      onClick: () => router.navigate(ROUTES.HOME),
+      onClick: () => this.router.navigate(ROUTES[HOME]),
     });
   }
 }
