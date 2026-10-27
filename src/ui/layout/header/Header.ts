@@ -1,7 +1,7 @@
 import { HOME, PAGE_ALIAS, ROUTER_EVENTS, ROUTES, ROUTES_MAP, TITLE } from '@constants';
 import type { Router } from '@router';
 import type { ParentNodeType, PageNameType } from '@types';
-import { Button, Component, Icon } from '@ui';
+import { Button, Component } from '@ui';
 
 type HeaderProps = ParentNodeType & {
   router: Router;

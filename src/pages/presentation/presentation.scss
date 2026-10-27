@@ -1,6 +1,8 @@
 @use '../../styles/mixin/common.scss' as *;
 @use '../../styles/mixin/media.scss' as *;
 
+@use './slides/style.scss' as *;
+
 .app-presentation {
   @include section-paddings;
   display: flex;

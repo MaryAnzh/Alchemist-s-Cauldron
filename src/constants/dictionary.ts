@@ -29,6 +29,10 @@ export const {
   PROFILE,
   STATS,
   TITLE,
+  DEFAULT,
+  IMAGE,
+  PAGE_TEMPLATE,
+  SLIDE_1_TITLE,
 } = {
   EASY: 'easy',
   HARD: 'hard',
@@ -61,4 +65,8 @@ export const {
   STATS: 'statistics',
   PRESENTATION: 'presentation',
   TITLE: "Alchemist's Cauldron",
+  DEFAULT: 'default',
+  IMAGE: 'image',
+  PAGE_TEMPLATE: 'pageTemplate',
+  SLIDE_1_TITLE: 'Creative Extension -- my imagination space',
 } as const;
