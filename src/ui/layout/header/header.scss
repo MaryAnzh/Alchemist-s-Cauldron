@@ -1,0 +1,46 @@
+.app-header {
+  z-index: 9;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  padding: var(--size-1);
+  gap: var(--size-2);
+  align-items: center;
+
+  &_nav {
+    display: flex;
+    gap: var(--size-1);
+    font-family: var(--font-title);
+    font-size: var(--font-size-md);
+    align-items: center;
+
+    a {
+      text-decoration: none;
+      color: var(--input-text-color);
+      transition: color 0.3s;
+      cursor: pointer;
+
+      &::first-letter {
+        text-transform: uppercase;
+      }
+      &:hover {
+        color: var(--input-text-color-hover);
+      }
+    }
+  }
+
+  &_user {
+    display: flex;
+    gap: var(--size-1);
+    align-items: center;
+
+    &_logo {
+      width: var(--size-4);
+      height: var(--size-4);
+      border-radius: 50%;
+      background-color: var(--color-accent);
+      outline: 1px solid var(--color-parchment);
+      offset: -1px;
+    }
+  }
+}

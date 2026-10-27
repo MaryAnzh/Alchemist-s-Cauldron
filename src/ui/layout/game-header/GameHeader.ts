@@ -17,7 +17,7 @@ export class GameHeader extends Component {
     showLives = true,
     showPauseButton = true,
   }: GameHeaderProps) {
-    super({ parentNode, tagName: 'header', className: 'app-game-header' });
+    super({ parentNode, tagName: 'div', className: 'app-game-header' });
     this.render(currentLivesCount, maxLives, showLives, showPauseButton);
   }
 

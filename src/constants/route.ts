@@ -6,3 +6,9 @@ export const ROUTES = {
   STATS: '/profile/stats',
   [PRESENTATION]: '/presentation',
 } as const;
+
+export const ROUTES_MAP = [
+  { name: HOME, path: ROUTES[HOME] },
+  { name: PROFILE, path: ROUTES[PROFILE] },
+  { name: PRESENTATION, path: ROUTES[PRESENTATION] },
+];

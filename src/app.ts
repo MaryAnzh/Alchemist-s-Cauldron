@@ -15,10 +15,13 @@ import type { GameOverReasonType, LeaderboardStorageType, RecipeType } from '@ty
 
 import { Game, Profile, Presentation } from '@pages';
 import { router, type RoutePath } from '@router';
+import { Header } from './ui/layout/header/Header';
 
 export class App extends Component {
   root: HTMLElement;
+  appWrap!: Component;
   store = store;
+  currentPage: Component | null = null;
   currentView: Component | null = null;
   portal!: Portal;
 
@@ -82,6 +85,23 @@ export class App extends Component {
 
     // Keyboard shortcuts: one handler, active only while playing
     document.addEventListener('keydown', (e) => this.handleHotkeys(e));
+
+    this.render();
+  }
+
+  render() {
+    this.node.innerHTML = '';
+
+    new Header({
+      parentNode: this.node,
+      router,
+    });
+
+    this.appWrap = new Component({
+      parentNode: this.node,
+      tagName: 'div',
+      className: 'app-wrap',
+    });
   }
 
   private setView(view: Component) {
@@ -103,7 +123,7 @@ export class App extends Component {
     this.portal.unmount();
 
     const view = new StartGame({
-      parentNode: this.node,
+      parentNode: this.appWrap.node,
       callback: () => this.handleStartGame(),
     });
 
@@ -123,7 +143,7 @@ export class App extends Component {
     } = this.store.getState();
 
     const view = new Component({
-      parentNode: this.node,
+      parentNode: this.appWrap.node,
       tagName: 'div',
       className: 'app-game-view',
     });
@@ -163,7 +183,7 @@ export class App extends Component {
     this.portal.unmount();
 
     const view = new GameOver({
-      parentNode: this.node,
+      parentNode: this.appWrap.node,
       score,
       isRecord,
       reason,
@@ -277,9 +297,9 @@ export class App extends Component {
   }
 
   private handleRoute(route: RoutePath) {
+    this.currentView?.destroy();
     if (route === ROUTES[HOME]) {
-      if (this.currentView instanceof Profile) this.renderStartView();
-      else if (!this.currentView) this.renderStartView();
+      this.renderStartView();
       return;
     }
     if (route === ROUTES[PRESENTATION]) {
@@ -294,7 +314,7 @@ export class App extends Component {
     if (status === PLAYING || status === PAUSED) this.store.exitToMenu();
     this.portal.unmount();
 
-    this.setView(new Profile({ parentNode: this.node, router }));
+    this.setView(new Profile({ parentNode: this.appWrap.node, router }));
   }
 
   renderPresentationView() {
@@ -302,6 +322,6 @@ export class App extends Component {
     if (status === PLAYING || status === PAUSED) this.store.exitToMenu();
     this.portal.unmount();
 
-    this.setView(new Presentation({ parentNode: this.node }));
+    this.setView(new Presentation({ parentNode: this.appWrap.node }));
   }
 }

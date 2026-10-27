@@ -18,7 +18,14 @@ $btn-polygon: polygon(20px 0%, 100% 0%, calc(100% - 20px) 50%, 100% 100%, 20px 1
   white-space: nowrap;
   outline-offset: var(--border-lg-neg);
   border: none;
-  background: transparent &_fullWidth {
+  background: transparent;
+
+  span::first-letter {
+    display: block;
+    text-transform: uppercase;
+  }
+
+  &_fullWidth {
     width: 100%;
   }
 
@@ -41,6 +48,13 @@ $btn-polygon: polygon(20px 0%, 100% 0%, calc(100% - 20px) 50%, 100% 100%, 20px 1
     font-size: var(--font-size-md);
     border-radius: var(--radius-md);
     height: var(--size-6);
+  }
+  &_dark {
+    color: var(--color-parchment);
+
+    &:hover {
+      color: var(--color-bg-light);
+    }
   }
 
   &_empty {
