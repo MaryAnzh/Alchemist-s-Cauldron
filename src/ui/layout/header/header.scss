@@ -1,11 +1,49 @@
 .app-header {
   z-index: 9;
   width: 100%;
-  display: flex;
-  justify-content: flex-end;
+  display: grid;
+  grid-template-columns: auto repeat(2, min-content);
   padding: var(--size-1);
   gap: var(--size-2);
   align-items: center;
+
+  &_wrap {
+    display: flex;
+    align-items: center;
+
+    &_icon {
+      width: var(--size-4);
+      height: var(--size-4);
+    }
+
+    &_title {
+      justify-self: start;
+      font-family: var(--font-title);
+      font-size: var(--font-size-lg);
+      font-weight: var(--weight-regular);
+      letter-spacing: -1.3px;
+      transform: scaleX(0.85);
+      display: inline-block;
+      white-space: nowrap;
+
+      background: linear-gradient(
+        0deg,
+        #b8ffce 0%,
+        #1fb85a 10%,
+        #7aff9f 20%,
+        #3fe875 45%,
+        #1fb85a 70%,
+        #0a5a2c 100%
+      );
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+
+      &::first-letter {
+        text-transform: uppercase;
+      }
+    }
+  }
 
   &_nav {
     display: flex;
@@ -16,15 +54,16 @@
 
     a {
       text-decoration: none;
-      color: var(--input-text-color);
+      color: var(--input-text-color-hover);
       transition: color 0.3s;
       cursor: pointer;
 
       &::first-letter {
         text-transform: uppercase;
       }
+
       &:hover {
-        color: var(--input-text-color-hover);
+        color: var(--input-text-color);
       }
     }
   }

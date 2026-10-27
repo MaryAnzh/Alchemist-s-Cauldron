@@ -1,4 +1,4 @@
-import { GAME_EVENTS as GE } from '@constants';
+import { GAME_EVENTS as GE, ROUTER_EVENTS } from '@constants';
 import type { GameState } from './state';
 import type { cauldronValuesType, GameOverReasonType, ReactionId, RecipeType } from './data';
 import type { LeaderboardStorageType } from './leaderboard';
@@ -26,4 +26,8 @@ export type GameEventsPayload = {
   [GE.SHOW_LEADERBOARD]: LeaderboardStorageType;
   [GE.PAGE_HIDDEN]: boolean;
   [GE.SHOW_RULES]: boolean;
+};
+
+export type RouterEventsPayload = {
+  [ROUTER_EVENTS.PATH_CHANGE]: string;
 };

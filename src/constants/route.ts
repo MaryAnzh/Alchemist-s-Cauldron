@@ -12,3 +12,13 @@ export const ROUTES_MAP = [
   { name: PROFILE, path: ROUTES[PROFILE] },
   { name: PRESENTATION, path: ROUTES[PRESENTATION] },
 ];
+
+export const ROUTER_EVENTS = {
+  PATH_CHANGE: 'path:change',
+};
+
+export const PAGE_ALIAS = {
+  [ROUTES[HOME]]: HOME,
+  [ROUTES[PROFILE]]: PROFILE,
+  [ROUTES[PRESENTATION]]: PRESENTATION,
+};

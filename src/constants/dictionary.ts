@@ -28,6 +28,7 @@ export const {
   PRESENTATION,
   PROFILE,
   STATS,
+  TITLE,
 } = {
   EASY: 'easy',
   HARD: 'hard',
@@ -55,8 +56,9 @@ export const {
   ERROR_INVALID_PROFILE: 'Cannot save an invalid player profile',
   ERROR_UNABLE_TO_SAVE_PROFILE: 'Unable to save the player profile to localStorage',
 
-  HOME: 'home',
+  HOME: 'game',
   PROFILE: 'profile',
   STATS: 'statistics',
   PRESENTATION: 'presentation',
+  TITLE: "Alchemist's Cauldron",
 } as const;
