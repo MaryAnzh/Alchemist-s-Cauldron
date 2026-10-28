@@ -3,37 +3,89 @@
 RS School game task  
 Task URL: https://github.com/rolling-scopes-school/qualifying-stage/blob/main/tasks/game-alchemists-cauldron/README.md
 
-## ✨ Creative Extension — Alchemist Profile
+## ✨ Creative Extension — Alchemist’s Journey
 
-**Goal:** extend the game with a personal player profile that keeps gameplay history, statistics, achievements, and avatar preferences in `localStorage`.
+An extension of Alchemist’s Cauldron focused on personal player progress
+and an integrated presentation for the project interview.
 
-This is a client-side feature built with the existing Vanilla TypeScript architecture. No backend or framework migration is planned.
+- [Assignment](https://github.com/rolling-scopes-school/qualifying-stage/blob/main/tasks/creative-extension/mini-games.md)
+- [Assessment criteria](https://github.com/rolling-scopes-school/qualifying-stage/blob/main/tasks/creative-extension/mentors-check.md)
+
+### Goals
+
+- Give the player a persistent identity: name and avatar.
+- Track completed games, statistics, and achievements.
+- Present the idea, architecture, technical decisions, and results inside the application.
+
+The extension uses Vanilla TypeScript and the existing component-based UI.
+Profile data stays in localStorage; no backend, authentication, or framework
+migration is planned.
 
 ### Progress
 
-- [x] Add hash-based routes for the home and profile pages
-- [x] Add a placeholder profile page
-- [x] Add route parsing tests with Vitest (4 tests passing)
-- [x] Pass TypeScript checks
-- [ ] Configure automated deployment to GitHub Pages
-- [x] Configure ProfileService and profile state validator
-- [ ] Request and save the player's name at game start
-- [ ] Show the player's name and avatar in the game header
-- [ ] Build the profile page with avatar presets and image upload
-- [ ] Store profile settings and gameplay history in `localStorage`
-- [ ] Add gameplay statistics and history
+#### Foundation
+
+- [x] Add hash-based routing and a profile placeholder
+- [x] Configure Vitest and add route parsing tests
+- [x] Add the profile model, storage service, and validation
+- [x] Add profile validation tests
+- [ ] Verify automated deployment from the development branch
+
+#### Player profile
+
+- [ ] Request the player's name before starting a game
+- [ ] Show the player's name and avatar in the header
+- [ ] Add profile navigation
+- [ ] Add preset avatars and resized image uploads
+- [ ] Record completed games without duplicates
+- [ ] Preserve gameplay counters when continuing a saved game
+- [ ] Display recent history and aggregated statistics
 - [ ] Add achievements and unlock notifications
-- [ ] Add unit tests for profile, statistics, and achievement logic
-- [ ] Add charts if time allows
-- [ ] Add localization if time allows
+- [ ] Test history, statistics, and achievement rules
 
-### Planned profile data
+#### Integrated presentation
 
-- Player name and avatar
-- Recent game records: date, difficulty, score, outcome, and gameplay counters
-- Aggregated statistics and unlocked achievements
+- [x] Add a presentation page and route
+- [x] Add the slide component and initial title slide
+- [x] Add the preview rendering skeleton
+- [ ] Implement title, content, and split layouts
+- [ ] Add slide navigation and clickable preview cards
+- [ ] Add keyboard controls and a current-slide indicator
+- [ ] Prepare content for a 5–10 minute presentation
+- [ ] Add slide transitions with reduced-motion support
 
-Uploaded avatars will be resized before being stored as Base64 data to limit `localStorage` usage.
+#### Final polish
+
+- [ ] Handle unavailable or full localStorage with visible feedback
+- [ ] Check responsive layouts and keyboard navigation
+- [ ] Verify profile persistence and the existing game flow
+- [ ] Rehearse the presentation and live demonstration
+
+#### Optional
+
+- [ ] Statistics charts
+- [ ] Localization
+
+### Data and limitations
+
+The profile is planned to store the player's name, avatar, recent game
+records, and unlocked achievements. Uploaded avatars will be resized
+before storage.
+
+Data belongs to the current browser and origin. It is not synchronized
+between devices and may be lost when browser storage is cleared.
+
+### Validation
+
+```sh
+npm run tsc
+npm run lint
+npm test
+npm run build
+```
+
+Tests are added alongside each feature. Checklist items are marked complete
+only after implementation and verification.
 
 ## 🔗 Deploy
 

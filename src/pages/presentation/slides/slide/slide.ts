@@ -1,35 +1,52 @@
-import { DEFAULT, IMAGE, PAGE_TEMPLATE } from '@constants';
-import type { SlideVariantType } from '@types';
+import type { SlideTemplateType } from '@types';
 import { Component } from '@ui';
-import type { SlideProps, SlideTitleType } from '../../types';
+import type { SlideProps, SlideTitleType, SubTitleType } from '../../types';
 
 export class Slide extends Component {
   nodeClass = 'app-presentation-slide';
   title: SlideTitleType | null = null;
-  variantsMap: Record<SlideVariantType, () => void> = {
-    [DEFAULT]: () => this.defaultRender(),
-    [IMAGE]: () => this.imageRender(),
-    [PAGE_TEMPLATE]: () => this.pageTemplateRender(),
+  subtitle: SubTitleType | null = null;
+
+  templateMap: Record<SlideTemplateType, () => void> = {
+    title: () => this.titleTemplateRender(),
+    content: () => this.contentTemplateRender(),
+    split: () => this.splitTemplateRender(),
   };
 
-  constructor({ parentNode, title, variant }: SlideProps) {
-    super({ parentNode, className: 'app-presentation-slide' });
+  constructor({ parentNode, title, subTitle, template, slideJustify }: SlideProps) {
+    super({
+      parentNode,
+      className: [
+        'app-presentation-slide',
+        `app-presentation-slide_justify-${slideJustify ?? 'center'}`,
+      ],
+    });
     this.title = title ?? null;
+    this.subtitle = subTitle ?? null;
+    console.log(`Subtitle: ${subTitle?.text ?? ''}`);
 
-    this.variantsMap[variant ?? DEFAULT];
+    this.templateMap[template ?? 'title']();
   }
 
-  defaultRender() {
+  titleTemplateRender() {
     new Component({
       parentNode: this.node,
-      className: 'app-presentation-slide_default_title',
-      content: this.title?.test ?? '',
+      className: ['app-presentation-slide_default_title', 'app-presentation-slide_title'],
+      tagName: 'h2',
+      content: this.title?.text ?? '',
+    });
+
+    new Component({
+      parentNode: this.node,
+      className: ['app-presentation-slide_default_subtitle', 'app-presentation-slide_subtitle'],
+      tagName: 'h3',
+      content: this.subtitle?.text ?? '',
     });
   }
 
-  imageRender() {}
+  contentTemplateRender() {}
 
-  pageTemplateRender() {}
+  splitTemplateRender() {}
 
   destroy() {
     super.destroy();

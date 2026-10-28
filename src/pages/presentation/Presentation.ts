@@ -1,32 +1,20 @@
-import type { IconPickerType, ParentNodeType, SlideVariantType } from '@types';
+import type { ParentNodeType } from '@types';
 import { Component, Icon } from '@ui';
 import { Slide } from './slides/slide/slide';
-import { DEFAULT, IMAGE, PAGE_TEMPLATE, SLIDE_1_TITLE } from '@constants';
-import type { SlideProps } from './types';
+import { SLIDES_SET } from './slidesSet';
 
 type PresentationProps = ParentNodeType;
 
 export class Presentation extends Component {
   currentSlideNumber = 0;
-  currentSlide: Slide | null = null;
-  leftSlide: Slide | null = null;
-  rightSlide: Slide | null = null;
+  currentSlide: { Slide: Slide; id: string } | null = null;
 
   slideWrap!: Component;
   controls!: Component;
-
-  slidesSet: SlideProps[] = [
-    { parentNode: this.slideWrap.node, variant: DEFAULT, title: { test: SLIDE_1_TITLE } },
-  ];
-  previewIcons: Record<SlideVariantType, IconPickerType> = {
-    [DEFAULT]: 'symbol',
-    [IMAGE]: 'symbol',
-    [PAGE_TEMPLATE]: 'symbol',
-  };
-  previews: { index: number; node: Icon }[] = [];
+  previews: { card: Component; id: string }[] = [];
 
   constructor({ parentNode }: PresentationProps) {
-    super({ parentNode, className: 'app-presentation', content: 'Presentation' });
+    super({ parentNode, className: 'app-presentation' });
 
     this.render();
   }
@@ -42,30 +30,62 @@ export class Presentation extends Component {
       className: 'app-presentation_controls',
     });
 
-    this.renderSlide(this.currentSlideNumber);
-    this.renderPreviews(this.currentSlideNumber);
+    this.renderSlide(this.slideWrap, this.currentSlideNumber);
+    this.renderPreviews(this.controls);
   }
 
-  renderSlide(num: number): void {
-    this.currentSlide = new Slide(this.slidesSet[num]);
+  renderSlide(wrap: Component, num: number): void {
+    const slideData = SLIDES_SET[num];
+    if (!slideData) return;
+
+    const { slide, id } = slideData;
+
+    this.currentSlide = {
+      Slide: new Slide({ ...slide, parentNode: wrap.node }),
+      id,
+    };
   }
 
-  renderPreviews(num: number): void {
-    this.slidesSet.forEach(({ variant }, index) => {
-      const icon = this.previewIcons[variant];
+  renderPreviews(wrap: Component): void {
+    SLIDES_SET.forEach(({ preview: { title, icon }, id }, i) => {
+      const card = new Component({
+        parentNode: wrap.node,
+        className: 'app-presentation_controls_preview',
+        tagName: 'button',
+        attrs: {
+          type: 'button',
+          role: 'button',
+          'aria-label': id,
+          'aria-current': id === this.currentSlide?.id ? 'true' : 'false',
+          tabIndex: 0,
+        },
+      });
 
-      const node = new Icon({
-        parentNode: this.node,
+      new Component({
+        parentNode: card.node,
+        className: 'app-presentation_controls_preview_count',
+        tagName: 'span',
+        content: (i + 1).toString(),
+      });
+
+      new Icon({
+        parentNode: card.node,
+        className: 'app-presentation_controls_preview_icon',
         icon,
       });
-      if (num === index) {
-        node.node.classList.add('app-presentation_preview_active');
+
+      new Component({
+        parentNode: card.node,
+        className: 'app-presentation_controls_preview_title',
+        tagName: 'span',
+        content: title,
+      });
+
+      if (id === this.currentSlide?.id) {
+        card.node.classList.add('app-presentation_controls_preview_active');
       }
 
-      this.previews.push({
-        index,
-        node,
-      });
+      this.previews.push({ card, id });
     });
   }
 

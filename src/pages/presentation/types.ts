@@ -1,4 +1,4 @@
-import type { IconPickerType, ParentNodeType, SlideVariantType } from '@types';
+import type { IconPickerType, ParentNodeType, SlideTemplateType } from '@types';
 
 export type SlidePositionType = {
   positionX?: 'left' | 'right' | 'center';
@@ -10,39 +10,42 @@ export type SlideElementGridType = {
   rows?: number;
 };
 
-export type SlideTitleType = SlidePositionType &
-  SlideElementGridType & {
-    test: string;
-    icon?: IconPickerType;
-  };
+export type SlideTitleType = {
+  text: string;
+  icon?: IconPickerType;
+};
 
-export type SubTitleType = SlideElementGridType & {
+export type SubTitleType = {
   text: string;
 };
 
+export type SlideJustifyType = 'left' | 'right' | 'center';
+
 export type SlideProps = ParentNodeType & {
-  variant: SlideVariantType;
+  template: SlideTemplateType;
+  slideJustify?: SlideJustifyType;
   title?: SlideTitleType;
   subTitle?: SubTitleType;
   list?: {
-    positionX: 'left' | 'right' | 'center';
-    positionY?: 'top' | 'bottom' | 'center';
     listColumns?: number;
     title?: string;
     items: string[];
     image?: string;
     iconsStyle?: IconPickerType;
-    columns?: number;
-    rows?: number;
   };
   image?: {
     src: string;
     alt?: string;
-    positionX?: 'left' | 'right' | 'center';
-    positionY?: 'top' | 'bottom' | 'center';
-    columns?: number;
-    rows?: number;
   };
-  columnsTemplate?: number;
-  rowsTemplate?: number;
+};
+
+export type SlidePreviewType = {
+  title: string;
+  icon: IconPickerType;
+};
+
+export type SlideSetType = {
+  id: string;
+  slide: Omit<SlideProps, 'parentNode'>;
+  preview: SlidePreviewType;
 };

@@ -298,6 +298,7 @@ export class App extends Component {
 
   private handleRoute(route: RoutePath) {
     this.currentView?.destroy();
+
     if (route === ROUTES[HOME]) {
       this.renderStartView();
       return;
