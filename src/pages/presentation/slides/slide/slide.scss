@@ -1,3 +1,5 @@
+@use '../../../../styles/mixin/media.scss' as *;
+
 .app-presentation-slide {
   position: relative;
   width: 100%;
@@ -27,12 +29,31 @@
 
   &_justify-center {
     justify-content: center;
+    .app-presentation-slide_title {
+      text-align: center;
+    }
+    .app-presentation-slide_subtitle {
+      text-align: center;
+    }
   }
   &_justify-left {
     justify-content: flex-start;
+    .app-presentation-slide_title {
+      text-align: left;
+    }
+    .app-presentation-slide_subtitle {
+      text-align: left;
+    }
   }
   &_justify-right {
     justify-content: flex-end;
+
+    .app-presentation-slide_title {
+      text-align: right;
+    }
+    .app-presentation-slide_subtitle {
+      text-align: right;
+    }
   }
 
   &_title {
@@ -54,4 +75,36 @@
   // &_default {
 
   // }
+}
+
+@media (max-width: $laptop) {
+  .app-presentation-slide {
+    padding: var(--size-3);
+    gap: var(--size-4);
+    border-radius: var(--radius-md);
+
+    &_title {
+      font-size: var(--size-6);
+    }
+
+    &_subtitle {
+      font-size: var(--size-5);
+    }
+  }
+}
+
+@media (max-width: $tablet-md) {
+  .app-presentation-slide {
+    padding: var(--size-2);
+    gap: var(--size-3);
+    border-radius: var(--radius-md);
+
+    &_title {
+      font-size: var(--size-4);
+    }
+
+    &_subtitle {
+      font-size: var(--size-3);
+    }
+  }
 }

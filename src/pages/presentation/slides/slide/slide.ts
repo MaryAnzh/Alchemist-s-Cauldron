@@ -23,7 +23,6 @@ export class Slide extends Component {
     });
     this.title = title ?? null;
     this.subtitle = subTitle ?? null;
-    console.log(`Subtitle: ${subTitle?.text ?? ''}`);
 
     this.templateMap[template ?? 'title']();
   }
