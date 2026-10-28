@@ -32,7 +32,7 @@ export const {
   DEFAULT,
   IMAGE,
   PAGE_TEMPLATE,
-
+  ALCHEMIST,
   SLIDE_1_TITLE,
   SLIDE_1_PREVIEW_TITLE,
   SLIDE_1_SUBTITLE,
@@ -91,6 +91,7 @@ export const {
   DENSITY: 'density',
   MAGIC_POWER: 'magicPower',
   PRESET: 'preset',
+  ALCHEMIST: 'Alchemist',
 
   ERROR_INVALID_PROFILE: 'Cannot save an invalid player profile',
   ERROR_UNABLE_TO_SAVE_PROFILE: 'Unable to save the player profile to localStorage',
