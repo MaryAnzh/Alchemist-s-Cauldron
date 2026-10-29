@@ -8,6 +8,9 @@ import { GameSave } from './gameSave';
 import { Leaderboard } from './leaderboard';
 import { PlayerProfile } from './playerProfile/PlayerProfile';
 import { remainingSeconds, shiftedSeconds } from './clock';
+import { applyBrewReward, isBrewSuccess } from './brew';
+import { buildShelf, takeNextRecipe } from './setup';
+import { createState } from './state';
 
 class Store {
   private events = new EventEmitter<T.GameEventsPayload>();
@@ -18,58 +21,41 @@ class Store {
   private gameSave = new GameSave();
   private player = new PlayerProfile();
 
-  private state: T.GameState = {
-    playerName: 'Alchemist',
-    status: C.MENU,
-    level: 1,
-    difficulty: C.MEDIUM,
+  private state: T.GameState = createState();
 
-    score: 0,
-    lives: C.LIVES.medium,
-    maxLives: C.LIVES.medium,
-    timeLeft: 0,
-
-    currentRecipe: null,
-    recipes: [],
-
-    // Cauldron
-    cauldronIngredients: [],
-    cauldronValues: { density: 0, magicPower: 0, temperature: 0 },
-    maxIngredients: C.MAX_INGREDIENTS.medium,
-
-    // Shelf
-    shelfIngredients: [],
-
-    // Reactions (Level 3)
-    enabledReactionIds: [...C.REACTION_IDS_BY_DIFFICULTY.medium],
-    activeReactions: [],
-    lastReactionId: null,
-
-    startTimestamp: 0,
-    endTimestamp: 0,
-  };
-
-  /** Utils  */
   public getState = () => {
     return this.state;
   };
-
   public subscribe<K extends keyof T.GameEventsPayload>(
     event: K,
     listener: (payload: T.GameEventsPayload[K]) => void,
   ) {
     this.events.on(event, listener);
   }
-
   private emit<K extends keyof T.GameEventsPayload>(event: K, payload: T.GameEventsPayload[K]) {
     this.events.emit(event, payload);
   }
-
   private update(partial: Partial<T.GameState>) {
     this.state = { ...this.state, ...partial };
   }
 
-  /** main game actions */
+  public getUserName() {
+    return this.player.name;
+  }
+  public isIncognito() {
+    return this.player.isIncognito;
+  }
+  public setUserName(name: string): boolean {
+    if (!this.player.setName(name)) return false;
+    this.update({ playerName: this.player.name });
+    this.emit(C.GAME_EVENTS.PLAYER_NAME_CHANGED, { name: this.player.name });
+    return true;
+  }
+  public requestNameDialog() {
+    if (this.state.status !== C.MENU) return;
+    this.emit(C.GAME_EVENTS.OPEN_NAME_DIALOG, true);
+  }
+
   public startNewGame = () => {
     this.resetGameState();
     this.session = L.createSessionStats(Date.now());
@@ -82,7 +68,6 @@ class Store {
 
     this.emit(C.GAME_EVENTS.GAME_START, this.state);
   };
-
   pauseGame() {
     const remaining = this.timerRunning
       ? remainingSeconds(this.state.endTimestamp, Date.now())
@@ -99,7 +84,6 @@ class Store {
 
     this.emit(C.GAME_EVENTS.PAUSE, { auto: false });
   }
-
   resumeGame() {
     this.update({ status: C.PLAYING });
 
@@ -111,7 +95,6 @@ class Store {
     this.saveGame();
     this.emit(C.GAME_EVENTS.RESUME, this.state);
   }
-
   resetGameState() {
     this.timer.stop();
     this.timerRunning = false;
@@ -131,7 +114,6 @@ class Store {
       lastReactionId: null,
     };
   }
-
   roundOver(variant: 'success' | 'fail') {
     this.timer.stop();
     this.timerRunning = false;
@@ -143,7 +125,6 @@ class Store {
       variant,
     });
   }
-
   public newRound() {
     if (this.state.shelfIngredients.every((ing) => !ing.count)) {
       this.gameOver('ingredients');
@@ -165,7 +146,6 @@ class Store {
     this.emit(C.GAME_EVENTS.ROUND_START, { isStart: true });
     this.saveGame();
   }
-
   public gameOver(reason: T.GameOverReasonType = 'time') {
     const score = this.state.score;
     const wasActive = this.state.status === C.PLAYING || this.state.status === C.PAUSED;
@@ -182,83 +162,24 @@ class Store {
     this.gameSave.clear();
   }
 
-  private recordGame(reason: T.GameOverReasonType, score: number) {
-    this.player.addRecord(
-      L.buildGameRecord({
-        stats: this.session,
-        difficulty: this.state.difficulty,
-        score,
-        reason,
-        now: Date.now(),
-      }),
-    );
-  }
-
-  public getUserName() {
-    return this.player.name;
-  }
-
-  isIncognito() {
-    return this.player.isIncognito;
-  }
-
-  setUserName(name: string): boolean {
-    if (!this.player.setName(name)) return false;
-    this.update({ playerName: this.player.name });
-    this.emit(C.GAME_EVENTS.PLAYER_NAME_CHANGED, { name: this.player.name });
-    return true;
-  }
-
-  /** Inits data */
   initShelf() {
-    const count = C.SHELF_SIZE[this.state.difficulty];
-
-    const shuffled = C.INGREDIENTS.map((ing) => ({ ...ing }));
-    const shelfIngredients = shuffled.slice(0, count);
-
-    shelfIngredients.forEach((ing) => {
-      ing.count = Math.floor(Math.random() * 14) + 2;
+    this.update({
+      shelfIngredients: buildShelf(C.INGREDIENTS, C.SHELF_SIZE[this.state.difficulty]),
     });
-
-    this.update({ shelfIngredients });
   }
-
   pickRandomRecipe() {
-    if (this.state.recipes.length === 0) {
-      this.state.recipes = C.RECIPES.filter((r) => r.difficulty === this.state.difficulty).sort(
-        () => Math.random() - 0.5,
-      ) as T.RecipeType[];
-    }
-    const currentRecipe = this.state.recipes.at(-1);
-    this.state.recipes.pop();
-    if (!currentRecipe) {
-      return;
-    }
+    const { recipe, queue } = takeNextRecipe(
+      this.state.recipes,
+      C.RECIPES as unknown as readonly T.RecipeType[],
+      this.state.difficulty,
+    );
+    this.update({ recipes: queue });
+    if (!recipe) return;
 
-    this.update({
-      currentRecipe,
-    });
-    this.emit(C.GAME_EVENTS.RECIPE_CHANGED, { recipe: currentRecipe, ingInCauldron: 0 });
+    this.update({ currentRecipe: recipe });
+    this.emit(C.GAME_EVENTS.RECIPE_CHANGED, { recipe, ingInCauldron: 0 });
   }
 
-  setTimer() {
-    const difficulty = this.state.difficulty;
-
-    const initialTime = C.TIMER[difficulty].gameTime;
-
-    const now = Date.now();
-    const end = now + initialTime * 1000;
-
-    this.update({
-      startTimestamp: now,
-      endTimestamp: end,
-      timeLeft: initialTime,
-    });
-
-    this.runTimer(initialTime);
-  }
-
-  /** Games Actions */
   addIngredientToCauldron(id: string) {
     const stock = this.state.shelfIngredients.find((ing) => ing.id === id);
     if (!stock || !stock.count) return;
@@ -290,7 +211,6 @@ class Store {
 
     this.applyReactionEffects(fired);
   }
-
   private applyReactionEffects(fired: T.IReaction[]) {
     if (!fired.length) return;
     this.session.reactionsTriggered += fired.length;
@@ -318,59 +238,20 @@ class Store {
     if (timeDelta) this.shiftTime(timeDelta);
     this.saveGame();
   }
-
-  private shiftTime(delta: number): boolean {
-    const timeLeft = shiftedSeconds(this.state.endTimestamp, Date.now(), delta);
-    if (timeLeft <= 0) {
-      this.update({ timeLeft: 0 });
-      this.emit(C.GAME_EVENTS.TIMER_TICK, 0);
-      this.gameOver('time');
-      return false;
-    }
-
-    this.timer.stop();
-    this.update({ timeLeft, endTimestamp: Date.now() + timeLeft * 1000 });
-    this.emit(C.GAME_EVENTS.TIMER_TICK, timeLeft);
-    this.runTimer(timeLeft);
-    this.saveGame();
-    return true;
-  }
-
   brewCheck() {
     if (this.state.status !== C.PLAYING || !this.state.cauldronIngredients.length) return;
 
     const recipe = this.state.currentRecipe;
     if (!recipe) return;
 
-    const difficulty = this.state.difficulty;
-    const tolerance = C.TOLERANCE[difficulty];
+    const { difficulty, cauldronValues } = this.state;
 
-    const { temperature, density, magicPower } = this.state.cauldronValues;
-
-    const inRange = (value: number, range: { min: number; max: number }) =>
-      value >= range.min - tolerance && value <= range.max + tolerance;
-
-    const success =
-      inRange(temperature, {
-        min: recipe.temperature.at(0) ?? 0,
-        max: recipe.temperature.at(1) ?? 0,
-      }) &&
-      inRange(density, {
-        min: recipe.density.at(0) ?? 0,
-        max: recipe.density.at(1) ?? 0,
-      }) &&
-      inRange(magicPower, {
-        min: recipe.magicPower.at(0) ?? 0,
-        max: recipe.magicPower.at(1) ?? 0,
+    if (isBrewSuccess(recipe, cauldronValues, difficulty)) {
+      const { timeLeft, score } = applyBrewReward({
+        timeLeft: this.state.timeLeft,
+        score: this.state.score,
+        difficulty,
       });
-
-    if (success) {
-      const timeLeft = Math.min(
-        C.TIMER[difficulty].gameTime,
-        C.TIMER[difficulty].bonus + this.state.timeLeft,
-      );
-
-      const score = C.SCORE[difficulty] + this.state.score;
 
       this.update({ timeLeft, score });
       this.emit(C.GAME_EVENTS.TIMER_TICK, timeLeft);
@@ -392,13 +273,11 @@ class Store {
       this.gameOver('lives');
     }
   }
-
   loseLife() {
     const lives = this.state.lives - 1;
     this.update({ lives });
     this.emit(C.GAME_EVENTS.LIVES_CHANGE, { lives });
   }
-
   clearCauldron() {
     this.update({
       cauldronIngredients: [],
@@ -408,8 +287,7 @@ class Store {
     this.emit(C.GAME_EVENTS.CAULDRON_STATE_CHANGED, { values: this.state.cauldronValues });
     this.emit(C.GAME_EVENTS.INGREDIENT_IN_CAULDRON, 0);
   }
-
-  pourOut() {
+  public pourOut() {
     if (this.state.status !== C.PLAYING || !this.state.cauldronIngredients.length) return;
 
     this.clearCauldron();
@@ -418,6 +296,66 @@ class Store {
     this.shiftTime(-C.POUR_OUT_PENALTY);
   }
 
+  setTimer() {
+    const difficulty = this.state.difficulty;
+
+    const initialTime = C.TIMER[difficulty].gameTime;
+
+    const now = Date.now();
+    const end = now + initialTime * 1000;
+
+    this.update({
+      startTimestamp: now,
+      endTimestamp: end,
+      timeLeft: initialTime,
+    });
+
+    this.runTimer(initialTime);
+  }
+  private shiftTime(delta: number): boolean {
+    const timeLeft = shiftedSeconds(this.state.endTimestamp, Date.now(), delta);
+    if (timeLeft <= 0) {
+      this.update({ timeLeft: 0 });
+      this.emit(C.GAME_EVENTS.TIMER_TICK, 0);
+      this.gameOver('time');
+      return false;
+    }
+
+    this.timer.stop();
+    this.update({ timeLeft, endTimestamp: Date.now() + timeLeft * 1000 });
+    this.emit(C.GAME_EVENTS.TIMER_TICK, timeLeft);
+    this.runTimer(timeLeft);
+    this.saveGame();
+    return true;
+  }
+  private runTimer(seconds: number) {
+    this.timer.start(
+      seconds,
+      (remaining) => {
+        const timeChanged = remaining !== this.state.timeLeft;
+        this.update({ timeLeft: remaining });
+        this.emit(C.GAME_EVENTS.TIMER_TICK, remaining);
+        if (timeChanged) this.saveGame();
+      },
+      () => this.gameOver(),
+    );
+    this.timerRunning = true;
+  }
+
+  public submitScore(name: string, score: number) {
+    this.setToLeaderboard({ name, score, date: new Date() });
+  }
+  private recordGame(reason: T.GameOverReasonType, score: number) {
+    this.player.addRecord(
+      L.buildGameRecord({
+        stats: this.session,
+        difficulty: this.state.difficulty,
+        score,
+        reason,
+        now: Date.now(),
+      }),
+    );
+  }
   public saveGame() {
     const { status, timeLeft } = this.state;
     if (status !== C.PLAYING && status !== C.PAUSED) return;
@@ -430,23 +368,15 @@ class Store {
     this.gameSave.save({ ...this.state, timeLeft: remaining });
   }
 
-  /** leaderboard-related methods */
   checkLeaderboard(): boolean {
     return this.leaderboard.isRecord(this.state.difficulty, this.state.score);
   }
-
-  public submitScore(name: string, score: number) {
-    this.setToLeaderboard({ name, score, date: new Date() });
-  }
-
   public setToLeaderboard(row: T.LeaderboardRowType) {
     this.emit(C.GAME_EVENTS.SHOW_LEADERBOARD, this.leaderboard.add(this.state.difficulty, row));
   }
-
   public clearLeaderboard() {
     this.emit(C.GAME_EVENTS.SHOW_LEADERBOARD, this.leaderboard.clear());
   }
-
   public showLeaderboard() {
     this.emit(C.GAME_EVENTS.SHOW_LEADERBOARD, this.leaderboard.reload());
   }
@@ -465,7 +395,6 @@ class Store {
       });
     }
   };
-
   public continueLastGame() {
     const savedState = this.gameSave.load();
     if (!savedState) return;
@@ -480,35 +409,14 @@ class Store {
     this.emit(C.GAME_EVENTS.GAME_START, this.state);
     this.pauseGame();
   }
-
   public exitToMenu() {
     this.timer.stop();
     this.resetGameState();
     this.gameSave.clear();
     this.emit(C.GAME_EVENTS.MENU_SHOWN, true);
   }
-
-  public requestNameDialog() {
-    if (this.state.status !== C.MENU) return;
-    this.emit(C.GAME_EVENTS.OPEN_NAME_DIALOG, true);
-  }
-
   public loadSavedGame() {
     return this.gameSave.load();
-  }
-
-  private runTimer(seconds: number) {
-    this.timer.start(
-      seconds,
-      (remaining) => {
-        const timeChanged = remaining !== this.state.timeLeft;
-        this.update({ timeLeft: remaining });
-        this.emit(C.GAME_EVENTS.TIMER_TICK, remaining);
-        if (timeChanged) this.saveGame();
-      },
-      () => this.gameOver(),
-    );
-    this.timerRunning = true;
   }
 }
 
