@@ -1,11 +1,13 @@
 import { describe, expect, it } from 'vitest';
-import type { ProfileStorageType } from '@types';
-import { ValidateProfile } from './validate';
+
 import { PRESET } from '@constants';
+import type { ProfileStorageType } from '@types';
+
+import { ValidateProfile } from '../validate';
 
 const validProfile: ProfileStorageType = {
   version: 1,
-  name: 'Marya',
+  name: 'Mary',
   avatar: { kind: PRESET, id: 'default' },
   history: [
     {

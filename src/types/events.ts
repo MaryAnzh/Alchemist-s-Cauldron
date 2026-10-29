@@ -26,6 +26,9 @@ export type GameEventsPayload = {
   [GE.SHOW_LEADERBOARD]: LeaderboardStorageType;
   [GE.PAGE_HIDDEN]: boolean;
   [GE.SHOW_RULES]: boolean;
+  [GE.PLAYER_NAME_CHANGED]: { name: string };
+  [GE.OPEN_NAME_DIALOG]: boolean;
+  [GE.MENU_SHOWN]: boolean;
 };
 
 export type RouterEventsPayload = {

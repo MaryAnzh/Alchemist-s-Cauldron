@@ -1,34 +1,23 @@
 import { EventEmitter } from '@utils';
 import * as C from '@constants';
-import type {
-  GameEventsPayload,
-  GameState,
-  RecipeType,
-  LeaderboardRowType,
-  StorageKeysType,
-  GameDifficultType,
-  LeaderboardStorageType,
-  GameOverReasonType,
-  IReaction,
-} from '@types';
+import type * as T from '@types';
+import * as L from './logic';
 
-import { GameTimer } from './logic/timer';
 import { storage } from './storage/Storage';
-import { ValidateLeaderboard, ValidateState } from './logic/validate';
+import { Leaderboard } from './leaderboard';
 
-import { evaluateReactions, getReactionName } from './logic/reactions';
-import { profileService } from './storage/ProfileService';
-import { appendRecord, buildGameRecord, createSessionStats } from './logic/gameRecord';
+import { PlayerProfile } from './playerProfile/PlayerProfile';
 
 class Store {
-  private events = new EventEmitter<GameEventsPayload>();
-  private timer = new GameTimer();
+  private events = new EventEmitter<T.GameEventsPayload>();
+  private timer = new L.GameTimer();
   private timerRunning = false;
-  private session = createSessionStats(Date.now());
-  private leaderBoard: LeaderboardStorageType = { easy: [], medium: [], hard: [] };
+  private session = L.createSessionStats(Date.now());
+  private leaderboard = new Leaderboard();
   private storage: typeof storage;
+  private player = new PlayerProfile();
 
-  private state: GameState = {
+  private state: T.GameState = {
     playerName: 'Alchemist',
     status: C.MENU,
     level: 1,
@@ -61,10 +50,6 @@ class Store {
 
   constructor() {
     this.storage = storage;
-    const leaderBoard = this.storage.load('LEADERBOARD') as LeaderboardStorageType | null;
-    if (leaderBoard) {
-      this.leaderBoard = leaderBoard;
-    }
   }
 
   /** Utils  */
@@ -72,25 +57,25 @@ class Store {
     return this.state;
   };
 
-  public subscribe<K extends keyof GameEventsPayload>(
+  public subscribe<K extends keyof T.GameEventsPayload>(
     event: K,
-    listener: (payload: GameEventsPayload[K]) => void,
+    listener: (payload: T.GameEventsPayload[K]) => void,
   ) {
     this.events.on(event, listener);
   }
 
-  private emit<K extends keyof GameEventsPayload>(event: K, payload: GameEventsPayload[K]) {
+  private emit<K extends keyof T.GameEventsPayload>(event: K, payload: T.GameEventsPayload[K]) {
     this.events.emit(event, payload);
   }
 
-  private update(partial: Partial<GameState>) {
+  private update(partial: Partial<T.GameState>) {
     this.state = { ...this.state, ...partial };
   }
 
   /** main game actions */
   public startNewGame = () => {
     this.resetGameState();
-    this.session = createSessionStats(Date.now());
+    this.session = L.createSessionStats(Date.now());
 
     this.initShelf();
     this.pickRandomRecipe();
@@ -205,10 +190,10 @@ class Store {
     this.saveGame();
   }
 
-  public gameOver(reason: GameOverReasonType = 'time') {
+  public gameOver(reason: T.GameOverReasonType = 'time') {
     const score = this.state.score;
     const wasActive = this.state.status === C.PLAYING || this.state.status === C.PAUSED;
-    const isRecord = this.checkLeaderboard();
+    const isRecord = !this.player.isIncognito && this.checkLeaderboard();
 
     this.timer.stop();
     if (wasActive) this.recordGame(reason, score);
@@ -219,6 +204,33 @@ class Store {
 
     this.resetGameState();
     this.clearStorage('GAME_STATE');
+  }
+
+  private recordGame(reason: T.GameOverReasonType, score: number) {
+    this.player.addRecord(
+      L.buildGameRecord({
+        stats: this.session,
+        difficulty: this.state.difficulty,
+        score,
+        reason,
+        now: Date.now(),
+      }),
+    );
+  }
+
+  public getUserName() {
+    return this.player.name;
+  }
+
+  isIncognito() {
+    return this.player.isIncognito;
+  }
+
+  setUserName(name: string): boolean {
+    if (!this.player.setName(name)) return false;
+    this.update({ playerName: this.player.name });
+    this.emit(C.GAME_EVENTS.PLAYER_NAME_CHANGED, { name: this.player.name });
+    return true;
   }
 
   /** Inits data */
@@ -239,7 +251,7 @@ class Store {
     if (this.state.recipes.length === 0) {
       this.state.recipes = C.RECIPES.filter((r) => r.difficulty === this.state.difficulty).sort(
         () => Math.random() - 0.5,
-      ) as RecipeType[];
+      ) as T.RecipeType[];
     }
     const currentRecipe = this.state.recipes.at(-1);
     this.state.recipes.pop();
@@ -289,7 +301,7 @@ class Store {
     stock.count = stock.count - 1;
 
     const ingredients = [...this.state.cauldronIngredients, stock];
-    const { values, active, fired } = evaluateReactions(
+    const { values, active, fired } = L.evaluateReactions(
       ingredients,
       this.state.enabledReactionIds,
       this.state.activeReactions,
@@ -313,12 +325,12 @@ class Store {
     this.applyReactionEffects(fired);
   }
 
-  private applyReactionEffects(fired: IReaction[]) {
+  private applyReactionEffects(fired: T.IReaction[]) {
     if (!fired.length) return;
     this.session.reactionsTriggered += fired.length;
 
     fired.forEach(({ id }) =>
-      this.emit(C.GAME_EVENTS.REACTION_FIRED, { id, name: getReactionName(id) }),
+      this.emit(C.GAME_EVENTS.REACTION_FIRED, { id, name: L.getReactionName(id) }),
     );
 
     const lifeLoss = fired.reduce((sum, r) => sum - (r.effect?.lifeDelta ?? 0), 0);
@@ -452,7 +464,7 @@ class Store {
     this.shiftTime(-C.POUR_OUT_PENALTY);
   }
 
-  saveToStorage(key: StorageKeysType, state: GameState | LeaderboardStorageType): void {
+  saveToStorage(key: T.StorageKeysType, state: T.GameState | T.LeaderboardStorageType): void {
     storage.save(key, state);
   }
 
@@ -468,7 +480,7 @@ class Store {
     this.saveToStorage('GAME_STATE', { ...this.state, timeLeft: remaining });
   }
 
-  public loadFromStorage(key: StorageKeysType) {
+  public loadFromStorage(key: T.StorageKeysType) {
     const saved = storage.load(key);
     if (!saved) {
       if (this.storage.hasSave(key)) {
@@ -478,83 +490,46 @@ class Store {
     }
 
     if (key === 'GAME_STATE') {
-      const Validate = ValidateState(saved);
+      const Validate = L.ValidateState(saved);
       if (!Validate) {
         this.storage.clear('GAME_STATE');
         return null;
       }
-      return saved as GameState;
-    }
-    if (key === 'LEADERBOARD') {
-      const Validate = ValidateLeaderboard(saved as LeaderboardStorageType);
-      if (!Validate) {
-        this.storage.clear('LEADERBOARD');
-        return null;
-      }
-
-      return saved as LeaderboardStorageType;
+      return saved as T.GameState;
     }
     return null;
   }
 
-  private clearStorage(key: StorageKeysType) {
+  private clearStorage(key: T.StorageKeysType) {
     storage.clear(key);
   }
 
+  /** leaderboard-related methods */
   checkLeaderboard(): boolean {
-    const score = this.state.score;
-    if (score <= 0) return false;
-
-    const current = this.leaderBoard[this.state.difficulty];
-    if (current.length < 10) return true;
-
-    const minTopScore = current.at(-1)?.score ?? 0;
-    return score >= minTopScore;
+    return this.leaderboard.isRecord(this.state.difficulty, this.state.score);
   }
 
   public submitScore(name: string, score: number) {
-    const date = new Date();
-
-    this.setToLeaderboard({ name, score, date });
+    this.setToLeaderboard({ name, score, date: new Date() });
   }
 
-  public setToLeaderboard({ name, score, date }: LeaderboardRowType) {
-    this.leaderBoard[this.state.difficulty].push({ name, score, date });
-
-    this.leaderBoard[this.state.difficulty].sort((a, b) => b.score - a.score);
-
-    if (this.leaderBoard[this.state.difficulty].length > 10) {
-      this.leaderBoard[this.state.difficulty] = this.leaderBoard[this.state.difficulty].slice(
-        0,
-        10,
-      );
-    }
-
-    this.saveToStorage('LEADERBOARD', this.leaderBoard);
-    this.emit(C.GAME_EVENTS.SHOW_LEADERBOARD, this.leaderBoard);
+  public setToLeaderboard(row: T.LeaderboardRowType) {
+    this.emit(C.GAME_EVENTS.SHOW_LEADERBOARD, this.leaderboard.add(this.state.difficulty, row));
   }
 
   public clearLeaderboard() {
-    this.leaderBoard = { easy: [], medium: [], hard: [] };
-
-    this.saveToStorage('LEADERBOARD', this.leaderBoard);
-    this.emit(C.GAME_EVENTS.SHOW_LEADERBOARD, this.leaderBoard);
+    this.emit(C.GAME_EVENTS.SHOW_LEADERBOARD, this.leaderboard.clear());
   }
 
   public showLeaderboard() {
-    const leaderboard = this.loadFromStorage('LEADERBOARD');
-    if (leaderboard) {
-      this.leaderBoard = leaderboard as LeaderboardStorageType;
-    }
-
-    this.emit(C.GAME_EVENTS.SHOW_LEADERBOARD, this.leaderBoard);
+    this.emit(C.GAME_EVENTS.SHOW_LEADERBOARD, this.leaderboard.reload());
   }
 
   public showRules() {
     this.emit(C.GAME_EVENTS.SHOW_RULES, true);
   }
 
-  public changeDifficulty = (difficulty: GameDifficultType) => {
+  public changeDifficulty = (difficulty: T.GameDifficultType) => {
     if (this.state.status === C.MENU) {
       this.update({
         difficulty,
@@ -566,14 +541,14 @@ class Store {
   };
 
   public continueLastGame() {
-    const savedState = this.loadFromStorage('GAME_STATE') as GameState;
+    const savedState = this.loadFromStorage('GAME_STATE') as T.GameState;
     if (!savedState) return;
-    this.session = createSessionStats(Date.now());
+    this.session = L.createSessionStats(Date.now());
 
     this.timer.stop();
     this.timerRunning = false;
     this.update({
-      ...(savedState as GameState),
+      ...(savedState as T.GameState),
       endTimestamp: Date.now() + savedState.timeLeft * 1000,
     });
     this.emit(C.GAME_EVENTS.GAME_START, this.state);
@@ -584,22 +559,12 @@ class Store {
     this.timer.stop();
     this.resetGameState();
     this.clearStorage('GAME_STATE');
+    this.emit(C.GAME_EVENTS.MENU_SHOWN, true);
   }
 
-  private recordGame(reason: GameOverReasonType, score: number) {
-    try {
-      const profile = profileService.loadOrCreate();
-      const record = buildGameRecord({
-        stats: this.session,
-        difficulty: this.state.difficulty,
-        score,
-        reason,
-        now: Date.now(),
-      });
-      profileService.save({ ...profile, history: appendRecord(profile.history, record) });
-    } catch {
-      // profile storage is unavailable: the game must still end normally
-    }
+  public requestNameDialog() {
+    if (this.state.status !== C.MENU) return;
+    this.emit(C.GAME_EVENTS.OPEN_NAME_DIALOG, true);
   }
 }
 

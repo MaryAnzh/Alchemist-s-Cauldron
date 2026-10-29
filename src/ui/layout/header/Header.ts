@@ -1,5 +1,15 @@
-import { HOME, PAGE_ALIAS, ROUTER_EVENTS, ROUTES, ROUTES_MAP, TITLE } from '@constants';
+import {
+  GAME_EVENTS,
+  HOME,
+  MENU,
+  PAGE_ALIAS,
+  ROUTER_EVENTS,
+  ROUTES,
+  ROUTES_MAP,
+  TITLE,
+} from '@constants';
 import type { Router } from '@router';
+import { store } from '@store';
 import type { ParentNodeType, PageNameType } from '@types';
 import { Button, Component } from '@ui';
 
@@ -15,6 +25,7 @@ export class Header extends Component {
   userName!: Component;
   userLogo!: Component;
   logoButton!: Button;
+  nameButton!: Button;
 
   constructor({ parentNode, router }: HeaderProps) {
     super({ parentNode, tagName: 'header', className: 'app-header' });
@@ -39,6 +50,17 @@ export class Header extends Component {
           this.logoButton.node.style.pointerEvents = 'auto';
         }
       });
+      this.syncNameButton();
+    });
+
+    const sync = () => this.syncNameButton();
+    store.subscribe(GAME_EVENTS.GAME_START, sync);
+    store.subscribe(GAME_EVENTS.GAME_OVER, sync);
+    store.subscribe(GAME_EVENTS.MENU_SHOWN, sync);
+    store.subscribe(GAME_EVENTS.PLAYER_NAME_CHANGED, ({ name }) => {
+      if (!this.node.isConnected) return;
+      this.userName.setContent(name || 'Incognito');
+      this.nameButton.setText(name ? 'Change name' : 'Enter name');
     });
 
     this.render();
@@ -112,7 +134,7 @@ export class Header extends Component {
       parentNode: user.node,
       tagName: 'span',
       className: 'app-header_user_name',
-      content: 'Incognito',
+      content: store.getUserName() || 'Incognito',
     });
 
     this.userLogo = new Component({
@@ -120,5 +142,24 @@ export class Header extends Component {
       tagName: 'div',
       className: 'app-header_user-logo',
     });
+
+    this.nameButton = new Button({
+      parentNode: user.node,
+      variant: 'empty',
+      color: 'dark',
+      size: 'sm',
+      text: store.getUserName() ? 'Change name' : 'Enter name',
+      onClick: () => store.requestNameDialog(),
+    });
+    this.syncNameButton();
+  }
+
+  private syncNameButton() {
+    const onStart = this.router.current() === ROUTES[HOME] && store.getState().status === MENU;
+    this.nameButton.node.hidden = !onStart;
+  }
+
+  destroy(): void {
+    super.destroy();
   }
 }

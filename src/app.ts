@@ -1,4 +1,4 @@
-import { GAME_EVENTS, HOME, PAUSED, PLAYING, PRESENTATION, ROUTES } from '@constants';
+import { GAME_EVENTS, HOME, PAUSED, PLAYING, PRESENTATION, PROFILE, ROUTES } from '@constants';
 import { store } from '@store';
 import {
   Component,
@@ -16,11 +16,14 @@ import type { GameOverReasonType, LeaderboardStorageType, RecipeType } from '@ty
 import { Game, Profile, Presentation } from '@pages';
 import { router, type RoutePath } from '@router';
 import { Header } from './ui/layout/header/Header';
+import { UserNameForm } from './ui/dialogs/UserNameForm/UserNameForm';
 
 export class App extends Component {
   root: HTMLElement;
   appWrap!: Component;
   store = store;
+  private nameAsked = false;
+
   currentPage: Component | null = null;
   currentView: Component | null = null;
   portal!: Portal;
@@ -75,6 +78,8 @@ export class App extends Component {
       this.renderGameOverView(score, isRecord, reason);
     });
 
+    store.subscribe(GAME_EVENTS.OPEN_NAME_DIALOG, () => this.renderNameDialog());
+
     document.addEventListener('visibilitychange', () => {
       if (document.hidden && this.store.getState().status === PLAYING) {
         this.store.pauseGame();
@@ -128,6 +133,7 @@ export class App extends Component {
     });
 
     this.setView(view);
+    if (!this.store.getUserName() && !this.nameAsked) this.renderNameDialog();
   }
 
   renderGameView() {
@@ -303,6 +309,12 @@ export class App extends Component {
       this.renderStartView();
       return;
     }
+
+    if (route === ROUTES[PROFILE] && this.store.isIncognito()) {
+      router.navigate(ROUTES[HOME]);
+      return;
+    }
+
     if (route === ROUTES[PRESENTATION]) {
       this.renderPresentationView();
       return;
@@ -324,5 +336,24 @@ export class App extends Component {
     this.portal.unmount();
 
     this.setView(new Presentation({ parentNode: this.appWrap.node }));
+  }
+
+  private renderNameDialog() {
+    this.nameAsked = true;
+    const close = () => {
+      this.portal.onClose = null;
+      this.portal.unmount();
+    };
+    const form = new UserNameForm({
+      parentNode: null,
+      onSubmit: (name) => {
+        const ok = this.store.setUserName(name);
+        if (ok) close();
+        return ok;
+      },
+      onSkip: close,
+    });
+    this.portal.mount(form.node, form);
+    this.portal.onClose = close;
   }
 }

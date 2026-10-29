@@ -23,6 +23,8 @@ export const {
   PRESET,
   ERROR_INVALID_PROFILE,
   ERROR_UNABLE_TO_SAVE_PROFILE,
+  ERROR_NAME_VALIDATION,
+  ERROR_PERSIST_PROFILE,
 
   HOME,
   PRESENTATION,
@@ -31,8 +33,8 @@ export const {
   TITLE,
   DEFAULT,
   IMAGE,
-  PAGE_TEMPLATE,
   ALCHEMIST,
+
   SLIDE_1_TITLE,
   SLIDE_1_PREVIEW_TITLE,
   SLIDE_1_SUBTITLE,
@@ -68,6 +70,9 @@ export const {
   SLIDE_8_PREVIEW_TITLE,
   SLIDE_8_SUBTITLE,
   SLIDE_8_ITEMS,
+  INPUT_PLACEHOLDER,
+  ENTER_NAME,
+  NAME_DIALOG_SUBTITLE,
 } = {
   EASY: 'easy',
   HARD: 'hard',
@@ -93,8 +98,11 @@ export const {
   PRESET: 'preset',
   ALCHEMIST: 'Alchemist',
 
+  INPUT_PLACEHOLDER: 'Enter your name (2–15 chars)',
   ERROR_INVALID_PROFILE: 'Cannot save an invalid player profile',
   ERROR_UNABLE_TO_SAVE_PROFILE: 'Unable to save the player profile to localStorage',
+  ERROR_NAME_VALIDATION: 'Name must be 2–15 chars: letters, digits, space, _ or -',
+  ERROR_PERSIST_PROFILE: 'Failed to persist player profile',
 
   HOME: 'game',
   PROFILE: 'profile',
@@ -103,7 +111,9 @@ export const {
   TITLE: "Alchemist's Cauldron",
   DEFAULT: 'default',
   IMAGE: 'image',
-  PAGE_TEMPLATE: 'pageTemplate',
+  ENTER_NAME: 'Enter Your Name',
+  NAME_DIALOG_SUBTITLE:
+    'Without a name, the game will start in incognito mode, without access to profile and statistics',
 
   SLIDE_1_TITLE: 'Creative Extension — My Imagination Space',
   SLIDE_1_PREVIEW_TITLE: 'Alchemist’s Journey',
