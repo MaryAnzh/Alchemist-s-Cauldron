@@ -1,5 +1,5 @@
 import type { GameDifficultType, RecipeType } from '@types';
-import { shuffle, type Rng } from './random';
+import { shuffle, type Rng } from '../random/random';
 
 export const buildRecipeQueue = (
   pool: readonly RecipeType[],

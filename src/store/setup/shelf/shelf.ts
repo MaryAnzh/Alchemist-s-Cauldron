@@ -1,5 +1,5 @@
 import type { IngredientType } from '@types';
-import { randomInt, shuffle, type Rng } from './random';
+import { randomInt, shuffle, type Rng } from '../random/random';
 
 export const STOCK_MIN = 2;
 export const STOCK_MAX = 15;
