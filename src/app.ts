@@ -1,17 +1,34 @@
-import { GAME_EVENTS, PAUSED, PLAYING } from '@constants';
-import { Game } from '@pages';
+import { GAME_EVENTS, HOME, PAUSED, PLAYING, PRESENTATION, PROFILE, ROUTES } from '@constants';
 import { store } from '@store';
-import { Component, Header, Footer, StartGame, Portal, Pause, GameOver, Leaderboard } from '@ui';
+import {
+  Component,
+  GameHeader,
+  Footer,
+  StartGame,
+  Portal,
+  Pause,
+  GameOver,
+  Leaderboard,
+  Rules,
+} from '@ui';
 import type { GameOverReasonType, LeaderboardStorageType, RecipeType } from '@types';
-import { Rules } from './ui/dialogs/Rules/Rules';
+
+import { Game, Profile, Presentation } from '@pages';
+import { router, type RoutePath } from '@router';
+import { Header } from './ui/layout/header/Header';
+import { UserNameForm } from './ui/dialogs/UserNameForm/UserNameForm';
 
 export class App extends Component {
   root: HTMLElement;
+  appWrap!: Component;
   store = store;
+  private nameAsked = false;
+
+  currentPage: Component | null = null;
   currentView: Component | null = null;
   portal!: Portal;
 
-  header: Header | null = null;
+  GameHeader: GameHeader | null = null;
   main: Component | null = null;
   footer: Footer | null = null;
   pause: Pause | null = null;
@@ -61,6 +78,8 @@ export class App extends Component {
       this.renderGameOverView(score, isRecord, reason);
     });
 
+    store.subscribe(GAME_EVENTS.OPEN_NAME_DIALOG, () => this.renderNameDialog());
+
     document.addEventListener('visibilitychange', () => {
       if (document.hidden && this.store.getState().status === PLAYING) {
         this.store.pauseGame();
@@ -71,6 +90,23 @@ export class App extends Component {
 
     // Keyboard shortcuts: one handler, active only while playing
     document.addEventListener('keydown', (e) => this.handleHotkeys(e));
+
+    this.render();
+  }
+
+  render() {
+    this.node.innerHTML = '';
+
+    new Header({
+      parentNode: this.node,
+      router,
+    });
+
+    this.appWrap = new Component({
+      parentNode: this.node,
+      tagName: 'div',
+      className: 'app-wrap',
+    });
   }
 
   private setView(view: Component) {
@@ -84,18 +120,20 @@ export class App extends Component {
     this.root.append(this.node);
     this.portal = new Portal();
 
-    this.renderStartView();
+    router.onChange((route) => this.handleRoute(route));
+    this.handleRoute(router.current());
   }
 
   renderStartView() {
     this.portal.unmount();
 
     const view = new StartGame({
-      parentNode: this.node,
+      parentNode: this.appWrap.node,
       callback: () => this.handleStartGame(),
     });
 
     this.setView(view);
+    if (!this.store.getUserName() && !this.nameAsked) this.renderNameDialog();
   }
 
   renderGameView() {
@@ -111,13 +149,13 @@ export class App extends Component {
     } = this.store.getState();
 
     const view = new Component({
-      parentNode: this.node,
+      parentNode: this.appWrap.node,
       tagName: 'div',
       className: 'app-game-view',
     });
 
-    // header
-    new Header({
+    // GameHeader
+    new GameHeader({
       parentNode: view.node,
       maxLives,
       currentLivesCount: lives,
@@ -151,7 +189,7 @@ export class App extends Component {
     this.portal.unmount();
 
     const view = new GameOver({
-      parentNode: this.node,
+      parentNode: this.appWrap.node,
       score,
       isRecord,
       reason,
@@ -262,5 +300,60 @@ export class App extends Component {
         return;
     }
     e.preventDefault();
+  }
+
+  private handleRoute(route: RoutePath) {
+    this.currentView?.destroy();
+
+    if (route === ROUTES[HOME]) {
+      this.renderStartView();
+      return;
+    }
+
+    if (route === ROUTES[PROFILE] && this.store.isIncognito()) {
+      router.navigate(ROUTES[HOME]);
+      return;
+    }
+
+    if (route === ROUTES[PRESENTATION]) {
+      this.renderPresentationView();
+      return;
+    }
+    this.renderProfileView();
+  }
+
+  renderProfileView() {
+    const { status } = this.store.getState();
+    if (status === PLAYING || status === PAUSED) this.store.exitToMenu();
+    this.portal.unmount();
+
+    this.setView(new Profile({ parentNode: this.appWrap.node, router }));
+  }
+
+  renderPresentationView() {
+    const { status } = this.store.getState();
+    if (status === PLAYING || status === PAUSED) this.store.exitToMenu();
+    this.portal.unmount();
+
+    this.setView(new Presentation({ parentNode: this.appWrap.node }));
+  }
+
+  private renderNameDialog() {
+    this.nameAsked = true;
+    const close = () => {
+      this.portal.onClose = null;
+      this.portal.unmount();
+    };
+    const form = new UserNameForm({
+      parentNode: null,
+      onSubmit: (name) => {
+        const ok = this.store.setUserName(name);
+        if (ok) close();
+        return ok;
+      },
+      onSkip: close,
+    });
+    this.portal.mount(form.node, form);
+    this.portal.onClose = close;
   }
 }

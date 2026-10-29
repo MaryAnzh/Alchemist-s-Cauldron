@@ -5,6 +5,7 @@
     "paths": {
       "@constants": ["src/constants"],
       "@types": ["src/types"],
+      "@router": ["src/router"],
       "@assets": ["src/assets"],
       "@utils": ["src/utils"],
       "@ui": ["src/ui"],

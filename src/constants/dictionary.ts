@@ -20,6 +20,59 @@ export const {
   TEMPERATURE,
   DENSITY,
   MAGIC_POWER,
+  PRESET,
+  ERROR_INVALID_PROFILE,
+  ERROR_UNABLE_TO_SAVE_PROFILE,
+  ERROR_NAME_VALIDATION,
+  ERROR_PERSIST_PROFILE,
+
+  HOME,
+  PRESENTATION,
+  PROFILE,
+  STATS,
+  TITLE,
+  DEFAULT,
+  IMAGE,
+  ALCHEMIST,
+
+  SLIDE_1_TITLE,
+  SLIDE_1_PREVIEW_TITLE,
+  SLIDE_1_SUBTITLE,
+
+  SLIDE_2_TITLE,
+  SLIDE_2_PREVIEW_TITLE,
+  SLIDE_2_SUBTITLE,
+  SLIDE_2_ITEMS,
+
+  SLIDE_3_TITLE,
+  SLIDE_3_PREVIEW_TITLE,
+  SLIDE_3_ITEMS,
+
+  SLIDE_4_TITLE,
+  SLIDE_4_PREVIEW_TITLE,
+  SLIDE_4_SUBTITLE,
+  SLIDE_4_ITEMS,
+
+  SLIDE_5_TITLE,
+  SLIDE_5_PREVIEW_TITLE,
+  SLIDE_5_SUBTITLE,
+  SLIDE_5_ITEMS,
+
+  SLIDE_6_TITLE,
+  SLIDE_6_PREVIEW_TITLE,
+  SLIDE_6_ITEMS,
+
+  SLIDE_7_TITLE,
+  SLIDE_7_PREVIEW_TITLE,
+  SLIDE_7_ITEMS,
+
+  SLIDE_8_TITLE,
+  SLIDE_8_PREVIEW_TITLE,
+  SLIDE_8_SUBTITLE,
+  SLIDE_8_ITEMS,
+  INPUT_PLACEHOLDER,
+  ENTER_NAME,
+  NAME_DIALOG_SUBTITLE,
 } = {
   EASY: 'easy',
   HARD: 'hard',
@@ -42,4 +95,92 @@ export const {
   TEMPERATURE: 'temperature',
   DENSITY: 'density',
   MAGIC_POWER: 'magicPower',
+  PRESET: 'preset',
+  ALCHEMIST: 'Alchemist',
+
+  INPUT_PLACEHOLDER: 'Enter your name (2–15 chars)',
+  ERROR_INVALID_PROFILE: 'Cannot save an invalid player profile',
+  ERROR_UNABLE_TO_SAVE_PROFILE: 'Unable to save the player profile to localStorage',
+  ERROR_NAME_VALIDATION: 'Name must be 2–15 chars: letters, digits, space, _ or -',
+  ERROR_PERSIST_PROFILE: 'Failed to persist player profile',
+
+  HOME: 'game',
+  PROFILE: 'profile',
+  STATS: 'statistics',
+  PRESENTATION: 'presentation',
+  TITLE: "Alchemist's Cauldron",
+  DEFAULT: 'default',
+  IMAGE: 'image',
+  ENTER_NAME: 'Enter Your Name',
+  NAME_DIALOG_SUBTITLE:
+    'Without a name, the game will start in incognito mode, without access to profile and statistics',
+
+  SLIDE_1_TITLE: 'Creative Extension — My Imagination Space',
+  SLIDE_1_PREVIEW_TITLE: 'Alchemist’s Journey',
+  SLIDE_1_SUBTITLE: 'Player profiles, personal progress, and achievements',
+
+  SLIDE_2_TITLE: 'Beyond the Leaderboard',
+  SLIDE_2_PREVIEW_TITLE: 'The Idea',
+  SLIDE_2_SUBTITLE: 'A high score shows a result. A profile tells a story.',
+  SLIDE_2_ITEMS: [
+    'Keep a personal history of completed games',
+    'Understand progress across difficulty levels',
+    'Unlock achievements and discover new goals',
+  ],
+
+  SLIDE_3_TITLE: 'Small Scope, Clear Decisions',
+  SLIDE_3_PREVIEW_TITLE: 'Technology Choices',
+  SLIDE_3_ITEMS: [
+    'Vanilla TypeScript: extend the existing architecture',
+    'localStorage: no account or backend required',
+    'Hash routing: compatible with GitHub Pages',
+    'Trade-off: browser-only storage, without cross-device sync',
+  ],
+
+  SLIDE_4_TITLE: 'From Gameplay to Player Progress',
+  SLIDE_4_PREVIEW_TITLE: 'Architecture',
+  SLIDE_4_SUBTITLE: 'Game → Result → ProfileService → localStorage → Profile',
+  SLIDE_4_ITEMS: [
+    'Typed records describe completed games',
+    'Validation checks data loaded from storage',
+    'Pure functions calculate statistics and achievements',
+    'UI components display the profile and its progress',
+  ],
+
+  SLIDE_5_TITLE: 'Let’s Explore the Profile',
+  SLIDE_5_PREVIEW_TITLE: 'Live Demo',
+  SLIDE_5_SUBTITLE: 'A short journey through the player experience',
+  SLIDE_5_ITEMS: [
+    'Choose a name and personalize an avatar',
+    'Play a game and save its result',
+    'Explore history and statistics',
+    'Discover unlocked achievements',
+  ],
+
+  SLIDE_6_TITLE: 'Challenges Behind the Features',
+  SLIDE_6_PREVIEW_TITLE: 'Challenges',
+  SLIDE_6_ITEMS: [
+    'Recording each completed game only once',
+    'Preserving counters when continuing a saved game',
+    'Resizing uploaded avatars to limit storage usage',
+    'Handling invalid data and storage failures',
+  ],
+
+  SLIDE_7_TITLE: 'Making It Reliable',
+  SLIDE_7_PREVIEW_TITLE: 'Quality',
+  SLIDE_7_ITEMS: [
+    'Vitest tests for validation and data transformations',
+    'TypeScript and ESLint checks',
+    'Manual checks for saved games and profile persistence',
+    'Responsive layouts and keyboard navigation',
+  ],
+
+  SLIDE_8_TITLE: 'From High Scores to Personal Progress',
+  SLIDE_8_PREVIEW_TITLE: 'What’s Next',
+  SLIDE_8_SUBTITLE: 'A focused extension built on a familiar foundation',
+  SLIDE_8_ITEMS: [
+    'Lessons: typed data, persistence, routing, and testing',
+    'Next steps: statistics charts and localization',
+    'Thank you! Questions?',
+  ],
 } as const;
