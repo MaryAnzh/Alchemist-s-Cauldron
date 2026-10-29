@@ -40,8 +40,10 @@ migration is planned.
 
 #### Player profile
 
-- [ ] Request the player's name before starting a game
-- [ ] Show the player's name and avatar in the header
+- [x] Request the player's name before starting a game
+- [x] Show the player's name in the header
+- [x] Remove the profile and its history
+- [ ] Show the player's avatar in the header
 - [ ] Add profile navigation
 - [ ] Add preset avatars and resized image uploads
 - [ ] Record completed games without duplicates
@@ -76,8 +78,11 @@ migration is planned.
 ### Data and limitations
 
 The profile stores the player's name, recent game records, and (planned)
-avatar and achievements. Without a name, the game runs in incognito mode:
-no history is saved and the profile page is unavailable.
+avatar and achievements.
+
+Without a name, the game runs in incognito mode: no history is saved and the profile page is unavailable.
+
+The profile can be removed at menu; this deletes the name and all recorded history.
 
 Known limitation: after continuing a saved game, session counters
 (brews, mistakes, reactions) and duration start from zero.
