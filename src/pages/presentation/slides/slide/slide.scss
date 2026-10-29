@@ -1,0 +1,110 @@
+@use '../../../../styles/mixin/media.scss' as *;
+
+.app-presentation-slide {
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  padding: var(--size-4);
+  border: 1px solid var(--color-parchment);
+  border-radius: var(--radius-lg);
+  background: rgba(0, 0, 0, 0.4);
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: var(--size-5);
+  color: var(--color-text-light);
+
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 200px;
+    height: 200px;
+    background-image: url('@assets/symbol.svg');
+    background-repeat: no-repeat;
+    background-position: 0px 0px;
+    opacity: 0.4;
+  }
+
+  &_justify-center {
+    justify-content: center;
+    .app-presentation-slide_title {
+      text-align: center;
+    }
+    .app-presentation-slide_subtitle {
+      text-align: center;
+    }
+  }
+  &_justify-left {
+    justify-content: flex-start;
+    .app-presentation-slide_title {
+      text-align: left;
+    }
+    .app-presentation-slide_subtitle {
+      text-align: left;
+    }
+  }
+  &_justify-right {
+    justify-content: flex-end;
+
+    .app-presentation-slide_title {
+      text-align: right;
+    }
+    .app-presentation-slide_subtitle {
+      text-align: right;
+    }
+  }
+
+  &_title {
+    font-family: var(--font-title);
+    font-size: var(--slide-title-size);
+    font-weight: var(--weight-regular);
+    letter-spacing: -1.3px;
+    display: inline-block;
+  }
+
+  &_subtitle {
+    font-family: var(--font-title);
+    font-size: var(--slide-subtitle-size);
+    font-weight: var(--weight-regular);
+    letter-spacing: -1.3px;
+    display: inline-block;
+  }
+
+  // &_default {
+
+  // }
+}
+
+@media (max-width: $laptop) {
+  .app-presentation-slide {
+    padding: var(--size-3);
+    gap: var(--size-4);
+    border-radius: var(--radius-md);
+
+    &_title {
+      font-size: var(--size-6);
+    }
+
+    &_subtitle {
+      font-size: var(--size-5);
+    }
+  }
+}
+
+@media (max-width: $tablet-md) {
+  .app-presentation-slide {
+    padding: var(--size-2);
+    gap: var(--size-3);
+    border-radius: var(--radius-md);
+
+    &_title {
+      font-size: var(--size-4);
+    }
+
+    &_subtitle {
+      font-size: var(--size-3);
+    }
+  }
+}
