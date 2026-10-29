@@ -1,3 +1,3 @@
-export * from './random';
-export * from './shelf';
-export * from './recipes';
+export * from './random/random';
+export * from './shelf/shelf';
+export * from './recipes/recipes';
