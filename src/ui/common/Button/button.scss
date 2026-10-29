@@ -248,6 +248,10 @@ $btn-polygon: polygon(20px 0%, 100% 0%, calc(100% - 20px) 50%, 100% 100%, 20px 1
     margin: 0;
   }
 
+  &_hidden {
+    display: none;
+  }
+
   &:active {
     transform: scale(0.97);
   }

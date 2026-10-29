@@ -47,8 +47,14 @@ class Store {
   }
   public setUserName(name: string): boolean {
     if (!this.player.setName(name)) return false;
-    this.update({ playerName: this.player.name });
-    this.emit(C.GAME_EVENTS.PLAYER_NAME_CHANGED, { name: this.player.name });
+    this.update({ playerName: this.player.name ?? '' });
+    this.emit(C.GAME_EVENTS.PLAYER_NAME_CHANGED, { name: this.player.name ?? '' });
+    return true;
+  }
+  public removeUserProfile(): boolean {
+    if (!this.player.removeProfile()) return false;
+    this.update({ playerName: '' });
+    this.emit(C.GAME_EVENTS.PLAYER_NAME_CHANGED, { name: '' });
     return true;
   }
   public requestNameDialog() {

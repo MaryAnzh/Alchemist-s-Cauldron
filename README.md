@@ -23,6 +23,13 @@ migration is planned.
 
 ### Progress
 
+#### Architecture
+
+- [x] Extract the leaderboard, game save, clock, brew rules, and shelf/recipe setup from the store into separate modules
+- [x] Make shelf and recipe selection pure functions with an injectable random generator (Fisher–Yates shuffle)
+- [x] Add unit tests for each extracted module
+- [x] Block the profile page and skip history recording in incognito mode
+
 #### Foundation
 
 - [x] Add hash-based routing and a profile placeholder
@@ -68,12 +75,12 @@ migration is planned.
 
 ### Data and limitations
 
-The profile is planned to store the player's name, avatar, recent game
-records, and unlocked achievements. Uploaded avatars will be resized
-before storage.
+The profile stores the player's name, recent game records, and (planned)
+avatar and achievements. Without a name, the game runs in incognito mode:
+no history is saved and the profile page is unavailable.
 
-Data belongs to the current browser and origin. It is not synchronized
-between devices and may be lost when browser storage is cleared.
+Known limitation: after continuing a saved game, session counters
+(brews, mistakes, reactions) and duration start from zero.
 
 ### Validation
 

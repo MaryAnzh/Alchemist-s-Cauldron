@@ -26,6 +26,7 @@ export class Header extends Component {
   userLogo!: Component;
   logoButton!: Button;
   nameButton!: Button;
+  resetProfileButton!: Button;
 
   constructor({ parentNode, router }: HeaderProps) {
     super({ parentNode, tagName: 'header', className: 'app-header' });
@@ -50,10 +51,10 @@ export class Header extends Component {
           this.logoButton.node.style.pointerEvents = 'auto';
         }
       });
-      this.syncNameButton();
+      this.syncButtons();
     });
 
-    const sync = () => this.syncNameButton();
+    const sync = () => this.syncButtons();
     store.subscribe(GAME_EVENTS.GAME_START, sync);
     store.subscribe(GAME_EVENTS.GAME_OVER, sync);
     store.subscribe(GAME_EVENTS.MENU_SHOWN, sync);
@@ -61,6 +62,7 @@ export class Header extends Component {
       if (!this.node.isConnected) return;
       this.userName.setContent(name || 'Incognito');
       this.nameButton.setText(name ? 'Change name' : 'Enter name');
+      this.syncButtons();
     });
 
     this.render();
@@ -151,12 +153,26 @@ export class Header extends Component {
       text: store.getUserName() ? 'Change name' : 'Enter name',
       onClick: () => store.requestNameDialog(),
     });
-    this.syncNameButton();
+
+    this.resetProfileButton = new Button({
+      parentNode: user.node,
+      variant: 'empty',
+      color: 'dark',
+      size: 'sm',
+      text: 'Remove profile',
+      onClick: () => store.removeUserProfile(),
+    });
+    this.syncButtons();
   }
 
-  private syncNameButton() {
+  private syncButtons() {
     const onStart = this.router.current() === ROUTES[HOME] && store.getState().status === MENU;
-    this.nameButton.node.hidden = !onStart;
+    const isIncognito = store.isIncognito();
+
+    this.nameButton.setHidden(!onStart);
+    this.resetProfileButton.setHidden(!onStart || isIncognito);
+    const profileItem = this.navListItems[1];
+    profileItem?.button.setDisabled(isIncognito);
   }
 
   destroy(): void {

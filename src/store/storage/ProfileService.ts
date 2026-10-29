@@ -49,6 +49,10 @@ class ProfileService {
     this.save(profile);
     return profile;
   }
+
+  removeProfile(): void {
+    storage.clear('PROFILE');
+  }
 }
 
 export const profileService = new ProfileService();

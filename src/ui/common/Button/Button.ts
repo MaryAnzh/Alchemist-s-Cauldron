@@ -108,6 +108,14 @@ export class Button extends Component {
     }
   };
 
+  public setHidden = (isHidden: boolean) => {
+    if (isHidden) {
+      this.node.classList.add('app_button_hidden');
+    } else {
+      this.node.classList.remove('app_button_hidden');
+    }
+  };
+
   destroy() {
     this.node.onclick = null;
     super.destroy();

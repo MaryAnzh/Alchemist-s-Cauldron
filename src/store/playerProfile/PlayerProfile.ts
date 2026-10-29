@@ -1,51 +1,52 @@
 import type { GameRecordType, ProfileStorageType } from '@types';
-
-import { appendRecord, isValidPlayerName } from '../logic';
 import { createDefaultProfile, profileService } from '../storage/ProfileService';
-import { ERROR_PERSIST_PROFILE } from 'src/constants/dictionary';
+import { appendRecord, isValidPlayerName } from '../logic';
 
-type ProfileStorage = Pick<typeof profileService, 'loadOrCreate' | 'save'>;
+type ProfileStorage = Pick<typeof profileService, 'load' | 'save' | 'removeProfile'>;
 
 export class PlayerProfile {
-  private profile: ProfileStorageType;
+  private profile: ProfileStorageType | null = null;
   private service: ProfileStorage;
 
   constructor(service: ProfileStorage = profileService) {
     this.service = service;
     try {
-      this.profile = service.loadOrCreate();
+      this.profile = service.load();
     } catch {
-      this.profile = createDefaultProfile();
+      this.profile = null;
     }
   }
 
-  get name() {
-    return this.profile.name;
+  get name(): string | null {
+    return this.profile?.name ?? null;
   }
 
-  get isIncognito() {
-    return this.profile.name === '';
+  get isIncognito(): boolean {
+    return this.profile === null;
   }
 
   setName(raw: string): boolean {
     const name = raw.trim();
     if (!isValidPlayerName(name)) return false;
-    return this.persist({ ...this.profile, name });
+    const base = this.profile ?? createDefaultProfile();
+    return this.persist({ ...base, name });
   }
 
   addRecord(record: GameRecordType): boolean {
-    if (this.isIncognito) return false;
+    if (!this.profile) return false;
     return this.persist({ ...this.profile, history: appendRecord(this.profile.history, record) });
   }
 
+  removeProfile(): boolean {
+    if (!this.profile) return false;
+    this.service.removeProfile();
+    this.profile = null;
+    return true;
+  }
+
   private persist(next: ProfileStorageType): boolean {
-    try {
-      this.service.save(next);
-      this.profile = next;
-      return true;
-    } catch {
-      throw new Error(ERROR_PERSIST_PROFILE);
-      return false;
-    }
+    this.service.save(next); // при ошибке бросает исключение
+    this.profile = next;
+    return true;
   }
 }
