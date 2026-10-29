@@ -1,12 +1,13 @@
-import { EventEmitter } from '@utils';
 import * as C from '@constants';
 import type * as T from '@types';
+import { EventEmitter } from '@utils';
+
 import * as L from './logic';
 
-import { storage } from './storage/Storage';
+import { GameSave } from './gameSave';
 import { Leaderboard } from './leaderboard';
-
 import { PlayerProfile } from './playerProfile/PlayerProfile';
+import { remainingSeconds, shiftedSeconds } from './clock';
 
 class Store {
   private events = new EventEmitter<T.GameEventsPayload>();
@@ -14,7 +15,7 @@ class Store {
   private timerRunning = false;
   private session = L.createSessionStats(Date.now());
   private leaderboard = new Leaderboard();
-  private storage: typeof storage;
+  private gameSave = new GameSave();
   private player = new PlayerProfile();
 
   private state: T.GameState = {
@@ -47,10 +48,6 @@ class Store {
     startTimestamp: 0,
     endTimestamp: 0,
   };
-
-  constructor() {
-    this.storage = storage;
-  }
 
   /** Utils  */
   public getState = () => {
@@ -88,7 +85,7 @@ class Store {
 
   pauseGame() {
     const remaining = this.timerRunning
-      ? Math.max(0, Math.floor((this.state.endTimestamp - Date.now()) / 1000))
+      ? remainingSeconds(this.state.endTimestamp, Date.now())
       : this.state.timeLeft;
     this.timer.stop();
     this.timerRunning = false;
@@ -110,17 +107,7 @@ class Store {
 
     this.update({ endTimestamp: newEnd });
 
-    this.timer.start(
-      this.state.timeLeft,
-      (remaining) => {
-        const timeChanged = remaining !== this.state.timeLeft;
-        this.update({ timeLeft: remaining });
-        this.emit(C.GAME_EVENTS.TIMER_TICK, remaining);
-        if (timeChanged) this.saveGame();
-      },
-      () => this.gameOver(),
-    );
-    this.timerRunning = true;
+    this.runTimer(this.state.timeLeft);
     this.saveGame();
     this.emit(C.GAME_EVENTS.RESUME, this.state);
   }
@@ -166,18 +153,7 @@ class Store {
     const newEnd = Date.now() + this.state.timeLeft * 1000;
     this.update({ endTimestamp: newEnd });
 
-    this.timer.start(
-      this.state.timeLeft,
-      (remaining) => {
-        const timeChanged = remaining !== this.state.timeLeft;
-        this.update({ timeLeft: remaining });
-        this.emit(C.GAME_EVENTS.TIMER_TICK, remaining);
-        if (timeChanged) this.saveGame();
-      },
-      () => this.gameOver(),
-    );
-    this.timerRunning = true;
-
+    this.runTimer(this.state.timeLeft);
     this.emit(C.GAME_EVENTS.SHELF_BLOCK, { isBlock: false });
     this.pickRandomRecipe();
     this.clearCauldron();
@@ -203,7 +179,7 @@ class Store {
     this.emit(C.GAME_EVENTS.GAME_OVER, { score, isRecord, reason });
 
     this.resetGameState();
-    this.clearStorage('GAME_STATE');
+    this.gameSave.clear();
   }
 
   private recordGame(reason: T.GameOverReasonType, score: number) {
@@ -279,17 +255,7 @@ class Store {
       timeLeft: initialTime,
     });
 
-    this.timer.start(
-      initialTime,
-      (remaining) => {
-        const timeChanged = remaining !== this.state.timeLeft;
-        this.update({ timeLeft: remaining });
-        this.emit(C.GAME_EVENTS.TIMER_TICK, remaining);
-        if (timeChanged) this.saveGame();
-      },
-      () => this.gameOver(),
-    );
-    this.timerRunning = true;
+    this.runTimer(initialTime);
   }
 
   /** Games Actions */
@@ -353,11 +319,8 @@ class Store {
     this.saveGame();
   }
 
-  // Сдвигает таймер на delta секунд; false, если время вышло
   private shiftTime(delta: number): boolean {
-    const remaining = Math.max(0, Math.floor((this.state.endTimestamp - Date.now()) / 1000));
-    const timeLeft = remaining + delta;
-
+    const timeLeft = shiftedSeconds(this.state.endTimestamp, Date.now(), delta);
     if (timeLeft <= 0) {
       this.update({ timeLeft: 0 });
       this.emit(C.GAME_EVENTS.TIMER_TICK, 0);
@@ -368,16 +331,7 @@ class Store {
     this.timer.stop();
     this.update({ timeLeft, endTimestamp: Date.now() + timeLeft * 1000 });
     this.emit(C.GAME_EVENTS.TIMER_TICK, timeLeft);
-    this.timer.start(
-      timeLeft,
-      (left) => {
-        const timeChanged = left !== this.state.timeLeft;
-        this.update({ timeLeft: left });
-        this.emit(C.GAME_EVENTS.TIMER_TICK, left);
-        if (timeChanged) this.saveGame();
-      },
-      () => this.gameOver(),
-    );
+    this.runTimer(timeLeft);
     this.saveGame();
     return true;
   }
@@ -464,44 +418,16 @@ class Store {
     this.shiftTime(-C.POUR_OUT_PENALTY);
   }
 
-  saveToStorage(key: T.StorageKeysType, state: T.GameState | T.LeaderboardStorageType): void {
-    storage.save(key, state);
-  }
-
   public saveGame() {
-    const { status, endTimestamp, timeLeft } = this.state;
+    const { status, timeLeft } = this.state;
     if (status !== C.PLAYING && status !== C.PAUSED) return;
 
     const remaining =
       status === C.PLAYING && this.timerRunning
-        ? Math.max(0, Math.floor((endTimestamp - Date.now()) / 1000))
+        ? remainingSeconds(this.state.endTimestamp, Date.now())
         : timeLeft;
 
-    this.saveToStorage('GAME_STATE', { ...this.state, timeLeft: remaining });
-  }
-
-  public loadFromStorage(key: T.StorageKeysType) {
-    const saved = storage.load(key);
-    if (!saved) {
-      if (this.storage.hasSave(key)) {
-        this.clearStorage(key);
-      }
-      return null;
-    }
-
-    if (key === 'GAME_STATE') {
-      const Validate = L.ValidateState(saved);
-      if (!Validate) {
-        this.storage.clear('GAME_STATE');
-        return null;
-      }
-      return saved as T.GameState;
-    }
-    return null;
-  }
-
-  private clearStorage(key: T.StorageKeysType) {
-    storage.clear(key);
+    this.gameSave.save({ ...this.state, timeLeft: remaining });
   }
 
   /** leaderboard-related methods */
@@ -541,7 +467,7 @@ class Store {
   };
 
   public continueLastGame() {
-    const savedState = this.loadFromStorage('GAME_STATE') as T.GameState;
+    const savedState = this.gameSave.load();
     if (!savedState) return;
     this.session = L.createSessionStats(Date.now());
 
@@ -558,13 +484,31 @@ class Store {
   public exitToMenu() {
     this.timer.stop();
     this.resetGameState();
-    this.clearStorage('GAME_STATE');
+    this.gameSave.clear();
     this.emit(C.GAME_EVENTS.MENU_SHOWN, true);
   }
 
   public requestNameDialog() {
     if (this.state.status !== C.MENU) return;
     this.emit(C.GAME_EVENTS.OPEN_NAME_DIALOG, true);
+  }
+
+  public loadSavedGame() {
+    return this.gameSave.load();
+  }
+
+  private runTimer(seconds: number) {
+    this.timer.start(
+      seconds,
+      (remaining) => {
+        const timeChanged = remaining !== this.state.timeLeft;
+        this.update({ timeLeft: remaining });
+        this.emit(C.GAME_EVENTS.TIMER_TICK, remaining);
+        if (timeChanged) this.saveGame();
+      },
+      () => this.gameOver(),
+    );
+    this.timerRunning = true;
   }
 }
 
