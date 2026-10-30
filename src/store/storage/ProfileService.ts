@@ -1,11 +1,7 @@
 import type { ProfileStorageType } from '@types';
-import { ValidateProfile } from '../logic/validate';
+import { ValidateProfile } from '../logic';
 import { storage } from './Storage';
-import {
-  ERROR_INVALID_PROFILE,
-  ERROR_UNABLE_TO_SAVE_PROFILE,
-  PRESET,
-} from 'src/constants/dictionary';
+import { ERROR_INVALID_PROFILE, ERROR_UNABLE_TO_SAVE_PROFILE, PRESET } from '@constants';
 
 export function createDefaultProfile(): ProfileStorageType {
   return {

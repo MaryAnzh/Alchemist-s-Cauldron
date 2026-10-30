@@ -5,13 +5,14 @@ export type InputProps = ParentNodeType & {
   placeholder: string;
   maxlength: string;
   className: string;
+  value?: string;
 };
 
 export class Input extends Component {
   private inputNode!: Component;
   private errorNode!: Component;
 
-  constructor({ parentNode, placeholder, maxlength, className }: InputProps) {
+  constructor({ parentNode, placeholder, maxlength, className, value }: InputProps) {
     super({
       parentNode,
       tagName: 'div',
@@ -22,7 +23,7 @@ export class Input extends Component {
       parentNode: this.node,
       tagName: 'input',
       className: 'app-input_field',
-      attrs: { placeholder, maxlength, autofill: 'off' },
+      attrs: { placeholder, maxlength, autofill: 'off', value: value ?? '' },
     });
 
     this.errorNode = new Component({
@@ -70,6 +71,10 @@ export class Input extends Component {
 
   public getValue(): string {
     return (this.inputNode.node as HTMLInputElement).value.trim();
+  }
+
+  public clear() {
+    (this.inputNode.node as HTMLInputElement).value = '';
   }
 
   destroy(): void {

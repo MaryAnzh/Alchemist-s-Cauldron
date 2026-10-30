@@ -9,6 +9,7 @@ import type {
   RecipeType,
   ProfileStorageType,
 } from '@types';
+import { isValidAvatarUrl } from './profile/profile';
 const checkCauldronProps = (props: [number, number]): boolean =>
   Array.isArray(props) &&
   props.length === 2 &&
@@ -174,6 +175,10 @@ const isValidAvatar = (value: unknown): boolean => {
     C.PRESET_AVATARS.includes(value.id)
   ) {
     return true;
+  }
+
+  if (value.kind === 'url') {
+    return typeof value.url === 'string' && isValidAvatarUrl(value.url);
   }
 
   return (

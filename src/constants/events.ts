@@ -26,6 +26,7 @@ export const GAME_EVENTS = {
   PAGE_HIDDEN: 'page:hidden',
   SHOW_RULES: 'show:rules',
   PLAYER_NAME_CHANGED: 'player:name-changed',
+  PLAYER_AVATAR_CHANGED: 'player:avatar-changed',
   OPEN_NAME_DIALOG: 'name-dialog:open',
   MENU_SHOWN: 'menu:shown',
 } as const;

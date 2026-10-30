@@ -61,6 +61,17 @@ class Store {
     if (this.state.status !== C.MENU) return;
     this.emit(C.GAME_EVENTS.OPEN_NAME_DIALOG, true);
   }
+  public getUserAvatar() {
+    return this.player.avatar;
+  }
+  public setUserAvatar(avatar: T.ProfileAvatarType): boolean {
+    if (!this.player.setAvatar(avatar)) return false;
+    this.emit(C.GAME_EVENTS.PLAYER_AVATAR_CHANGED, { avatar });
+    return true;
+  }
+  public removeUserAvatar(): boolean {
+    return this.setUserAvatar({ kind: C.PRESET, id: 'default' });
+  }
 
   public startNewGame = () => {
     this.resetGameState();

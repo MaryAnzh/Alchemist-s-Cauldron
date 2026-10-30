@@ -2,7 +2,8 @@ import type { IconPickerType, ParentNodeType } from '@types';
 import { Component } from '@ui';
 import { ICON_PICKER } from '@constants';
 
-type ColorType = 'magic' | 'magic-icon' | 'arrow-right' | 'arrow-left' | 'magic-icon-2' | 'dark';
+type ColorType =
+  'link' | 'magic' | 'magic-icon' | 'arrow-right' | 'arrow-left' | 'magic-icon-2' | 'dark';
 
 export type ButtonProps = ParentNodeType & {
   className?: string;

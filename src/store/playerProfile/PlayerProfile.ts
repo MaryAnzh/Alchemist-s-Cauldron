@@ -1,4 +1,4 @@
-import type { GameRecordType, ProfileStorageType } from '@types';
+import type { GameRecordType, ProfileAvatarType, ProfileStorageType } from '@types';
 import { createDefaultProfile, profileService } from '../storage/ProfileService';
 import { appendRecord, isValidPlayerName } from '../logic';
 
@@ -30,6 +30,15 @@ export class PlayerProfile {
     if (!isValidPlayerName(name)) return false;
     const base = this.profile ?? createDefaultProfile();
     return this.persist({ ...base, name });
+  }
+
+  get avatar(): ProfileAvatarType | null {
+    return this.profile?.avatar ?? null;
+  }
+
+  setAvatar(avatar: ProfileAvatarType): boolean {
+    if (!this.profile) return false;
+    return this.persist({ ...this.profile, avatar });
   }
 
   addRecord(record: GameRecordType): boolean {

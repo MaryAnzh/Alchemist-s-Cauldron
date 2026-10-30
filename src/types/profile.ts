@@ -4,7 +4,8 @@ import type { GameDifficultType } from './state';
 
 export type ProfileAvatarType =
   | { kind: typeof PRESET; id: 'default' | 'phoenix' | 'dragon' | 'moon' }
-  | { kind: 'image'; dataUrl: string };
+  | { kind: 'image'; dataUrl: string }
+  | { kind: 'url'; url: string };
 
 export type GameRecordType = {
   playedAt: number;

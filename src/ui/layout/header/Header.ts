@@ -11,7 +11,7 @@ import {
 import type { Router } from '@router';
 import { store } from '@store';
 import type { ParentNodeType, PageNameType } from '@types';
-import { Button, Component } from '@ui';
+import { Button, Component, Avatar } from '@ui';
 
 type HeaderProps = ParentNodeType & {
   router: Router;
@@ -27,6 +27,7 @@ export class Header extends Component {
   logoButton!: Button;
   nameButton!: Button;
   resetProfileButton!: Button;
+  avatar!: Avatar;
 
   constructor({ parentNode, router }: HeaderProps) {
     super({ parentNode, tagName: 'header', className: 'app-header' });
@@ -46,6 +47,12 @@ export class Header extends Component {
       this.userName.setContent(name || 'Incognito');
       this.nameButton.setText(name ? 'Change name' : 'Enter name');
       this.syncButtons();
+      this.syncAvatar();
+    });
+
+    store.subscribe(GAME_EVENTS.PLAYER_AVATAR_CHANGED, () => {
+      if (!this.node.isConnected) return;
+      this.syncAvatar();
     });
 
     this.render();
@@ -100,11 +107,7 @@ export class Header extends Component {
       className: 'app-header_user',
     });
 
-    new Component({
-      parentNode: user.node,
-      tagName: 'span',
-      className: 'app-header_user_logo',
-    });
+    this.avatar = new Avatar({ parentNode: user.node, className: 'app-header_user_logo' });
 
     this.userName = new Component({
       parentNode: user.node,
@@ -120,23 +123,23 @@ export class Header extends Component {
     });
 
     this.nameButton = new Button({
-      parentNode: user.node,
-      variant: 'empty',
+      parentNode: this.node,
+      className: 'app-header_name-button',
       color: 'dark',
-      size: 'sm',
       text: store.getUserName() ? 'Change name' : 'Enter name',
       onClick: () => store.requestNameDialog(),
     });
 
     this.resetProfileButton = new Button({
-      parentNode: user.node,
-      variant: 'empty',
+      parentNode: this.node,
+      className: 'app-header_reset-button',
       color: 'dark',
-      size: 'sm',
       text: 'Remove profile',
       onClick: () => store.removeUserProfile(),
     });
     this.syncButtons();
+    this.syncNav();
+    this.syncAvatar();
   }
 
   private syncButtons() {
@@ -160,6 +163,10 @@ export class Header extends Component {
 
     this.pageName.setContent(section === HOME ? TITLE : section);
     this.logoButton.node.classList.toggle('app-header_wrap_icon_disabled', section === HOME);
+  }
+
+  private syncAvatar() {
+    this.avatar.setAvatar(store.getUserAvatar(), store.getUserName() ?? '');
   }
 
   destroy(): void {
