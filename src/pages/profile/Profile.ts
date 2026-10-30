@@ -1,30 +1,43 @@
-import { HOME, ROUTES } from '@constants';
-import type { Router } from '@router';
+import { ACCOUNT, ROUTES } from '@constants';
+import type { Router, RoutePath } from '@router';
 import type { ParentNodeType } from '@types';
-import { Button, Component } from '@ui';
+import { Component, Sidebar } from '@ui';
+import { Account, Statistics } from './components';
 
 type ProfileProps = ParentNodeType & {
   router: Router;
+  route: RoutePath;
 };
 
 export class Profile extends Component {
   private router: Router;
+  private route: RoutePath;
 
-  constructor({ parentNode, router }: ProfileProps) {
+  constructor({ parentNode, router, route }: ProfileProps) {
     super({ parentNode, tagName: 'div', className: 'app-profile' });
     this.router = router;
+    this.route = route;
 
-    new Component({
+    this.render();
+  }
+
+  render() {
+    new Sidebar({
       parentNode: this.node,
-      tagName: 'h2',
-      content: 'Profile',
+      className: 'app-profile_sidebar',
+      router: this.router,
     });
 
-    new Button({
+    const content = new Component({
       parentNode: this.node,
-      color: 'arrow-left',
-      text: 'Back',
-      onClick: () => this.router.navigate(ROUTES[HOME]),
+      tagName: 'div',
+      className: 'app-profile_content',
     });
+
+    if (this.route === ROUTES[ACCOUNT]) {
+      new Account({ parentNode: content.node });
+    } else {
+      new Statistics({ parentNode: content.node });
+    }
   }
 }

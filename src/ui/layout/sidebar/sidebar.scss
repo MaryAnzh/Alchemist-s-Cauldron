@@ -1,0 +1,28 @@
+@use '../../../styles/mixin/media.scss' as *;
+
+.app-sidebar {
+  width: 100%;
+
+  &_list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--size-1);
+    padding: var(--size-2);
+
+    &_item {
+      color: var(--color-parchment);
+      font-size: var(--font-size-md);
+    }
+  }
+}
+
+@media (max-width: $tablet-md) {
+  .app-sidebar {
+    width: 100%;
+
+    &_list {
+      flex-direction: row;
+    }
+  }
+}

@@ -1,8 +1,8 @@
 import {
   GAME_EVENTS,
+  getSection,
   HOME,
   MENU,
-  PAGE_ALIAS,
   ROUTER_EVENTS,
   ROUTES,
   ROUTES_MAP,
@@ -32,25 +32,8 @@ export class Header extends Component {
     super({ parentNode, tagName: 'header', className: 'app-header' });
     this.router = router;
 
-    this.router.subscribe(ROUTER_EVENTS.PATH_CHANGE, (path) => {
-      const url = path as keyof typeof PAGE_ALIAS;
-      const pageName = PAGE_ALIAS[url] ?? HOME;
-
-      this.navListItems.forEach(({ button, name }) => {
-        if (pageName === name) {
-          button.setDisabled(true);
-        } else {
-          button.setDisabled(false);
-        }
-        const title = pageName === HOME ? TITLE : pageName;
-        this.pageName.setContent(title);
-
-        if (url === ROUTES[HOME]) {
-          this.logoButton.node.style.pointerEvents = 'none';
-        } else {
-          this.logoButton.node.style.pointerEvents = 'auto';
-        }
-      });
+    this.router.subscribe(ROUTER_EVENTS.PATH_CHANGE, () => {
+      this.syncNav();
       this.syncButtons();
     });
 
@@ -75,28 +58,20 @@ export class Header extends Component {
       className: 'app-header_wrap',
     });
 
-    const url = this.router.current() as keyof typeof PAGE_ALIAS;
-    const pageName = PAGE_ALIAS[url] ?? HOME;
+    const section = getSection(this.router.current())?.name ?? HOME;
+
     this.logoButton = new Button({
       parentNode: wrap.node,
       className: 'app-header_wrap_icon',
       leftIcon: 'symbol',
       variant: 'empty',
-      onClick: () => {
-        if (url === ROUTES[HOME]) {
-          this.logoButton.node.style.pointerEvents = 'none';
-        } else {
-          this.logoButton.node.style.pointerEvents = 'auto';
-        }
-        this.router.navigate(ROUTES[HOME]);
-      },
+      onClick: () => this.router.navigate(ROUTES[HOME]),
     });
 
     this.pageName = new Component({
       parentNode: wrap.node,
       tagName: 'h1',
       className: 'app-header_wrap_title',
-      content: pageName === HOME ? TITLE : pageName,
     });
 
     const nav = new Component({
@@ -104,19 +79,18 @@ export class Header extends Component {
       tagName: 'nav',
       className: 'app-header_nav',
     });
-    const currentUrl = url;
 
     ROUTES_MAP.forEach(({ name, path }) => {
+      const isActive = name === section;
       const button = new Button({
         parentNode: nav.node,
+        className: 'app-header_nav_item',
         variant: 'empty',
         text: name,
         color: 'dark',
-        onClick: () => {
-          this.router.navigate(ROUTES[name]);
-        },
-        disabled: currentUrl === path ? 'disabled' : undefined,
+        onClick: () => this.router.navigate(path),
       });
+      button.node.classList.toggle('app-header_nav_item_active', isActive);
       this.navListItems.push({ name, button });
     });
 
@@ -173,6 +147,19 @@ export class Header extends Component {
     this.resetProfileButton.setHidden(!onStart || isIncognito);
     const profileItem = this.navListItems[1];
     profileItem?.button.setDisabled(isIncognito);
+  }
+
+  private syncNav() {
+    const section = getSection(this.router.current())?.name ?? HOME;
+
+    this.navListItems.forEach(({ button, name }) => {
+      const isActive = name === section;
+      button.node.classList.toggle('app-header_nav_item_active', isActive);
+      button.node.setAttribute('aria-current', isActive ? 'page' : 'false');
+    });
+
+    this.pageName.setContent(section === HOME ? TITLE : section);
+    this.logoButton.node.classList.toggle('app-header_wrap_icon_disabled', section === HOME);
   }
 
   destroy(): void {

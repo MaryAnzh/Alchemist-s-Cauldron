@@ -3,14 +3,25 @@
 
 .app-profile {
   @include section-paddings;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 290px auto;
   justify-content: center;
   z-index: 10;
+
+  &_content {
+    grid-column: 2;
+    min-width: 0;
+  }
+
+  &_sidebar {
+    grid-column: 1;
+  }
 }
 
-@media (max-width: $tablet) {
+@media (max-width: $tablet-md) {
   .app-profile {
     width: 100%;
+    grid-template-columns: 1fr;
+    grid-template-rows: min-content auto;
   }
 }

@@ -18,6 +18,10 @@
       height: var(--size-4);
     }
 
+    &_icon_disabled {
+      pointer-events: none;
+    }
+
     &_title {
       justify-self: start;
       font-family: var(--font-title);
@@ -54,11 +58,18 @@
     font-size: var(--font-size-md);
     align-items: center;
 
-    a {
+    &_item {
       text-decoration: none;
       color: var(--input-text-color-hover);
       transition: color 0.3s;
       cursor: pointer;
+
+      &_active {
+        text-decoration: underline;
+        color: var(--input-text-color);
+        pointer-events: none;
+        cursor: default;
+      }
 
       &::first-letter {
         text-transform: uppercase;
