@@ -42,9 +42,12 @@ migration is planned.
 
 - [x] Request the player's name before starting a game
 - [x] Show the player's name in the header
+- [x] Show the player's avatar in the header
+- [x] Add profile navigation with account and statistics pages (header and sidebar)
+- [x] Add the account page: name editing with validation, avatar upload by file, drag-and-drop, or https URL
+- [x] Limit avatar files to 85 KB and store images as base64 in localStorage
 - [x] Remove the profile and its history
-- [ ] Show the player's avatar in the header
-- [ ] Add profile navigation
+- [x] Show the mini cauldron in the sidebar with a CSS-only animation
 - [ ] Add preset avatars and resized image uploads
 - [ ] Record completed games without duplicates
 - [ ] Preserve gameplay counters when continuing a saved game
@@ -77,12 +80,14 @@ migration is planned.
 
 ### Data and limitations
 
-The profile stores the player's name, recent game records, and (planned)
-avatar and achievements.
+The profile stores the player's name, recent game records, and an optional
+avatar (an uploaded image as base64 or an https image link). Avatar files
+over 85 KB are rejected.
 
 Without a name, the game runs in incognito mode: no history is saved and the profile page is unavailable.
 
-The profile can be removed at menu; this deletes the name and all recorded history.
+The profile can be removed on the account page:
+this deletes the name, avatar, and all recorded history.
 
 Known limitation: after continuing a saved game, session counters
 (brews, mistakes, reactions) and duration start from zero.
