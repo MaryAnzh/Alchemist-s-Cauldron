@@ -1,14 +1,24 @@
 import * as C from '@constants';
 
 import type { SlideSetType } from './types';
+import accountShot from '../../assets/account.webp';
 
 export const SLIDES_SET: SlideSetType[] = [
   {
     id: 'slide-1',
     slide: {
-      template: 'title',
+      template: 'content',
       title: { text: C.SLIDE_1_TITLE },
       subTitle: { text: C.SLIDE_1_SUBTITLE },
+      list: { items: [...C.SLIDE_1_ITEMS] },
+      links: [
+        {
+          src: accountShot,
+          alt: 'Account page',
+          caption: 'Account',
+          href: `#${C.ROUTES.account}`,
+        },
+      ],
     },
     preview: { title: C.SLIDE_1_PREVIEW_TITLE, icon: 'symbol' },
   },
@@ -66,6 +76,7 @@ export const SLIDES_SET: SlideSetType[] = [
       template: 'content',
       title: { text: C.SLIDE_7_TITLE },
       list: { items: [...C.SLIDE_7_ITEMS] },
+      code: { text: '...' },
     },
     preview: { title: C.SLIDE_7_PREVIEW_TITLE, icon: 'symbol' },
   },

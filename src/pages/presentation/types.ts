@@ -21,6 +21,17 @@ export type SubTitleType = {
 
 export type SlideJustifyType = 'left' | 'right' | 'center';
 
+export type SlideLinkType = {
+  src: string;
+  alt: string;
+  caption?: string;
+  href: string;
+};
+
+export type SlideCodeType = {
+  text: string;
+};
+
 export type SlideProps = ParentNodeType & {
   template: SlideTemplateType;
   slideJustify?: SlideJustifyType;
@@ -37,6 +48,8 @@ export type SlideProps = ParentNodeType & {
     src: string;
     alt?: string;
   };
+  links?: SlideLinkType[];
+  code?: SlideCodeType;
 };
 
 export type SlidePreviewType = {
