@@ -1,15 +1,15 @@
 import type { ParentNodeType } from '@types';
 import * as C from '@constants';
 import { Input, Component, Button } from '@ui';
-import { isValidPlayerName } from '@store';
+import { getPlayerNameError, store } from '@store';
 
 type UsernameFormProps = ParentNodeType & {
   onSubmit: (name: string) => boolean;
   onSkip: () => void;
 };
+
 export class UserNameForm extends Component {
   inputNode!: Input;
-  name = '';
   submit!: Button;
   cancel!: Button;
   onSubmit: (name: string) => boolean;
@@ -47,10 +47,8 @@ export class UserNameForm extends Component {
       placeholder: C.INPUT_PLACEHOLDER,
       maxlength: '15',
       className: 'app-user-name-form_input',
-    });
-
-    this.inputNode.onInput((value) => {
-      this.validateName(value);
+      value: store.getUserName() ?? '',
+      validate: getPlayerNameError,
     });
 
     this.cancel = new Button({
@@ -84,17 +82,16 @@ export class UserNameForm extends Component {
     });
   }
 
-  private validateName(value: string) {
-    const valid = isValidPlayerName(value);
-    this.inputNode.setError(valid || !value ? '' : C.ERROR_NAME_VALIDATION);
-    this.name = valid ? value : '';
+  private handleSubmit() {
+    const name = this.inputNode.getValue();
+    const error = name ? getPlayerNameError(name) : C.ERROR_NAME_VALIDATION;
+    if (error) {
+      this.inputNode.setError(error);
+      return;
+    }
+    if (!this.onSubmit(name)) this.inputNode.setError(C.ERROR_NAME_VALIDATION);
   }
 
-  private handleSubmit() {
-    if (!this.name || !this.onSubmit(this.name)) {
-      this.inputNode.setError(C.ERROR_NAME_VALIDATION);
-    }
-  }
   destroy(): void {
     this.inputNode?.destroy();
     this.submit?.destroy();

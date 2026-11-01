@@ -1,12 +1,12 @@
 import {
   getAvatarFileError,
   getAvatarSrc,
+  getPlayerNameError,
   isValidAvatarUrl,
-  isValidPlayerName,
   store,
 } from '@store';
 import type { ParentNodeType, ProfileAvatarType } from '@types';
-import { AVATAR_MIME_TYPES } from '@constants';
+import { AVATAR_MIME_TYPES, URL_ERROR } from '@constants';
 import { Avatar, Button, Component, Input } from '@ui';
 
 const readFileAsDataUrl = (file: File): Promise<string> =>
@@ -17,19 +17,25 @@ const readFileAsDataUrl = (file: File): Promise<string> =>
     reader.readAsDataURL(file);
   });
 
+const validateUrl = (value: string) => (!value || isValidAvatarUrl(value) ? '' : URL_ERROR);
+
 export class Account extends Component {
   private avatar!: Avatar;
   private avatarBox!: Component;
   private removeButton!: Button;
+  private applyUrlButton!: Button;
   private fileInput!: Component;
   private urlInput!: Input;
   private nameBlock!: Component;
   private nameInput: Input | null = null;
+  private editButton: Button | null = null;
+  private saveButton: Button | null = null;
   private message!: Component;
 
   constructor({ parentNode }: ParentNodeType) {
     super({ parentNode, tagName: 'section', className: 'app-account' });
 
+    document.addEventListener('click', this.onDocumentClick, true);
     this.render();
   }
 
@@ -96,8 +102,9 @@ export class Account extends Component {
       placeholder: 'https://… image link',
       maxlength: '2048',
       className: 'app-account_url_input',
+      validate: validateUrl,
     });
-    new Button({
+    this.applyUrlButton = new Button({
       parentNode: urlBlock.node,
       text: 'Use URL',
       color: 'link',
@@ -127,9 +134,18 @@ export class Account extends Component {
     this.removeButton.setHidden(getAvatarSrc(avatar) === null);
   }
 
-  private renderName(editing: boolean) {
-    this.nameBlock.node.replaceChildren();
+  private destroyNameControls() {
+    this.nameInput?.destroy();
+    this.saveButton?.destroy();
+    this.editButton?.destroy();
     this.nameInput = null;
+    this.saveButton = null;
+    this.editButton = null;
+  }
+
+  private renderName(editing: boolean) {
+    this.destroyNameControls();
+    this.nameBlock.node.replaceChildren();
 
     if (editing) {
       this.nameInput = new Input({
@@ -138,20 +154,22 @@ export class Account extends Component {
         maxlength: '15',
         className: 'app-account_name_input',
         value: store.getUserName() ?? '',
+        validate: getPlayerNameError,
       });
       const input = this.nameInput.getInput().node;
       input.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') this.saveName();
         if (e.key === 'Escape') this.renderName(false);
       });
-      new Button({
+      this.saveButton = new Button({
         parentNode: this.nameBlock.node,
         className: 'app-account_name_save',
+        color: 'magic-icon-2',
         variant: 'empty',
         leftIcon: 'save',
         onClick: () => this.saveName(),
       });
-      input.focus();
+      this.nameInput.getInput().node.focus();
       return;
     }
 
@@ -161,7 +179,7 @@ export class Account extends Component {
       className: 'app-account_name',
       content: store.getUserName() || 'Incognito',
     });
-    new Button({
+    this.editButton = new Button({
       parentNode: this.nameBlock.node,
       className: 'app-account_name_edit',
       color: 'magic-icon-2',
@@ -173,11 +191,9 @@ export class Account extends Component {
   private saveName() {
     if (!this.nameInput) return;
     const name = this.nameInput.getValue();
-
-    if (!isValidPlayerName(name)) {
-      this.nameInput.setError('2–15 characters: letters, digits, spaces, "_" or "-"');
-      return;
-    }
+    const error = getPlayerNameError(name);
+    this.nameInput.setError(error);
+    if (error) return;
     if (!this.save(() => store.setUserName(name))) return;
 
     this.renderName(false);
@@ -185,12 +201,10 @@ export class Account extends Component {
 
   private applyUrl() {
     const url = this.urlInput.getValue();
+    const error = url ? validateUrl(url) : URL_ERROR;
+    this.urlInput.setError(error);
+    if (error) return;
 
-    if (!isValidAvatarUrl(url)) {
-      this.urlInput.setError('Enter an https:// image link');
-      return;
-    }
-    this.urlInput.setError('');
     this.saveAvatar({ kind: 'url', url });
   }
 
@@ -225,5 +239,20 @@ export class Account extends Component {
       this.message.setContent(error instanceof Error ? error.message : 'Could not save');
       return false;
     }
+  }
+
+  private onDocumentClick = () => {
+    this.message.setContent('');
+  };
+
+  destroy() {
+    document.removeEventListener('click', this.onDocumentClick, true);
+
+    this.destroyNameControls();
+    this.removeButton.destroy();
+    this.applyUrlButton.destroy();
+    this.urlInput.destroy();
+
+    super.destroy();
   }
 }

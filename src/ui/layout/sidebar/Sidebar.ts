@@ -10,6 +10,8 @@ type SidebarProps = ParentNodeType & {
 
 export class Sidebar extends Component {
   router: Router;
+  private buttons: Button[] = [];
+  private cauldron: MiniCauldron | null = null;
 
   constructor({ parentNode, className, router }: SidebarProps) {
     super({ parentNode, className: [className ? className : '', 'app-sidebar'] });
@@ -39,7 +41,7 @@ export class Sidebar extends Component {
       });
 
       const current = this.router.current();
-      new Button({
+      const button = new Button({
         parentNode: item.node,
         text: name,
         onClick: () => {
@@ -48,6 +50,7 @@ export class Sidebar extends Component {
         color: 'link',
         disabled: current === path ? 'disabled' : undefined,
       });
+      this.buttons.push(button);
     });
     const cauldronWrap = new Component({
       parentNode: this.node,
@@ -55,8 +58,16 @@ export class Sidebar extends Component {
       className: 'app-sidebar_cauldron',
     });
 
-    new MiniCauldron({
+    this.cauldron = new MiniCauldron({
       parentNode: cauldronWrap.node,
     });
+  }
+
+  destroy() {
+    this.buttons.forEach((button) => button.destroy());
+    this.buttons = [];
+    this.cauldron?.destroy();
+    this.cauldron = null;
+    super.destroy();
   }
 }

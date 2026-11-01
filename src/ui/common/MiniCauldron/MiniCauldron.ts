@@ -50,4 +50,8 @@ export class MiniCauldron extends Component {
 
     new Icon({ parentNode: pot.node, icon: 'cauldron_front', className: `${CLASS}_front` });
   }
+
+  destroy(): void {
+    super.destroy();
+  }
 }

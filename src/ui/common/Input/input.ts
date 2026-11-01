@@ -6,18 +6,21 @@ export type InputProps = ParentNodeType & {
   maxlength: string;
   className: string;
   value?: string;
+  validate?: (value: string) => string;
 };
 
 export class Input extends Component {
   private inputNode!: Component;
   private errorNode!: Component;
+  private validate?: (value: string) => string;
 
-  constructor({ parentNode, placeholder, maxlength, className, value }: InputProps) {
+  constructor({ parentNode, placeholder, maxlength, className, value, validate }: InputProps) {
     super({
       parentNode,
       tagName: 'div',
       className: ['app-input', className ?? ''],
     });
+    this.validate = validate;
 
     this.inputNode = new Component({
       parentNode: this.node,
@@ -32,6 +35,11 @@ export class Input extends Component {
       className: 'app-input_error',
       content: '',
     });
+
+    this.inputNode.node.addEventListener('input', () => {
+      if (this.validate) this.setError(this.validate(this.getValue()));
+    });
+    this.inputNode.node.addEventListener('blur', () => this.setError(''));
   }
 
   public setError(text: string) {
@@ -78,8 +86,6 @@ export class Input extends Component {
   }
 
   destroy(): void {
-    this.inputNode.node.onblur = null;
-    this.inputNode.node.onfocus = null;
     super.destroy();
   }
 }

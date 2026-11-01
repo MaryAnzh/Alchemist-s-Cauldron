@@ -25,6 +25,7 @@ export const {
   ERROR_UNABLE_TO_SAVE_PROFILE,
   ERROR_NAME_VALIDATION,
   ERROR_PERSIST_PROFILE,
+  URL_ERROR,
 
   HOME,
   PRESENTATION,
@@ -104,6 +105,7 @@ export const {
   ERROR_UNABLE_TO_SAVE_PROFILE: 'Unable to save the player profile to localStorage',
   ERROR_NAME_VALIDATION: 'Name must be 2–15 chars: letters, digits, space, _ or -',
   ERROR_PERSIST_PROFILE: 'Failed to persist player profile',
+  URL_ERROR: 'Enter an https:// image link',
 
   HOME: 'game',
   PROFILE: 'profile',

@@ -1,4 +1,9 @@
-import { AVATAR_MIME_TYPES, MAX_AVATAR_FILE_BYTES, PRESET } from '@constants';
+import {
+  AVATAR_MIME_TYPES,
+  ERROR_NAME_VALIDATION,
+  MAX_AVATAR_FILE_BYTES,
+  PRESET,
+} from '@constants';
 import type { ProfileAvatarType } from '@types';
 
 export const isValidAvatarUrl = (value: string): boolean =>
@@ -18,3 +23,6 @@ export const PLAYER_NAME_REGEX = /^[A-Za-z0-9 _-]{2,15}$/;
 
 export const isValidPlayerName = (value: string): boolean =>
   PLAYER_NAME_REGEX.test(value) && value.trim() === value;
+
+export const getPlayerNameError = (value: string): string =>
+  !value || isValidPlayerName(value) ? '' : ERROR_NAME_VALIDATION;

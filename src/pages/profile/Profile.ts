@@ -12,6 +12,8 @@ type ProfileProps = ParentNodeType & {
 export class Profile extends Component {
   private router: Router;
   private route: RoutePath;
+  private sidebar: Sidebar | null = null;
+  private account: Account | null = null;
 
   constructor({ parentNode, router, route }: ProfileProps) {
     super({ parentNode, tagName: 'div', className: 'app-profile' });
@@ -22,7 +24,7 @@ export class Profile extends Component {
   }
 
   render() {
-    new Sidebar({
+    this.sidebar = new Sidebar({
       parentNode: this.node,
       className: 'app-profile_sidebar',
       router: this.router,
@@ -35,9 +37,15 @@ export class Profile extends Component {
     });
 
     if (this.route === ROUTES[ACCOUNT]) {
-      new Account({ parentNode: content.node });
+      this.account = new Account({ parentNode: content.node });
     } else {
       new Statistics({ parentNode: content.node });
     }
+  }
+
+  destroy() {
+    this.account?.destroy();
+    this.sidebar?.destroy();
+    super.destroy();
   }
 }
