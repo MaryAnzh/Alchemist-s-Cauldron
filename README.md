@@ -60,11 +60,13 @@ migration is planned.
 - [x] Add a presentation page and route
 - [x] Add the slide component and initial title slide
 - [x] Add the preview rendering skeleton
-- [ ] Implement title, content, and split layouts
-- [ ] Add slide navigation and clickable preview cards
-- [ ] Add keyboard controls and a current-slide indicator
+- [x] Implement the content layout: title, subtitle, lists, screenshot links, and code blocks
+- [x] Add slide navigation and clickable preview cards
+- [x] Add keyboard controls (← and →) and highlight the current slide
+- [x] Add horizontal and vertical slide transitions with reduced-motion support
+- [x] Remember the current slide across page navigation
+- [ ] New templates
 - [ ] Prepare content for a 5–10 minute presentation
-- [ ] Add slide transitions with reduced-motion support
 
 #### Final polish
 
@@ -91,6 +93,8 @@ this deletes the name, avatar, and all recorded history.
 
 Known limitation: after continuing a saved game, session counters
 (brews, mistakes, reactions) and duration start from zero.
+
+The presentation remembers the current slide for the browser tab (sessionStorage), so returning from the profile pages reopens the same slide.
 
 ### Validation
 
