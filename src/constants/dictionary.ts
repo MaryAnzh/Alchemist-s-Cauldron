@@ -3,6 +3,7 @@ const SLIDES = {
   SLIDE_1_PREVIEW_TITLE: 'Alchemist’s Journey',
   SLIDE_1_SUBTITLE: 'Player profiles, personal progress, achievements and testing (Vitest)',
   SLIDE_1_ITEMS: [
+    'Routing: hash-based for GitHub Pages',
     'Profile pages: account and statistics',
     'Account page: avatar and name editing',
     'Statistics page (placeholder, data is in progress)',

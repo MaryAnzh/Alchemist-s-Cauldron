@@ -16,3 +16,13 @@ body {
   justify-content: center;
   background-color: var(--color-bg-night);
 }
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul,
+li {
+  list-style: none;
+}

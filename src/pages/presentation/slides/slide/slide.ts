@@ -67,7 +67,7 @@ export class Slide extends Component {
   contentTemplateRender() {
     new Component({
       parentNode: this.node,
-      className: ['app-presentation-slide_default_title', 'app-presentation-slide_title'],
+      className: 'app-presentation-slide_title',
       tagName: 'h2',
       content: this.title?.text ?? '',
     });
@@ -75,7 +75,7 @@ export class Slide extends Component {
     if (this.subtitle) {
       new Component({
         parentNode: this.node,
-        className: ['app-presentation-slide_default_subtitle', 'app-presentation-slide_subtitle'],
+        className: 'app-presentation-slide_subtitle',
         tagName: 'h3',
         content: this.subtitle.text,
       });
@@ -101,11 +101,16 @@ export class Slide extends Component {
         const link = new Component({
           parentNode: row.node,
           tagName: 'a',
-          className: 'app-presentation-slide_link',
+          className: 'app-presentation-slide_links_link',
           attrs: { href },
         });
         new Component({ parentNode: link.node, tagName: 'img', attrs: { src, alt } });
-        if (caption) new Component({ parentNode: link.node, tagName: 'span', content: caption });
+        if (caption)
+          new Component({
+            parentNode: link.node,
+            tagName: 'span',
+            content: caption,
+          });
       });
     }
 
