@@ -1,2 +1,2 @@
 export { store } from './store';
-export { isValidPlayerName } from './logic';
+export * from './logic';

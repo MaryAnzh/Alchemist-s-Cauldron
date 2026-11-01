@@ -1,4 +1,13 @@
-import { GAME_EVENTS, HOME, PAUSED, PLAYING, PRESENTATION, PROFILE, ROUTES } from '@constants';
+import {
+  GAME_EVENTS,
+  HOME,
+  PAUSED,
+  PLAYING,
+  PRESENTATION,
+  PROFILE,
+  ROUTES,
+  STATS,
+} from '@constants';
 import { store } from '@store';
 import {
   Component,
@@ -310,7 +319,12 @@ export class App extends Component {
       return;
     }
 
-    if (route === ROUTES[PROFILE] && this.store.isIncognito()) {
+    if (route === ROUTES[PROFILE]) {
+      router.navigate(ROUTES[STATS]);
+      return;
+    }
+
+    if (route.startsWith(`${ROUTES[PROFILE]}/`) && this.store.isIncognito()) {
       router.navigate(ROUTES[HOME]);
       return;
     }
@@ -319,15 +333,15 @@ export class App extends Component {
       this.renderPresentationView();
       return;
     }
-    this.renderProfileView();
+    this.renderProfileView(route);
   }
 
-  renderProfileView() {
+  renderProfileView(route: RoutePath) {
     const { status } = this.store.getState();
     if (status === PLAYING || status === PAUSED) this.store.exitToMenu();
     this.portal.unmount();
 
-    this.setView(new Profile({ parentNode: this.appWrap.node, router }));
+    this.setView(new Profile({ parentNode: this.appWrap.node, router, route }));
   }
 
   renderPresentationView() {

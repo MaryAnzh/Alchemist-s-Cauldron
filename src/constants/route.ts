@@ -1,9 +1,10 @@
-import { HOME, PRESENTATION, PROFILE } from './dictionary';
+import { ACCOUNT, HOME, PRESENTATION, PROFILE, STATS } from './dictionary';
 
 export const ROUTES = {
   [HOME]: '/',
   [PROFILE]: '/profile',
-  STATS: '/profile/stats',
+  [ACCOUNT]: '/profile/account',
+  [STATS]: '/profile/stats',
   [PRESENTATION]: '/presentation',
 } as const;
 
@@ -22,3 +23,6 @@ export const PAGE_ALIAS = {
   [ROUTES[PROFILE]]: PROFILE,
   [ROUTES[PRESENTATION]]: PRESENTATION,
 };
+
+export const getSection = (url: string) =>
+  ROUTES_MAP.find(({ path }) => url === path || url.startsWith(`${path}/`));

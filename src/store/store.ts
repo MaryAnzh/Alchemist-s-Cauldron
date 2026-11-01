@@ -47,13 +47,30 @@ class Store {
   }
   public setUserName(name: string): boolean {
     if (!this.player.setName(name)) return false;
-    this.update({ playerName: this.player.name });
-    this.emit(C.GAME_EVENTS.PLAYER_NAME_CHANGED, { name: this.player.name });
+    this.update({ playerName: this.player.name ?? '' });
+    this.emit(C.GAME_EVENTS.PLAYER_NAME_CHANGED, { name: this.player.name ?? '' });
+    return true;
+  }
+  public removeUserProfile(): boolean {
+    if (!this.player.removeProfile()) return false;
+    this.update({ playerName: '' });
+    this.emit(C.GAME_EVENTS.PLAYER_NAME_CHANGED, { name: '' });
     return true;
   }
   public requestNameDialog() {
     if (this.state.status !== C.MENU) return;
     this.emit(C.GAME_EVENTS.OPEN_NAME_DIALOG, true);
+  }
+  public getUserAvatar() {
+    return this.player.avatar;
+  }
+  public setUserAvatar(avatar: T.ProfileAvatarType): boolean {
+    if (!this.player.setAvatar(avatar)) return false;
+    this.emit(C.GAME_EVENTS.PLAYER_AVATAR_CHANGED, { avatar });
+    return true;
+  }
+  public removeUserAvatar(): boolean {
+    return this.setUserAvatar({ kind: C.PRESET, id: 'default' });
   }
 
   public startNewGame = () => {

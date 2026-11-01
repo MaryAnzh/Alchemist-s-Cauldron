@@ -23,6 +23,13 @@ migration is planned.
 
 ### Progress
 
+#### Architecture
+
+- [x] Extract the leaderboard, game save, clock, brew rules, and shelf/recipe setup from the store into separate modules
+- [x] Make shelf and recipe selection pure functions with an injectable random generator (Fisher–Yates shuffle)
+- [x] Add unit tests for each extracted module
+- [x] Block the profile page and skip history recording in incognito mode
+
 #### Foundation
 
 - [x] Add hash-based routing and a profile placeholder
@@ -33,9 +40,14 @@ migration is planned.
 
 #### Player profile
 
-- [ ] Request the player's name before starting a game
-- [ ] Show the player's name and avatar in the header
-- [ ] Add profile navigation
+- [x] Request the player's name before starting a game
+- [x] Show the player's name in the header
+- [x] Show the player's avatar in the header
+- [x] Add profile navigation with account and statistics pages (header and sidebar)
+- [x] Add the account page: name editing with validation, avatar upload by file, drag-and-drop, or https URL
+- [x] Limit avatar files to 85 KB and store images as base64 in localStorage
+- [x] Remove the profile and its history
+- [x] Show the mini cauldron in the sidebar with a CSS-only animation
 - [ ] Add preset avatars and resized image uploads
 - [ ] Record completed games without duplicates
 - [ ] Preserve gameplay counters when continuing a saved game
@@ -68,12 +80,17 @@ migration is planned.
 
 ### Data and limitations
 
-The profile is planned to store the player's name, avatar, recent game
-records, and unlocked achievements. Uploaded avatars will be resized
-before storage.
+The profile stores the player's name, recent game records, and an optional
+avatar (an uploaded image as base64 or an https image link). Avatar files
+over 85 KB are rejected.
 
-Data belongs to the current browser and origin. It is not synchronized
-between devices and may be lost when browser storage is cleared.
+Without a name, the game runs in incognito mode: no history is saved and the profile page is unavailable.
+
+The profile can be removed on the account page:
+this deletes the name, avatar, and all recorded history.
+
+Known limitation: after continuing a saved game, session counters
+(brews, mistakes, reactions) and duration start from zero.
 
 ### Validation
 

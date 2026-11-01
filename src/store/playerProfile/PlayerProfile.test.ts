@@ -1,10 +1,12 @@
 import { describe, expect, it, vi } from 'vitest';
 import { PlayerProfile } from './PlayerProfile';
-import { createDefaultProfile } from '../storage/ProfileService';
+import type { ProfileStorageType } from 'src/types/profile';
 
-const make = () => {
+const make = (saved: ProfileStorageType | null = null) => {
   const save = vi.fn();
-  return { save, player: new PlayerProfile({ loadOrCreate: createDefaultProfile, save }) };
+  const removeProfile = vi.fn();
+  const player = new PlayerProfile({ load: () => saved, save, removeProfile });
+  return { save, removeProfile, player };
 };
 
 describe('PlayerProfile', () => {
@@ -21,5 +23,14 @@ describe('PlayerProfile', () => {
     expect(player.setName(' Mary ')).toBe(true);
     expect(player.name).toBe('Mary');
     expect(save).toHaveBeenCalledTimes(1);
+  });
+
+  it('removes profile and its history', () => {
+    const { player, removeProfile } = make();
+    player.setName('Mary');
+    expect(player.removeProfile()).toBe(true);
+    expect(removeProfile).toHaveBeenCalledTimes(1);
+    expect(player.isIncognito).toBe(true);
+    expect(player.name).toBeNull();
   });
 });

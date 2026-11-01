@@ -1,8 +1,8 @@
 import {
   GAME_EVENTS,
+  getSection,
   HOME,
   MENU,
-  PAGE_ALIAS,
   ROUTER_EVENTS,
   ROUTES,
   ROUTES_MAP,
@@ -11,7 +11,7 @@ import {
 import type { Router } from '@router';
 import { store } from '@store';
 import type { ParentNodeType, PageNameType } from '@types';
-import { Button, Component } from '@ui';
+import { Button, Component, Avatar } from '@ui';
 
 type HeaderProps = ParentNodeType & {
   router: Router;
@@ -26,34 +26,19 @@ export class Header extends Component {
   userLogo!: Component;
   logoButton!: Button;
   nameButton!: Button;
+  resetProfileButton!: Button;
+  avatar!: Avatar;
 
   constructor({ parentNode, router }: HeaderProps) {
     super({ parentNode, tagName: 'header', className: 'app-header' });
     this.router = router;
 
-    this.router.subscribe(ROUTER_EVENTS.PATH_CHANGE, (path) => {
-      const url = path as keyof typeof PAGE_ALIAS;
-      const pageName = PAGE_ALIAS[url] ?? HOME;
-
-      this.navListItems.forEach(({ button, name }) => {
-        if (pageName === name) {
-          button.setDisabled(true);
-        } else {
-          button.setDisabled(false);
-        }
-        const title = pageName === HOME ? TITLE : pageName;
-        this.pageName.setContent(title);
-
-        if (url === ROUTES[HOME]) {
-          this.logoButton.node.style.pointerEvents = 'none';
-        } else {
-          this.logoButton.node.style.pointerEvents = 'auto';
-        }
-      });
-      this.syncNameButton();
+    this.router.subscribe(ROUTER_EVENTS.PATH_CHANGE, () => {
+      this.syncNav();
+      this.syncButtons();
     });
 
-    const sync = () => this.syncNameButton();
+    const sync = () => this.syncButtons();
     store.subscribe(GAME_EVENTS.GAME_START, sync);
     store.subscribe(GAME_EVENTS.GAME_OVER, sync);
     store.subscribe(GAME_EVENTS.MENU_SHOWN, sync);
@@ -61,6 +46,13 @@ export class Header extends Component {
       if (!this.node.isConnected) return;
       this.userName.setContent(name || 'Incognito');
       this.nameButton.setText(name ? 'Change name' : 'Enter name');
+      this.syncButtons();
+      this.syncAvatar();
+    });
+
+    store.subscribe(GAME_EVENTS.PLAYER_AVATAR_CHANGED, () => {
+      if (!this.node.isConnected) return;
+      this.syncAvatar();
     });
 
     this.render();
@@ -73,28 +65,20 @@ export class Header extends Component {
       className: 'app-header_wrap',
     });
 
-    const url = this.router.current() as keyof typeof PAGE_ALIAS;
-    const pageName = PAGE_ALIAS[url] ?? HOME;
+    const section = getSection(this.router.current())?.name ?? HOME;
+
     this.logoButton = new Button({
       parentNode: wrap.node,
       className: 'app-header_wrap_icon',
       leftIcon: 'symbol',
       variant: 'empty',
-      onClick: () => {
-        if (url === ROUTES[HOME]) {
-          this.logoButton.node.style.pointerEvents = 'none';
-        } else {
-          this.logoButton.node.style.pointerEvents = 'auto';
-        }
-        this.router.navigate(ROUTES[HOME]);
-      },
+      onClick: () => this.router.navigate(ROUTES[HOME]),
     });
 
     this.pageName = new Component({
       parentNode: wrap.node,
       tagName: 'h1',
       className: 'app-header_wrap_title',
-      content: pageName === HOME ? TITLE : pageName,
     });
 
     const nav = new Component({
@@ -102,19 +86,18 @@ export class Header extends Component {
       tagName: 'nav',
       className: 'app-header_nav',
     });
-    const currentUrl = url;
 
     ROUTES_MAP.forEach(({ name, path }) => {
+      const isActive = name === section;
       const button = new Button({
         parentNode: nav.node,
+        className: 'app-header_nav_item',
         variant: 'empty',
         text: name,
         color: 'dark',
-        onClick: () => {
-          this.router.navigate(ROUTES[name]);
-        },
-        disabled: currentUrl === path ? 'disabled' : undefined,
+        onClick: () => this.router.navigate(path),
       });
+      button.node.classList.toggle('app-header_nav_item_active', isActive);
       this.navListItems.push({ name, button });
     });
 
@@ -124,11 +107,7 @@ export class Header extends Component {
       className: 'app-header_user',
     });
 
-    new Component({
-      parentNode: user.node,
-      tagName: 'span',
-      className: 'app-header_user_logo',
-    });
+    this.avatar = new Avatar({ parentNode: user.node, className: 'app-header_user_logo' });
 
     this.userName = new Component({
       parentNode: user.node,
@@ -144,19 +123,50 @@ export class Header extends Component {
     });
 
     this.nameButton = new Button({
-      parentNode: user.node,
-      variant: 'empty',
+      parentNode: this.node,
+      className: 'app-header_name-button',
       color: 'dark',
-      size: 'sm',
       text: store.getUserName() ? 'Change name' : 'Enter name',
       onClick: () => store.requestNameDialog(),
     });
-    this.syncNameButton();
+
+    this.resetProfileButton = new Button({
+      parentNode: this.node,
+      className: 'app-header_reset-button',
+      color: 'dark',
+      text: 'Remove profile',
+      onClick: () => store.removeUserProfile(),
+    });
+    this.syncButtons();
+    this.syncNav();
+    this.syncAvatar();
   }
 
-  private syncNameButton() {
+  private syncButtons() {
     const onStart = this.router.current() === ROUTES[HOME] && store.getState().status === MENU;
-    this.nameButton.node.hidden = !onStart;
+    const isIncognito = store.isIncognito();
+
+    this.nameButton.setHidden(!onStart);
+    this.resetProfileButton.setHidden(!onStart || isIncognito);
+    const profileItem = this.navListItems[1];
+    profileItem?.button.setDisabled(isIncognito);
+  }
+
+  private syncNav() {
+    const section = getSection(this.router.current())?.name ?? HOME;
+
+    this.navListItems.forEach(({ button, name }) => {
+      const isActive = name === section;
+      button.node.classList.toggle('app-header_nav_item_active', isActive);
+      button.node.setAttribute('aria-current', isActive ? 'page' : 'false');
+    });
+
+    this.pageName.setContent(section === HOME ? TITLE : section);
+    this.logoButton.node.classList.toggle('app-header_wrap_icon_disabled', section === HOME);
+  }
+
+  private syncAvatar() {
+    this.avatar.setAvatar(store.getUserAvatar(), store.getUserName() ?? '');
   }
 
   destroy(): void {
