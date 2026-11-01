@@ -1,4 +1,3 @@
-import type { SlideTemplateType } from '@types';
 import { Component } from '@ui';
 import type {
   SlideCodeType,
@@ -7,6 +6,7 @@ import type {
   SlideTitleType,
   SubTitleType,
 } from '../../types';
+import type { SlideTemplateType } from '@types';
 
 export class Slide extends Component {
   nodeClass = 'app-presentation-slide';
@@ -15,12 +15,7 @@ export class Slide extends Component {
   list: SlideProps['list'] | null = null;
   links: SlideLinkType[] = [];
   code: SlideCodeType | null = null;
-
-  templateMap: Record<SlideTemplateType, () => void> = {
-    title: () => this.titleTemplateRender(),
-    content: () => this.contentTemplateRender(),
-    split: () => this.splitTemplateRender(),
-  };
+  template: SlideTemplateType = 'default';
 
   constructor({
     parentNode,
@@ -36,35 +31,22 @@ export class Slide extends Component {
       parentNode,
       className: [
         'app-presentation-slide',
-        `app-presentation-slide_justify-${slideJustify ?? 'center'}`,
+        slideJustify ? `app-presentation-slide_justify-${slideJustify}` : '',
+        `app-presentation-slide_template-${template}`,
       ],
     });
+
     this.title = title ?? null;
     this.subtitle = subTitle ?? null;
     this.list = list ?? null;
     this.links = links ?? [];
     this.code = code ?? null;
+    this.template = template;
 
-    this.templateMap[template ?? 'title']();
+    this.render();
   }
 
-  titleTemplateRender() {
-    new Component({
-      parentNode: this.node,
-      className: ['app-presentation-slide_default_title', 'app-presentation-slide_title'],
-      tagName: 'h2',
-      content: this.title?.text ?? '',
-    });
-
-    new Component({
-      parentNode: this.node,
-      className: ['app-presentation-slide_default_subtitle', 'app-presentation-slide_subtitle'],
-      tagName: 'h3',
-      content: this.subtitle?.text ?? '',
-    });
-  }
-
-  contentTemplateRender() {
+  render() {
     new Component({
       parentNode: this.node,
       className: 'app-presentation-slide_title',
@@ -123,8 +105,6 @@ export class Slide extends Component {
       });
     }
   }
-
-  splitTemplateRender() {}
 
   destroy() {
     super.destroy();

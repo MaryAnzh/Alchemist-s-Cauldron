@@ -10,13 +10,15 @@ const SLIDES = {
     'Vitest tests for routing and profile logic',
   ],
 
-  SLIDE_2_TITLE: 'Beyond the Leaderboard',
+  SLIDE_2_TITLE: 'Make game more user friendly',
   SLIDE_2_PREVIEW_TITLE: 'The Idea',
-  SLIDE_2_SUBTITLE: 'A high score shows a result. A profile tells a story.',
+  SLIDE_2_SUBTITLE:
+    'A high score shows a result. A profile tells a story. User can personalize their experience. Texting app logic is applied',
   SLIDE_2_ITEMS: [
+    'Provide a personalized experience',
     'Keep a personal history of completed games',
     'Understand progress across difficulty levels',
-    'Unlock achievements and discover new goals',
+    'Apply texting app logic',
   ],
 
   SLIDE_3_TITLE: 'Small Scope, Clear Decisions',
