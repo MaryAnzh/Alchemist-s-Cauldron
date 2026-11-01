@@ -1,21 +1,32 @@
 import * as C from '@constants';
 
 import type { SlideSetType } from './types';
+import accountShot from '../../assets/account.webp';
 
 export const SLIDES_SET: SlideSetType[] = [
   {
     id: 'slide-1',
     slide: {
-      template: 'title',
+      template: 'default',
       title: { text: C.SLIDE_1_TITLE },
       subTitle: { text: C.SLIDE_1_SUBTITLE },
+      list: { items: [...C.SLIDE_1_ITEMS] },
+      links: [
+        {
+          src: accountShot,
+          alt: 'Account page',
+          caption: 'Account',
+          href: `#${C.ROUTES.account}`,
+        },
+      ],
+      slideJustify: 'center',
     },
     preview: { title: C.SLIDE_1_PREVIEW_TITLE, icon: 'symbol' },
   },
   {
     id: 'slide-2',
     slide: {
-      template: 'content',
+      template: 'columns',
       title: { text: C.SLIDE_2_TITLE },
       subTitle: { text: C.SLIDE_2_SUBTITLE },
       list: { items: [...C.SLIDE_2_ITEMS] },
@@ -25,7 +36,7 @@ export const SLIDES_SET: SlideSetType[] = [
   {
     id: 'slide-3',
     slide: {
-      template: 'content',
+      template: 'default',
       title: { text: C.SLIDE_3_TITLE },
       list: { items: [...C.SLIDE_3_ITEMS] },
     },
@@ -34,17 +45,18 @@ export const SLIDES_SET: SlideSetType[] = [
   {
     id: 'slide-4',
     slide: {
-      template: 'content',
+      template: 'default',
       title: { text: C.SLIDE_4_TITLE },
       subTitle: { text: C.SLIDE_4_SUBTITLE },
       list: { items: [...C.SLIDE_4_ITEMS] },
+      slideJustify: 'center',
     },
     preview: { title: C.SLIDE_4_PREVIEW_TITLE, icon: 'symbol' },
   },
   {
     id: 'slide-5',
     slide: {
-      template: 'content',
+      template: 'default',
       title: { text: C.SLIDE_5_TITLE },
       subTitle: { text: C.SLIDE_5_SUBTITLE },
       list: { items: [...C.SLIDE_5_ITEMS] },
@@ -54,7 +66,7 @@ export const SLIDES_SET: SlideSetType[] = [
   {
     id: 'slide-6',
     slide: {
-      template: 'content',
+      template: 'default',
       title: { text: C.SLIDE_6_TITLE },
       list: { items: [...C.SLIDE_6_ITEMS] },
     },
@@ -63,16 +75,17 @@ export const SLIDES_SET: SlideSetType[] = [
   {
     id: 'slide-7',
     slide: {
-      template: 'content',
+      template: 'default',
       title: { text: C.SLIDE_7_TITLE },
       list: { items: [...C.SLIDE_7_ITEMS] },
+      code: { text: '...' },
     },
     preview: { title: C.SLIDE_7_PREVIEW_TITLE, icon: 'symbol' },
   },
   {
     id: 'slide-8',
     slide: {
-      template: 'content',
+      template: 'default',
       title: { text: C.SLIDE_8_TITLE },
       subTitle: { text: C.SLIDE_8_SUBTITLE },
       list: { items: [...C.SLIDE_8_ITEMS] },

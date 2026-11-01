@@ -1,1 +1,1 @@
-export type SlideTemplateType = 'title' | 'content' | 'split';
+export type SlideTemplateType = 'default' | 'columns';
