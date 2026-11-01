@@ -33,6 +33,9 @@ import symbol from '../assets/symbol.svg?raw';
 import symbol_2 from '../assets/symbol_2.svg?raw';
 import temperature from '../assets/temperature.svg?raw';
 import toad_slime from '../assets/toad_slime.svg?raw';
+import edit from '../assets/edit.svg?raw';
+import save from '../assets/save.svg?raw';
+import trash from '../assets/trash.svg?raw';
 
 export const ICON_PICKER = {
   arrow,
@@ -70,4 +73,7 @@ export const ICON_PICKER = {
   symbol_2,
   temperature,
   toad_slime,
+  edit,
+  save,
+  trash,
 };

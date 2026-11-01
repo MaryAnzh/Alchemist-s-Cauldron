@@ -3,6 +3,111 @@
 RS School game task  
 Task URL: https://github.com/rolling-scopes-school/qualifying-stage/blob/main/tasks/game-alchemists-cauldron/README.md
 
+## ✨ Creative Extension — Alchemist’s Journey
+
+An extension of Alchemist’s Cauldron focused on personal player progress
+and an integrated presentation for the project interview.
+
+- [Assignment](https://github.com/rolling-scopes-school/qualifying-stage/blob/main/tasks/creative-extension/mini-games.md)
+- [Assessment criteria](https://github.com/rolling-scopes-school/qualifying-stage/blob/main/tasks/creative-extension/mentors-check.md)
+
+### Goals
+
+- Give the player a persistent identity: name and avatar.
+- Track completed games, statistics, and achievements.
+- Present the idea, architecture, technical decisions, and results inside the application.
+
+The extension uses Vanilla TypeScript and the existing component-based UI.
+Profile data stays in localStorage; no backend, authentication, or framework
+migration is planned.
+
+### Progress
+
+#### Architecture
+
+- [x] Extract the leaderboard, game save, clock, brew rules, and shelf/recipe setup from the store into separate modules
+- [x] Make shelf and recipe selection pure functions with an injectable random generator (Fisher–Yates shuffle)
+- [x] Add unit tests for each extracted module
+- [x] Block the profile page and skip history recording in incognito mode
+
+#### Foundation
+
+- [x] Add hash-based routing and a profile placeholder
+- [x] Configure Vitest and add route parsing tests
+- [x] Add the profile model, storage service, and validation
+- [x] Add profile validation tests
+- [ ] Verify automated deployment from the development branch
+
+#### Player profile
+
+- [x] Request the player's name before starting a game
+- [x] Show the player's name in the header
+- [x] Show the player's avatar in the header
+- [x] Add profile navigation with account and statistics pages (header and sidebar)
+- [x] Add the account page: name editing with validation, avatar upload by file, drag-and-drop, or https URL
+- [x] Limit avatar files to 85 KB and store images as base64 in localStorage
+- [x] Remove the profile and its history
+- [x] Show the mini cauldron in the sidebar with a CSS-only animation
+- [ ] Add preset avatars and resized image uploads
+- [ ] Record completed games without duplicates
+- [ ] Preserve gameplay counters when continuing a saved game
+- [ ] Display recent history and aggregated statistics
+- [ ] Add achievements and unlock notifications
+- [ ] Test history, statistics, and achievement rules
+
+#### Integrated presentation
+
+- [x] Add a presentation page and route
+- [x] Add the slide component and initial title slide
+- [x] Add the preview rendering skeleton
+- [x] Implement the content layout: title, subtitle, lists, screenshot links, and code blocks
+- [x] Add slide navigation and clickable preview cards
+- [x] Add keyboard controls (← and →) and highlight the current slide
+- [x] Add horizontal and vertical slide transitions with reduced-motion support
+- [x] Remember the current slide across page navigation
+- [ ] New templates
+- [ ] Prepare content for a 5–10 minute presentation
+
+#### Final polish
+
+- [ ] Handle unavailable or full localStorage with visible feedback
+- [ ] Check responsive layouts and keyboard navigation
+- [ ] Verify profile persistence and the existing game flow
+- [ ] Rehearse the presentation and live demonstration
+
+#### Optional
+
+- [ ] Statistics charts
+- [ ] Localization
+
+### Data and limitations
+
+The profile stores the player's name, recent game records, and an optional
+avatar (an uploaded image as base64 or an https image link). Avatar files
+over 85 KB are rejected.
+
+Without a name, the game runs in incognito mode: no history is saved and the profile page is unavailable.
+
+The profile can be removed on the account page:
+this deletes the name, avatar, and all recorded history.
+
+Known limitation: after continuing a saved game, session counters
+(brews, mistakes, reactions) and duration start from zero.
+
+The presentation remembers the current slide for the browser tab (sessionStorage), so returning from the profile pages reopens the same slide.
+
+### Validation
+
+```sh
+npm run tsc
+npm run lint
+npm test
+npm run build
+```
+
+Tests are added alongside each feature. Checklist items are marked complete
+only after implementation and verification.
+
 ## 🔗 Deploy
 
 https://maryanzh.github.io/Alchemist-s-Cauldron/

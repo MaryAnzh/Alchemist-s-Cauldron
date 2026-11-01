@@ -2,7 +2,8 @@ import type { IconPickerType, ParentNodeType } from '@types';
 import { Component } from '@ui';
 import { ICON_PICKER } from '@constants';
 
-type ColorType = 'magic' | 'magic-icon' | 'arrow-right' | 'arrow-left' | 'magic-icon-2';
+type ColorType =
+  'link' | 'magic' | 'magic-icon' | 'arrow-right' | 'arrow-left' | 'magic-icon-2' | 'dark';
 
 export type ButtonProps = ParentNodeType & {
   className?: string;
@@ -105,6 +106,14 @@ export class Button extends Component {
       this.node.setAttribute('disabled', 'true');
     } else {
       this.node.removeAttribute('disabled');
+    }
+  };
+
+  public setHidden = (isHidden: boolean) => {
+    if (isHidden) {
+      this.node.classList.add('app_button_hidden');
+    } else {
+      this.node.classList.remove('app_button_hidden');
     }
   };
 

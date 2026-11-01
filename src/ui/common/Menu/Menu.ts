@@ -123,10 +123,7 @@ export class Menu extends Component {
         className: ['app-menu_dropdown_item'],
         content: name,
       });
-      if (
-        name === C.CONTINUE_GAME &&
-        (status === C.PLAYING || !store.loadFromStorage('GAME_STATE'))
-      ) {
+      if (name === C.CONTINUE_GAME && (status === C.PLAYING || !store.loadSavedGame())) {
         li.node.classList.add('app-menu_dropdown_item_disabled');
         return;
       }

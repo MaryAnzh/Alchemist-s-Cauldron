@@ -1,0 +1,104 @@
+// Mini cauldron: self-contained, uses no styles from other components.
+// Root takes the width of its parent, the parent controls the size.
+
+.app-mini-cauldron {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+
+  &_pot {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  &_back,
+  &_front {
+    position: absolute;
+    inset: 0;
+
+    svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &_back {
+    z-index: 0;
+  }
+
+  &_front {
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  // Potion surface: the ellipse inside the rim, in % of the cauldron box
+  &_potion {
+    position: absolute;
+    left: 18.3%;
+    top: 25.3%;
+    width: 62.4%;
+    height: 17%;
+    border-radius: 50%;
+    background: radial-gradient(ellipse at 50% 40%, #7dffa5 0%, #2fc25f 55%, #14733a 100%);
+    box-shadow: inset 0 -4px 8px rgba(0, 0, 0, 0.35);
+    z-index: 1;
+    animation: mini-cauldron-cycle 31s linear infinite;
+  }
+
+  // Bubbles are positioned inside the potion surface box
+  &_bubble {
+    position: absolute;
+    left: calc(18.3% + 62.4% * var(--x) / 100%);
+    top: calc(16.3% + 17% * var(--y) / 100%);
+    width: 5%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle at 35% 35%,
+      rgba(255, 255, 255, 0.95),
+      rgba(190, 255, 210, 0.35) 55%,
+      rgba(255, 255, 255, 0) 75%
+    );
+    box-shadow: inset 0 0 3px rgba(255, 255, 255, 0.7);
+    opacity: 0;
+    z-index: 1;
+    animation: mini-cauldron-bubble 1.8s ease-in-out infinite;
+    animation-delay: calc(var(--i, 0) * -0.35s);
+  }
+}
+
+// One 31s cycle: 0–30s plain boil, 30–31s brew glow
+@keyframes mini-cauldron-cycle {
+  0%,
+  96.77% {
+    filter: none;
+  }
+  98.39% {
+    filter: brightness(1.8) drop-shadow(0 0 12px #7aff9f);
+  }
+  100% {
+    filter: none;
+  }
+}
+
+@keyframes mini-cauldron-bubble {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0.2);
+  }
+  35% {
+    opacity: 0.95;
+    transform: scale(1) translateY(-20%);
+  }
+  60% {
+    opacity: 0.8;
+    transform: scale(1.15) translateY(-35%);
+  }
+  75% {
+    opacity: 0;
+    transform: scale(1.5) translateY(-45%);
+  }
+}

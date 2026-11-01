@@ -1,4 +1,4 @@
-import { Component, Button, Input } from '@ui';
+import { Component, Button } from '@ui';
 import { store } from '@store';
 import type { GameOverReasonType, ParentNodeType } from '@types';
 
@@ -15,9 +15,7 @@ type GameOverProps = ParentNodeType & {
 };
 
 export class GameOver extends Component {
-  private name = '';
   private score: number;
-  private inputNode: Input | null = null;
   private submit!: Button;
 
   constructor({ parentNode, score, isRecord, reason }: GameOverProps) {
@@ -52,40 +50,24 @@ export class GameOver extends Component {
       content: REASON_TEXT[reason],
     });
 
+    const name = store.getUserName();
+
     new Component({
       parentNode: wrap.node,
       tagName: 'div',
       className: 'app-game-over_wrap_score',
-      content: `Final Score: ${score}`,
+      content: `Final ${name} Score: ${score}`,
     });
 
-    if (isRecord) {
-      this.inputNode = new Input({
-        parentNode: wrap.node,
-        placeholder: 'Enter your name (2–15 chars)',
-        maxlength: '15',
-        className: 'app-game-over_wrap_input',
-      });
-
-      this.inputNode.onInput((value) => {
-        this.validateName(value);
-      });
-    }
-
-    if (isRecord) {
+    if (isRecord && name) {
       this.submit = new Button({
         parentNode: wrap.node,
         className: 'app-game-over_wrap_back',
         text: 'SUBMIT SCORE',
         leftIcon: 'symbol',
         onClick: () => {
-          if (!this.name) {
-            this.inputNode?.setError('Enter valid name');
-            return;
-          }
           this.submit.setDisabled(true);
-          this.inputNode?.setDisabled(true);
-          store.submitScore(this.name, this.score);
+          store.submitScore(name, this.score);
         },
         color: 'magic',
       });
@@ -101,18 +83,5 @@ export class GameOver extends Component {
       },
       color: 'magic',
     });
-  }
-
-  private validateName(value: string) {
-    const regex = /^[A-Za-z0-9 _-]{2,15}$/;
-
-    if (!regex.test(value)) {
-      this.inputNode?.setError('Name must be 2–15 chars: letters, digits, space, _ or -');
-      this.name = '';
-      return;
-    }
-
-    this.inputNode?.setError('');
-    this.name = value;
   }
 }

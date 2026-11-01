@@ -1,4 +1,4 @@
-import { GAME_EVENTS, PLAYING, REACTION_IDS, TIMER } from '@constants';
+import { GAME_EVENTS, PLAYING, REACTION_IDS, TIMER, TITLE } from '@constants';
 import { store } from '@store';
 import type { IconPickerType, ParentNodeType } from '@types';
 import { Button, Component, Icon } from '@ui';
@@ -47,9 +47,9 @@ export class Cauldron extends Component {
   render() {
     new Component({
       parentNode: this.node,
-      tagName: 'h1',
+      tagName: 'h2',
       className: 'app-cauldron_title',
-      content: `Alchemist's Cauldron`,
+      content: TITLE,
     });
     const wrap = new Component({
       parentNode: this.node,
