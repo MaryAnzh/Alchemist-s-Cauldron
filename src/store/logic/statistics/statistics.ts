@@ -22,7 +22,6 @@ export const buildStatistics = (history: GameRecordType[]): StatisticsType => {
   };
 };
 
-// history хранится от новых записей к старым
 export const getRecentHistory = (history: GameRecordType[], limit: number): GameRecordType[] =>
   history.slice(0, Math.max(0, limit));
 
@@ -31,3 +30,11 @@ export const filterHistoryByDifficulty = (
   filter: DifficultyFilterType,
 ): GameRecordType[] =>
   filter === 'all' ? history : history.filter((record) => record.difficulty === filter);
+
+export const formatDuration = (totalSeconds: number): string => {
+  const safe = Math.max(0, Math.floor(totalSeconds));
+  const hours = Math.floor(safe / 3600);
+  const minutes = Math.floor((safe % 3600) / 60);
+  const seconds = safe % 60;
+  return hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m ${seconds}s`;
+};

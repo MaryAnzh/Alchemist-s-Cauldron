@@ -1,0 +1,121 @@
+@use '../../../../../../styles/mixin/media.scss' as *;
+
+.app-statistics_bubbles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  &_bubble {
+    position: absolute;
+    bottom: -12px;
+    width: var(--size-3);
+    height: var(--size-3);
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    animation: statistics-bubble 6s linear infinite;
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 6px;
+      right: 6px;
+      border-radius: 50%;
+      width: 8px;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.4);
+    }
+  }
+
+  span:nth-child(1) {
+    left: 8%;
+    animation-delay: 0s;
+  }
+  span:nth-child(2) {
+    left: 28%;
+    animation-delay: 1.5s;
+    width: 6px;
+    height: 6px;
+  }
+  span:nth-child(3) {
+    left: 50%;
+    animation-delay: 3s;
+    width: 14px;
+    height: 14px;
+  }
+  span:nth-child(4) {
+    left: 70%;
+    animation-delay: 0.8s;
+  }
+  span:nth-child(5) {
+    left: 86%;
+    animation-delay: 2.2s;
+    width: 8px;
+    height: 8px;
+  }
+  span:nth-child(6) {
+    left: 40%;
+    animation-delay: 4s;
+    width: 7px;
+    height: 7px;
+  }
+}
+
+@keyframes statistics-bubble {
+  from {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.8;
+  }
+  to {
+    transform: translateY(-180px);
+    opacity: 0;
+  }
+}
+
+.app-statistics_cards {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--size-2);
+}
+
+.app-statistics_card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: var(--size-2);
+  border-radius: var(--radius-md);
+  background: rgba(0, 0, 0, 0.3);
+
+  &_label {
+    font-size: 0.8rem;
+    opacity: 0.7;
+  }
+
+  &_value {
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+}
+
+@media (min-width: $desktop-sm) {
+  .app-statistics_cards {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-statistics_bubbles {
+    display: none;
+  }
+}

@@ -1,10 +1,11 @@
 import * as C from '@constants';
 import { filterHistoryByDifficulty } from '@store';
-import type { GameRecordType, ParentNodeType, DifficultyFilterType } from '@types';
+import type { DifficultyFilterType, GameRecordType, ParentNodeType } from '@types';
 import { Button, Component } from '@ui';
+import { StatisticsSection } from './sections/StatisticsSection';
+import { SummarySection } from './sections/summary/SummarySection';
 
-const BLOCKS = [
-  C.SUMMARY,
+const PLACEHOLDER_BLOCKS = [
   C.DIFFICULTY,
   C.CHART,
   C.RECENT,
@@ -30,7 +31,7 @@ export class Statistics extends Component {
   private history: GameRecordType[];
   private filter: DifficultyFilterType = C.ALL;
   private filterButtons: Button[] = [];
-  visibleHistory: GameRecordType[] = [];
+  private sections: StatisticsSection[] = [];
 
   constructor({ parentNode, history }: StatisticsProps) {
     super({ parentNode, tagName: 'section', className: 'app-statistics' });
@@ -55,7 +56,9 @@ export class Statistics extends Component {
       className: 'app-statistics_grid',
     });
 
-    BLOCKS.forEach(
+    this.sections.push(new SummarySection({ parentNode: grid.node }));
+
+    PLACEHOLDER_BLOCKS.forEach(
       (name) =>
         new Component({
           parentNode: grid.node,
@@ -63,6 +66,8 @@ export class Statistics extends Component {
           className: `app-statistics_block app-statistics_block_${name}`,
         }),
     );
+
+    this.refresh();
   }
 
   private renderFilter() {
@@ -84,26 +89,32 @@ export class Statistics extends Component {
       this.filterButtons.push(button);
     });
 
-    this.updateFilterView();
+    this.updateFilterButtons();
   }
 
   private setFilter(filter: DifficultyFilterType) {
     this.filter = filter;
-    this.updateFilterView();
+    this.updateFilterButtons();
+    this.refresh();
   }
 
-  private updateFilterView() {
+  private updateFilterButtons() {
     FILTERS.forEach(({ value }, index) => {
       this.filterButtons[index].node.classList.toggle(
         'app-statistics_filter_item_active',
         value === this.filter,
       );
     });
-    this.visibleHistory = filterHistoryByDifficulty(this.history, this.filter);
+  }
+
+  private refresh() {
+    const visible = filterHistoryByDifficulty(this.history, this.filter);
+    this.sections.forEach((section) => section.update(visible));
   }
 
   destroy() {
     this.filterButtons.forEach((button) => button.destroy());
+    this.sections.forEach((section) => section.destroy());
     super.destroy();
   }
 }

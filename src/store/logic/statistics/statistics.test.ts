@@ -1,7 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import { EMPTY_STATISTICS } from '@constants';
 import type { GameRecordType } from '@types';
-import { buildStatistics, filterHistoryByDifficulty, getRecentHistory } from './statistics';
+import {
+  buildStatistics,
+  filterHistoryByDifficulty,
+  formatDuration,
+  getRecentHistory,
+} from './statistics';
 
 const make = (overrides: Partial<GameRecordType> = {}): GameRecordType => ({
   playedAt: 1000,
@@ -76,5 +81,17 @@ describe('filterHistoryByDifficulty', () => {
   it('keeps only the chosen difficulty', () => {
     expect(filterHistoryByDifficulty(history, 'easy')).toHaveLength(2);
     expect(filterHistoryByDifficulty(history, 'medium')).toEqual([]);
+  });
+});
+
+describe('formatDuration', () => {
+  it('formats seconds and minutes', () => {
+    expect(formatDuration(0)).toBe('0m 0s');
+    expect(formatDuration(75)).toBe('1m 15s');
+  });
+
+  it('switches to hours and never goes negative', () => {
+    expect(formatDuration(3700)).toBe('1h 1m');
+    expect(formatDuration(-5)).toBe('0m 0s');
   });
 });
