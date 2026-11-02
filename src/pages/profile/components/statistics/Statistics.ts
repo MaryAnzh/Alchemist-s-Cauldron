@@ -3,12 +3,11 @@ import { buildDemoHistory, filterHistoryByDifficulty } from '@store';
 import type { DifficultyFilterType, GameRecordType, ParentNodeType } from '@types';
 import { Button, Component } from '@ui';
 import { StatisticsSection } from './sections/StatisticsSection';
-import { SummarySection } from './sections/summary/SummarySection';
+import { SummarySection, RecentSection } from './sections';
 
 const PLACEHOLDER_BLOCKS = [
   C.DIFFICULTY,
   C.CHART,
-  C.RECENT,
   C.REASONS,
   C.BREWS,
   C.HISTOGRAM,
@@ -60,13 +59,22 @@ export class Statistics extends Component {
     this.renderSourceSwitch();
     this.renderFilter();
 
-    const grid = new Component({
+    const gridWrap = new Component({
       parentNode: this.node,
+      tagName: 'div',
+      className: 'app-statistics_wrap',
+    });
+
+    const grid = new Component({
+      parentNode: gridWrap.node,
       tagName: 'div',
       className: 'app-statistics_grid',
     });
 
-    this.sections.push(new SummarySection({ parentNode: grid.node }));
+    this.sections = [
+      new SummarySection({ parentNode: grid.node }),
+      new RecentSection({ parentNode: grid.node }),
+    ];
 
     PLACEHOLDER_BLOCKS.forEach(
       (name) =>
