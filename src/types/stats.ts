@@ -1,3 +1,5 @@
+import type { GameDifficultType } from './state';
+
 export type StatisticsType = {
   gamesPlayed: number;
   bestScore: number;
@@ -8,3 +10,5 @@ export type StatisticsType = {
   failedBrews: number;
   reactionsTriggered: number;
 };
+
+export type DifficultyFilterType = 'all' | GameDifficultType;

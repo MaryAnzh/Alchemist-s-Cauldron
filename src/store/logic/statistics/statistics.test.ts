@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { EMPTY_STATISTICS } from '@constants';
 import type { GameRecordType } from '@types';
-import { buildStatistics, getRecentHistory } from './statistics';
+import { buildStatistics, filterHistoryByDifficulty, getRecentHistory } from './statistics';
 
 const make = (overrides: Partial<GameRecordType> = {}): GameRecordType => ({
   playedAt: 1000,
@@ -59,5 +59,22 @@ describe('getRecentHistory', () => {
   it('returns an empty list for a zero or negative limit', () => {
     expect(getRecentHistory(history, 0)).toEqual([]);
     expect(getRecentHistory(history, -1)).toEqual([]);
+  });
+});
+
+describe('filterHistoryByDifficulty', () => {
+  const history = [
+    make({ difficulty: 'easy' }),
+    make({ difficulty: 'hard' }),
+    make({ difficulty: 'easy' }),
+  ];
+
+  it('returns everything for "all"', () => {
+    expect(filterHistoryByDifficulty(history, 'all')).toHaveLength(3);
+  });
+
+  it('keeps only the chosen difficulty', () => {
+    expect(filterHistoryByDifficulty(history, 'easy')).toHaveLength(2);
+    expect(filterHistoryByDifficulty(history, 'medium')).toEqual([]);
   });
 });

@@ -41,6 +41,10 @@ export class PlayerProfile {
     return this.persist({ ...this.profile, avatar });
   }
 
+  get history(): GameRecordType[] {
+    return this.profile?.history ?? [];
+  }
+
   addRecord(record: GameRecordType): boolean {
     if (!this.profile) return false;
     if (hasRecord(this.profile.history, record.gameId)) return false;

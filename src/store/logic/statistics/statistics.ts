@@ -1,5 +1,5 @@
 import { EMPTY_STATISTICS } from '@constants';
-import type { GameRecordType, StatisticsType } from '@types';
+import type { DifficultyFilterType, GameRecordType, StatisticsType } from '@types';
 
 const sumBy = (history: GameRecordType[], pick: (r: GameRecordType) => number) =>
   history.reduce((total, record) => total + pick(record), 0);
@@ -25,3 +25,9 @@ export const buildStatistics = (history: GameRecordType[]): StatisticsType => {
 // history хранится от новых записей к старым
 export const getRecentHistory = (history: GameRecordType[], limit: number): GameRecordType[] =>
   history.slice(0, Math.max(0, limit));
+
+export const filterHistoryByDifficulty = (
+  history: GameRecordType[],
+  filter: DifficultyFilterType,
+): GameRecordType[] =>
+  filter === 'all' ? history : history.filter((record) => record.difficulty === filter);

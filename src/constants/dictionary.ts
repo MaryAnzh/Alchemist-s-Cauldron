@@ -79,6 +79,7 @@ const SLIDES = {
 } as const;
 
 export const {
+  ALL,
   EASY,
   HARD,
   MEDIUM,
@@ -156,7 +157,16 @@ export const {
   INPUT_PLACEHOLDER,
   ENTER_NAME,
   NAME_DIALOG_SUBTITLE,
+  SUMMARY,
+  CHART,
+  RECENT,
+  REASONS,
+  BREWS,
+  HISTOGRAM,
+  CANDLES,
+  HEATMAP,
 } = {
+  ALL: 'all',
   EASY: 'easy',
   HARD: 'hard',
   MEDIUM: 'medium',
@@ -169,7 +179,7 @@ export const {
   TOP: 'top',
   BOTTOM: 'bottom',
   CONTINUE_GAME: 'Continue Game',
-  DIFFICULTY: 'Difficulty',
+  DIFFICULTY: 'difficulty',
   SHOW_LEADERBOARD: 'Leaderboard',
   START_NEW_GAME: 'Start New Game',
   TIME: 'time',
@@ -180,6 +190,14 @@ export const {
   MAGIC_POWER: 'magicPower',
   PRESET: 'preset',
   ALCHEMIST: 'Alchemist',
+  SUMMARY: 'summary',
+  CHART: 'chart',
+  RECENT: 'recent',
+  REASONS: 'reasons',
+  BREWS: 'brews',
+  HISTOGRAM: 'histogram',
+  CANDLES: 'candles',
+  HEATMAP: 'heatmap',
 
   INPUT_PLACEHOLDER: 'Enter your name (2–15 chars)',
   ERROR_INVALID_PROFILE: 'Cannot save an invalid player profile',

@@ -3,6 +3,7 @@ import type { Router, RoutePath } from '@router';
 import type { ParentNodeType } from '@types';
 import { Component, Sidebar } from '@ui';
 import { Account, Statistics } from './components';
+import { store } from 'src/store/store';
 
 type ProfileProps = ParentNodeType & {
   router: Router;
@@ -39,7 +40,7 @@ export class Profile extends Component {
     if (this.route === ROUTES[ACCOUNT]) {
       this.account = new Account({ parentNode: content.node });
     } else {
-      new Statistics({ parentNode: content.node });
+      new Statistics({ parentNode: content.node, history: store.getUserHistory() });
     }
   }
 

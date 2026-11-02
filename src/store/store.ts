@@ -72,6 +72,9 @@ class Store {
   public removeUserAvatar(): boolean {
     return this.setUserAvatar({ kind: C.PRESET, id: 'default' });
   }
+  public getUserHistory() {
+    return this.player.history;
+  }
 
   public startNewGame = () => {
     this.resetGameState();

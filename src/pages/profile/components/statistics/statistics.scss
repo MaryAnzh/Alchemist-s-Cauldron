@@ -65,6 +65,20 @@
   }
 }
 
+.app-statistics_filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--size-2);
+  &_item {
+    outline: 1px solid transparent;
+    transition: 0.3s ease;
+
+    &_active {
+      outline-color: var(--color-bg-light);
+    }
+  }
+}
+
 @media (min-width: $tablet-md) {
   .app-statistics_grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
