@@ -2,6 +2,7 @@
 @use '../../styles/mixin/media.scss' as *;
 
 @use './components//account/account.scss' as *;
+@use './components/statistics/statistics.scss' as *;
 
 .app-profile {
   @include section-paddings;

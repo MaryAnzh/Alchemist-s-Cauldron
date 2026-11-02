@@ -7,3 +7,4 @@ export * from './leaderboard';
 export * from './profile';
 export * from './route';
 export * from './presentation';
+export * from './stats';

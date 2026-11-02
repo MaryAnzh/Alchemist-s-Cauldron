@@ -3,3 +3,4 @@ export * from './profile/profile';
 export * from './reactions';
 export * from './timer';
 export * from './validate';
+export * from './statistics/statistics';
