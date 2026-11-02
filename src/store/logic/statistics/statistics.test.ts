@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { EMPTY_STATISTICS } from '@constants';
 import type { GameRecordType } from '@types';
 import {
+  buildBrewShares,
   buildStatistics,
   filterHistoryByDifficulty,
   formatDuration,
@@ -115,5 +116,25 @@ describe('buildStatistics with filtered history', () => {
       filterHistoryByDifficulty([make({ difficulty: 'easy' })], 'hard'),
     );
     expect(stats).toEqual({ ...EMPTY_STATISTICS });
+  });
+});
+
+describe('buildBrewShares', () => {
+  it('returns zero shares for empty history', () => {
+    expect(buildBrewShares([])).toEqual([
+      { games: 0, share: 0 },
+      { games: 0, share: 0 },
+    ]);
+  });
+
+  it('splits brews between successful and failed', () => {
+    const history = [
+      { successfulBrews: 3, failedBrews: 1 },
+      { successfulBrews: 2, failedBrews: 2 },
+    ] as GameRecordType[];
+    expect(buildBrewShares(history)).toEqual([
+      { games: 5, share: 0.625 },
+      { games: 3, share: 0.375 },
+    ]);
   });
 });

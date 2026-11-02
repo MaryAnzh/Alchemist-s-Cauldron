@@ -8,3 +8,4 @@ export * from './statistics/demo';
 export * from './statistics/chart';
 export * from './statistics/difficulty';
 export * from './statistics/reasons';
+export * from './statistics/histogram';

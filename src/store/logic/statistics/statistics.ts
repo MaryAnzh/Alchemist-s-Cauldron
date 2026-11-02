@@ -38,3 +38,11 @@ export const formatDuration = (totalSeconds: number): string => {
   const seconds = safe % 60;
   return hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m ${seconds}s`;
 };
+
+export const buildBrewShares = (history: GameRecordType[]) => {
+  const successful = sumBy(history, (r) => r.successfulBrews);
+  const failed = sumBy(history, (r) => r.failedBrews);
+  const total = successful + failed;
+  const shareOf = (games: number) => ({ games, share: total === 0 ? 0 : games / total });
+  return [shareOf(successful), shareOf(failed)];
+};

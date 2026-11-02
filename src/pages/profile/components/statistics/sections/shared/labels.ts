@@ -12,3 +12,8 @@ export const REASON_LABELS: Record<GameOverReasonType, string> = {
   lives: 'No lives left',
   ingredients: 'Out of ingredients',
 };
+
+export const BREW_LABELS: Record<'successful' | 'failed', string> = {
+  successful: 'Successful',
+  failed: 'Failed',
+};

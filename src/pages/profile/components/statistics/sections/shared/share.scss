@@ -47,6 +47,13 @@
     &_ingredients {
       background: var(--color-liquid-magic);
     }
+
+    &_successful {
+      background: var(--color-success);
+    }
+    &_failed {
+      background: var(--color-error);
+    }
   }
 
   &_value {

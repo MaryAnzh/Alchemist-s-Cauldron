@@ -5,7 +5,7 @@ import { Button, Component } from '@ui';
 import { StatisticsSection } from './sections/StatisticsSection';
 import * as S from './sections';
 
-const PLACEHOLDER_BLOCKS = [C.BREWS, C.HISTOGRAM, C.CANDLES, C.HEATMAP] as const;
+const PLACEHOLDER_BLOCKS = [C.CANDLES, C.HEATMAP] as const;
 
 const FILTERS: { value: DifficultyFilterType; label: string }[] = [
   { value: C.ALL, label: C.ALL },
@@ -68,6 +68,8 @@ export class Statistics extends Component {
       new S.ChartSection({ parentNode: grid.node }),
       new S.DifficultySection({ parentNode: grid.node }),
       new S.ReasonsSection({ parentNode: grid.node }),
+      new S.BrewsSection({ parentNode: grid.node }),
+      new S.HistogramSection({ parentNode: grid.node }),
     ];
 
     PLACEHOLDER_BLOCKS.forEach(

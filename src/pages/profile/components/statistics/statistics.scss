@@ -4,6 +4,8 @@
 @use './sections/recent/recent.scss' as *;
 @use './sections/chart/chart.scss' as *;
 @use './sections/shared/share.scss' as *;
+@use './sections/brews/brews.scss' as *;
+@use './sections/histogram/histogram.scss' as *;
 
 .app-statistics {
   width: 100%;
@@ -21,7 +23,6 @@
   }
 
   &_grid {
-    outline: 1px solid white;
     outline-offset: -2px;
     display: grid;
     grid-template-columns: minmax(0, 1fr);
