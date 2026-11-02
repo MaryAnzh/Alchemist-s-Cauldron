@@ -1,4 +1,10 @@
-import type { GameDifficultType, GameOverReasonType, GameRecordType, SessionStats } from '@types';
+import type {
+  GameDifficultType,
+  GameOverReasonType,
+  GameRecordType,
+  GameState,
+  SessionStats,
+} from '@types';
 import { MAX_HISTORY_LENGTH } from '@constants';
 
 type BuildArgs = {
@@ -42,3 +48,13 @@ export const createSessionStats = (startedAt: number): SessionStats => ({
 // newest first, capped
 export const appendRecord = (history: GameRecordType[], record: GameRecordType) =>
   [record, ...history].slice(0, MAX_HISTORY_LENGTH);
+
+export const restoreSessionStats = (saved: GameState['savedSession'], now: number): SessionStats =>
+  saved
+    ? {
+        startedAt: now - saved.elapsedMs,
+        successfulBrews: saved.successfulBrews,
+        failedBrews: saved.failedBrews,
+        reactionsTriggered: saved.reactionsTriggered,
+      }
+    : createSessionStats(now);

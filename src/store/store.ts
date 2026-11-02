@@ -385,7 +385,16 @@ class Store {
         ? remainingSeconds(this.state.endTimestamp, Date.now())
         : timeLeft;
 
-    this.gameSave.save({ ...this.state, timeLeft: remaining });
+    this.gameSave.save({
+      ...this.state,
+      timeLeft: remaining,
+      savedSession: {
+        successfulBrews: this.session.successfulBrews,
+        failedBrews: this.session.failedBrews,
+        reactionsTriggered: this.session.reactionsTriggered,
+        elapsedMs: Date.now() - this.session.startedAt,
+      },
+    });
   }
 
   checkLeaderboard(): boolean {
@@ -418,8 +427,8 @@ class Store {
   public continueLastGame() {
     const savedState = this.gameSave.load();
     if (!savedState) return;
-    this.session = L.createSessionStats(Date.now());
 
+    this.session = L.restoreSessionStats(savedState.savedSession, Date.now());
     this.timer.stop();
     this.timerRunning = false;
     this.update({

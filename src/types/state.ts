@@ -38,6 +38,13 @@ export type GameState = {
   lastReactionId: ReactionId | null;
 
   gameId?: string;
+
+  savedSession?: {
+    successfulBrews: number;
+    failedBrews: number;
+    reactionsTriggered: number;
+    elapsedMs: number;
+  };
 };
 
 export type StorageKeysType = keyof typeof STORAGE_KEYS;

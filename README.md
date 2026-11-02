@@ -91,8 +91,7 @@ Without a name, the game runs in incognito mode: no history is saved and the pro
 The profile can be removed on the account page:
 this deletes the name, avatar, and all recorded history.
 
-Known limitation: after continuing a saved game, session counters
-(brews, mistakes, reactions) and duration start from zero.
+Known limitation: session counters (brews, mistakes, reactions) and duration are saved on pause and restored when the game is continued.
 
 The presentation remembers the current slide for the browser tab (sessionStorage), so returning from the profile pages reopens the same slide.
 

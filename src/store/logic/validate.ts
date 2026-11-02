@@ -129,7 +129,13 @@ export const ValidateState = (state: unknown): boolean => {
     (s.lastReactionId === null || isReactionId(s.lastReactionId)) &&
     Number.isFinite(s.startTimestamp) &&
     (s.gameId === undefined || typeof s.gameId === 'string') &&
-    Number.isFinite(s.endTimestamp)
+    Number.isFinite(s.endTimestamp) &&
+    (s.savedSession === undefined ||
+      (isNonNegativeInteger(s.savedSession.successfulBrews) &&
+        isNonNegativeInteger(s.savedSession.failedBrews) &&
+        isNonNegativeInteger(s.savedSession.reactionsTriggered) &&
+        Number.isFinite(s.savedSession.elapsedMs) &&
+        s.savedSession.elapsedMs >= 0))
   );
 };
 
