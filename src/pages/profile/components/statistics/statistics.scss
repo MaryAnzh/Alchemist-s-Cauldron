@@ -1,7 +1,8 @@
 @use '../../../../styles/mixin/media.scss' as *;
 
-@use './sections/summary/summary.scss';
-@use './sections/recent/recent.scss';
+@use './sections/summary/summary.scss' as *;
+@use './sections/recent/recent.scss' as *;
+@use './sections/chart/chart.scss' as *;
 
 .app-statistics {
   width: 100%;
