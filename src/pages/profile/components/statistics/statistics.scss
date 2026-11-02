@@ -3,6 +3,7 @@
 @use './sections/summary/summary.scss' as *;
 @use './sections/recent/recent.scss' as *;
 @use './sections/chart/chart.scss' as *;
+@use './sections/shared/share.scss' as *;
 
 .app-statistics {
   width: 100%;
@@ -16,7 +17,7 @@
   &_wrap {
     width: 100%;
     height: 100%;
-    overflow: auto;
+    overflow-y: auto;
   }
 
   &_grid {

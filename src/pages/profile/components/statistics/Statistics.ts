@@ -3,16 +3,9 @@ import { buildDemoHistory, filterHistoryByDifficulty } from '@store';
 import type { DifficultyFilterType, GameRecordType, ParentNodeType } from '@types';
 import { Button, Component } from '@ui';
 import { StatisticsSection } from './sections/StatisticsSection';
-import { SummarySection, RecentSection, ChartSection } from './sections';
+import * as S from './sections';
 
-const PLACEHOLDER_BLOCKS = [
-  C.DIFFICULTY,
-  C.REASONS,
-  C.BREWS,
-  C.HISTOGRAM,
-  C.CANDLES,
-  C.HEATMAP,
-] as const;
+const PLACEHOLDER_BLOCKS = [C.BREWS, C.HISTOGRAM, C.CANDLES, C.HEATMAP] as const;
 
 const FILTERS: { value: DifficultyFilterType; label: string }[] = [
   { value: C.ALL, label: C.ALL },
@@ -71,9 +64,10 @@ export class Statistics extends Component {
     });
 
     this.sections = [
-      new SummarySection({ parentNode: grid.node }),
-      new RecentSection({ parentNode: grid.node }),
-      new ChartSection({ parentNode: grid.node }),
+      new S.SummarySection({ parentNode: grid.node }),
+      new S.ChartSection({ parentNode: grid.node }),
+      new S.DifficultySection({ parentNode: grid.node }),
+      new S.ReasonsSection({ parentNode: grid.node }),
     ];
 
     PLACEHOLDER_BLOCKS.forEach(
