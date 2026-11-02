@@ -95,3 +95,25 @@ describe('formatDuration', () => {
     expect(formatDuration(-5)).toBe('0m 0s');
   });
 });
+
+describe('buildStatistics with filtered history', () => {
+  it('rounds the average score to the nearest integer', () => {
+    expect(buildStatistics([make({ score: 10 }), make({ score: 11 })]).averageScore).toBe(11);
+  });
+
+  it('counts only games of the chosen difficulty', () => {
+    const history = [
+      make({ difficulty: 'easy', score: 50 }),
+      make({ difficulty: 'hard', score: 200 }),
+    ];
+    const stats = buildStatistics(filterHistoryByDifficulty(history, 'easy'));
+    expect(stats).toMatchObject({ gamesPlayed: 1, bestScore: 50 });
+  });
+
+  it('returns empty statistics when the filter matches nothing', () => {
+    const stats = buildStatistics(
+      filterHistoryByDifficulty([make({ difficulty: 'easy' })], 'hard'),
+    );
+    expect(stats).toEqual({ ...EMPTY_STATISTICS });
+  });
+});

@@ -4,3 +4,4 @@ export * from './reactions';
 export * from './timer';
 export * from './validate';
 export * from './statistics/statistics';
+export * from './statistics/demo';
