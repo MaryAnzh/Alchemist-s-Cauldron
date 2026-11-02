@@ -128,6 +128,7 @@ export const ValidateState = (state: unknown): boolean => {
     checkActiveReactions(s.activeReactions, s.difficulty as GameDifficultType) &&
     (s.lastReactionId === null || isReactionId(s.lastReactionId)) &&
     Number.isFinite(s.startTimestamp) &&
+    (s.gameId === undefined || typeof s.gameId === 'string') &&
     Number.isFinite(s.endTimestamp)
   );
 };
@@ -204,7 +205,8 @@ const isValidRecord = (value: unknown): boolean => {
     isNonNegativeInteger(value.durationSeconds) &&
     isNonNegativeInteger(value.successfulBrews) &&
     isNonNegativeInteger(value.failedBrews) &&
-    isNonNegativeInteger(value.reactionsTriggered)
+    isNonNegativeInteger(value.reactionsTriggered) &&
+    (value.gameId === undefined || typeof value.gameId === 'string')
   );
 };
 

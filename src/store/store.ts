@@ -76,6 +76,7 @@ class Store {
   public startNewGame = () => {
     this.resetGameState();
     this.session = L.createSessionStats(Date.now());
+    this.update({ gameId: String(this.session.startedAt) });
 
     this.initShelf();
     this.pickRandomRecipe();
@@ -131,6 +132,7 @@ class Store {
       lastReactionId: null,
     };
   }
+
   roundOver(variant: 'success' | 'fail') {
     this.timer.stop();
     this.timerRunning = false;
@@ -370,6 +372,7 @@ class Store {
         score,
         reason,
         now: Date.now(),
+        gameId: this.state.gameId,
       }),
     );
   }
@@ -421,6 +424,7 @@ class Store {
     this.timerRunning = false;
     this.update({
       ...(savedState as T.GameState),
+      gameId: savedState.gameId ?? String(Date.now()),
       endTimestamp: Date.now() + savedState.timeLeft * 1000,
     });
     this.emit(C.GAME_EVENTS.GAME_START, this.state);

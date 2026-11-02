@@ -16,6 +16,7 @@ export type GameRecordType = {
   successfulBrews: number;
   failedBrews: number;
   reactionsTriggered: number;
+  gameId?: string;
 };
 
 export type ProfileStorageType = {

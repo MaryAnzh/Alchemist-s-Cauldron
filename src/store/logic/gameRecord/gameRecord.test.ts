@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { GameRecordType } from '@types';
-import { appendRecord, buildGameRecord, createSessionStats } from './gameRecord';
+import { appendRecord, buildGameRecord, createSessionStats, hasRecord } from './gameRecord';
 
 describe('buildGameRecord', () => {
   it('builds a record from session stats', () => {
@@ -33,6 +33,21 @@ describe('buildGameRecord', () => {
     });
     expect(record.durationSeconds).toBe(0);
     expect(record.score).toBe(0);
+  });
+
+  it('stores the game id and detects it in history', () => {
+    const record = buildGameRecord({
+      stats: createSessionStats(0),
+      difficulty: 'easy',
+      score: 1,
+      reason: 'time',
+      now: 1000,
+      gameId: 'abc',
+    });
+    expect(record.gameId).toBe('abc');
+    expect(hasRecord([record], 'abc')).toBe(true);
+    expect(hasRecord([record], 'other')).toBe(false);
+    expect(hasRecord([record], undefined)).toBe(false);
   });
 });
 

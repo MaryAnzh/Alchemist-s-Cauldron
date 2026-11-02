@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { PlayerProfile } from './PlayerProfile';
-import type { ProfileStorageType } from 'src/types/profile';
+import type { GameRecordType, ProfileStorageType } from 'src/types/profile';
 
 const make = (saved: ProfileStorageType | null = null) => {
   const save = vi.fn();
@@ -32,5 +32,26 @@ describe('PlayerProfile', () => {
     expect(removeProfile).toHaveBeenCalledTimes(1);
     expect(player.isIncognito).toBe(true);
     expect(player.name).toBeNull();
+  });
+
+  it('does not add the same game twice', () => {
+    const { player, save } = make();
+    player.setName('Mary');
+    const record = {
+      playedAt: 1,
+      difficulty: 'easy',
+      score: 5,
+      reason: 'time',
+      durationSeconds: 10,
+      successfulBrews: 1,
+      failedBrews: 0,
+      reactionsTriggered: 0,
+      gameId: 'g1',
+    } as GameRecordType;
+
+    expect(player.addRecord(record)).toBe(true);
+    expect(player.addRecord(record)).toBe(false);
+    const lastSaved = save.mock.calls.at(-1)?.[0] as ProfileStorageType;
+    expect(lastSaved.history).toHaveLength(1);
   });
 });

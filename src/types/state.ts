@@ -36,6 +36,8 @@ export type GameState = {
   enabledReactionIds: ReactionId[];
   activeReactions: ReactionId[];
   lastReactionId: ReactionId | null;
+
+  gameId?: string;
 };
 
 export type StorageKeysType = keyof typeof STORAGE_KEYS;
