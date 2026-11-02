@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { buildDemoHistory } from './demo';
+import { SCORE } from '@constants';
 
 const NOW = Date.UTC(2026, 0, 15, 12);
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -35,5 +36,11 @@ describe('buildDemoHistory', () => {
 
   it('creates the maximum number of games when every roll is high', () => {
     expect(buildDemoHistory(NOW, () => 0.999)).toHaveLength(14 * 3);
+  });
+
+  it('derives the score from successful brews and difficulty', () => {
+    buildDemoHistory(NOW, seeded(11)).forEach((r) => {
+      expect(r.score).toBe(r.successfulBrews * SCORE[r.difficulty]);
+    });
   });
 });

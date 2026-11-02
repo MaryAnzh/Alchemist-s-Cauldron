@@ -1,5 +1,5 @@
 import * as C from '@constants';
-import { filterHistoryByDifficulty } from '@store';
+import { buildDemoHistory, filterHistoryByDifficulty } from '@store';
 import type { DifficultyFilterType, GameRecordType, ParentNodeType } from '@types';
 import { Button, Component } from '@ui';
 import { StatisticsSection } from './sections/StatisticsSection';
@@ -23,19 +23,28 @@ const FILTERS: { value: DifficultyFilterType; label: string }[] = [
   { value: C.HARD, label: C.HARD },
 ];
 
+const SOURCES: { isDemo: boolean; label: string }[] = [
+  { isDemo: false, label: 'My statistics' },
+  { isDemo: true, label: 'Show example' },
+];
+
 type StatisticsProps = ParentNodeType & {
   history: GameRecordType[];
 };
 
 export class Statistics extends Component {
   private history: GameRecordType[];
+  private demoHistory: GameRecordType[];
+  private showDemo = false;
   private filter: DifficultyFilterType = C.ALL;
+  private sourceButtons: Button[] = [];
   private filterButtons: Button[] = [];
   private sections: StatisticsSection[] = [];
 
   constructor({ parentNode, history }: StatisticsProps) {
     super({ parentNode, tagName: 'section', className: 'app-statistics' });
     this.history = history;
+    this.demoHistory = buildDemoHistory(Date.now());
 
     this.render();
   }
@@ -48,6 +57,7 @@ export class Statistics extends Component {
       content: 'Statistics',
     });
 
+    this.renderSourceSwitch();
     this.renderFilter();
 
     const grid = new Component({
@@ -68,6 +78,43 @@ export class Statistics extends Component {
     );
 
     this.refresh();
+  }
+
+  private renderSourceSwitch() {
+    const bar = new Component({
+      parentNode: this.node,
+      tagName: 'div',
+      className: 'app-statistics_filter',
+    });
+
+    SOURCES.forEach(({ isDemo, label }) => {
+      const button = new Button({
+        parentNode: bar.node,
+        className: 'app-statistics_filter_item',
+        color: 'dark',
+        text: label,
+        ariaLabel: label,
+        onClick: () => this.setSource(isDemo),
+      });
+      this.sourceButtons.push(button);
+    });
+
+    this.updateSourceButtons();
+  }
+
+  private setSource(isDemo: boolean) {
+    this.showDemo = isDemo;
+    this.updateSourceButtons();
+    this.refresh();
+  }
+
+  private updateSourceButtons() {
+    SOURCES.forEach(({ isDemo }, index) => {
+      this.sourceButtons[index].node.classList.toggle(
+        'app-statistics_filter_item_active',
+        isDemo === this.showDemo,
+      );
+    });
   }
 
   private renderFilter() {
@@ -108,11 +155,13 @@ export class Statistics extends Component {
   }
 
   private refresh() {
-    const visible = filterHistoryByDifficulty(this.history, this.filter);
+    const source = this.showDemo ? this.demoHistory : this.history;
+    const visible = filterHistoryByDifficulty(source, this.filter);
     this.sections.forEach((section) => section.update(visible));
   }
 
   destroy() {
+    this.sourceButtons.forEach((button) => button.destroy());
     this.filterButtons.forEach((button) => button.destroy());
     this.sections.forEach((section) => section.destroy());
     super.destroy();
