@@ -5,3 +5,4 @@ export { DifficultySection } from './difficulty/DifficultySection';
 export { ReasonsSection } from './reasons/ReasonsSection';
 export { BrewsSection } from './brews/BrewsSection';
 export { HistogramSection } from './histogram/HistogramSection';
+export { CandlesSection } from './candles/CandlesSection';

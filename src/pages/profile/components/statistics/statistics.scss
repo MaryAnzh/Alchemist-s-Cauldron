@@ -6,6 +6,7 @@
 @use './sections/shared/share.scss' as *;
 @use './sections/brews/brews.scss' as *;
 @use './sections/histogram/histogram.scss' as *;
+@use './sections/candles/candles.scss' as *;
 
 .app-statistics {
   width: 100%;

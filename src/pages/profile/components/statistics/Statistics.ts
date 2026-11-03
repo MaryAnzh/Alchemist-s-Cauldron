@@ -67,8 +67,10 @@ export class Statistics extends Component {
       new S.SummarySection({ parentNode: grid.node }),
       new S.ChartSection({ parentNode: grid.node }),
       new S.DifficultySection({ parentNode: grid.node }),
+      new S.RecentSection({ parentNode: grid.node }),
       new S.ReasonsSection({ parentNode: grid.node }),
       new S.BrewsSection({ parentNode: grid.node }),
+      new S.CandlesSection({ parentNode: grid.node }),
       new S.HistogramSection({ parentNode: grid.node }),
     ];
 

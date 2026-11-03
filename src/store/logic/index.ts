@@ -9,3 +9,4 @@ export * from './statistics/chart';
 export * from './statistics/difficulty';
 export * from './statistics/reasons';
 export * from './statistics/histogram';
+export * from './statistics/candles';
