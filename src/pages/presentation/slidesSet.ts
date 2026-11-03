@@ -64,6 +64,16 @@ export const SLIDES_SET: SlideSetType[] = [
     preview: { title: C.SLIDE_5_PREVIEW_TITLE, icon: 'symbol' },
   },
   {
+    id: 'slide-statistics',
+    slide: {
+      template: 'default',
+      title: { text: C.SLIDE_9_TITLE },
+      subTitle: { text: C.SLIDE_9_SUBTITLE },
+      list: { items: [...C.SLIDE_9_ITEMS] },
+    },
+    preview: { title: C.SLIDE_9_PREVIEW_TITLE, icon: 'symbol' },
+  },
+  {
     id: 'slide-6',
     slide: {
       template: 'default',

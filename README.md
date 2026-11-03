@@ -49,9 +49,9 @@ migration is planned.
 - [x] Remove the profile and its history
 - [x] Show the mini cauldron in the sidebar with a CSS-only animation
 - [ ] Add preset avatars and resized image uploads
-- [ ] Record completed games without duplicates
+- [x] Record completed games without duplicates
 - [ ] Preserve gameplay counters when continuing a saved game
-- [ ] Display recent history and aggregated statistics
+- [x] Display recent history and aggregated statistics
 - [ ] Add achievements and unlock notifications
 - [ ] Test history, statistics, and achievement rules
 
@@ -77,7 +77,7 @@ migration is planned.
 
 #### Optional
 
-- [ ] Statistics charts
+- [x] Statistics charts
 - [ ] Localization
 
 ### Data and limitations

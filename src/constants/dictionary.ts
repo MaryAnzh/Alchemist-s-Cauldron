@@ -76,6 +76,15 @@ const SLIDES = {
     'Next steps: statistics charts and localization',
     'Thank you! Questions?',
   ],
+  SLIDE_9_TITLE: 'Player Statistics',
+  SLIDE_9_PREVIEW_TITLE: 'Statistics',
+  SLIDE_9_SUBTITLE: 'Personal progress, one section at a time',
+  SLIDE_9_ITEMS: [
+    'Summary, game chart and difficulty breakdown',
+    'Recent games, defeat reasons and brew history',
+    'Candles, histogram and activity heatmap',
+    'Press ↓ to explore each section',
+  ],
 } as const;
 
 export const {
@@ -154,6 +163,10 @@ export const {
   SLIDE_8_PREVIEW_TITLE,
   SLIDE_8_SUBTITLE,
   SLIDE_8_ITEMS,
+  SLIDE_9_TITLE,
+  SLIDE_9_PREVIEW_TITLE,
+  SLIDE_9_SUBTITLE,
+  SLIDE_9_ITEMS,
   INPUT_PLACEHOLDER,
   ENTER_NAME,
   NAME_DIALOG_SUBTITLE,
