@@ -19,3 +19,9 @@ export const BREW_LABELS: Record<'successful' | 'failed', string> = {
 };
 
 export const DAY_FORMATTER = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'numeric' });
+
+export const DATE_FORMATTER = new Intl.DateTimeFormat('en-US', {
+  weekday: 'short',
+  month: 'short',
+  day: 'numeric',
+});

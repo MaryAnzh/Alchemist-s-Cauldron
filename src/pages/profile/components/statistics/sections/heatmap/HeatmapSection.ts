@@ -2,7 +2,8 @@ import { buildHeatmap } from '@store';
 import type { GameRecordType, ParentNodeType } from '@types';
 import { Component } from '@ui';
 import { StatisticsSection } from '../StatisticsSection';
-import { DAY_FORMATTER } from '../shared/labels';
+import { DATE_FORMATTER } from '../shared/labels';
+import { placeTooltip } from '../shared/tooltip/tooltip';
 
 export class HeatmapSection extends StatisticsSection {
   private body: Component;
@@ -44,13 +45,32 @@ export class HeatmapSection extends StatisticsSection {
     this.empty.node.hidden = hasHistory;
     if (!hasHistory) return;
 
+    const tooltip = document.createElement('div');
+    tooltip.className = 'app-statistics_tooltip';
+    tooltip.hidden = true;
+
     buildHeatmap(history).forEach(({ day, games, level }) => {
+      const label = `${DATE_FORMATTER.format(day)} · ${games} ${games === 1 ? 'game' : 'games'}`;
       const cell = new Component({
         parentNode: this.body.node,
         tagName: 'span',
         className: `app-statistics_heatmap_cell app-statistics_heatmap_cell_${level}`,
       });
-      cell.node.title = `${DAY_FORMATTER.format(day)}: ${games} ${games === 1 ? 'game' : 'games'}`;
+      cell.node.setAttribute('aria-label', label);
+      cell.node.addEventListener('pointerenter', () => {
+        tooltip.textContent = label;
+        placeTooltip(
+          tooltip,
+          this.body.node,
+          cell.node.offsetLeft + cell.node.offsetWidth / 2,
+          cell.node.offsetTop,
+        );
+      });
+      cell.node.addEventListener('pointerleave', () => {
+        tooltip.hidden = true;
+      });
     });
+
+    this.body.node.append(tooltip);
   }
 }

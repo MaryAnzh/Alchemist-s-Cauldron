@@ -8,6 +8,7 @@
 @use './sections/histogram/histogram.scss' as *;
 @use './sections/candles/candles.scss' as *;
 @use './sections/heatmap/heatmap.scss' as *;
+@use './sections/shared/tooltip/tooltip.scss' as *;
 
 .app-statistics {
   width: 100%;

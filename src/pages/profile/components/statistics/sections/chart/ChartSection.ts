@@ -3,6 +3,7 @@ import type { ChartModeType } from '@store';
 import type { GameRecordType, ParentNodeType } from '@types';
 import { Button, Component } from '@ui';
 import { StatisticsSection } from '../StatisticsSection';
+import { placeTooltip } from '../shared/tooltip/tooltip';
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 const VIEW_WIDTH = 300;
@@ -115,16 +116,20 @@ export class ChartSection extends StatisticsSection {
     svg.setAttribute('aria-label', MODE_TITLES[this.mode]);
 
     const tooltip = document.createElement('div');
-    tooltip.className = 'app-statistics_chart_tooltip';
-    tooltip.hidden = true;
+    tooltip.className = 'app-statistics_tooltip';
 
     const showTooltip = (index: number) => {
       const { x, y } = points[index];
       tooltip.textContent = labels[index];
-      tooltip.style.left = `${(x / VIEW_WIDTH) * 100}%`;
-      tooltip.style.top = `${(y / VIEW_HEIGHT) * 100}%`;
-      tooltip.hidden = false;
+      placeTooltip(
+        tooltip,
+        this.body.node,
+        (x / VIEW_WIDTH) * this.body.node.clientWidth,
+        (y / VIEW_HEIGHT) * this.body.node.clientHeight,
+      );
     };
+    tooltip.hidden = true;
+
     const hideTooltip = () => {
       tooltip.hidden = true;
     };
