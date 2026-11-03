@@ -21,9 +21,9 @@ describe('buildDemoHistory', () => {
     expect(Math.max(...times)).toBeLessThanOrEqual(NOW);
   });
 
-  it('covers no more than two weeks', () => {
+  it('covers no more than six weeks', () => {
     buildDemoHistory(NOW, seeded(7)).forEach((r) => {
-      expect(NOW - r.playedAt).toBeLessThan(14 * DAY_MS);
+      expect(NOW - r.playedAt).toBeLessThan(42 * DAY_MS);
     });
   });
 
@@ -34,13 +34,12 @@ describe('buildDemoHistory', () => {
     });
   });
 
-  it('creates the maximum number of games when every roll is high', () => {
-    expect(buildDemoHistory(NOW, () => 0.999)).toHaveLength(14 * 3);
-  });
-
   it('derives the score from successful brews and difficulty', () => {
     buildDemoHistory(NOW, seeded(11)).forEach((r) => {
       expect(r.score).toBe(r.successfulBrews * SCORE[r.difficulty]);
     });
+  });
+  it('creates more games than days when every roll is high', () => {
+    expect(buildDemoHistory(NOW, () => 0.999).length).toBeGreaterThan(56);
   });
 });

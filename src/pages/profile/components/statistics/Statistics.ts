@@ -5,8 +5,6 @@ import { Button, Component } from '@ui';
 import { StatisticsSection } from './sections/StatisticsSection';
 import * as S from './sections';
 
-const PLACEHOLDER_BLOCKS = [C.CANDLES, C.HEATMAP] as const;
-
 const FILTERS: { value: DifficultyFilterType; label: string }[] = [
   { value: C.ALL, label: C.ALL },
   { value: C.EASY, label: C.EASY },
@@ -72,16 +70,8 @@ export class Statistics extends Component {
       new S.BrewsSection({ parentNode: grid.node }),
       new S.CandlesSection({ parentNode: grid.node }),
       new S.HistogramSection({ parentNode: grid.node }),
+      new S.HeatmapSection({ parentNode: grid.node }),
     ];
-
-    PLACEHOLDER_BLOCKS.forEach(
-      (name) =>
-        new Component({
-          parentNode: grid.node,
-          tagName: 'section',
-          className: `app-statistics_block app-statistics_block_${name}`,
-        }),
-    );
 
     this.refresh();
   }

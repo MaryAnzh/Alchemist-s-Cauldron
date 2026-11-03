@@ -1,6 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import type { GameRecordType } from '@types';
-import { buildLinePath, getScoreSeries, toChartPoints } from './chart';
+import {
+  buildLinePath,
+  formatChartLabel,
+  getChartSeries,
+  getScoreSeries,
+  toChartPoints,
+} from './chart';
 
 const make = (playedAt: number, score: number): GameRecordType => ({
   playedAt,
@@ -60,5 +66,49 @@ describe('buildLinePath', () => {
 
   it('returns an empty string when there are no points', () => {
     expect(buildLinePath([])).toBe('');
+  });
+});
+
+describe('getChartSeries', () => {
+  const at = (day: number, hour = 12) => new Date(2026, 0, day, hour).getTime();
+  const record = (playedAt: number, score: number) => ({ playedAt, score }) as GameRecordType;
+  // Newest first, as in the store.
+  const history = [
+    record(at(6), 300),
+    record(at(5, 18), 100),
+    record(at(5, 9), 200),
+    record(at(1), 50),
+  ];
+
+  it('keeps one point per game, oldest first, in game mode', () => {
+    expect(getChartSeries(history, 'game').map((p) => p.score)).toEqual([50, 200, 100, 300]);
+  });
+
+  it('averages scores per day', () => {
+    const series = getChartSeries(history, 'days');
+
+    expect(series.map((p) => p.score)).toEqual([50, 150, 300]);
+    expect(series.map((p) => p.games)).toEqual([1, 2, 1]);
+  });
+
+  it('averages scores per week, starting on Monday', () => {
+    const series = getChartSeries(history, 'week');
+
+    expect(series.map((p) => p.playedAt)).toEqual([
+      new Date(2025, 11, 29).getTime(),
+      new Date(2026, 0, 5).getTime(),
+    ]);
+    expect(series.map((p) => p.score)).toEqual([50, 200]);
+    expect(series.map((p) => p.games)).toEqual([1, 3]);
+  });
+
+  it('returns an empty series for empty history', () => {
+    expect(getChartSeries([], 'days')).toEqual([]);
+  });
+
+  it('formats bucket labels with average and game count', () => {
+    expect(formatChartLabel({ playedAt: at(5), score: 150, games: 2 }, 'days')).toBe(
+      '150 avg · 2 games · Jan 5',
+    );
   });
 });

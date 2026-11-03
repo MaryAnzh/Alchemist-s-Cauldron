@@ -5,8 +5,10 @@ type RandomType = () => number;
 
 const HOUR_MS = 60 * 60 * 1000;
 const DAY_MS = 24 * HOUR_MS;
-const DAYS = 14;
-const MAX_GAMES_PER_DAY = 3;
+const DAYS = 42;
+const WEEKDAY_MAX_GAMES = 3;
+const WEEKEND_MAX_GAMES = 6;
+const REST_DAY_CHANCE = 0.25;
 
 const DIFFICULTIES: GameDifficultType[] = ['easy', 'medium', 'hard'];
 const REASONS: GameOverReasonConstType[] = ['time', 'lives', 'ingredients'];
@@ -24,9 +26,14 @@ export const buildDemoHistory = (
   const history: GameRecordType[] = [];
 
   for (let daysAgo = 0; daysAgo < DAYS; daysAgo++) {
+    const weekday = new Date(now - daysAgo * DAY_MS).getDay();
+    const isWeekend = weekday === 0 || weekday === 6;
     // Older games have fewer successful brews, so the charts show an improvement.
     const trend = 0.6 + 0.4 * (1 - daysAgo / (DAYS - 1));
-    const games = between(0, MAX_GAMES_PER_DAY, random);
+    const games =
+      random() < REST_DAY_CHANCE
+        ? 0
+        : between(1, isWeekend ? WEEKEND_MAX_GAMES : WEEKDAY_MAX_GAMES, random);
 
     for (let game = 0; game < games; game++) {
       const difficulty = pick(DIFFICULTIES, random);

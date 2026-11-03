@@ -10,3 +10,5 @@ export * from './statistics/difficulty';
 export * from './statistics/reasons';
 export * from './statistics/histogram';
 export * from './statistics/candles';
+export * from './statistics/date';
+export * from './statistics/heatmap';

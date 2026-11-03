@@ -3,8 +3,8 @@ import type { GameRecordType, ParentNodeType } from '@types';
 import { Component } from '@ui';
 import { StatisticsSection } from '../StatisticsSection';
 
-const dayFormatter = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'numeric' });
 const toPercent = (value: number, max: number) => `${(value / max) * 100}%`;
+import { DAY_FORMATTER } from '../shared/labels';
 
 export class CandlesSection extends StatisticsSection {
   private body: Component;
@@ -91,7 +91,7 @@ export class CandlesSection extends StatisticsSection {
       parentNode: column.node,
       tagName: 'span',
       className: 'app-statistics_candles_label',
-      content: dayFormatter.format(candle.day),
+      content: DAY_FORMATTER.format(candle.day),
     });
   }
 }
