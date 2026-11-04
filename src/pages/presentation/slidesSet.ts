@@ -78,7 +78,7 @@ export const SLIDES_SET: SlideSetType[] = [
       subTitle: { text: C.SLIDE_9_SUBTITLE },
       list: { items: [...C.SLIDE_9_ITEMS] },
     },
-    preview: { title: C.SLIDE_9_PREVIEW_TITLE, icon: 'symbol' },
+    preview: { title: C.SLIDE_9_PREVIEW_TITLE, icon: 'arrow_down_mini' },
     subSlides: [
       {
         section: 'summary',
