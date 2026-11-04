@@ -65,21 +65,6 @@ export class StatisticsSubSlide extends Component {
         new Component({ parentNode: list.node, tagName: 'li', content: text });
       });
     }
-    new Component({
-      parentNode: descriptionBlock.node,
-      tagName: 'p',
-      content: description,
-    });
-    if (figures.length) {
-      const list = new Component({
-        parentNode: descriptionBlock.node,
-        tagName: 'ul',
-        className: 'app-presentation-sub-slide_figures',
-      });
-      figures.forEach((text) => {
-        new Component({ parentNode: list.node, tagName: 'li', content: text });
-      });
-    }
 
     const content = new Component({
       parentNode: this.node,

@@ -1,8 +1,10 @@
 import type { ParentNodeType } from '@types';
-import { Component, Icon } from '@ui';
+import { buildDemoHistory, buildStatistics, formatDuration } from '@store';
+import { Button, Component, Icon } from '@ui';
 import { Slide } from './slides/slide/slide';
 import { StatisticsSubSlide } from './slides/subSlide/subSlide';
 import { SLIDES_SET } from './slidesSet';
+import type { StatisticsSectionIdType } from './types';
 
 type PresentationProps = ParentNodeType;
 type MoveAxis = 'X' | 'Y';
@@ -29,7 +31,10 @@ export class Presentation extends Component {
 
   private controls!: Component;
   private slideWrap!: Component;
+  private sideNav!: Component;
+  private hint!: Component;
   private previews: { card: Component; id: string }[] = [];
+  private navItems: Component[] = [];
 
   private getSubSlides(index = this.currentIndex) {
     return SLIDES_SET[index].subSlides ?? [];
@@ -65,6 +70,21 @@ export class Presentation extends Component {
       className: 'app-presentation_slide-wrap',
     });
 
+    this.hint = new Button({
+      parentNode: this.slideWrap.node,
+      className: 'app-presentation_hint',
+      leftIcon: 'arrow_down',
+      color: 'magic-icon-2',
+      onClick: () => this.goTo(this.currentIndex, 'Y', this.subIndex + 1),
+    });
+
+    this.sideNav = new Component({
+      parentNode: this.node,
+      tagName: 'nav',
+      className: 'app-presentation_nav',
+      attrs: { 'aria-label': 'Statistics sections' },
+    });
+
     this.controls = new Component({
       parentNode: this.node,
       className: 'app-presentation_controls',
@@ -72,6 +92,7 @@ export class Presentation extends Component {
 
     this.currentSlide = this.createSlide(this.currentIndex, this.subIndex);
     this.renderPreviews(this.controls);
+    this.renderSideNav();
   }
 
   private createSlide(index: number, subIndex: number): Component {
@@ -80,10 +101,14 @@ export class Presentation extends Component {
       return new Slide({ ...slide, parentNode: this.slideWrap.node });
     }
     const subSlide = this.getSubSlides(index)[subIndex];
-    return new StatisticsSubSlide({ ...subSlide, parentNode: this.slideWrap.node });
+    return new StatisticsSubSlide({
+      ...subSlide,
+      figures: this.getFigures(subSlide.section),
+      parentNode: this.slideWrap.node,
+    });
   }
 
-  renderPreviews(wrap: Component): void {
+  private renderPreviews(wrap: Component): void {
     SLIDES_SET.forEach(({ preview: { title, icon }, id }, i) => {
       const card = new Component({
         parentNode: wrap.node,
@@ -136,6 +161,61 @@ export class Presentation extends Component {
     });
   }
 
+  private renderSideNav() {
+    this.sideNav.node.replaceChildren();
+    this.navItems = [];
+
+    const subSlides = this.getSubSlides();
+    this.sideNav.node.classList.toggle('app-presentation_nav_hidden', !subSlides.length);
+
+    if (subSlides.length) {
+      const titles = [
+        SLIDES_SET[this.currentIndex].preview.title,
+        ...subSlides.map(({ title }) => title),
+      ];
+
+      titles.forEach((title, i) => {
+        const subIndex = i - 1;
+        const item = new Component({
+          parentNode: this.sideNav.node,
+          tagName: 'button',
+          className: 'app-presentation_nav_item',
+          attrs: { type: 'button', 'aria-label': title },
+        });
+
+        new Component({
+          parentNode: item.node,
+          tagName: 'span',
+          className: 'app-presentation_nav_item_count',
+          content: String(i + 1),
+        });
+
+        new Component({
+          parentNode: item.node,
+          tagName: 'span',
+          className: 'app-presentation_nav_item_title',
+          content: title,
+        });
+
+        item.node.addEventListener('click', () => this.goTo(this.currentIndex, 'Y', subIndex));
+        this.navItems.push(item);
+      });
+    }
+
+    this.syncNav();
+  }
+
+  private syncNav() {
+    this.navItems.forEach((item, i) => {
+      const active = i - 1 === this.subIndex;
+      item.node.classList.toggle('app-presentation_nav_item_active', active);
+      item.node.setAttribute('aria-current', String(active));
+    });
+
+    const showHint = this.subIndex === MAIN_SLIDE && this.getSubSlides().length > 0;
+    this.hint.node.classList.toggle('app-presentation_hint_hidden', !showHint);
+  }
+
   private goTo(index: number, axis: MoveAxis, subIndex = MAIN_SLIDE) {
     if (this.isAnimating || !this.currentSlide) return;
     if (index < 0 || index >= SLIDES_SET.length) return;
@@ -159,6 +239,7 @@ export class Presentation extends Component {
     this.currentSlide = incoming;
     sessionStorage.setItem(SLIDE_INDEX_KEY, String(index));
     this.syncPreviews();
+    this.renderSideNav();
 
     const outAnim = outgoing.node.animate(
       [{ transform: moveTo(axis, 0) }, { transform: moveTo(axis, -sign * 100) }],
@@ -175,8 +256,27 @@ export class Presentation extends Component {
     });
   }
 
+  private getFigures(section: StatisticsSectionIdType): string[] {
+    const stats = buildStatistics(buildDemoHistory(Date.now()));
+    switch (section) {
+      case 'summary':
+        return [
+          `Games: ${stats.gamesPlayed}`,
+          `Best: ${stats.bestScore}`,
+          `Average: ${stats.averageScore}`,
+          `Time: ${formatDuration(stats.totalDurationSeconds)}`,
+        ];
+      case 'brews':
+        return [`Successful: ${stats.successfulBrews}`, `Failed: ${stats.failedBrews}`];
+      default:
+        return [];
+    }
+  }
+
   destroy(): void {
     document.removeEventListener('keydown', this.onKeyDown);
+    this.hint?.destroy();
+    this.previews?.forEach((preview) => preview.card.destroy());
     this.currentSlide?.destroy();
     super.destroy();
   }

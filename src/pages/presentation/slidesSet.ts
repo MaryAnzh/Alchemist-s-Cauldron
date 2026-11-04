@@ -2,6 +2,7 @@ import * as C from '@constants';
 
 import type { SlideSetType } from './types';
 import accountShot from '../../assets/account.webp';
+import statsShort from '../../assets/stats.webp';
 
 export const SLIDES_SET: SlideSetType[] = [
   {
@@ -12,6 +13,12 @@ export const SLIDES_SET: SlideSetType[] = [
       subTitle: { text: C.SLIDE_1_SUBTITLE },
       list: { items: [...C.SLIDE_1_ITEMS] },
       links: [
+        {
+          src: statsShort,
+          alt: 'Statistics page',
+          caption: 'Statistics',
+          href: `#${C.ROUTES.statistics}`,
+        },
         {
           src: accountShot,
           alt: 'Account page',
