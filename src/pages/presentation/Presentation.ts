@@ -1,6 +1,7 @@
 import type { ParentNodeType } from '@types';
 import { Component, Icon } from '@ui';
 import { Slide } from './slides/slide/slide';
+import { StatisticsSubSlide } from './slides/subSlide/subSlide';
 import { SLIDES_SET } from './slidesSet';
 
 type PresentationProps = ParentNodeType;
@@ -8,6 +9,7 @@ type MoveAxis = 'X' | 'Y';
 
 const SLIDE_INDEX_KEY = 'presentation-slide-index';
 const SLIDE_DURATION_MS = 400;
+const MAIN_SLIDE = -1;
 
 const loadSlideIndex = (): number => {
   const saved = Number(sessionStorage.getItem(SLIDE_INDEX_KEY));
@@ -20,18 +22,34 @@ const getDuration = (): number =>
 const moveTo = (axis: MoveAxis, percent: number): string => `translate${axis}(${percent}%)`;
 
 export class Presentation extends Component {
-  currentIndex = loadSlideIndex();
-
-  slideWrap!: Component;
-  controls!: Component;
-  previews: { card: Component; id: string }[] = [];
-  private currentSlide: Slide | null = null;
+  private currentSlide: Component | null = null;
+  private currentIndex = loadSlideIndex();
+  private subIndex = MAIN_SLIDE;
   private isAnimating = false;
 
+  private controls!: Component;
+  private slideWrap!: Component;
+  private previews: { card: Component; id: string }[] = [];
+
+  private getSubSlides(index = this.currentIndex) {
+    return SLIDES_SET[index].subSlides ?? [];
+  }
+
   private onKeyDown = (e: KeyboardEvent) => {
-    if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
-    e.preventDefault();
-    this.goTo(this.currentIndex + (e.key === 'ArrowRight' ? 1 : -1), 'X');
+    switch (e.key) {
+      case 'ArrowLeft':
+      case 'ArrowRight':
+        e.preventDefault();
+        this.goTo(this.currentIndex + (e.key === 'ArrowRight' ? 1 : -1), 'X');
+        return;
+      case 'ArrowDown':
+      case 'ArrowUp':
+        if (!this.getSubSlides().length) return;
+        e.preventDefault();
+        this.goTo(this.currentIndex, 'Y', this.subIndex + (e.key === 'ArrowDown' ? 1 : -1));
+        return;
+      default:
+    }
   };
 
   constructor({ parentNode }: PresentationProps) {
@@ -52,13 +70,17 @@ export class Presentation extends Component {
       className: 'app-presentation_controls',
     });
 
-    this.currentSlide = this.createSlide(this.currentIndex);
+    this.currentSlide = this.createSlide(this.currentIndex, this.subIndex);
     this.renderPreviews(this.controls);
   }
 
-  private createSlide(index: number): Slide {
-    const { slide } = SLIDES_SET[index];
-    return new Slide({ ...slide, parentNode: this.slideWrap.node });
+  private createSlide(index: number, subIndex: number): Component {
+    if (subIndex === MAIN_SLIDE) {
+      const { slide } = SLIDES_SET[index];
+      return new Slide({ ...slide, parentNode: this.slideWrap.node });
+    }
+    const subSlide = this.getSubSlides(index)[subIndex];
+    return new StatisticsSubSlide({ ...subSlide, parentNode: this.slideWrap.node });
   }
 
   renderPreviews(wrap: Component): void {
@@ -114,13 +136,17 @@ export class Presentation extends Component {
     });
   }
 
-  private goTo(index: number, axis: MoveAxis) {
+  private goTo(index: number, axis: MoveAxis, subIndex = MAIN_SLIDE) {
     if (this.isAnimating || !this.currentSlide) return;
-    if (index < 0 || index >= SLIDES_SET.length || index === this.currentIndex) return;
+    if (index < 0 || index >= SLIDES_SET.length) return;
+    if (subIndex < MAIN_SLIDE || subIndex >= this.getSubSlides(index).length) return;
+    if (index === this.currentIndex && subIndex === this.subIndex) return;
 
-    const sign = index > this.currentIndex ? 1 : -1;
+    const delta =
+      index !== this.currentIndex ? index - this.currentIndex : subIndex - this.subIndex;
+    const sign = delta > 0 ? 1 : -1;
     const outgoing = this.currentSlide;
-    const incoming = this.createSlide(index);
+    const incoming = this.createSlide(index, subIndex);
     const options: KeyframeAnimationOptions = {
       duration: getDuration(),
       easing: 'ease-in-out',
@@ -129,6 +155,7 @@ export class Presentation extends Component {
 
     this.isAnimating = true;
     this.currentIndex = index;
+    this.subIndex = subIndex;
     this.currentSlide = incoming;
     sessionStorage.setItem(SLIDE_INDEX_KEY, String(index));
     this.syncPreviews();
@@ -150,6 +177,7 @@ export class Presentation extends Component {
 
   destroy(): void {
     document.removeEventListener('keydown', this.onKeyDown);
+    this.currentSlide?.destroy();
     super.destroy();
   }
 }

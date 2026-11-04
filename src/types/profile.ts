@@ -26,3 +26,5 @@ export type ProfileStorageType = {
   history: GameRecordType[];
   achievements: string[];
 };
+
+export type StatisticsSectionIdType = string;

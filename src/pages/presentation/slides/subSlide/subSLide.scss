@@ -1,0 +1,108 @@
+@use '../../../../styles/mixin/media.scss' as *;
+
+.app-presentation-sub-slide {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr);
+
+  .app-presentation-slide_title {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+
+  &_description,
+  &_content {
+    min-width: 0;
+    min-height: 0;
+  }
+
+  &_description {
+    overflow: auto;
+    font-size: var(--font-size-lg);
+  }
+
+  &_figures {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--size-1);
+  }
+
+  &_content {
+    position: relative;
+  }
+
+  &_desc-top {
+    grid-template-rows: auto auto minmax(0, 1fr);
+
+    .app-presentation-sub-slide_description {
+      grid-column: 1;
+      grid-row: 2;
+    }
+    .app-presentation-sub-slide_content {
+      grid-column: 1;
+      grid-row: 3;
+    }
+  }
+
+  &_desc-bottom {
+    grid-template-rows: auto minmax(0, 1fr) auto;
+
+    .app-presentation-sub-slide_content {
+      grid-column: 1;
+      grid-row: 2;
+    }
+    .app-presentation-sub-slide_description {
+      grid-column: 1;
+      grid-row: 3;
+    }
+  }
+
+  &_desc-left {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    grid-template-rows: auto minmax(0, 1fr);
+
+    .app-presentation-sub-slide_description {
+      grid-column: 1;
+      grid-row: 2;
+    }
+    .app-presentation-sub-slide_content {
+      grid-column: 2;
+      grid-row: 2;
+    }
+  }
+
+  &_desc-right {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+
+    .app-presentation-sub-slide_content {
+      grid-column: 1;
+      grid-row: 2;
+    }
+    .app-presentation-sub-slide_description {
+      grid-column: 2;
+      grid-row: 2;
+    }
+  }
+}
+
+@media (max-width: $laptop) {
+  .app-presentation-sub-slide {
+    &_desc-left,
+    &_desc-right {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: auto auto minmax(0, 1fr);
+
+      .app-presentation-sub-slide_description {
+        grid-column: 1;
+        grid-row: 2;
+      }
+      .app-presentation-sub-slide_content {
+        grid-column: 1;
+        grid-row: 3;
+      }
+    }
+  }
+}

@@ -72,6 +72,62 @@ export const SLIDES_SET: SlideSetType[] = [
       list: { items: [...C.SLIDE_9_ITEMS] },
     },
     preview: { title: C.SLIDE_9_PREVIEW_TITLE, icon: 'symbol' },
+    subSlides: [
+      {
+        section: 'summary',
+        title: C.SLIDE_9_SUB_1_TITLE,
+        description: C.SLIDE_9_SUB_1_DESCRIPTION,
+        descriptionPosition: 'top',
+      },
+      {
+        section: 'chart',
+        title: C.SLIDE_9_SUB_2_TITLE,
+        description: C.SLIDE_9_SUB_2_DESCRIPTION,
+        descriptionPosition: 'bottom',
+      },
+      {
+        section: 'difficulty',
+        title: C.SLIDE_9_SUB_3_TITLE,
+        description: C.SLIDE_9_SUB_3_DESCRIPTION,
+        descriptionPosition: 'left',
+      },
+      {
+        section: 'recent',
+        title: C.SLIDE_9_SUB_4_TITLE,
+        description: C.SLIDE_9_SUB_4_DESCRIPTION,
+        descriptionPosition: 'top',
+      },
+      {
+        section: 'reasons',
+        title: C.SLIDE_9_SUB_5_TITLE,
+        description: C.SLIDE_9_SUB_5_DESCRIPTION,
+        descriptionPosition: 'right',
+      },
+      {
+        section: 'brews',
+        title: C.SLIDE_9_SUB_6_TITLE,
+        description: C.SLIDE_9_SUB_6_DESCRIPTION,
+        descriptionPosition: 'left',
+      },
+      {
+        section: 'candles',
+        title: C.SLIDE_9_SUB_7_TITLE,
+        description: C.SLIDE_9_SUB_7_DESCRIPTION,
+        descriptionPosition: 'bottom',
+      },
+      {
+        section: 'histogram',
+        title: C.SLIDE_9_SUB_8_TITLE,
+        description: C.SLIDE_9_SUB_8_DESCRIPTION,
+        descriptionPosition: 'right',
+      },
+      {
+        section: 'heatmap',
+        title: C.SLIDE_9_SUB_9_TITLE,
+        description: C.SLIDE_9_SUB_9_DESCRIPTION,
+        descriptionPosition: 'bottom',
+      },
+    ],
   },
   {
     id: 'slide-6',
