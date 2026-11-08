@@ -3,6 +3,12 @@ import * as C from '@constants';
 import type { SlideSetType } from './types';
 import accountShot from '../../assets/account.webp';
 import statsShort from '../../assets/stats.webp';
+import {
+  SLIDE_7_TEST_DIFFICULTY,
+  SLIDE_7_TEST_REJECT,
+  SLIDE_7_TEST_TREE,
+  SLIDE_7_TEST_VALID,
+} from './codeSnippets';
 
 export const SLIDES_SET: SlideSetType[] = [
   {
@@ -179,9 +185,34 @@ export const SLIDES_SET: SlideSetType[] = [
       template: 'default',
       title: { text: C.SLIDE_7_TITLE },
       list: { items: [...C.SLIDE_7_ITEMS] },
-      code: { text: '...' },
     },
     preview: { title: C.SLIDE_7_PREVIEW_TITLE, icon: 'symbol' },
+    subSlides: [
+      {
+        code: SLIDE_7_TEST_TREE,
+        title: C.SLIDE_7_SUB_1_TITLE,
+        description: C.SLIDE_7_SUB_1_DESCRIPTION,
+        descriptionPosition: 'top',
+      },
+      {
+        code: SLIDE_7_TEST_VALID,
+        title: C.SLIDE_7_SUB_2_TITLE,
+        description: C.SLIDE_7_SUB_2_DESCRIPTION,
+        descriptionPosition: 'top',
+      },
+      {
+        code: SLIDE_7_TEST_REJECT,
+        title: C.SLIDE_7_SUB_3_TITLE,
+        description: C.SLIDE_7_SUB_3_DESCRIPTION,
+        descriptionPosition: 'top',
+      },
+      {
+        code: SLIDE_7_TEST_DIFFICULTY,
+        title: C.SLIDE_7_SUB_4_TITLE,
+        description: C.SLIDE_7_SUB_4_DESCRIPTION,
+        descriptionPosition: 'top',
+      },
+    ],
   },
   {
     id: 'slide-8',

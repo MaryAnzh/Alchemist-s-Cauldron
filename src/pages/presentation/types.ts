@@ -83,7 +83,14 @@ export type DemoSubSlideType = {
   descriptionPosition: 'top' | 'bottom' | 'left' | 'right';
 };
 
-export type SubSlideType = StatisticsSubSlideType | DemoSubSlideType;
+export type CodeSubSlideType = {
+  code: string;
+  title: string;
+  description: string;
+  descriptionPosition: 'top' | 'bottom' | 'left' | 'right';
+};
+
+export type SubSlideType = StatisticsSubSlideType | DemoSubSlideType | CodeSubSlideType;
 
 export type SlideSetType = {
   id: string;

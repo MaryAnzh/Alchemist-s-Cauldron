@@ -71,6 +71,16 @@ const SLIDES = {
     'Manual checks for saved games and profile persistence',
     'Responsive layouts and keyboard navigation',
   ],
+  SLIDE_7_SUB_1_TITLE: 'Where the Tests Live',
+  SLIDE_7_SUB_1_DESCRIPTION: 'Store logic modules are tested next to their source files.',
+  SLIDE_7_SUB_2_TITLE: 'Testing Profile Validation',
+  SLIDE_7_SUB_2_DESCRIPTION:
+    'A small validator checks the name, and the profile test checks the whole saved profile.',
+  SLIDE_7_SUB_3_TITLE: 'Rejecting Bad Data',
+  SLIDE_7_SUB_3_DESCRIPTION: 'Wrong versions, blank names and too long names are rejected.',
+  SLIDE_7_SUB_4_TITLE: 'Testing Statistics',
+  SLIDE_7_SUB_4_DESCRIPTION:
+    'Pure functions get small input-output tests, such as difficulty shares.',
 
   SLIDE_8_TITLE: 'From High Scores to Personal Progress',
   SLIDE_8_PREVIEW_TITLE: 'What’s Next',
@@ -188,6 +198,14 @@ export const {
   SLIDE_7_TITLE,
   SLIDE_7_PREVIEW_TITLE,
   SLIDE_7_ITEMS,
+  SLIDE_7_SUB_1_DESCRIPTION,
+  SLIDE_7_SUB_2_TITLE,
+  SLIDE_7_SUB_2_DESCRIPTION,
+  SLIDE_7_SUB_3_TITLE,
+  SLIDE_7_SUB_3_DESCRIPTION,
+  SLIDE_7_SUB_4_TITLE,
+  SLIDE_7_SUB_4_DESCRIPTION,
+  SLIDE_7_SUB_1_TITLE,
 
   SLIDE_8_TITLE,
   SLIDE_8_PREVIEW_TITLE,

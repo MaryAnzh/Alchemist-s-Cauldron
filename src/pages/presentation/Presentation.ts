@@ -5,6 +5,7 @@ import { Slide } from './slides/slide/slide';
 import { StatisticsSubSlide, DemoSubSlide } from './slides/subSlide';
 import { SLIDES_SET } from './slidesSet';
 import type { StatisticsSectionIdType } from './types';
+import { CodeSubSlide } from './slides/subSlide/codeSubSlide';
 
 type PresentationProps = ParentNodeType;
 type MoveAxis = 'X' | 'Y';
@@ -104,6 +105,11 @@ export class Presentation extends Component {
     if ('demo' in subSlide) {
       return new DemoSubSlide({ ...subSlide, parentNode: this.slideWrap.node });
     }
+
+    if ('code' in subSlide) {
+      return new CodeSubSlide({ ...subSlide, parentNode: this.slideWrap.node });
+    }
+
     return new StatisticsSubSlide({
       ...subSlide,
       figures: this.getFigures(subSlide.section),
