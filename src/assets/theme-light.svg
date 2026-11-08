@@ -1,0 +1,34 @@
+<svg width="96" height="96" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="themeDarkGold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#F8E9A8"/>
+      <stop offset="40%" stop-color="#E0C067"/>
+      <stop offset="100%" stop-color="#A66B1F"/>
+    </linearGradient>
+
+    <linearGradient id="themeDarkGoldLight" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFF3C6"/>
+      <stop offset="100%" stop-color="#D3A441"/>
+    </linearGradient>
+
+    <linearGradient id="themeDarkNight" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1e222b"/>
+      <stop offset="100%" stop-color="#0a0d14"/>
+    </linearGradient>
+
+    <mask id="themeDarkMoonMask">
+      <rect width="96" height="96" fill="#FFFFFF"/>
+      <circle cx="60" cy="38" r="20" fill="#000000"/>
+    </mask>
+  </defs>
+
+  <circle cx="48" cy="48" r="42" fill="url(#themeDarkNight)" stroke="url(#themeDarkGold)" stroke-width="2"/>
+
+  <circle cx="48" cy="48" r="24" fill="url(#themeDarkGold)" mask="url(#themeDarkMoonMask)"/>
+
+  <path d="M74 22 L75.5 26 L79.5 27.5 L75.5 29 L74 33 L72.5 29 L68.5 27.5 L72.5 26 Z" fill="url(#themeDarkGold)"/>
+  <path d="M24 62 L25 65 L28 66 L25 67 L24 70 L23 67 L20 66 L23 65 Z" fill="url(#themeDarkGold)"/>
+
+  <circle cx="30" cy="28" r="1.5" fill="url(#themeDarkGoldLight)"/>
+  <circle cx="70" cy="72" r="1.5" fill="url(#themeDarkGoldLight)"/>
+</svg>

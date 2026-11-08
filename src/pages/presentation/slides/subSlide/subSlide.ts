@@ -2,8 +2,8 @@ import { buildDemoHistory } from '@store';
 import type { ParentNodeType } from '@types';
 import { Component } from '@ui';
 import * as S from '../../../profile/components/statistics/sections';
-import type { StatisticsSection } from '../../../profile/components/statistics/sections/StatisticsSection';
-import type { StatisticsSectionIdType, SubSlideType } from '../../types';
+import type { StatisticsSectionIdType, StatisticsSubSlideType } from '../../types';
+import type { StatisticsSection } from 'src/pages/profile/components/statistics/sections/StatisticsSection';
 
 type SectionConstructorType = new (props: ParentNodeType) => StatisticsSection;
 
@@ -29,7 +29,7 @@ export class StatisticsSubSlide extends Component {
     description,
     descriptionPosition,
     figures = [],
-  }: ParentNodeType & SubSlideType) {
+  }: ParentNodeType & StatisticsSubSlideType) {
     super({
       parentNode,
       className: [

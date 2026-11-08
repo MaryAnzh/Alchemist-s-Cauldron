@@ -68,13 +68,29 @@ export type StatisticsSectionIdType =
   | 'histogram'
   | 'heatmap';
 
-export type SubSlideType = {
+export type StatisticsSubSlideType = {
   section: StatisticsSectionIdType;
   title: string;
   description: string;
   descriptionPosition: 'top' | 'bottom' | 'left' | 'right';
   figures?: string[];
 };
+
+export type DemoSubSlideType = {
+  demo: 'avatar-file' | 'avatar-url' | 'name';
+  title: string;
+  description: string;
+  descriptionPosition: 'top' | 'bottom' | 'left' | 'right';
+};
+
+export type CodeSubSlideType = {
+  code: string;
+  title: string;
+  description: string;
+  descriptionPosition: 'top' | 'bottom' | 'left' | 'right';
+};
+
+export type SubSlideType = StatisticsSubSlideType | DemoSubSlideType | CodeSubSlideType;
 
 export type SlideSetType = {
   id: string;

@@ -41,14 +41,18 @@ const SLIDES = {
   ],
 
   SLIDE_5_TITLE: 'Let’s Explore the Profile',
-  SLIDE_5_PREVIEW_TITLE: 'Live Demo',
+  SLIDE_5_PREVIEW_TITLE: 'Account',
   SLIDE_5_SUBTITLE: 'A short journey through the player experience',
-  SLIDE_5_ITEMS: [
-    'Choose a name and personalize an avatar',
-    'Play a game and save its result',
-    'Explore history and statistics',
-    'Discover unlocked achievements',
-  ],
+  SLIDE_5_ITEMS: ['Upload an avatar', 'Add avatar from a link', 'Change a name'],
+  SLIDE_5_SUB_1_TITLE: 'Upload from Computer',
+  SLIDE_5_SUB_1_DESCRIPTION:
+    'Drop an image into the avatar circle or click it to choose a file. Files over 85 KB are rejected.',
+  SLIDE_5_SUB_2_TITLE: 'Avatar by Link',
+  SLIDE_5_SUB_2_DESCRIPTION:
+    'Paste an https image link and press Apply. The avatar updates at once.',
+  SLIDE_5_SUB_3_TITLE: 'Change Your Name',
+  SLIDE_5_SUB_3_DESCRIPTION:
+    'Press Edit, type a new name, and save it. The name is validated before saving.',
 
   SLIDE_6_TITLE: 'Challenges Behind the Features',
   SLIDE_6_PREVIEW_TITLE: 'Challenges',
@@ -67,6 +71,16 @@ const SLIDES = {
     'Manual checks for saved games and profile persistence',
     'Responsive layouts and keyboard navigation',
   ],
+  SLIDE_7_SUB_1_TITLE: 'Where the Tests Live',
+  SLIDE_7_SUB_1_DESCRIPTION: 'Store logic modules are tested next to their source files.',
+  SLIDE_7_SUB_2_TITLE: 'Testing Profile Validation',
+  SLIDE_7_SUB_2_DESCRIPTION:
+    'A small validator checks the name, and the profile test checks the whole saved profile.',
+  SLIDE_7_SUB_3_TITLE: 'Rejecting Bad Data',
+  SLIDE_7_SUB_3_DESCRIPTION: 'Wrong versions, blank names and too long names are rejected.',
+  SLIDE_7_SUB_4_TITLE: 'Testing Statistics',
+  SLIDE_7_SUB_4_DESCRIPTION:
+    'Pure functions get small input-output tests, such as difficulty shares.',
 
   SLIDE_8_TITLE: 'From High Scores to Personal Progress',
   SLIDE_8_PREVIEW_TITLE: 'What’s Next',
@@ -170,6 +184,12 @@ export const {
   SLIDE_5_PREVIEW_TITLE,
   SLIDE_5_SUBTITLE,
   SLIDE_5_ITEMS,
+  SLIDE_5_SUB_1_TITLE,
+  SLIDE_5_SUB_1_DESCRIPTION,
+  SLIDE_5_SUB_2_TITLE,
+  SLIDE_5_SUB_2_DESCRIPTION,
+  SLIDE_5_SUB_3_TITLE,
+  SLIDE_5_SUB_3_DESCRIPTION,
 
   SLIDE_6_TITLE,
   SLIDE_6_PREVIEW_TITLE,
@@ -178,6 +198,14 @@ export const {
   SLIDE_7_TITLE,
   SLIDE_7_PREVIEW_TITLE,
   SLIDE_7_ITEMS,
+  SLIDE_7_SUB_1_DESCRIPTION,
+  SLIDE_7_SUB_2_TITLE,
+  SLIDE_7_SUB_2_DESCRIPTION,
+  SLIDE_7_SUB_3_TITLE,
+  SLIDE_7_SUB_3_DESCRIPTION,
+  SLIDE_7_SUB_4_TITLE,
+  SLIDE_7_SUB_4_DESCRIPTION,
+  SLIDE_7_SUB_1_TITLE,
 
   SLIDE_8_TITLE,
   SLIDE_8_PREVIEW_TITLE,

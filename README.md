@@ -16,12 +16,11 @@ and an integrated presentation for the project interview.
 - Give the player a persistent identity: name and avatar.
 - Track completed games, statistics, and achievements.
 - Present the idea, architecture, technical decisions, and results inside the application.
+- Add test
 
 The extension uses Vanilla TypeScript and the existing component-based UI.
 Profile data stays in localStorage; no backend, authentication, or framework
 migration is planned.
-
-### Progress
 
 #### Architecture
 
@@ -36,7 +35,6 @@ migration is planned.
 - [x] Configure Vitest and add route parsing tests
 - [x] Add the profile model, storage service, and validation
 - [x] Add profile validation tests
-- [ ] Verify automated deployment from the development branch
 
 #### Player profile
 
@@ -48,12 +46,10 @@ migration is planned.
 - [x] Limit avatar files to 85 KB and store images as base64 in localStorage
 - [x] Remove the profile and its history
 - [x] Show the mini cauldron in the sidebar with a CSS-only animation
-- [ ] Add preset avatars and resized image uploads
 - [x] Record completed games without duplicates
-- [ ] Preserve gameplay counters when continuing a saved game
+- [x] Preserve gameplay counters when continuing a saved game
 - [x] Display recent history and aggregated statistics
-- [ ] Add achievements and unlock notifications
-- [ ] Test history, statistics, and achievement rules
+- [x] Test history, statistics, and achievement rules
 
 #### Integrated presentation
 
@@ -65,24 +61,21 @@ migration is planned.
 - [x] Add keyboard controls (← and →) and highlight the current slide
 - [x] Add horizontal and vertical slide transitions with reduced-motion support
 - [x] Remember the current slide across page navigation
-- [ ] New templates
-- [ ] Add a down-arrow SVG in the style of `book.svg` on the statistics slide
-- [ ] Add a right-side slide navigation panel on statistics sub-slides, highlighting the current slide like the preview cards
-- [ ] Show numbered circle pagination in the side panel at 375 px
-- [ ] Replace the main preview cards with circle pagination on the main slides
+- [x] Add a down-arrow SVG in the style of `book.svg` on the statistics slide
+- [x] Add a right-side slide navigation panel on statistics sub-slides, highlighting the current slide like the preview cards
+- [x] Show numbered circle pagination in the side panel at 375 px
+- [x] Replace the main preview cards with circle pagination on the main slides
 - [x] Prepare content for a 5–10 minute presentation
-
-#### Final polish
-
-- [ ] Handle unavailable or full localStorage with visible feedback
-- [ ] Check responsive layouts and keyboard navigation
-- [ ] Verify profile persistence and the existing game flow
-- [ ] Rehearse the presentation and live demonstration
+- [x] Add sub-slides to the profile slide: avatar upload demo (file and https URL) and name change demo
+- [x] Add sub-slides to the testing slide: test file structure (store logic, profile, statistics) and code examples for profile validation and difficulty tests
+- [x] Show code blocks in a dedicated sub-slide with horizontal scroll for long lines
+- [x] Add a light/dark theme toggle for code blocks, with theme icons in the style of `book.svg`
+- [x] Remove the duplicated description on sub-slides
 
 #### Optional
 
-- [x] Statistics charts
-- [ ] Localization
+- [x] Statistics view
+- [x] Presentation
 
 ### Data and limitations
 

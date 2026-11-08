@@ -34,6 +34,8 @@ import stroke_heart from '../assets/stroke_heart.svg?raw';
 import symbol from '../assets/symbol.svg?raw';
 import symbol_2 from '../assets/symbol_2.svg?raw';
 import temperature from '../assets/temperature.svg?raw';
+import theme_light from '../assets/theme-light.svg?raw';
+import theme_dark from '../assets/theme-dark.svg?raw';
 import toad_slime from '../assets/toad_slime.svg?raw';
 import edit from '../assets/edit.svg?raw';
 import save from '../assets/save.svg?raw';
@@ -76,6 +78,8 @@ export const ICON_PICKER = {
   symbol,
   symbol_2,
   temperature,
+  theme_light,
+  theme_dark,
   toad_slime,
   edit,
   save,

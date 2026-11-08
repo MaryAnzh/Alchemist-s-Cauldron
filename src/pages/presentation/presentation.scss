@@ -5,6 +5,7 @@
 
 .app-presentation {
   @include section-paddings;
+  position: relative;
   width: 100%;
   height: 100%;
   display: grid;
@@ -154,7 +155,9 @@
         }
       }
 
-      &:nth-of-type(6) {
+      &:nth-of-type(5),
+      &:nth-of-type(6),
+      &:nth-of-type(8) {
         .app-presentation_controls_preview_icon {
           width: var(--size-3);
           height: var(--size-3);
@@ -244,4 +247,19 @@
       }
     }
   }
+}
+
+.app-presentation_theme {
+  position: absolute;
+  top: var(--size-2);
+  right: var(--size-2);
+  z-index: 12;
+}
+
+.app-presentation_light {
+  background: #f4ebd0;
+  color: #2c221e;
+  --color-text-light: #2c221e;
+  --color-text-muted: #6b5a4a;
+  --color-parchment: #5a4632;
 }
