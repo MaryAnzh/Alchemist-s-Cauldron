@@ -67,8 +67,36 @@ export const SLIDES_SET: SlideSetType[] = [
       title: { text: C.SLIDE_5_TITLE },
       subTitle: { text: C.SLIDE_5_SUBTITLE },
       list: { items: [...C.SLIDE_5_ITEMS] },
+      links: [
+        {
+          src: accountShot,
+          alt: 'Account page',
+          caption: 'Account',
+          href: `#${C.ROUTES.account}`,
+        },
+      ],
     },
-    preview: { title: C.SLIDE_5_PREVIEW_TITLE, icon: 'symbol' },
+    preview: { title: C.SLIDE_5_PREVIEW_TITLE, icon: 'arrow_down_mini' },
+    subSlides: [
+      {
+        demo: 'avatar-file',
+        title: C.SLIDE_5_SUB_1_TITLE,
+        description: C.SLIDE_5_SUB_1_DESCRIPTION,
+        descriptionPosition: 'top',
+      },
+      {
+        demo: 'avatar-url',
+        title: C.SLIDE_5_SUB_2_TITLE,
+        description: C.SLIDE_5_SUB_2_DESCRIPTION,
+        descriptionPosition: 'top',
+      },
+      {
+        demo: 'name',
+        title: C.SLIDE_5_SUB_3_TITLE,
+        description: C.SLIDE_5_SUB_3_DESCRIPTION,
+        descriptionPosition: 'top',
+      },
+    ],
   },
   {
     id: 'slide-statistics',

@@ -1,4 +1,5 @@
 @use '../../../../styles/mixin/media.scss' as *;
+@use '../../../../styles/mixin/common.scss' as *;
 
 .app-presentation-sub-slide {
   grid-template-columns: minmax(0, 1fr);
@@ -148,5 +149,59 @@
         }
       }
     }
+  }
+}
+
+.app-presentation-demo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--size-3);
+  width: 100%;
+  height: 100%;
+
+  &_drop {
+    @include magic-card;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--size-1);
+    text-align: center;
+    cursor: pointer;
+    outline: 1px dashed var(--color-parchment);
+    overflow: hidden;
+
+    &_icon {
+      font-size: var(--font-size-xl);
+    }
+  }
+
+  &_row {
+    @include magic-card;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--size-1);
+    max-width: 520px;
+  }
+
+  &_input {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &_name {
+    flex: 1;
+    font-size: var(--font-size-lg);
+  }
+
+  &_hint {
+    font-size: var(--font-size-sm);
+    opacity: 0.8;
   }
 }

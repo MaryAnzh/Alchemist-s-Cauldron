@@ -41,14 +41,18 @@ const SLIDES = {
   ],
 
   SLIDE_5_TITLE: 'Let’s Explore the Profile',
-  SLIDE_5_PREVIEW_TITLE: 'Live Demo',
+  SLIDE_5_PREVIEW_TITLE: 'Account',
   SLIDE_5_SUBTITLE: 'A short journey through the player experience',
-  SLIDE_5_ITEMS: [
-    'Choose a name and personalize an avatar',
-    'Play a game and save its result',
-    'Explore history and statistics',
-    'Discover unlocked achievements',
-  ],
+  SLIDE_5_ITEMS: ['Upload an avatar', 'Add avatar from a link', 'Change a name'],
+  SLIDE_5_SUB_1_TITLE: 'Upload from Computer',
+  SLIDE_5_SUB_1_DESCRIPTION:
+    'Drop an image into the avatar circle or click it to choose a file. Files over 85 KB are rejected.',
+  SLIDE_5_SUB_2_TITLE: 'Avatar by Link',
+  SLIDE_5_SUB_2_DESCRIPTION:
+    'Paste an https image link and press Apply. The avatar updates at once.',
+  SLIDE_5_SUB_3_TITLE: 'Change Your Name',
+  SLIDE_5_SUB_3_DESCRIPTION:
+    'Press Edit, type a new name, and save it. The name is validated before saving.',
 
   SLIDE_6_TITLE: 'Challenges Behind the Features',
   SLIDE_6_PREVIEW_TITLE: 'Challenges',
@@ -170,6 +174,12 @@ export const {
   SLIDE_5_PREVIEW_TITLE,
   SLIDE_5_SUBTITLE,
   SLIDE_5_ITEMS,
+  SLIDE_5_SUB_1_TITLE,
+  SLIDE_5_SUB_1_DESCRIPTION,
+  SLIDE_5_SUB_2_TITLE,
+  SLIDE_5_SUB_2_DESCRIPTION,
+  SLIDE_5_SUB_3_TITLE,
+  SLIDE_5_SUB_3_DESCRIPTION,
 
   SLIDE_6_TITLE,
   SLIDE_6_PREVIEW_TITLE,

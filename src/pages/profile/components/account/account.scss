@@ -79,11 +79,15 @@
     height: 100%;
     display: flex;
     align-items: center;
+  }
 
-    &_save {
-      position: absolute;
-      right: var(--size-3);
-    }
+  &_name_input {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &_name_save {
+    flex-shrink: 0;
   }
 
   &_message {

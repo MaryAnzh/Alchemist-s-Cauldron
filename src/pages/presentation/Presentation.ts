@@ -2,7 +2,7 @@ import type { ParentNodeType } from '@types';
 import { buildDemoHistory, buildStatistics, formatDuration } from '@store';
 import { Button, Component, Icon } from '@ui';
 import { Slide } from './slides/slide/slide';
-import { StatisticsSubSlide } from './slides/subSlide/subSlide';
+import { StatisticsSubSlide, DemoSubSlide } from './slides/subSlide';
 import { SLIDES_SET } from './slidesSet';
 import type { StatisticsSectionIdType } from './types';
 
@@ -101,6 +101,9 @@ export class Presentation extends Component {
       return new Slide({ ...slide, parentNode: this.slideWrap.node });
     }
     const subSlide = this.getSubSlides(index)[subIndex];
+    if ('demo' in subSlide) {
+      return new DemoSubSlide({ ...subSlide, parentNode: this.slideWrap.node });
+    }
     return new StatisticsSubSlide({
       ...subSlide,
       figures: this.getFigures(subSlide.section),
