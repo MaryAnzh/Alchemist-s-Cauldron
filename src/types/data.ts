@@ -1,4 +1,4 @@
-import type { REACTION_IDS } from '@constants';
+import type { GAME_OVER_REASON, REACTION_IDS } from '@constants';
 import type { KeysTemplateType } from './common';
 import type { GameDifficultType } from './state';
 
@@ -44,3 +44,5 @@ export interface IReaction {
   applyValues: (values: cauldronValuesType) => cauldronValuesType;
   effect?: ReactionEffect;
 }
+
+export type GameOverReasonConstType = KeysTemplateType<typeof GAME_OVER_REASON>;

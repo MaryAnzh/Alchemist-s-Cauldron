@@ -9,3 +9,6 @@ export * from './uiPanels';
 export * from './logic';
 export * from './state';
 export * from './reactions';
+export * from './route';
+export * from './profile';
+export * from './stats';

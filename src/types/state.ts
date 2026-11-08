@@ -36,6 +36,22 @@ export type GameState = {
   enabledReactionIds: ReactionId[];
   activeReactions: ReactionId[];
   lastReactionId: ReactionId | null;
+
+  gameId?: string;
+
+  savedSession?: {
+    successfulBrews: number;
+    failedBrews: number;
+    reactionsTriggered: number;
+    elapsedMs: number;
+  };
 };
 
 export type StorageKeysType = keyof typeof STORAGE_KEYS;
+
+export type SessionStats = {
+  startedAt: number;
+  successfulBrews: number;
+  failedBrews: number;
+  reactionsTriggered: number;
+};

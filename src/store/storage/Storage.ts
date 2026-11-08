@@ -1,7 +1,15 @@
-import type { GameState, LeaderboardStorageType, StorageKeysType } from '@types';
+import type {
+  GameState,
+  LeaderboardStorageType,
+  ProfileStorageType,
+  StorageKeysType,
+} from '@types';
 
 export class StorageHelper {
-  save(key: StorageKeysType, state: GameState | LeaderboardStorageType): boolean {
+  save(
+    key: StorageKeysType,
+    state: GameState | LeaderboardStorageType | ProfileStorageType,
+  ): boolean {
     try {
       localStorage.setItem(key, JSON.stringify(state));
       return true;
@@ -10,7 +18,7 @@ export class StorageHelper {
     }
   }
 
-  load(key: StorageKeysType): GameState | LeaderboardStorageType | null {
+  load(key: StorageKeysType): GameState | LeaderboardStorageType | ProfileStorageType | null {
     try {
       const raw = localStorage.getItem(key);
       if (!raw) return null;
@@ -25,6 +33,7 @@ export class StorageHelper {
       localStorage.removeItem(key);
     } catch {
       // storage is unavailable, nothing to clear
+      return;
     }
   }
 

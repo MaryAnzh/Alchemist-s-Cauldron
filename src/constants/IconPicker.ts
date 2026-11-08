@@ -1,4 +1,6 @@
 import arrow from '../assets/arrow.svg?raw';
+import arrow_down from '../assets/arrow-down.svg?raw';
+import arrow_down_mini from '../assets/arrow-down-mini.svg?raw';
 import book from '../assets/book.svg?raw';
 import battle from '../assets/battle.svg?raw';
 import cauldron from '../assets/cauldron.svg?raw';
@@ -33,9 +35,14 @@ import symbol from '../assets/symbol.svg?raw';
 import symbol_2 from '../assets/symbol_2.svg?raw';
 import temperature from '../assets/temperature.svg?raw';
 import toad_slime from '../assets/toad_slime.svg?raw';
+import edit from '../assets/edit.svg?raw';
+import save from '../assets/save.svg?raw';
+import trash from '../assets/trash.svg?raw';
 
 export const ICON_PICKER = {
   arrow,
+  arrow_down,
+  arrow_down_mini,
   book,
   battle,
   cauldron,
@@ -70,4 +77,7 @@ export const ICON_PICKER = {
   symbol_2,
   temperature,
   toad_slime,
+  edit,
+  save,
+  trash,
 };

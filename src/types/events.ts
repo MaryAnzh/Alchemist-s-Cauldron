@@ -1,7 +1,8 @@
-import { GAME_EVENTS as GE } from '@constants';
+import { GAME_EVENTS as GE, ROUTER_EVENTS } from '@constants';
 import type { GameState } from './state';
 import type { cauldronValuesType, GameOverReasonType, ReactionId, RecipeType } from './data';
 import type { LeaderboardStorageType } from './leaderboard';
+import type { ProfileAvatarType } from './profile';
 
 export type GameEventsPayload = {
   [GE.TIMER_TICK]: number;
@@ -26,4 +27,12 @@ export type GameEventsPayload = {
   [GE.SHOW_LEADERBOARD]: LeaderboardStorageType;
   [GE.PAGE_HIDDEN]: boolean;
   [GE.SHOW_RULES]: boolean;
+  [GE.PLAYER_NAME_CHANGED]: { name: string };
+  [GE.PLAYER_AVATAR_CHANGED]: { avatar: ProfileAvatarType };
+  [GE.OPEN_NAME_DIALOG]: boolean;
+  [GE.MENU_SHOWN]: boolean;
+};
+
+export type RouterEventsPayload = {
+  [ROUTER_EVENTS.PATH_CHANGE]: string;
 };

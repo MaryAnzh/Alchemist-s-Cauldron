@@ -2,7 +2,8 @@ import type { IconPickerType, ParentNodeType } from '@types';
 import { Component } from '@ui';
 import { ICON_PICKER } from '@constants';
 
-type ColorType = 'magic' | 'magic-icon' | 'arrow-right' | 'arrow-left' | 'magic-icon-2';
+type ColorType =
+  'link' | 'magic' | 'magic-icon' | 'arrow-right' | 'arrow-left' | 'magic-icon-2' | 'dark';
 
 export type ButtonProps = ParentNodeType & {
   className?: string;
@@ -16,6 +17,7 @@ export type ButtonProps = ParentNodeType & {
   fullWidth?: 'fullWidth';
   disabled?: 'disabled';
   ariaLabel?: string;
+  iconRotate?: '90deg' | '180deg' | '270deg';
   onClick?: () => void;
 };
 
@@ -27,6 +29,7 @@ export class Button extends Component {
   private text: string | null;
   private leftIcon: IconPickerType | null = null;
   private rightIcon: IconPickerType | null = null;
+  private iconRotate: '90deg' | '180deg' | '270deg' | null = null;
 
   constructor({
     parentNode,
@@ -41,6 +44,7 @@ export class Button extends Component {
     fullWidth,
     disabled,
     ariaLabel,
+    iconRotate,
     onClick,
   }: ButtonProps) {
     super({
@@ -57,6 +61,7 @@ export class Button extends Component {
     this.text = text ?? null;
     this.leftIcon = leftIcon ?? null;
     this.rightIcon = rightIcon ?? null;
+    this.iconRotate = iconRotate ?? null;
 
     if (onClick) {
       this.node.onclick = () => onClick();
@@ -68,6 +73,9 @@ export class Button extends Component {
   private render() {
     if (this.leftIcon) {
       this.node.insertAdjacentHTML('beforeend', ICON_PICKER[this.leftIcon]);
+      if (this.iconRotate) {
+        this.node.style.transform = `rotate(${this.iconRotate})`;
+      }
       if (this.text) this.renderTextNode(this.text);
     }
 
@@ -105,6 +113,14 @@ export class Button extends Component {
       this.node.setAttribute('disabled', 'true');
     } else {
       this.node.removeAttribute('disabled');
+    }
+  };
+
+  public setHidden = (isHidden: boolean) => {
+    if (isHidden) {
+      this.node.classList.add('app_button_hidden');
+    } else {
+      this.node.classList.remove('app_button_hidden');
     }
   };
 

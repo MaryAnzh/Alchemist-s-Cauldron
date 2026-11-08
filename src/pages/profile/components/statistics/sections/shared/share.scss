@@ -1,0 +1,64 @@
+.app-statistics_share {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-2);
+
+  &_row {
+    display: grid;
+    grid-template-columns: minmax(0, 7rem) minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--size-1-5);
+  }
+
+  &_label {
+    font-family: var(--font-title);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-light);
+  }
+
+  &_track {
+    height: var(--size-1);
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+  }
+
+  &_fill {
+    display: block;
+    height: 100%;
+    width: 0;
+    transition: width 0.4s ease;
+
+    &_easy {
+      background: var(--color-success);
+    }
+    &_medium {
+      background: var(--color-warning);
+    }
+    &_hard {
+      background: var(--gradient-accent);
+    }
+    &_time {
+      background: var(--color-info);
+    }
+    &_lives {
+      background: var(--color-error);
+    }
+    &_ingredients {
+      background: var(--color-liquid-magic);
+    }
+
+    &_successful {
+      background: var(--color-success);
+    }
+    &_failed {
+      background: var(--color-error);
+    }
+  }
+
+  &_value {
+    font-size: var(--font-size-xsm);
+    color: var(--color-text-muted);
+    white-space: nowrap;
+  }
+}

@@ -12,7 +12,8 @@
     "preview": "vite preview",
     "prepare": "husky",
     "format:check": "prettier --check .",
-    "deploy": "vite build && gh-pages -d dist"
+    "deploy": "vite build && gh-pages -d dist",
+    "test": "vitest run"
   },
   "devDependencies": {
     "@types/node": "^26.6.4",
@@ -28,7 +29,8 @@
     "ts-node": "^10.9.2",
     "typescript": "~6.0.2",
     "vite": "^8.3.0",
-    "vite-tsconfig-paths": "^6.1.1"
+    "vite-tsconfig-paths": "^6.1.1",
+    "vitest": "^5.0.5"
   },
   "lint-staged": {
     "src/**/*.{ts,js}": [
