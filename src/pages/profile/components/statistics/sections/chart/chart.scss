@@ -1,0 +1,33 @@
+.app-statistics_chart {
+  position: relative;
+  width: 100%;
+
+  &_svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  &_line {
+    fill: none;
+    stroke: var(--color-bg-light);
+    stroke-width: 2;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+  }
+
+  &_dot {
+    fill: var(--color-bg-light);
+    cursor: pointer;
+    outline: none;
+
+    &:hover,
+    &:focus-visible {
+      fill: var(--color-accent-hover);
+    }
+  }
+}
+
+.app-statistics_chart_modes {
+  margin-bottom: 0.5rem;
+}

@@ -72,10 +72,14 @@ class Store {
   public removeUserAvatar(): boolean {
     return this.setUserAvatar({ kind: C.PRESET, id: 'default' });
   }
+  public getUserHistory() {
+    return this.player.history;
+  }
 
   public startNewGame = () => {
     this.resetGameState();
     this.session = L.createSessionStats(Date.now());
+    this.update({ gameId: String(this.session.startedAt) });
 
     this.initShelf();
     this.pickRandomRecipe();
@@ -131,6 +135,7 @@ class Store {
       lastReactionId: null,
     };
   }
+
   roundOver(variant: 'success' | 'fail') {
     this.timer.stop();
     this.timerRunning = false;
@@ -370,6 +375,7 @@ class Store {
         score,
         reason,
         now: Date.now(),
+        gameId: this.state.gameId,
       }),
     );
   }
@@ -382,7 +388,16 @@ class Store {
         ? remainingSeconds(this.state.endTimestamp, Date.now())
         : timeLeft;
 
-    this.gameSave.save({ ...this.state, timeLeft: remaining });
+    this.gameSave.save({
+      ...this.state,
+      timeLeft: remaining,
+      savedSession: {
+        successfulBrews: this.session.successfulBrews,
+        failedBrews: this.session.failedBrews,
+        reactionsTriggered: this.session.reactionsTriggered,
+        elapsedMs: Date.now() - this.session.startedAt,
+      },
+    });
   }
 
   checkLeaderboard(): boolean {
@@ -415,12 +430,13 @@ class Store {
   public continueLastGame() {
     const savedState = this.gameSave.load();
     if (!savedState) return;
-    this.session = L.createSessionStats(Date.now());
 
+    this.session = L.restoreSessionStats(savedState.savedSession, Date.now());
     this.timer.stop();
     this.timerRunning = false;
     this.update({
       ...(savedState as T.GameState),
+      gameId: savedState.gameId ?? String(Date.now()),
       endTimestamp: Date.now() + savedState.timeLeft * 1000,
     });
     this.emit(C.GAME_EVENTS.GAME_START, this.state);

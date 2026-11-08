@@ -128,7 +128,14 @@ export const ValidateState = (state: unknown): boolean => {
     checkActiveReactions(s.activeReactions, s.difficulty as GameDifficultType) &&
     (s.lastReactionId === null || isReactionId(s.lastReactionId)) &&
     Number.isFinite(s.startTimestamp) &&
-    Number.isFinite(s.endTimestamp)
+    (s.gameId === undefined || typeof s.gameId === 'string') &&
+    Number.isFinite(s.endTimestamp) &&
+    (s.savedSession === undefined ||
+      (isNonNegativeInteger(s.savedSession.successfulBrews) &&
+        isNonNegativeInteger(s.savedSession.failedBrews) &&
+        isNonNegativeInteger(s.savedSession.reactionsTriggered) &&
+        Number.isFinite(s.savedSession.elapsedMs) &&
+        s.savedSession.elapsedMs >= 0))
   );
 };
 
@@ -204,7 +211,8 @@ const isValidRecord = (value: unknown): boolean => {
     isNonNegativeInteger(value.durationSeconds) &&
     isNonNegativeInteger(value.successfulBrews) &&
     isNonNegativeInteger(value.failedBrews) &&
-    isNonNegativeInteger(value.reactionsTriggered)
+    isNonNegativeInteger(value.reactionsTriggered) &&
+    (value.gameId === undefined || typeof value.gameId === 'string')
   );
 };
 

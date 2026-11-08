@@ -1,4 +1,6 @@
 import arrow from '../assets/arrow.svg?raw';
+import arrow_down from '../assets/arrow-down.svg?raw';
+import arrow_down_mini from '../assets/arrow-down-mini.svg?raw';
 import book from '../assets/book.svg?raw';
 import battle from '../assets/battle.svg?raw';
 import cauldron from '../assets/cauldron.svg?raw';
@@ -39,6 +41,8 @@ import trash from '../assets/trash.svg?raw';
 
 export const ICON_PICKER = {
   arrow,
+  arrow_down,
+  arrow_down_mini,
   book,
   battle,
   cauldron,

@@ -2,6 +2,7 @@ import * as C from '@constants';
 
 import type { SlideSetType } from './types';
 import accountShot from '../../assets/account.webp';
+import statsShort from '../../assets/stats.webp';
 
 export const SLIDES_SET: SlideSetType[] = [
   {
@@ -12,6 +13,12 @@ export const SLIDES_SET: SlideSetType[] = [
       subTitle: { text: C.SLIDE_1_SUBTITLE },
       list: { items: [...C.SLIDE_1_ITEMS] },
       links: [
+        {
+          src: statsShort,
+          alt: 'Statistics page',
+          caption: 'Statistics',
+          href: `#${C.ROUTES.statistics}`,
+        },
         {
           src: accountShot,
           alt: 'Account page',
@@ -62,6 +69,72 @@ export const SLIDES_SET: SlideSetType[] = [
       list: { items: [...C.SLIDE_5_ITEMS] },
     },
     preview: { title: C.SLIDE_5_PREVIEW_TITLE, icon: 'symbol' },
+  },
+  {
+    id: 'slide-statistics',
+    slide: {
+      template: 'default',
+      title: { text: C.SLIDE_9_TITLE },
+      subTitle: { text: C.SLIDE_9_SUBTITLE },
+      list: { items: [...C.SLIDE_9_ITEMS] },
+    },
+    preview: { title: C.SLIDE_9_PREVIEW_TITLE, icon: 'arrow_down_mini' },
+    subSlides: [
+      {
+        section: 'summary',
+        title: C.SLIDE_9_SUB_1_TITLE,
+        description: C.SLIDE_9_SUB_1_DESCRIPTION,
+        descriptionPosition: 'top',
+      },
+      {
+        section: 'chart',
+        title: C.SLIDE_9_SUB_2_TITLE,
+        description: C.SLIDE_9_SUB_2_DESCRIPTION,
+        descriptionPosition: 'bottom',
+      },
+      {
+        section: 'difficulty',
+        title: C.SLIDE_9_SUB_3_TITLE,
+        description: C.SLIDE_9_SUB_3_DESCRIPTION,
+        descriptionPosition: 'left',
+      },
+      {
+        section: 'recent',
+        title: C.SLIDE_9_SUB_4_TITLE,
+        description: C.SLIDE_9_SUB_4_DESCRIPTION,
+        descriptionPosition: 'top',
+      },
+      {
+        section: 'reasons',
+        title: C.SLIDE_9_SUB_5_TITLE,
+        description: C.SLIDE_9_SUB_5_DESCRIPTION,
+        descriptionPosition: 'right',
+      },
+      {
+        section: 'brews',
+        title: C.SLIDE_9_SUB_6_TITLE,
+        description: C.SLIDE_9_SUB_6_DESCRIPTION,
+        descriptionPosition: 'left',
+      },
+      {
+        section: 'candles',
+        title: C.SLIDE_9_SUB_7_TITLE,
+        description: C.SLIDE_9_SUB_7_DESCRIPTION,
+        descriptionPosition: 'bottom',
+      },
+      {
+        section: 'histogram',
+        title: C.SLIDE_9_SUB_8_TITLE,
+        description: C.SLIDE_9_SUB_8_DESCRIPTION,
+        descriptionPosition: 'right',
+      },
+      {
+        section: 'heatmap',
+        title: C.SLIDE_9_SUB_9_TITLE,
+        description: C.SLIDE_9_SUB_9_DESCRIPTION,
+        descriptionPosition: 'bottom',
+      },
+    ],
   },
   {
     id: 'slide-6',

@@ -49,9 +49,9 @@ migration is planned.
 - [x] Remove the profile and its history
 - [x] Show the mini cauldron in the sidebar with a CSS-only animation
 - [ ] Add preset avatars and resized image uploads
-- [ ] Record completed games without duplicates
+- [x] Record completed games without duplicates
 - [ ] Preserve gameplay counters when continuing a saved game
-- [ ] Display recent history and aggregated statistics
+- [x] Display recent history and aggregated statistics
 - [ ] Add achievements and unlock notifications
 - [ ] Test history, statistics, and achievement rules
 
@@ -66,7 +66,11 @@ migration is planned.
 - [x] Add horizontal and vertical slide transitions with reduced-motion support
 - [x] Remember the current slide across page navigation
 - [ ] New templates
-- [ ] Prepare content for a 5–10 minute presentation
+- [ ] Add a down-arrow SVG in the style of `book.svg` on the statistics slide
+- [ ] Add a right-side slide navigation panel on statistics sub-slides, highlighting the current slide like the preview cards
+- [ ] Show numbered circle pagination in the side panel at 375 px
+- [ ] Replace the main preview cards with circle pagination on the main slides
+- [x] Prepare content for a 5–10 minute presentation
 
 #### Final polish
 
@@ -77,7 +81,7 @@ migration is planned.
 
 #### Optional
 
-- [ ] Statistics charts
+- [x] Statistics charts
 - [ ] Localization
 
 ### Data and limitations
@@ -91,8 +95,7 @@ Without a name, the game runs in incognito mode: no history is saved and the pro
 The profile can be removed on the account page:
 this deletes the name, avatar, and all recorded history.
 
-Known limitation: after continuing a saved game, session counters
-(brews, mistakes, reactions) and duration start from zero.
+Known limitation: session counters (brews, mistakes, reactions) and duration are saved on pause and restored when the game is continued.
 
 The presentation remembers the current slide for the browser tab (sessionStorage), so returning from the profile pages reopens the same slide.
 

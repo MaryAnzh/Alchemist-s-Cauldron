@@ -1,6 +1,6 @@
 import type { GameRecordType, ProfileAvatarType, ProfileStorageType } from '@types';
 import { createDefaultProfile, profileService } from '../storage/ProfileService';
-import { appendRecord, isValidPlayerName } from '../logic';
+import { appendRecord, hasRecord, isValidPlayerName } from '../logic';
 
 type ProfileStorage = Pick<typeof profileService, 'load' | 'save' | 'removeProfile'>;
 
@@ -41,8 +41,13 @@ export class PlayerProfile {
     return this.persist({ ...this.profile, avatar });
   }
 
+  get history(): GameRecordType[] {
+    return this.profile?.history ?? [];
+  }
+
   addRecord(record: GameRecordType): boolean {
     if (!this.profile) return false;
+    if (hasRecord(this.profile.history, record.gameId)) return false;
     return this.persist({ ...this.profile, history: appendRecord(this.profile.history, record) });
   }
 

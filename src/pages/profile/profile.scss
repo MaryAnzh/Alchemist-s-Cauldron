@@ -2,14 +2,17 @@
 @use '../../styles/mixin/media.scss' as *;
 
 @use './components//account/account.scss' as *;
+@use './components/statistics/statistics.scss' as *;
 
 .app-profile {
   @include section-paddings;
   width: 100%;
+  height: 100%;
   display: grid;
   grid-template-columns: 290px auto;
   gap: var(--size-3);
   z-index: 10;
+  overflow: hidden;
 
   &_content {
     width: 100%;
@@ -18,18 +21,21 @@
     border-radius: var(--radius-lg);
     padding: var(--size-3);
     background: rgba(0, 0, 0, 0.4);
+    overflow: hidden;
   }
 
   &_sidebar {
     border-radius: var(--radius-md);
     background: rgba(0, 0, 0, 0.4);
+    height: 100%;
+    overflow: hidden;
   }
 }
 
-@media (max-width: $tablet-md) {
+@media (max-width: $laptop) {
   .app-profile {
     width: 100%;
     grid-template-columns: 100%;
-    grid-template-rows: min-content auto;
+    grid-template-rows: min-content minmax(0, 1fr);
   }
 }

@@ -1,0 +1,13 @@
+.app-statistics_tooltip {
+  position: absolute;
+  transform: translate(-50%, calc(-100% - 12px));
+  padding: var(--size-05) var(--size-1);
+  border-radius: var(--radius-sm);
+  background: var(--gradient-dark);
+  color: var(--color-text-light);
+  font-size: var(--font-size-xsm);
+  white-space: nowrap;
+  box-shadow: var(--shadow-md);
+  pointer-events: none;
+  z-index: 1;
+}

@@ -1,0 +1,42 @@
+.app-statistics_histogram {
+  display: flex;
+  align-items: stretch;
+  gap: var(--size-1);
+  height: 10rem;
+
+  &_column {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--size-05);
+  }
+
+  &_track {
+    flex: 1 1 0;
+    width: 100%;
+    min-height: 0;
+    display: flex;
+    align-items: flex-end;
+  }
+
+  &_bar {
+    display: block;
+    width: 100%;
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+    background: var(--gradient-accent);
+    transition: height 0.4s ease;
+  }
+
+  &_count {
+    font-size: var(--font-size-xsm);
+    color: var(--color-text-light);
+  }
+
+  &_label {
+    font-size: var(--font-size-xsm);
+    color: var(--color-text-muted);
+    white-space: nowrap;
+  }
+}

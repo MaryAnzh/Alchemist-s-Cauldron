@@ -1,0 +1,32 @@
+<svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#F8E9A8"/>
+      <stop offset="40%" stop-color="#E0C067"/>
+      <stop offset="100%" stop-color="#A66B1F"/>
+    </linearGradient>
+
+    <linearGradient id="goldLight" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFF3C6"/>
+      <stop offset="100%" stop-color="#D3A441"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Double chevron -->
+  <path
+    d="M7.5 9.5 L12 14 L16.5 9.5"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <path
+    d="M7.5 12.5 L12 17 L16.5 12.5"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="0.75"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+</svg>

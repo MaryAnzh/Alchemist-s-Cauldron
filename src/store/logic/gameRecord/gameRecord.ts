@@ -1,12 +1,11 @@
-import type { GameDifficultType, GameOverReasonType, GameRecordType, SessionStats } from '@types';
+import type {
+  GameDifficultType,
+  GameOverReasonType,
+  GameRecordType,
+  GameState,
+  SessionStats,
+} from '@types';
 import { MAX_HISTORY_LENGTH } from '@constants';
-
-export const createSessionStats = (startedAt: number): SessionStats => ({
-  startedAt,
-  successfulBrews: 0,
-  failedBrews: 0,
-  reactionsTriggered: 0,
-});
 
 type BuildArgs = {
   stats: SessionStats;
@@ -14,6 +13,7 @@ type BuildArgs = {
   score: number;
   reason: GameOverReasonType;
   now: number;
+  gameId?: string;
 };
 
 export const buildGameRecord = ({
@@ -22,6 +22,7 @@ export const buildGameRecord = ({
   score,
   reason,
   now,
+  gameId,
 }: BuildArgs): GameRecordType => ({
   playedAt: now,
   difficulty,
@@ -31,8 +32,29 @@ export const buildGameRecord = ({
   successfulBrews: stats.successfulBrews,
   failedBrews: stats.failedBrews,
   reactionsTriggered: stats.reactionsTriggered,
+  gameId,
+});
+
+export const hasRecord = (history: GameRecordType[], gameId?: string): boolean =>
+  gameId !== undefined && history.some((record) => record.gameId === gameId);
+
+export const createSessionStats = (startedAt: number): SessionStats => ({
+  startedAt,
+  successfulBrews: 0,
+  failedBrews: 0,
+  reactionsTriggered: 0,
 });
 
 // newest first, capped
 export const appendRecord = (history: GameRecordType[], record: GameRecordType) =>
   [record, ...history].slice(0, MAX_HISTORY_LENGTH);
+
+export const restoreSessionStats = (saved: GameState['savedSession'], now: number): SessionStats =>
+  saved
+    ? {
+        startedAt: now - saved.elapsedMs,
+        successfulBrews: saved.successfulBrews,
+        failedBrews: saved.failedBrews,
+        reactionsTriggered: saved.reactionsTriggered,
+      }
+    : createSessionStats(now);

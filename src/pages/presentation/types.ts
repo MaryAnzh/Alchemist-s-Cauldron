@@ -57,8 +57,28 @@ export type SlidePreviewType = {
   icon: IconPickerType;
 };
 
+export type StatisticsSectionIdType =
+  | 'summary'
+  | 'chart'
+  | 'difficulty'
+  | 'recent'
+  | 'reasons'
+  | 'brews'
+  | 'candles'
+  | 'histogram'
+  | 'heatmap';
+
+export type SubSlideType = {
+  section: StatisticsSectionIdType;
+  title: string;
+  description: string;
+  descriptionPosition: 'top' | 'bottom' | 'left' | 'right';
+  figures?: string[];
+};
+
 export type SlideSetType = {
   id: string;
   slide: Omit<SlideProps, 'parentNode'>;
   preview: SlidePreviewType;
+  subSlides?: SubSlideType[];
 };
