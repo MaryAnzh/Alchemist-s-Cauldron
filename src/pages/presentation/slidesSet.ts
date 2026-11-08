@@ -186,7 +186,7 @@ export const SLIDES_SET: SlideSetType[] = [
       title: { text: C.SLIDE_7_TITLE },
       list: { items: [...C.SLIDE_7_ITEMS] },
     },
-    preview: { title: C.SLIDE_7_PREVIEW_TITLE, icon: 'symbol' },
+    preview: { title: C.SLIDE_7_PREVIEW_TITLE, icon: 'arrow_down_mini' },
     subSlides: [
       {
         code: SLIDE_7_TEST_TREE,

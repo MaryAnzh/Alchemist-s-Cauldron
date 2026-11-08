@@ -156,7 +156,8 @@
       }
 
       &:nth-of-type(5),
-      &:nth-of-type(6) {
+      &:nth-of-type(6),
+      &:nth-of-type(8) {
         .app-presentation_controls_preview_icon {
           width: var(--size-3);
           height: var(--size-3);
